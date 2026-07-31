@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework Compass · Patient Education & Experience Frameworks</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f0ece7;
+    --surface: #edeae4;
+    --surface2: #e6e2dc;
+    --border: #d4d0cc;
+    --text: #1a1614;
+    --muted: #6b6560;
+    --teal: #0d7a6d;
+    --teal-dim: rgba(13,122,109,0.10);
+    --clarity: #1d6fa8;
+    --clarity-bg: rgba(56,189,248,0.10);
+    --process: #6d3fc8;
+    --process-bg: rgba(167,139,250,0.12);
+    --behavior: #c05506;
+    --behavior-bg: rgba(251,146,60,0.10);
+    --outcomes: #16a34a;
+    --outcomes-bg: rgba(74,222,128,0.10);
+    --scored: #16a34a;
+    --partial: #b45309;
+    --noscore: #dc2626;
+    --stack-1: rgba(56,189,248,0.08);
+    --stack-2: rgba(167,139,250,0.08);
+    --stack-3: rgba(251,146,60,0.08);
+    --stack-4: rgba(74,222,128,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 40px 40px 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: -.5px;
+    color: var(--text);
+    line-height: 1.15;
+  }
+  h1 span { color: var(--teal); }
+  .subtitle {
+    margin-top: 10px;
+    color: var(--muted);
+    max-width: 520px;
+    font-size: 13.5px;
+  }
+
+  /* ── FILTER BAR ── */
+  .filter-bar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .filter-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 9px 0;
+  }
+  .filter-label {
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-right: 2px;
+  }
+  .filter-group { display: flex; align-items: center; gap: 4px; }
+  .filter-sep { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; margin: 0 2px; }
+
+  .fchip {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11.5px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: inherit;
+    transition: all .15s;
+    white-space: nowrap;
+  }
+  .fchip:hover { color: var(--text); border-color: var(--muted); }
+  .fchip.on.clarity  { background: var(--clarity-bg);  color: var(--clarity);  border-color: rgba(29,111,168,0.35); }
+  .fchip.on.process  { background: var(--process-bg);  color: var(--process);  border-color: rgba(109,63,200,0.35); }
+  .fchip.on.behavior { background: var(--behavior-bg); color: var(--behavior); border-color: rgba(192,85,6,0.35); }
+  .fchip.on.outcomes { background: var(--outcomes-bg); color: var(--outcomes); border-color: rgba(22,163,74,0.35); }
+  .fchip.on.score-y  { background: rgba(22,163,74,0.10); color: var(--scored);  border-color: rgba(22,163,74,0.35); }
+  .fchip.on.score-p  { background: rgba(180,83,9,0.10); color: var(--partial); border-color: rgba(180,83,9,0.35); }
+  .fchip.on.score-n  { background: rgba(220,38,38,0.10); color: var(--noscore); border-color: rgba(220,38,38,0.35); }
+
+  .filter-search {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 3px 12px;
+    outline: none;
+    width: 150px;
+    transition: border-color .15s;
+    margin-left: 4px;
+  }
+  .filter-search:focus { border-color: var(--teal); }
+  .filter-search::placeholder { color: var(--muted); }
+
+  .filter-count { font-size: 11px; color: var(--muted); flex-shrink: 0; min-width: 56px; }
+  .filter-clear {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 11.5px;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 3px 7px;
+    border-radius: 4px;
+    transition: color .15s;
+  }
+  .filter-clear:hover { color: var(--text); }
+
+  /* Section / row visibility when filtered */
+  .section.f-hidden { display: none; }
+  .fw-row.f-hidden  { display: none; }
+
+  /* ── MAIN ── */
+  main { padding: 0 40px 60px; }
+
+  .section {
+    margin-top: 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid;
+  }
+  .section-num {
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .section-title {
+    font-size: 13px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .section.clarity .section-header  { border-color: var(--clarity); }
+  .section.process .section-header  { border-color: var(--process); }
+  .section.behavior .section-header { border-color: var(--behavior); }
+  .section.outcomes .section-header { border-color: var(--outcomes); }
+  .section.clarity .section-num,  .section.clarity .section-title  { color: var(--clarity); }
+  .section.process .section-num,  .section.process .section-title  { color: var(--process); }
+  .section.behavior .section-num, .section.behavior .section-title { color: var(--behavior); }
+  .section.outcomes .section-num, .section.outcomes .section-title { color: var(--outcomes); }
+
+  /* ── TABLE ── */
+  .fw-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .fw-table thead th {
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 6px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .fw-table thead th:first-child { padding-left: 0; }
+
+  .fw-row {
+    border-bottom: 1px solid var(--border);
+    transition: background .12s;
+  }
+  .fw-row:hover { background: var(--surface); }
+  .fw-row td {
+    padding: 13px 12px;
+    vertical-align: top;
+    font-size: 13px;
+  }
+  .fw-row td:first-child { padding-left: 0; }
+
+  .fw-name {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 13.5px;
+  }
+  .fw-fullname {
+    color: var(--muted);
+    font-size: 11.5px;
+    margin-top: 2px;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge.clarity  { background: var(--clarity-bg); color: var(--clarity); }
+  .badge.process  { background: var(--process-bg); color: var(--process); }
+  .badge.behavior { background: var(--behavior-bg); color: var(--behavior); }
+  .badge.outcomes { background: var(--outcomes-bg); color: var(--outcomes); }
+
+  .score-yes     { color: var(--scored); font-weight: 600; }
+  .score-partial { color: var(--partial); font-weight: 600; }
+  .score-no      { color: var(--noscore); font-weight: 600; }
+
+  .metric { color: var(--text); }
+  .benchmark { color: var(--partial); font-size: 12.5px; }
+  .bestfor { color: var(--muted); font-size: 12.5px; }
+
+  /* ── STACKS ── */
+  #stacks { margin-top: 48px; }
+  .stacks-title {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .stacks-title::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+  .stacks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .stack-card {
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--border);
+  }
+  .stack-card:nth-child(1) { background: rgba(56,189,248,0.07); }
+  .stack-card:nth-child(2) { background: rgba(167,139,250,0.07); }
+  .stack-card:nth-child(3) { background: rgba(251,146,60,0.07); }
+  .stack-card:nth-child(4) { background: rgba(74,222,128,0.07); }
+  .stack-name {
+    font-size: 12.5px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+  .stack-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .stack-tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 11.5px;
+    font-weight: 700;
+    background: rgba(30,20,10,0.06);
+    color: var(--text);
+    border: 1px solid rgba(30,20,10,0.12);
+  }
+  .stack-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── SCROLL OFFSET FOR ANCHORS ── */
+  .anchor-target { scroll-margin-top: 80px; }
+
+  /* ── WIZARD ── */
+  #wizard {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px 22px;
+  }
+  .wizard-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .wizard-eyebrow {
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 600;
+  }
+  .wizard-skip {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color .15s;
+    font-family: inherit;
+  }
+  .wizard-skip:hover { color: var(--text); }
+
+  .wizard-steps-row {
+    display: flex;
+    gap: 0;
+    align-items: flex-start;
+  }
+  .wizard-step-block {
+    flex: 1;
+    opacity: 0.28;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+  .wizard-step-block.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .wizard-step-block.done {
+    opacity: 0.55;
+    pointer-events: auto;
+  }
+  .wizard-arrow {
+    color: var(--border);
+    font-size: 22px;
+    padding: 0 12px;
+    margin-top: 22px;
+    flex-shrink: 0;
+    user-select: none;
+  }
+  .step-num {
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  .step-q {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 9px;
+  }
+  .step-opts {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .wopt {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 11px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    font-family: inherit;
+    color: var(--text);
+  }
+  .wopt:hover { border-color: var(--teal); background: rgba(13,122,109,0.06); }
+  .wopt.selected { border-color: var(--teal); background: var(--teal-dim); }
+  .wopt-label { font-size: 12.5px; font-weight: 600; }
+  .wopt-sub { font-size: 11px; color: var(--muted); }
+
+  /* Result panel */
+  .wizard-result {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: rgba(13,122,109,0.08);
+    border: 1px solid rgba(13,122,109,0.25);
+    border-radius: 8px;
+    display: none;
+  }
+  .wizard-result.visible { display: block; }
+  .result-label {
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-weight: 600;
+    margin-bottom: 9px;
+  }
+  .result-fws { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .result-fw-tag {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity .15s;
+  }
+  .result-fw-tag:hover { opacity: .75; }
+  .result-fw-tag.clarity  { background: var(--clarity-bg);  color: var(--clarity); }
+  .result-fw-tag.process  { background: var(--process-bg);  color: var(--process); }
+  .result-fw-tag.behavior { background: var(--behavior-bg); color: var(--behavior); }
+  .result-fw-tag.outcomes { background: var(--outcomes-bg); color: var(--outcomes); }
+
+  .result-stack-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--teal);
+    text-decoration: none;
+    border: 1px solid var(--teal-dim);
+    border-radius: 4px;
+    padding: 4px 10px;
+    margin-bottom: 9px;
+    transition: background .15s;
+  }
+  .result-stack-link:hover { background: var(--teal-dim); }
+  .result-note {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 9px;
+  }
+  .wizard-reset {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 11.5px;
+    cursor: pointer;
+    padding: 0;
+    text-decoration: underline;
+    font-family: inherit;
+  }
+  .wizard-reset:hover { color: var(--text); }
+
+  /* Table row highlight / dim */
+  .fw-row.wz-highlight {
+    background: rgba(13,122,109,0.07) !important;
+    box-shadow: inset 3px 0 0 var(--teal);
+  }
+  .fw-row.wz-dim { opacity: 0.28; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="eyebrow">Framework Compass</div>
+  <h1>Patient Education &amp;<br><span>Experience Frameworks</span></h1>
+  <p class="subtitle">A comprehensive reference across 26 frameworks, rubrics, and models — organized by function so you can stack the right tools for any project.</p>
+</header>
+
+<!-- GUIDED WIZARD -->
+<div id="wizard">
+  <div class="wizard-top">
+    <span class="wizard-eyebrow">🧭 Find your framework</span>
+    <button class="wizard-skip" onclick="skipWizard()">Skip — browse all ↓</button>
+  </div>
+  <div class="wizard-steps-row">
+
+    <!-- Step 1 -->
+    <div class="wizard-step-block active" id="wsb1">
+      <div class="step-num">Step 1 of 3</div>
+      <div class="step-q">What's the primary goal?</div>
+      <div class="step-opts">
+        <button class="wopt" onclick="pickStep(this,1,'clarity')">
+          <span class="wopt-label">Help patients understand</span>
+          <span class="wopt-sub">Content clarity, readability, information quality</span>
+        </button>
+        <button class="wopt" onclick="pickStep(this,1,'process')">
+          <span class="wopt-label">Support a shared decision</span>
+          <span class="wopt-sub">Decision aids, SDM, clinical interactions</span>
+        </button>
+        <button class="wopt" onclick="pickStep(this,1,'behavior')">
+          <span class="wopt-label">Change a behavior or habit</span>
+          <span class="wopt-sub">Messaging, motivation, campaigns</span>
+        </button>
+        <button class="wopt" onclick="pickStep(this,1,'outcomes')">
+          <span class="wopt-label">Track or improve experience</span>
+          <span class="wopt-sub">Patient satisfaction, org-level metrics</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="wizard-arrow">›</div>
+
+    <!-- Step 2 -->
+    <div class="wizard-step-block" id="wsb2">
+      <div class="step-num">Step 2 of 3</div>
+      <div class="step-q">What stage are you at?</div>
+      <div class="step-opts">
+        <button class="wopt" onclick="pickStep(this,2,'designing')">
+          <span class="wopt-label">Designing / drafting</span>
+          <span class="wopt-sub">Building something new</span>
+        </button>
+        <button class="wopt" onclick="pickStep(this,2,'auditing')">
+          <span class="wopt-label">Auditing / reviewing</span>
+          <span class="wopt-sub">Evaluating existing material</span>
+        </button>
+        <button class="wopt" onclick="pickStep(this,2,'measuring')">
+          <span class="wopt-label">Measuring impact</span>
+          <span class="wopt-sub">Post-launch or longitudinal tracking</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="wizard-arrow">›</div>
+
+    <!-- Step 3 -->
+    <div class="wizard-step-block" id="wsb3">
+      <div class="step-num">Step 3 of 3</div>
+      <div class="step-q">Do you need a scored output?</div>
+      <div class="step-opts">
+        <button class="wopt" onclick="pickStep(this,3,'yes')">
+          <span class="wopt-label">Yes — I need numbers to report</span>
+          <span class="wopt-sub">Benchmarks, percentages, thresholds</span>
+        </button>
+        <button class="wopt" onclick="pickStep(this,3,'no')">
+          <span class="wopt-label">No — qualitative guidance is fine</span>
+          <span class="wopt-sub">Checklists, principles, heuristics</span>
+        </button>
+        <button class="wopt" onclick="pickStep(this,3,'either')">
+          <span class="wopt-label">Either works</span>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- end wizard-steps-row -->
+
+  <!-- Result -->
+  <div class="wizard-result" id="wizard-result">
+    <div class="result-label">Your compass points to</div>
+    <div class="result-fws" id="result-fws"></div>
+    <div id="result-stack-wrap"></div>
+    <p class="result-note" id="result-note" style="display:none"></p>
+    <button class="wizard-reset" onclick="resetWizard()">↩ Start over</button>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filter-bar">
+  <div class="filter-inner">
+    <div class="filter-group">
+      <span class="filter-label">Zone</span>
+      <button class="fchip clarity"  data-group="zone" data-val="clarity"  onclick="toggleChip(this)">① Clarity</button>
+      <button class="fchip process"  data-group="zone" data-val="process"  onclick="toggleChip(this)">② Process</button>
+      <button class="fchip behavior" data-group="zone" data-val="behavior" onclick="toggleChip(this)">③ Behavior</button>
+      <button class="fchip outcomes" data-group="zone" data-val="outcomes" onclick="toggleChip(this)">④ Outcomes</button>
+    </div>
+    <div class="filter-sep"></div>
+    <div class="filter-group">
+      <span class="filter-label">Score</span>
+      <button class="fchip score-y" data-group="score" data-val="yes"     onclick="toggleChip(this)">✅ Scored</button>
+      <button class="fchip score-p" data-group="score" data-val="partial" onclick="toggleChip(this)">⚠️ Partial</button>
+      <button class="fchip score-n" data-group="score" data-val="no"      onclick="toggleChip(this)">❌ None</button>
+    </div>
+    <div class="filter-sep"></div>
+    <input class="filter-search" id="filter-search" type="search" placeholder="Search frameworks…" oninput="applyFilters()">
+    <span class="filter-count" id="filter-count"></span>
+    <button class="filter-clear" id="filter-clear" onclick="clearFilters()" style="display:none">✕ Clear all</button>
+  </div>
+</div>
+
+<main>
+
+<!-- ① CLARITY & CONTENT -->
+<section id="clarity" class="section clarity anchor-target">
+  <div class="section-header">
+    <span class="section-num">①</span>
+    <span class="section-title">Clarity &amp; Content Quality — Your Editors</span>
+  </div>
+  <table class="fw-table">
+    <thead>
+      <tr>
+        <th style="width:22%">Framework</th>
+        <th style="width:9%">Zone</th>
+        <th style="width:8%">Scoring</th>
+        <th style="width:22%">Metric / Score</th>
+        <th style="width:16%">Benchmark</th>
+        <th>Best Used For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="fw-row" id="cci"><td class="anchor-target">
+        <div class="fw-name">CCI</div>
+        <div class="fw-fullname">CDC Clear Communication Index</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">0–100% (20 Yes/No items)</td>
+      <td class="benchmark">≥90% to pass</td>
+      <td class="bestfor">Final check before releasing any patient-facing material</td></tr>
+
+      <tr class="fw-row" id="pemat"><td class="anchor-target">
+        <div class="fw-name">PEMAT</div>
+        <div class="fw-fullname">Patient Education Materials Assessment Tool (AHRQ)</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">Two separate % scores: understandability + actionability</td>
+      <td class="benchmark">&gt;70% in both categories</td>
+      <td class="bestfor">Retroactive audits of existing materials; print and video</td></tr>
+
+      <tr class="fw-row" id="sam"><td class="anchor-target">
+        <div class="fw-name">SAM</div>
+        <div class="fw-fullname">Suitability Assessment of Materials</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">0–2 pts across 22 subcriteria → % score</td>
+      <td class="benchmark">70–100% Superior / 40–69% Adequate / &lt;40% Not Suitable</td>
+      <td class="bestfor">Deep material audits across content, graphics, literacy demand, layout</td></tr>
+
+      <tr class="fw-row" id="discern"><td class="anchor-target">
+        <div class="fw-name">DISCERN</div>
+        <div class="fw-fullname">DISCERN Quality Instrument</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">16 questions, 1–5 scale each</td>
+      <td class="benchmark">Higher = better; context-dependent</td>
+      <td class="bestfor">Evaluating reliability and completeness of consumer health info</td></tr>
+
+      <tr class="fw-row" id="eqip"><td class="anchor-target">
+        <div class="fw-name">EQIP</div>
+        <div class="fw-fullname">Ensuring Quality Information for Patients</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">36-item checklist with total score</td>
+      <td class="benchmark">Higher = better; no universal threshold</td>
+      <td class="bestfor">Thorough pre-publication audits of patient information documents</td></tr>
+
+      <tr class="fw-row" id="readability"><td class="anchor-target">
+        <div class="fw-name">Readability</div>
+        <div class="fw-fullname">Flesch-Kincaid / SMOG / Flesch Reading Ease</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">Grade level or 0–100 ease score (algorithmic)</td>
+      <td class="benchmark">Grade 6–8 target for general health materials</td>
+      <td class="bestfor">Quick automated check; pairs with CCI or PEMAT</td></tr>
+
+      <tr class="fw-row" id="plainlang"><td class="anchor-target">
+        <div class="fw-name">Plain Language</div>
+        <div class="fw-fullname">U.S. Federal Plain Language Guidelines</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Qualitative heuristic checklist</td>
+      <td class="benchmark">Editorial judgment; no threshold</td>
+      <td class="bestfor">Writing and editing content at the drafting stage</td></tr>
+
+      <tr class="fw-row" id="pinkbook"><td class="anchor-target">
+        <div class="fw-name">NCI Pink Book</div>
+        <div class="fw-fullname">National Cancer Institute Pink Book</div>
+      </td><td><span class="badge clarity">Clarity</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Qualitative evaluation guidance</td>
+      <td class="benchmark">Pre/post testing recommended</td>
+      <td class="bestfor">Campaign planning and health communication strategy</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ② PROCESS & INTERACTION -->
+<section id="process" class="section process anchor-target">
+  <div class="section-header">
+    <span class="section-num">②</span>
+    <span class="section-title">Process &amp; Interaction Quality — Your Behavioral Referees</span>
+  </div>
+  <table class="fw-table">
+    <thead>
+      <tr>
+        <th style="width:22%">Framework</th>
+        <th style="width:9%">Zone</th>
+        <th style="width:8%">Scoring</th>
+        <th style="width:22%">Metric / Score</th>
+        <th style="width:16%">Benchmark</th>
+        <th>Best Used For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="fw-row" id="option"><td class="anchor-target">
+        <div class="fw-name">OPTION Scale</div>
+        <div class="fw-fullname">Option Scale for SDM</div>
+      </td><td><span class="badge process">Process</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">12-item scale, scored 0–4 each → total score</td>
+      <td class="benchmark">Higher = more patient involvement; research benchmarks vary</td>
+      <td class="bestfor">Auditing clinical interactions and shared decision-making practice</td></tr>
+
+      <tr class="fw-row" id="ipdas"><td class="anchor-target">
+        <div class="fw-name">IPDAS</div>
+        <div class="fw-fullname">International Patient Decision Aid Standards</div>
+      </td><td><span class="badge process">Process</span></td>
+      <td><span class="score-partial">⚠️ Semi</span></td>
+      <td class="metric">Qualifying + certifying criteria checklist</td>
+      <td class="benchmark">Certification threshold for qualifying criteria</td>
+      <td class="bestfor">Designing and auditing shared decision-making tools</td></tr>
+
+      <tr class="fw-row" id="ahrq"><td class="anchor-target">
+        <div class="fw-name">AHRQ Toolkit</div>
+        <div class="fw-fullname">Health Literacy Universal Precautions Toolkit</div>
+      </td><td><span class="badge process">Process</span></td>
+      <td><span class="score-partial">⚠️ Partial</span></td>
+      <td class="metric">Checklist completion; qualitative</td>
+      <td class="benchmark">Implementation-based; no universal score</td>
+      <td class="bestfor">Operational improvements in clinics; staff training</td></tr>
+
+      <tr class="fw-row" id="ottawa"><td class="anchor-target">
+        <div class="fw-name">Ottawa DMSF</div>
+        <div class="fw-fullname">Ottawa Decision Support Framework</div>
+      </td><td><span class="badge process">Process</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Paired with Decisional Conflict Scale</td>
+      <td class="benchmark">Reduction in decisional conflict</td>
+      <td class="bestfor">Patient journey and decision aid design</td></tr>
+
+      <tr class="fw-row" id="share"><td class="anchor-target">
+        <div class="fw-name">SHARE</div>
+        <div class="fw-fullname">SHARE Approach (AHRQ)</div>
+      </td><td><span class="badge process">Process</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">5-step model; qualitative</td>
+      <td class="benchmark">Implementation-based</td>
+      <td class="bestfor">Training clinicians in SDM; designing SDM workflows</td></tr>
+
+      <tr class="fw-row" id="teachback"><td class="anchor-target">
+        <div class="fw-name">Teach-Back</div>
+        <div class="fw-fullname">Teach-Back / Ask Me 3</div>
+      </td><td><span class="badge process">Process</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Qualitative — can patient explain it back?</td>
+      <td class="benchmark">Patient demonstrates understanding</td>
+      <td class="bestfor">Design constraint for materials; clinician training</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ③ BEHAVIOR & PSYCHOLOGY -->
+<section id="behavior" class="section behavior anchor-target">
+  <div class="section-header">
+    <span class="section-num">③</span>
+    <span class="section-title">Behavior &amp; Psychology — Your Engines</span>
+  </div>
+  <table class="fw-table">
+    <thead>
+      <tr>
+        <th style="width:22%">Framework</th>
+        <th style="width:9%">Zone</th>
+        <th style="width:8%">Scoring</th>
+        <th style="width:22%">Metric / Score</th>
+        <th style="width:16%">Benchmark</th>
+        <th>Best Used For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="fw-row" id="comb"><td class="anchor-target">
+        <div class="fw-name">COM-B</div>
+        <div class="fw-fullname">COM-B Behaviour System</div>
+      </td><td><span class="badge behavior">Behavior</span></td>
+      <td><span class="score-partial">⚠️ Indirect</span></td>
+      <td class="metric">Behaviour Change Wheel companion tools</td>
+      <td class="benchmark">Intervention design guided by COM-B diagnosis</td>
+      <td class="bestfor">Product/service design; intervention mapping</td></tr>
+
+      <tr class="fw-row" id="hbm"><td class="anchor-target">
+        <div class="fw-name">HBM</div>
+        <div class="fw-fullname">Health Belief Model</div>
+      </td><td><span class="badge behavior">Behavior</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Qualitative constructs; measurable via surveys</td>
+      <td class="benchmark">Behavior adoption as outcome</td>
+      <td class="bestfor">Designing messaging strategy around chronic disease</td></tr>
+
+      <tr class="fw-row" id="ttm"><td class="anchor-target">
+        <div class="fw-name">TTM</div>
+        <div class="fw-fullname">Transtheoretical Model (Stages of Change)</div>
+      </td><td><span class="badge behavior">Behavior</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Stage classification (pre-contemplation → maintenance)</td>
+      <td class="benchmark">Stage progression over time</td>
+      <td class="bestfor">Tailoring interventions to patient readiness</td></tr>
+
+      <tr class="fw-row" id="eppm"><td class="anchor-target">
+        <div class="fw-name">EPPM</div>
+        <div class="fw-fullname">Extended Parallel Process Model</div>
+      </td><td><span class="badge behavior">Behavior</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Perceived threat vs. efficacy balance</td>
+      <td class="benchmark">Behavior change without paralysis or denial</td>
+      <td class="bestfor">Designing messaging around medication adherence and risk</td></tr>
+
+      <tr class="fw-row" id="whorisks"><td class="anchor-target">
+        <div class="fw-name">WHO Risk Comms</div>
+        <div class="fw-fullname">WHO Risk Communication Framework</div>
+      </td><td><span class="badge behavior">Behavior</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Qualitative principles</td>
+      <td class="benchmark">Trust + behavior change as outcomes</td>
+      <td class="bestfor">Public health messaging; crisis communication</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ④ OUTCOMES & EXPERIENCE -->
+<section id="outcomes" class="section outcomes anchor-target">
+  <div class="section-header">
+    <span class="section-num">④</span>
+    <span class="section-title">Outcomes &amp; Experience — Your Scoreboards</span>
+  </div>
+  <table class="fw-table">
+    <thead>
+      <tr>
+        <th style="width:22%">Framework</th>
+        <th style="width:9%">Zone</th>
+        <th style="width:8%">Scoring</th>
+        <th style="width:22%">Metric / Score</th>
+        <th style="width:16%">Benchmark</th>
+        <th>Best Used For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="fw-row" id="pam"><td class="anchor-target">
+        <div class="fw-name">PAM</div>
+        <div class="fw-fullname">Patient Activation Measure</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">0–100 score → 4 activation levels</td>
+      <td class="benchmark">3–6 point increase over 6–12 months</td>
+      <td class="bestfor">Measuring behavior change readiness pre/post intervention</td></tr>
+
+      <tr class="fw-row" id="cahps"><td class="anchor-target">
+        <div class="fw-name">CAHPS</div>
+        <div class="fw-fullname">CAHPS / HCAHPS Survey (AHRQ)</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">Top-Box % (highest rating responses)</td>
+      <td class="benchmark">National average comparison; year-over-year</td>
+      <td class="bestfor">Benchmarking hospitals and clinics at scale</td></tr>
+
+      <tr class="fw-row" id="nps"><td class="anchor-target">
+        <div class="fw-name">NPS</div>
+        <div class="fw-fullname">Net Promoter Score</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-yes">✅ Yes</span></td>
+      <td class="metric">-100 to +100</td>
+      <td class="benchmark">&gt;50 is excellent; varies by sector</td>
+      <td class="bestfor">Executive-level CX tracking; digital product experience</td></tr>
+
+      <tr class="fw-row" id="picker"><td class="anchor-target">
+        <div class="fw-name">Picker</div>
+        <div class="fw-fullname">Picker Principles of Patient-Centered Care</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Paired with Picker survey instruments</td>
+      <td class="benchmark">Survey response benchmarks</td>
+      <td class="bestfor">Care model design; org-level patient experience strategy</td></tr>
+
+      <tr class="fw-row" id="berylpx"><td class="anchor-target">
+        <div class="fw-name">Beryl PX</div>
+        <div class="fw-fullname">The Beryl Institute PX Framework</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Qualitative organizational framework</td>
+      <td class="benchmark">Implementation + culture change</td>
+      <td class="bestfor">Org-level patient experience strategy</td></tr>
+
+      <tr class="fw-row" id="ebcd"><td class="anchor-target">
+        <div class="fw-name">EBCD</div>
+        <div class="fw-fullname">Experience-Based Co-Design</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Qualitative; co-design outputs</td>
+      <td class="benchmark">Patient + staff identified improvement areas</td>
+      <td class="bestfor">Participatory UX/design research in clinical environments</td></tr>
+
+      <tr class="fw-row" id="seips"><td class="anchor-target">
+        <div class="fw-name">SEIPS</div>
+        <div class="fw-fullname">Systems Engineering for Patient Safety</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Work system analysis outputs</td>
+      <td class="benchmark">Reduction in adverse events; improved workflow</td>
+      <td class="bestfor">Framing design decisions in clinical and systems contexts</td></tr>
+
+      <tr class="fw-row" id="planetree"><td class="anchor-target">
+        <div class="fw-name">Planetree</div>
+        <div class="fw-fullname">Planetree Model</div>
+      </td><td><span class="badge outcomes">Outcomes</span></td>
+      <td><span class="score-no">❌ No</span></td>
+      <td class="metric">Designation criteria; qualitative</td>
+      <td class="benchmark">Planetree designation</td>
+      <td class="bestfor">Org-level culture and care environment design</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- RECOMMENDED STACKS -->
+<section id="stacks" class="anchor-target" style="margin-top:48px;">
+  <div class="stacks-title">Recommended Stacks</div>
+  <div class="stacks-grid">
+    <div class="stack-card" id="stack-audit">
+      <div class="stack-name">Auditing a Past Material</div>
+      <div class="stack-tags">
+        <a href="#pemat" class="stack-tag">PEMAT</a>
+        <a href="#sam"   class="stack-tag">SAM</a>
+        <a href="#cci"   class="stack-tag">CCI</a>
+      </div>
+      <p class="stack-desc">Score retroactively across all three. Gaps between understandability and actionability tell the real story.</p>
+    </div>
+    <div class="stack-card" id="stack-decision">
+      <div class="stack-name">Designing a Decision Aid</div>
+      <div class="stack-tags">
+        <a href="#ottawa" class="stack-tag">Ottawa DMSF</a>
+        <a href="#ipdas"  class="stack-tag">IPDAS</a>
+        <a href="#option" class="stack-tag">OPTION</a>
+      </div>
+      <p class="stack-desc">Framework → standards check → interaction audit. Covers design through delivery.</p>
+    </div>
+    <div class="stack-card" id="stack-behavior">
+      <div class="stack-name">Behavior Change Campaign</div>
+      <div class="stack-tags">
+        <a href="#comb"  class="stack-tag">COM-B</a>
+        <a href="#ttm"   class="stack-tag">TTM</a>
+        <a href="#hbm"   class="stack-tag">HBM</a>
+        <a href="#cci"   class="stack-tag">CCI</a>
+      </div>
+      <p class="stack-desc">Diagnose behavior, segment by readiness, then pressure-test your message clarity.</p>
+    </div>
+    <div class="stack-card" id="stack-impact">
+      <div class="stack-name">Proving Impact Post-Launch</div>
+      <div class="stack-tags">
+        <a href="#pam"   class="stack-tag">PAM</a>
+        <a href="#cahps" class="stack-tag">CAHPS</a>
+        <a href="#nps"   class="stack-tag">NPS</a>
+      </div>
+      <p class="stack-desc">Layer activation, experience, and satisfaction for a multi-dimensional outcome picture.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+// Smooth scroll for all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ── FILTER SYSTEM ──
+const FW_META = {
+  cci:{zone:'clarity',score:'yes'}, pemat:{zone:'clarity',score:'yes'}, sam:{zone:'clarity',score:'yes'},
+  discern:{zone:'clarity',score:'yes'}, eqip:{zone:'clarity',score:'yes'},
+  readability:{zone:'clarity',score:'yes'}, plainlang:{zone:'clarity',score:'no'}, pinkbook:{zone:'clarity',score:'no'},
+  option:{zone:'process',score:'yes'}, ipdas:{zone:'process',score:'partial'}, ahrq:{zone:'process',score:'partial'},
+  ottawa:{zone:'process',score:'no'}, share:{zone:'process',score:'no'}, teachback:{zone:'process',score:'no'},
+  comb:{zone:'behavior',score:'partial'}, hbm:{zone:'behavior',score:'no'}, ttm:{zone:'behavior',score:'no'},
+  eppm:{zone:'behavior',score:'no'}, whorisks:{zone:'behavior',score:'no'},
+  pam:{zone:'outcomes',score:'yes'}, cahps:{zone:'outcomes',score:'yes'}, nps:{zone:'outcomes',score:'yes'},
+  picker:{zone:'outcomes',score:'no'}, berylpx:{zone:'outcomes',score:'no'},
+  ebcd:{zone:'outcomes',score:'no'}, seips:{zone:'outcomes',score:'no'}, planetree:{zone:'outcomes',score:'no'}
+};
+
+// Stamp data attributes onto rows once
+document.querySelectorAll('.fw-row').forEach(row => {
+  const m = FW_META[row.id];
+  if (m) { row.dataset.zone = m.zone; row.dataset.score = m.score; }
+});
+
+const F = { zones: new Set(), scores: new Set() };
+
+function toggleChip(btn) {
+  const group = btn.dataset.group;   // 'zone' | 'score'
+  const val   = btn.dataset.val;
+  const set   = group === 'zone' ? F.zones : F.scores;
+
+  if (set.has(val)) { set.delete(val); btn.classList.remove('on'); }
+  else              { set.add(val);    btn.classList.add('on'); }
+
+  applyFilters();
+}
+
+function applyFilters() {
+  const search  = document.getElementById('filter-search').value.trim().toLowerCase();
+  const hasZone = F.zones.size > 0;
+  const hasScore = F.scores.size > 0;
+  const hasSearch = search.length > 0;
+  const isActive = hasZone || hasScore || hasSearch;
+
+  let visible = 0;
+
+  document.querySelectorAll('.fw-row').forEach(row => {
+    const zoneOk  = !hasZone  || F.zones.has(row.dataset.zone);
+    const scoreOk = !hasScore || F.scores.has(row.dataset.score);
+    const text = row.textContent.toLowerCase();
+    const searchOk = !hasSearch || text.includes(search);
+    const show = zoneOk && scoreOk && searchOk;
+    row.classList.toggle('f-hidden', !show);
+    if (show) visible++;
+  });
+
+  // Hide sections where every row is hidden
+  document.querySelectorAll('.section').forEach(sec => {
+    const anyVisible = [...sec.querySelectorAll('.fw-row')].some(r => !r.classList.contains('f-hidden'));
+    sec.classList.toggle('f-hidden', !anyVisible);
+  });
+
+  // Count label
+  const countEl = document.getElementById('filter-count');
+  const total = document.querySelectorAll('.fw-row').length;
+  countEl.textContent = isActive ? `${visible} of ${total}` : '';
+
+  // Clear button
+  const clearBtn = document.getElementById('filter-clear');
+  clearBtn.style.display = isActive ? 'inline-block' : 'none';
+}
+
+function clearFilters() {
+  F.zones.clear(); F.scores.clear();
+  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('on'));
+  document.getElementById('filter-search').value = '';
+  applyFilters();
+}
+
+// ── WIZARD ──
+const W = {
+  answers: {},
+
+  fwZone: {
+    cci:'clarity', pemat:'clarity', sam:'clarity', discern:'clarity', eqip:'clarity',
+    readability:'clarity', plainlang:'clarity', pinkbook:'clarity',
+    option:'process', ipdas:'process', ahrq:'process', ottawa:'process',
+    share:'process', teachback:'process',
+    comb:'behavior', hbm:'behavior', ttm:'behavior', eppm:'behavior', whorisks:'behavior',
+    pam:'outcomes', cahps:'outcomes', nps:'outcomes', picker:'outcomes',
+    berylpx:'outcomes', ebcd:'outcomes', seips:'outcomes', planetree:'outcomes'
+  },
+
+  fwLabel: {
+    cci:'CCI', pemat:'PEMAT', sam:'SAM', discern:'DISCERN', eqip:'EQIP',
+    readability:'Readability', plainlang:'Plain Language', pinkbook:'NCI Pink Book',
+    option:'OPTION Scale', ipdas:'IPDAS', ahrq:'AHRQ Toolkit', ottawa:'Ottawa DMSF',
+    share:'SHARE', teachback:'Teach-Back',
+    comb:'COM-B', hbm:'HBM', ttm:'TTM', eppm:'EPPM', whorisks:'WHO Risk Comms',
+    pam:'PAM', cahps:'CAHPS', nps:'NPS', picker:'Picker', berylpx:'Beryl PX',
+    ebcd:'EBCD', seips:'SEIPS', planetree:'Planetree'
+  },
+
+  stackNames: {
+    'stack-audit':    'Auditing a Past Material',
+    'stack-decision': 'Designing a Decision Aid',
+    'stack-behavior': 'Behavior Change Campaign',
+    'stack-impact':   'Proving Impact Post-Launch'
+  },
+
+  results: {
+    'clarity-designing-yes':     { fws:['plainlang','cci','readability'],     stack:null,            note:'Use Plain Language while drafting, then run CCI and Readability as a final quality check before publishing.' },
+    'clarity-designing-no':      { fws:['plainlang','pinkbook','discern'],    stack:null,            note:null },
+    'clarity-designing-either':  { fws:['plainlang','cci','readability'],     stack:null,            note:null },
+    'clarity-auditing-yes':      { fws:['pemat','sam','cci'],                 stack:'stack-audit',   note:'The classic audit stack — all three produce scored outputs against published benchmarks.' },
+    'clarity-auditing-no':       { fws:['discern','eqip','plainlang'],        stack:null,            note:null },
+    'clarity-auditing-either':   { fws:['pemat','sam','discern'],             stack:'stack-audit',   note:null },
+    'clarity-measuring-yes':     { fws:['cci','pemat'],                       stack:null,            note:'Both produce % scores you can track over time or compare across versions.' },
+    'clarity-measuring-no':      { fws:['discern','plainlang'],               stack:null,            note:null },
+    'clarity-measuring-either':  { fws:['cci','pemat','discern'],             stack:null,            note:null },
+
+    'process-designing-yes':     { fws:['ottawa','ipdas','option'],           stack:'stack-decision', note:'Framework → standards check → scored interaction audit. Covers design through delivery.' },
+    'process-designing-no':      { fws:['ottawa','share','teachback'],        stack:'stack-decision', note:null },
+    'process-designing-either':  { fws:['ottawa','ipdas','share'],            stack:'stack-decision', note:null },
+    'process-auditing-yes':      { fws:['option','ipdas'],                    stack:'stack-decision', note:'OPTION scores the interaction numerically; IPDAS checks standards compliance.' },
+    'process-auditing-no':       { fws:['ahrq','teachback','share'],          stack:null,            note:null },
+    'process-auditing-either':   { fws:['option','ipdas','ahrq'],             stack:'stack-decision', note:null },
+    'process-measuring-yes':     { fws:['option'],                            stack:null,            note:'OPTION is your only scored measure here — consider pairing with PAM for a fuller picture.' },
+    'process-measuring-no':      { fws:['teachback','ahrq'],                  stack:null,            note:null },
+    'process-measuring-either':  { fws:['option','teachback'],                stack:null,            note:null },
+
+    'behavior-designing-yes':    { fws:['comb','ttm','hbm'],                  stack:'stack-behavior', note:'Diagnose with COM-B, segment by readiness with TTM, then frame message with HBM.' },
+    'behavior-designing-no':     { fws:['comb','hbm','eppm'],                 stack:'stack-behavior', note:null },
+    'behavior-designing-either': { fws:['comb','ttm','hbm'],                  stack:'stack-behavior', note:null },
+    'behavior-auditing-yes':     { fws:['comb','eppm'],                       stack:null,            note:null },
+    'behavior-auditing-no':      { fws:['comb','whorisks','eppm'],            stack:null,            note:null },
+    'behavior-auditing-either':  { fws:['comb','eppm','whorisks'],            stack:null,            note:null },
+    'behavior-measuring-yes':    { fws:['comb'],                              stack:null,            note:'COM-B companion tools give indirect measures via the Behaviour Change Wheel.' },
+    'behavior-measuring-no':     { fws:['whorisks','eppm'],                   stack:null,            note:null },
+    'behavior-measuring-either': { fws:['comb','whorisks'],                   stack:null,            note:null },
+
+    'outcomes-designing-yes':    { fws:['pam','cahps','nps'],                 stack:'stack-impact',  note:'Set your baselines before launch so you can measure the delta afterward.' },
+    'outcomes-designing-no':     { fws:['ebcd','picker','seips'],             stack:null,            note:null },
+    'outcomes-designing-either': { fws:['pam','ebcd','seips'],                stack:null,            note:null },
+    'outcomes-auditing-yes':     { fws:['cahps','pam','nps'],                 stack:'stack-impact',  note:null },
+    'outcomes-auditing-no':      { fws:['ebcd','planetree','picker'],         stack:null,            note:null },
+    'outcomes-auditing-either':  { fws:['cahps','ebcd','seips'],              stack:'stack-impact',  note:null },
+    'outcomes-measuring-yes':    { fws:['pam','cahps','nps'],                 stack:'stack-impact',  note:'Layer activation, experience, and satisfaction for a multi-dimensional outcome picture.' },
+    'outcomes-measuring-no':     { fws:['ebcd','seips','picker'],             stack:null,            note:null },
+    'outcomes-measuring-either': { fws:['pam','cahps','ebcd'],                stack:'stack-impact',  note:null }
+  }
+};
+
+function pickStep(btn, step, val) {
+  W.answers[step] = val;
+
+  // Mark selected, clear others in same step
+  document.querySelectorAll(`#wsb${step} .wopt`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+
+  // Mark this block as done, activate next
+  document.getElementById(`wsb${step}`).classList.add('done');
+  if (step < 3) {
+    document.getElementById(`wsb${step + 1}`).classList.add('active');
+  }
+
+  // Show results once all three answered
+  if (W.answers[1] && W.answers[2] && W.answers[3]) {
+    showResults();
+  }
+}
+
+function showResults() {
+  const key = `${W.answers[1]}-${W.answers[2]}-${W.answers[3]}`;
+  const r = W.results[key];
+  if (!r) return;
+
+  // Framework tags
+  document.getElementById('result-fws').innerHTML = r.fws.map(fw =>
+    `<a href="#${fw}" class="result-fw-tag ${W.fwZone[fw]}">${W.fwLabel[fw]}</a>`
+  ).join('');
+
+  // Stack link
+  document.getElementById('result-stack-wrap').innerHTML = r.stack
+    ? `<a href="#${r.stack}" class="result-stack-link">→ Recommended stack: ${W.stackNames[r.stack]}</a>`
+    : '';
+
+  // Note
+  const noteEl = document.getElementById('result-note');
+  if (r.note) { noteEl.textContent = r.note; noteEl.style.display = 'block'; }
+  else { noteEl.style.display = 'none'; }
+
+  // Show result panel
+  document.getElementById('wizard-result').classList.add('visible');
+
+  // Highlight / dim table rows
+  document.querySelectorAll('.fw-row').forEach(row => {
+    const hit = r.fws.includes(row.id);
+    row.classList.toggle('wz-highlight', hit);
+    row.classList.toggle('wz-dim', !hit);
+  });
+
+  // Scroll to results smoothly
+  document.getElementById('wizard-result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function skipWizard() {
+  document.getElementById('wizard').style.display = 'none';
+}
+
+function resetWizard() {
+  W.answers = {};
+  ['wsb1','wsb2','wsb3'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.classList.remove('done');
+    el.classList.toggle('active', i === 0);
+    el.querySelectorAll('.wopt').forEach(b => b.classList.remove('selected'));
+  });
+  document.getElementById('wizard-result').classList.remove('visible');
+  document.querySelectorAll('.fw-row').forEach(r => {
+    r.classList.remove('wz-highlight', 'wz-dim');
+  });
+}
+</script>
+</body>
+</html>
