@@ -53,19 +53,6 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 }
 .topbar-sub{font-size:16px;font-weight:500;color:rgba(30,20,10,0.72)}
 
-/* System toggle pill — lives where [Beta] was */
-.sys-toggle{
-  margin-left:auto;display:inline-flex;align-items:center;
-  background:rgba(30,20,10,0.06);border:1px solid rgba(30,20,10,0.12);
-  border-radius:20px;padding:2px;text-decoration:none;gap:2px;
-}
-.sys-opt{
-  font-size:12px;font-weight:600;letter-spacing:0.4px;
-  padding:3px 12px;border-radius:16px;color:rgba(30,20,10,0.45);
-  transition:background .14s,color .14s;
-}
-.sys-opt.active{background:var(--dark);color:#fff}
-.sys-toggle:hover .sys-opt:not(.active){color:rgba(30,20,10,0.75)}
 
 .topbar-hint{font-size:12px;color:rgba(30,20,10,0.40);margin-left:12px}
 
@@ -361,6 +348,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .mod.dragging{box-shadow:0 12px 32px rgba(0,0,0,0.18);opacity:.4}
 .mod.collapsed .mod-body{display:none}
 .mod.hidden{display:none}
+.mod.na-hidden{display:none}   /* auto-hidden: nothing to score yet */
 .mod-hdr{
   display:flex;align-items:center;gap:7px;padding:7px 10px;
   cursor:grab;user-select:none;background:var(--n50);
@@ -368,12 +356,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 }
 .mod.collapsed .mod-hdr{border-bottom:none}
 .mod-hdr:active{cursor:grabbing}
-.mod-chip{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.mod-name{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--n700);margin-right:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mod-val{
-  font-size:11px;font-weight:700;color:var(--n500);font-variant-numeric:tabular-nums;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52%;flex-shrink:1;
-}
+.mod-name{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n700);margin-right:auto;white-space:nowrap;flex-shrink:0}
 .mod-min{
   width:18px;height:18px;border:none;border-radius:4px;background:transparent;
   color:var(--n400);cursor:pointer;font-size:12px;line-height:1;display:flex;align-items:center;justify-content:center;
@@ -390,15 +373,6 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .mod-note{font-size:11px;color:var(--n400);font-style:italic;line-height:1.5}
 
 /* module accents */
-.mod-read  .mod-chip{background:var(--blue)}
-.mod-cci   .mod-chip{background:var(--teal)}
-.mod-pemat .mod-chip{background:var(--gold)}
-.mod-scan  .mod-chip{background:var(--red)}
-.mod-tune  .mod-chip{background:var(--orange)}
-.mod-goal  .mod-chip{background:var(--zone-process)}
-.mod-brief .mod-chip{background:var(--dark)}
-.mod-a11y  .mod-chip{background:var(--zone-clarity)}
-.mod-acc   .mod-chip{background:var(--zone-outcomes)}
 
 /* brief module */
 /* ── Nothing may spill past its container's padding ── */
@@ -499,22 +473,6 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .find-lbl{font-size:11px;font-weight:600;color:var(--n800,#2b2622)}
 .find-msg{font-size:10.5px;color:var(--n600);line-height:1.45}
 
-/* contrast checker */
-.cc-row{display:flex;align-items:center;gap:6px;margin-top:6px}
-.cc-row label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n500);flex:1}
-.cc-row input[type=color]{
-  width:30px;height:24px;padding:0;border:1px solid var(--n300);border-radius:5px;
-  background:#fff;cursor:pointer;
-}
-.cc-out{
-  display:flex;align-items:center;gap:8px;margin-top:8px;
-  padding:8px 10px;border-radius:7px;border:1px solid var(--n200);
-}
-.cc-ratio{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
-.cc-verdicts{display:flex;flex-direction:column;gap:2px;font-size:9.5px;font-weight:700;letter-spacing:.04em}
-.cc-v{padding:1px 6px;border-radius:4px}
-.cc-v.pass{background:#d4f5e2;color:#14713e}
-.cc-v.fail{background:#fde8e8;color:#b91c1c}
 
 /* meters */
 .meter-lbl{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:3px}
@@ -666,10 +624,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 
 <div class="topbar">
   <span class="topbar-sub">Patient Education Analyzer</span>
-  <span class="topbar-hint">start with the brief on the left — it sets the targets every other module scores against</span>
-  <a class="sys-toggle" href="classic.html" title="Switch system">
-    <span class="sys-opt">Classic</span><span class="sys-opt active">Studio</span>
-  </a>
 </div>
 
 <div class="stage" id="stage">
@@ -806,7 +760,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: BRIEF ── -->
     <div class="mod mod-brief" id="mod-brief">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="Answer these first. Your brief sets the targets every other module scores against — change the audience or format and the whole analysis re-tunes.">Project brief</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Answer these first. Your brief sets the targets every other module scores against — change the audience or format and the whole analysis re-tunes.">Brief</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-brief')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-brief')" title="Remove from this workspace">✕</button>
       </div>
@@ -854,8 +808,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: READABILITY ── -->
     <div class="mod mod-read" id="mod-read">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read — sentence length plus word complexity (Flesch-Kincaid). Targets follow the audience set in your brief.">Read·ability</span>
-        <span class="mod-val" id="read-hdr-val">—</span>
+        <span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read — sentence length plus word complexity (Flesch-Kincaid). Targets follow the audience set in your brief.">Readability</span>
+        
         
         <button class="mod-min" onclick="toggleCollapse('mod-read')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
       </div>
@@ -882,7 +836,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: CCI ── -->
     <div class="mod mod-cci" id="mod-cci">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index — 20 items covering message, language, numbers, visuals and calls to action. <b>18 of 20 (90%) passes.</b><br><br>Items tagged AUTO score themselves from your text as you write; tick the remaining ones yourself.">CCI · CDC</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index — 20 items covering message, language, numbers, visuals and calls to action. <b>18 of 20 (90%) passes.</b><br><br>Items tagged AUTO score themselves from your text as you write; tick the remaining ones yourself.">CCI</span>
         <span class="pill pill-empty" id="cci-pill">—/20</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-cci')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
@@ -897,8 +851,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: TUNE ── -->
     <div class="mod mod-tune" id="mod-tune">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="Knobs that shape the AI rewrite pass. Reading level follows your brief's audience automatically. Prototype controls — wired for demo.">Language tune</span>
-        <span class="mod-val" id="tune-hdr-val">lay · warm</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Knobs that shape the AI rewrite pass. Reading level follows your brief's audience automatically. Prototype controls — wired for demo.">Tune</span>
+        
         
         <button class="mod-min" onclick="toggleCollapse('mod-tune')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-tune')" title="Remove from this workspace">✕</button>
       </div>
@@ -934,7 +888,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: PEMAT ── -->
     <div class="mod mod-pemat" id="mod-pemat">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="Patient Education Materials Assessment Tool (AHRQ). Two separate scores: can a patient <b>understand</b> this (13 items) and can they <b>act</b> on it (7 items)?<br><br>Target is <b>above 70% on both</b> — a material can be perfectly clear and still fail actionability.">PEMAT</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Patient Education Materials Assessment Tool (AHRQ). Two separate scores: can a patient <b>understand</b> this (13 items) and can they <b>act</b> on it (7 items)?<br><br>Target is <b>above 70% on both</b> — a material can be perfectly clear and still fail actionability.">PEMAT</span>
         <span class="pill pill-empty" id="pemat-pill">U — · A —</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-pemat')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
@@ -954,8 +908,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: SCAN ── -->
     <div class="mod mod-scan" id="mod-scan">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="Sentence-level plain-language check: jargon, passive voice, vague words, bare percentages, unexplained acronyms and long sentences.<br><br>Click any issue to jump to it in the material.">Plain·lang scan</span>
-        <span class="mod-val" id="scan-hdr-val">0 issues</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Sentence-level plain-language check: jargon, passive voice, vague words, bare percentages, unexplained acronyms and long sentences.<br><br>Click any issue to jump to it in the material.">Plain language</span>
+        
         
         <button class="mod-min" onclick="toggleCollapse('mod-scan')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
       </div>
@@ -972,7 +926,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: ACCESSIBILITY ── -->
     <div class="mod mod-a11y" id="mod-a11y">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks you can run <b>before</b> the Adobe Reader accessibility test — alt text, heading order, link text, all-caps runs and colour-only instructions.<br><br>Catching these here means fewer errors to fix back in InDesign.">Accessibility</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks you can run <b>before</b> the Adobe Reader accessibility test — alt text, heading order, link text, all-caps runs and colour-only instructions.<br><br>Catching these here means fewer errors to fix back in InDesign.">Accessibility</span>
         <span class="pill pill-empty" id="a11y-pill">—</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-a11y')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
@@ -981,25 +935,13 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         <div class="score-why" id="a11y-why"></div>
         <div id="a11y-list"></div>
 
-        <div class="tune-lbl" style="margin-top:10px"><span class="lbl-info" role="button" tabindex="0" data-tip="Body text needs <b>4.5:1</b>. Large text (18pt+, or 14pt bold) needs <b>3:1</b>. AAA wants 7:1.<br><br>Run this on every colour pair in your design — text on tint blocks and text over images are the usual failures.">Colour contrast</span></div>
-        <div class="cc-row">
-          <label for="cc-fg">Text</label>
-          <input type="color" id="cc-fg" value="#3a3530" oninput="checkContrast()">
-          <label for="cc-bg" style="text-align:right">Background</label>
-          <input type="color" id="cc-bg" value="#ffffff" oninput="checkContrast()">
-        </div>
-        <div class="cc-out" id="cc-out">
-          <span class="cc-ratio" id="cc-ratio">—</span>
-          <div class="cc-verdicts" id="cc-verdicts"></div>
-          <span id="cc-sample" style="margin-left:auto;font-size:12px;font-weight:600;padding:3px 8px;border-radius:5px">Aa</span>
-        </div>
       </div>
     </div>
 
     <!-- ── MODULE: CONTENT ACCURACY ── -->
     <div class="mod mod-acc" id="mod-acc">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer trace every clinical claim back to a source? Flags unsourced statistics, ageing references, a missing review date, and overstated claims like &quot;always&quot; or &quot;100% safe&quot;.">Content accuracy</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer trace every clinical claim back to a source? Flags unsourced statistics, ageing references, a missing review date, and overstated claims like &quot;always&quot; or &quot;100% safe&quot;.">Accuracy</span>
         <span class="pill pill-empty" id="acc-pill">—</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-acc')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
@@ -1015,8 +957,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: GOAL / FRAMEWORK PICKER ── -->
     <div class="mod mod-goal" id="mod-goal">
       <div class="mod-hdr">
-        <span class="mod-chip"></span><span class="mod-name" role="button" tabindex="0" data-tip="Answer three questions and this recommends which of the 26 patient-experience frameworks fit your project. Hover any result tag for its full name.">Frameworks</span>
-        <span class="mod-val" id="goal-hdr-val">pick a goal</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Answer three questions and this recommends which of the 26 patient-experience frameworks fit your project. Hover any result tag for its full name.">Frameworks</span>
+        
         
         <button class="mod-min" onclick="toggleCollapse('mod-goal')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-goal')" title="Remove from this workspace">✕</button>
       </div>
@@ -1462,6 +1404,40 @@ function hasContent(){
 }
 
 // ════════════════════════════════════════
+// APPLICABILITY — a module only shows when it has something to say
+// ════════════════════════════════════════
+function hasArtwork(){
+  return visualOn || !!editor.querySelector('img');
+}
+
+// Each rule answers: can this module say anything useful right now?
+const APPLIES = {
+  'mod-brief': () => true,                       // always — it sets everyone else's targets
+  'mod-goal':  () => true,                       // choosing a framework needs no content
+  'mod-a11y':  () => true,                       // guidance is useful before you write
+  'mod-read':  () => hasContent(),
+  'mod-cci':   () => hasContent(),
+  'mod-pemat': () => hasContent(),
+  'mod-scan':  () => hasContent(),
+  'mod-acc':   () => hasContent(),
+  'mod-tune':  () => !visualOn,                  // shapes text rewrites, not artwork
+};
+const NA_REASON = {
+  'mod-read':'needs text', 'mod-cci':'needs text', 'mod-pemat':'needs text',
+  'mod-scan':'needs text', 'mod-acc':'needs text', 'mod-tune':'text only',
+};
+
+function updateApplicability(){
+  MODS.forEach(id => {
+    const m = $(id);
+    if(!m) return;
+    const ok = (APPLIES[id] || (() => true))();
+    m.classList.toggle('na-hidden', !ok);
+  });
+  syncDockKeys();
+}
+
+// ════════════════════════════════════════
 // WHAT THE SCORES MEAN — plain reading of every number
 // ════════════════════════════════════════
 function why(id, tone, text, action){
@@ -1612,12 +1588,10 @@ function analyze(){
     $('s-avglen').textContent = stats.avgSentLen;
     $('s-syll').textContent = stats.avgSyll;
     $('s-passive').textContent = Math.round(struct.passiveRate*100)+'%';
-    $('read-hdr-val').textContent = 'ease '+stats.ease+' · gr '+stats.grade;
   } else {
     $('ease-num').textContent = '—'; $('grade-num').textContent = '—';
     $('ease-fill').style.width = '0%'; $('grade-fill').style.width = '0%';
     $('s-avglen').textContent = '—'; $('s-syll').textContent = '—'; $('s-passive').textContent = '—';
-    $('read-hdr-val').textContent = '—';
   }
 
   // Word budget for the chosen format
@@ -1645,7 +1619,6 @@ function analyze(){
   $('scan-err').innerHTML = errs+'<small>fix</small>';
   $('scan-warn').innerHTML = warns+'<small>review</small>';
   $('scan-ok').innerHTML = cleanSents+'<small>clean</small>';
-  $('scan-hdr-val').textContent = issues.length+' issue'+(issues.length===1?'':'s');
   const list = $('scan-list');
   if(!issues.length){
     list.innerHTML = '<div class="mod-note">'+(empty
@@ -1671,6 +1644,7 @@ function analyze(){
   // checklists re-render (preserve manual state)
   renderCci(); renderPemat(); refreshScores();
   explainScores(stats, empty);
+  updateApplicability();
   $('led').classList.remove('live');
 }
 
@@ -1781,8 +1755,8 @@ function runA11y(empty){
     ? { sev:'warn', lbl:'Sensory instructions', msg:'Instructions rely on colour or position alone. Add a label or heading name so they work without sight of the layout (WCAG 1.3.3).' }
     : { sev:'pass', lbl:'Sensory instructions', msg:'No colour- or position-only instructions.' });
 
-  // 6. Contrast — always manual, prompted by the checker below
-  findings.push({ sev:'warn', lbl:'Colour contrast', msg:'Not detectable from text. Use the checker below on every colour pair, then confirm in your design file.' });
+  // 6. Contrast — can't be read from text; the artwork panel handles it when there's a design to sample
+  findings.push({ sev:'warn', lbl:'Colour contrast', msg:'Not detectable from text. Upload the artwork to sample its palette, or check pairs in your design file — body text needs 4.5:1.' });
 
   // 7. Read-aloud clarity
   if(text.trim()) readAloudFindings(text).forEach(f => findings.push(f));
@@ -1811,19 +1785,6 @@ function lum(hex){
   const c = [1,3,5].map(i => parseInt(hex.substr(i,2),16)/255)
     .map(v => v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4));
   return 0.2126*c[0] + 0.7152*c[1] + 0.0722*c[2];
-}
-function checkContrast(){
-  const fg = $('cc-fg').value, bg = $('cc-bg').value;
-  const l1 = lum(fg), l2 = lum(bg);
-  const ratio = (Math.max(l1,l2) + 0.05) / (Math.min(l1,l2) + 0.05);
-  const r = Math.round(ratio*100)/100;
-  $('cc-ratio').textContent = r + ':1';
-  $('cc-ratio').style.color = r >= 4.5 ? '#14713e' : r >= 3 ? '#7a5a00' : '#b91c1c';
-  const v = (ok, lbl) => '<span class="cc-v '+(ok?'pass':'fail')+'">'+lbl+' '+(ok?'PASS':'FAIL')+'</span>';
-  $('cc-verdicts').innerHTML = v(r >= 4.5, 'AA body') + v(r >= 3, 'AA large') + v(r >= 7, 'AAA');
-  const sample = $('cc-sample');
-  sample.style.color = fg; sample.style.background = bg;
-  sample.style.border = '1px solid var(--n200)';
 }
 
 // ════════════════════════════════════════
@@ -2033,10 +1994,6 @@ function pickSwatch(hex){
   else { vmPicked.push(hex); if(vmPicked.length > 2) vmPicked.shift(); }
   renderPalette();
   renderContrastCard();
-  if(vmPicked.length === 2){
-    // mirror into the A11Y module's checker
-    $('cc-fg').value = vmPicked[0]; $('cc-bg').value = vmPicked[1]; checkContrast();
-  }
 }
 
 function renderContrastCard(){
@@ -2725,7 +2682,6 @@ function setTune(key, val, btn){
   }
   const toneLbl = {clinical:'clinical',conversational:'plain',empathetic:'warm'}[tune.tone];
   const lvlLbl = {expert:'expert',general:'general',lay:'lay'}[tune.level];
-  $('tune-hdr-val').textContent = lvlLbl+' · '+toneLbl;
 }
 
 // ── GOAL / framework recommender (same result map as Classic) ──
@@ -2815,15 +2771,12 @@ function setGoal(step, val, btn){
   btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
   const key = [goalState[1],goalState[2],goalState[3]].filter(Boolean).join('-');
   const res = GOAL_RESULTS[key];
-  const tags = $('fw-tags'), note = $('goal-note'), hdr = $('goal-hdr-val');
+  const tags = $('fw-tags'), note = $('goal-note');
   if(res){
     tags.innerHTML = res.fws.map(f => '<span class="fw-tag '+FW_ZONE[f]+'" title="'+(FW_FULL[f]||FW_LABEL[f])+'">'+FW_LABEL[f]+'</span>').join('');
     note.textContent = res.note || '';
-    hdr.textContent = res.fws.map(f => FW_LABEL[f]).join(' · ');
   } else {
-    const remaining = 3 - [goalState[1],goalState[2],goalState[3]].filter(Boolean).length;
     tags.innerHTML = ''; note.textContent = '';
-    hdr.textContent = remaining ? remaining+' more pick'+(remaining===1?'':'s') : 'pick a goal';
   }
 }
 
@@ -2911,7 +2864,7 @@ function applyLayout(key, silent){
       rail.appendChild(m);
     });
   });
-  syncDockKeys();
+  updateApplicability();
   $('layout-sel').value = key;
   lsSet(LS_LAST, key);
   if(!silent && L.note) flashHint(L.note);
@@ -2919,18 +2872,22 @@ function applyLayout(key, silent){
 }
 
 const MOD_NAMES = {
-  'mod-brief':'Project brief', 'mod-read':'Read·ability', 'mod-cci':'CCI · CDC',
-  'mod-pemat':'PEMAT', 'mod-scan':'Plain·lang scan', 'mod-a11y':'Accessibility',
-  'mod-acc':'Content accuracy', 'mod-tune':'Language tune', 'mod-goal':'Frameworks',
+  'mod-brief':'Brief', 'mod-read':'Readability', 'mod-cci':'CCI',
+  'mod-pemat':'PEMAT', 'mod-scan':'Plain language', 'mod-a11y':'Accessibility',
+  'mod-acc':'Accuracy', 'mod-tune':'Tune', 'mod-goal':'Frameworks',
 };
 
 // The "add module" menu only lists what isn't already on screen
 function syncDockKeys(){
   const sel = $('add-mod-sel');
   if(!sel) return;
+  // only offer what you removed yourself — auto-hidden ones would stay invisible anyway
   const hidden = MODS.filter(id => $(id) && $(id).classList.contains('hidden'));
   sel.innerHTML = '<option value="">＋ Add module</option>' +
-    hidden.map(id => '<option value="'+id+'">'+MOD_NAMES[id]+'</option>').join('');
+    hidden.map(id => {
+      const na = $(id).classList.contains('na-hidden') ? ' — ' + (NA_REASON[id] || 'not applicable') : '';
+      return '<option value="'+id+'">'+MOD_NAMES[id]+na+'</option>';
+    }).join('');
   sel.disabled = !hidden.length;
   sel.style.opacity = hidden.length ? '1' : '.45';
   sel.title = hidden.length ? 'Add a module to this workspace' : 'Every module is already showing';
@@ -2941,9 +2898,10 @@ function addModule(id){
   const m = $(id);
   if(!m) return;
   m.classList.remove('hidden','collapsed');
+  updateApplicability();
   // put it at the bottom of the shorter rail so the two stay balanced
-  const l = $('rail-left').querySelectorAll('.mod:not(.hidden)').length;
-  const r = $('rail-right').querySelectorAll('.mod:not(.hidden)').length;
+  const l = $('rail-left').querySelectorAll('.mod:not(.hidden):not(.na-hidden)').length;
+  const r = $('rail-right').querySelectorAll('.mod:not(.hidden):not(.na-hidden)').length;
   $(l <= r ? 'rail-left' : 'rail-right').appendChild(m);
   if(m.scrollIntoView) m.scrollIntoView({ behavior:'smooth', block:'nearest' });
   syncDockKeys();
@@ -3007,7 +2965,7 @@ let dragEl = null;
 const rails = Array.from(document.querySelectorAll('.mod-rail'));
 
 function getDragAfterElement(rail, y){
-  const els = [...rail.querySelectorAll('.mod:not(.dragging):not(.hidden)')];
+  const els = [...rail.querySelectorAll('.mod:not(.dragging):not(.hidden):not(.na-hidden)')];
   return els.reduce((closest, child) => {
     const box = child.getBoundingClientRect();
     const offset = y - box.top - box.height/2;
@@ -3185,7 +3143,6 @@ window.addEventListener('resize', hideTip);
 setTune('tone','conversational', document.querySelector('#seg-tone button.on'));
 renderReqs();
 renderBriefHeader();
-checkContrast();
 renderFileHistory();
 renderVersions();
 renderPalette();
