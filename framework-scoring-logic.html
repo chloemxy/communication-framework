@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework Scoring Logic · Detailed Rules & Rubrics</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f0ece7;
+    --surface: #edeae4;
+    --surface2: #e6e2dc;
+    --border: #d4d0cc;
+    --text: #1a1614;
+    --muted: #6b6560;
+    --teal: #0d7a6d;
+    --teal-dim: rgba(13,122,109,0.10);
+    --clarity: #1d6fa8;
+    --clarity-bg: rgba(56,189,248,0.10);
+    --process: #6d3fc8;
+    --process-bg: rgba(167,139,250,0.12);
+    --behavior: #c05506;
+    --behavior-bg: rgba(251,146,60,0.10);
+    --outcomes: #16a34a;
+    --outcomes-bg: rgba(74,222,128,0.10);
+    --scored: #16a34a;
+    --partial: #b45309;
+    --noscore: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header { padding: 40px 40px 32px; border-bottom: 1px solid var(--border); }
+  .eyebrow {
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .eyebrow::before {
+    content: ''; display: inline-block; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--teal);
+  }
+  h1 { font-size: 32px; font-weight: 300; letter-spacing: -.5px; line-height: 1.2; }
+  h1 span { color: var(--teal); }
+  .subtitle { margin-top: 8px; color: var(--muted); max-width: 580px; font-size: 13.5px; }
+
+  /* NAV */
+  .nav-bar {
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 40px; position: sticky; top: 0; z-index: 100;
+  }
+  .nav-inner { display: flex; gap: 4px; padding: 8px 0; flex-wrap: wrap; }
+  .nav-chip {
+    padding: 4px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 600;
+    cursor: pointer; border: none; font-family: inherit; text-decoration: none;
+    display: inline-block; transition: opacity .15s;
+  }
+  .nav-chip:hover { opacity: .75; }
+  .nav-chip.clarity  { background: var(--clarity-bg);  color: var(--clarity); }
+  .nav-chip.process  { background: var(--process-bg);  color: var(--process); }
+  .nav-chip.behavior { background: var(--behavior-bg); color: var(--behavior); }
+  .nav-chip.outcomes { background: var(--outcomes-bg); color: var(--outcomes); }
+
+  /* MAIN */
+  main { padding: 0 40px 80px; max-width: 960px; }
+
+  /* ZONE SECTION */
+  .zone { margin-top: 48px; }
+  .zone-header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 12px; border-bottom: 2px solid; margin-bottom: 32px;
+  }
+  .zone.clarity .zone-header  { border-color: var(--clarity); }
+  .zone.process .zone-header  { border-color: var(--process); }
+  .zone.behavior .zone-header { border-color: var(--behavior); }
+  .zone.outcomes .zone-header { border-color: var(--outcomes); }
+  .zone-num { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+  .zone-title { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+  .zone.clarity .zone-num, .zone.clarity .zone-title  { color: var(--clarity); }
+  .zone.process .zone-num, .zone.process .zone-title  { color: var(--process); }
+  .zone.behavior .zone-num, .zone.behavior .zone-title { color: var(--behavior); }
+  .zone.outcomes .zone-num, .zone.outcomes .zone-title { color: var(--outcomes); }
+
+  /* FRAMEWORK CARD */
+  .fw-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .fw-card-head {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .fw-card-title { }
+  .fw-abbr { font-size: 18px; font-weight: 700; color: var(--text); }
+  .fw-long  { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+  .fw-pills { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+  .pill {
+    display: inline-block; padding: 2px 9px; border-radius: 4px;
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+  }
+  .pill.clarity  { background: var(--clarity-bg);  color: var(--clarity); }
+  .pill.process  { background: var(--process-bg);  color: var(--process); }
+  .pill.behavior { background: var(--behavior-bg); color: var(--behavior); }
+  .pill.outcomes { background: var(--outcomes-bg); color: var(--outcomes); }
+  .pill.scored   { background: rgba(22,163,74,0.10); color: var(--scored); }
+  .pill.partial  { background: rgba(180,83,9,0.10);  color: var(--partial); }
+  .pill.noscore  { background: rgba(220,38,38,0.08); color: var(--noscore); }
+
+  .fw-card-body { padding: 18px 22px; }
+
+  /* Blocks inside card */
+  .block { margin-bottom: 20px; }
+  .block:last-child { margin-bottom: 0; }
+  .block-label {
+    font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700; margin-bottom: 7px;
+  }
+  .block-content { font-size: 13px; line-height: 1.65; }
+
+  /* Score box */
+  .score-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+    font-size: 13px;
+  }
+  .score-formula {
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 12.5px;
+    color: var(--teal);
+    background: rgba(13,122,109,0.07);
+    border-radius: 4px;
+    padding: 2px 7px;
+    display: inline-block;
+    margin: 3px 0;
+  }
+
+  /* Items table */
+  .items-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .items-table th {
+    text-align: left; padding: 5px 10px;
+    font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+    border-bottom: 1px solid var(--border);
+  }
+  .items-table td { padding: 6px 10px; border-bottom: 1px solid rgba(0,0,0,.04); vertical-align: top; }
+  .items-table tr:last-child td { border-bottom: none; }
+  .items-table tr:hover td { background: rgba(0,0,0,.025); }
+
+  .threshold-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+  .threshold {
+    display: inline-flex; flex-direction: column;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 13px; min-width: 100px;
+  }
+  .threshold-val { font-size: 15px; font-weight: 700; color: var(--text); }
+  .threshold-label { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
+  .threshold.green .threshold-val { color: var(--scored); }
+  .threshold.amber .threshold-val { color: var(--partial); }
+  .threshold.red   .threshold-val { color: var(--noscore); }
+
+  ul.item-list { padding-left: 18px; }
+  ul.item-list li { margin-bottom: 4px; font-size: 13px; }
+
+  /* Scroll offset */
+  .anchor { scroll-margin-top: 80px; }
+
+  hr.divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  .note-box {
+    background: var(--teal-dim);
+    border: 1px solid rgba(13,122,109,.2);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 12.5px;
+    color: var(--text);
+    margin-top: 10px;
+  }
+  .citation-block { border-top: 1px solid var(--border); margin-top: 18px; padding-top: 14px; }
+  .citation-block .block-label { color: var(--teal); }
+  .cite {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 5px;
+    padding-left: 14px;
+    position: relative;
+  }
+  .cite::before { content: '›'; position: absolute; left: 0; color: var(--teal); }
+  .cite a { color: var(--teal); text-decoration: none; }
+  .cite a:hover { text-decoration: underline; }
+  .cite em { font-style: italic; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="eyebrow">Companion to the Framework Compass</div>
+  <h1>Framework Scoring Logic<br><span>&amp; Rubric Details</span></h1>
+  <p class="subtitle">Full scoring rules, item breakdowns, formulas, and thresholds for all 26 frameworks — organized by zone.</p>
+</header>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a href="#clarity"  class="nav-chip clarity">① Clarity &amp; Content</a>
+    <a href="#process"  class="nav-chip process">② Process &amp; Interaction</a>
+    <a href="#behavior" class="nav-chip behavior">③ Behavior &amp; Psychology</a>
+    <a href="#outcomes" class="nav-chip outcomes">④ Outcomes &amp; Experience</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ZONE 1: CLARITY -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="clarity" class="zone clarity anchor">
+  <div class="zone-header">
+    <span class="zone-num">①</span>
+    <span class="zone-title">Clarity &amp; Content Quality</span>
+  </div>
+
+  <!-- CCI -->
+  <div class="fw-card anchor" id="cci">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">CCI</div>
+        <div class="fw-long">CDC Clear Communication Index</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">20 binary (Yes/No) items across 5 domains. Each "Yes" = 1 point. Final score is a percentage of Yes answers. A score ≥90% (18+ items passing) is required to pass.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring formula</div>
+        <div class="score-box">
+          <div class="score-formula">Score = (# of Yes items / 20) × 100</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">≥90%</span><span class="threshold-label">Pass (18–20 items)</span></div>
+            <div class="threshold red"><span class="threshold-val">&lt;90%</span><span class="threshold-label">Fail — revise</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 5 domains &amp; items</div>
+        <table class="items-table">
+          <thead><tr><th>Domain</th><th># Items</th><th>What it checks</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Main Message</strong></td><td>7</td><td>Is the main message stated, actionable, specific, and at the front? Is a call to action present?</td></tr>
+            <tr><td><strong>Language</strong></td><td>4</td><td>Active voice, everyday words, personal pronouns (you/your), short sentences (≤20 words avg)</td></tr>
+            <tr><td><strong>Information</strong></td><td>3</td><td>Behavioral recommendations have a reason; numbers presented in context; only essential info included</td></tr>
+            <tr><td><strong>Numbers</strong></td><td>3</td><td>Numbers meaningful to audience; fractions/percentages explained; numbers not overused</td></tr>
+            <tr><td><strong>Risk</strong></td><td>3</td><td>Both sides of risk shown; absolute vs. relative risk explained; baseline risk provided</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">Items 1–7 (main message) carry the most weight in practice — if those fail, the piece rarely passes. CCI does not distinguish severity of failure; every item counts equally.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Centers for Disease Control and Prevention. (2019). <em>CDC Clear Communication Index: A Tool for Developing and Assessing CDC Public Communication Products</em>. U.S. Department of Health and Human Services. <a href="https://www.cdc.gov/ccindex/" target="_blank">cdc.gov/ccindex</a></p>
+        <p class="cite">Baur C, Prue C. (2014). The CDC Clear Communication Index is a new evidence-based tool to prepare and review health information. <em>Health Promotion Practice</em>, 15(5), 629–637. <a href="https://doi.org/10.1177/1524839914538969" target="_blank">doi:10.1177/1524839914538969</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEMAT -->
+  <div class="fw-card anchor" id="pemat">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">PEMAT</div>
+        <div class="fw-long">Patient Education Materials Assessment Tool (AHRQ)</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">PEMAT produces <strong>two separate scores</strong> — Understandability and Actionability — never combined. Two versions exist: PEMAT-P (print) and PEMAT-A/V (audiovisual). Items rated Agree (1), Disagree (0), or N/A (excluded from denominator).</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring formula</div>
+        <div class="score-box">
+          <div class="score-formula">Understandability % = (Σ agrees on U items / # applicable U items) × 100</div>
+          <div class="score-formula">Actionability % = (Σ agrees on A items / # applicable A items) × 100</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">&gt;70%</span><span class="threshold-label">Both scores must exceed this</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">Understandability items (PEMAT-P — 17 items)</div>
+        <table class="items-table">
+          <thead><tr><th>Category</th><th># Items</th><th>Checks</th></tr></thead>
+          <tbody>
+            <tr><td>Content</td><td>4</td><td>Main message clear; not overloaded; accurate; required reading level (≤8th grade)</td></tr>
+            <tr><td>Word Choice &amp; Language</td><td>2</td><td>Common everyday words; acronyms defined</td></tr>
+            <tr><td>Use of Numbers</td><td>4</td><td>Numbers communicated clearly; fractions/percentages explained; visual representations used</td></tr>
+            <tr><td>Organization</td><td>2</td><td>Logical flow; summary or conclusion present</td></tr>
+            <tr><td>Layout &amp; Design</td><td>3</td><td>Visual supports comprehension; tables clear; no distracting clutter</td></tr>
+            <tr><td>Use of Visuals</td><td>2</td><td>Images/charts reinforce rather than conflict with text</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">Actionability items (PEMAT-P — 7 items)</div>
+        <ul class="item-list">
+          <li>Explicit statement of what the reader should do</li>
+          <li>Action steps are doable (not vague)</li>
+          <li>Tools or aids provided to help take action (e.g., tracking sheet, checklist)</li>
+          <li>Patient can identify next step from the material</li>
+          <li>Contact information or referral path provided</li>
+          <li>Visual representation of steps (where applicable)</li>
+          <li>Timing for action specified</li>
+        </ul>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. <em>Patient Education and Counseling</em>, 96(3), 395–403. <a href="https://doi.org/10.1016/j.pec.2014.05.027" target="_blank">doi:10.1016/j.pec.2014.05.027</a></p>
+        <p class="cite">Agency for Healthcare Research and Quality. <em>PEMAT and User's Guide</em>. <a href="https://www.ahrq.gov/health-literacy/patient-education/pemat.html" target="_blank">ahrq.gov/health-literacy/patient-education/pemat</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAM -->
+  <div class="fw-card anchor" id="sam">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">SAM</div>
+        <div class="fw-long">Suitability Assessment of Materials</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">22 factors across 6 categories. Each factor rated on a 3-point scale: 2 (Superior), 1 (Adequate), 0 (Not Suitable). Total points divided by maximum possible, expressed as a percentage. N/A items are excluded from the denominator.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring formula</div>
+        <div class="score-box">
+          <div class="score-formula">Score % = (Σ points scored / Σ max possible points) × 100</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">70–100%</span><span class="threshold-label">Superior</span></div>
+            <div class="threshold amber"><span class="threshold-val">40–69%</span><span class="threshold-label">Adequate</span></div>
+            <div class="threshold red"><span class="threshold-val">&lt;40%</span><span class="threshold-label">Not Suitable</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 6 categories &amp; 22 factors</div>
+        <table class="items-table">
+          <thead><tr><th>Category</th><th># Factors</th><th>What it evaluates</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Content</strong></td><td>6</td><td>Purpose stated; content matches literacy level; scope limited; summary included; reading level (Fry); common-use vocabulary</td></tr>
+            <tr><td><strong>Literacy Demand</strong></td><td>7</td><td>Reading grade level (≤5th preferred); writing style (active/conversational); vocabulary (common words); context established; learning aids; sentence length</td></tr>
+            <tr><td><strong>Graphics</strong></td><td>4</td><td>Cover graphic draws interest; type of visuals appropriate; captions used; visuals are culturally relevant and unambiguous</td></tr>
+            <tr><td><strong>Layout &amp; Typography</strong></td><td>3</td><td>Layout factors (columns, white space); typography (font size ≥12pt); subheadings break up text</td></tr>
+            <tr><td><strong>Learning Stimulation &amp; Motivation</strong></td><td>2</td><td>Interaction (questions/problems); behavior modeling (positive)</td></tr>
+            <tr><td><strong>Cultural Appropriateness</strong></td><td>2</td><td>Images/examples match target culture; cultural logic respected</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">SAM is the most granular of the content auditing tools. A "0" on any Content factor should be treated as a blocker regardless of total score.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Doak CC, Doak LG, Root JH. (1996). <em>Teaching Patients with Low Literacy Skills</em> (2nd ed.). J.B. Lippincott. (SAM instrument: pp. 41–59)</p>
+        <p class="cite">Winslow EH. (2001). Patient education materials: Can patients read them, or are they ending up in the trash? <em>American Journal of Nursing</em>, 101(10), 33–38. <a href="https://doi.org/10.1097/00000446-200110000-00020" target="_blank">doi:10.1097/00000446-200110000-00020</a> (validation reference)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCERN -->
+  <div class="fw-card anchor" id="discern">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">DISCERN</div>
+        <div class="fw-long">DISCERN Quality Instrument for Consumer Health Information</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">16 questions across 3 sections. Questions 1–15 rated 1–5 (1 = No/Poor, 5 = Yes/Excellent). Question 16 is an overall quality rating (1–5), kept separate. No universal pass/fail — scores are relative and comparative.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring</div>
+        <div class="score-box">
+          <div class="score-formula">Part 1 score: sum of Q1–8 (range 8–40)</div>
+          <div class="score-formula">Part 2 score: sum of Q9–15 (range 7–35)</div>
+          <div class="score-formula">Q16: standalone overall rating (1–5)</div>
+          <div style="margin-top:8px;font-size:12.5px;color:var(--muted)">No absolute threshold — use comparatively. Published benchmarks: peer-reviewed health leaflets average ~3.5–4/5 per question.</div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">Part 1: Reliability (Q1–8)</div>
+        <ul class="item-list">
+          <li>Q1: Clear aims stated at the beginning?</li>
+          <li>Q2: Does it achieve its aims?</li>
+          <li>Q3: Relevant to patients?</li>
+          <li>Q4: Explicit sources of information?</li>
+          <li>Q5: Date of information stated?</li>
+          <li>Q6: Balanced and unbiased?</li>
+          <li>Q7: Provides details of additional sources?</li>
+          <li>Q8: Refers to areas of uncertainty?</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label">Part 2: Treatment Choices (Q9–15)</div>
+        <ul class="item-list">
+          <li>Q9: Describes how the treatment works?</li>
+          <li>Q10: Describes benefits of each treatment?</li>
+          <li>Q11: Describes risks of each treatment?</li>
+          <li>Q12: Describes what would happen without treatment?</li>
+          <li>Q13: Describes how choices may affect quality of life?</li>
+          <li>Q14: Is it clear there may be more than one treatment?</li>
+          <li>Q15: Provides support for shared decision-making?</li>
+        </ul>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Charnock D, Shepperd S, Needham G, Gann R. (1999). DISCERN: An instrument for judging the quality of written consumer health information on treatment choices. <em>Journal of Epidemiology and Community Health</em>, 53(2), 105–111. <a href="https://doi.org/10.1136/jech.53.2.105" target="_blank">doi:10.1136/jech.53.2.105</a></p>
+        <p class="cite">DISCERN Online. University of Oxford &amp; British Library. <a href="http://www.discern.org.uk" target="_blank">discern.org.uk</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EQIP -->
+  <div class="fw-card anchor" id="eqip">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">EQIP</div>
+        <div class="fw-long">Ensuring Quality Information for Patients</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">36 items across 8 sections. Each item rated Yes (1), No (0), or N/A (excluded). Final score = percentage of applicable items rated Yes. No universal pass threshold; the tool is normative/comparative across document versions.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring formula</div>
+        <div class="score-box">
+          <div class="score-formula">Score % = (# Yes items / # applicable items) × 100</div>
+          <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">Separate scores can be computed per section for diagnostic use.</div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 8 sections</div>
+        <table class="items-table">
+          <thead><tr><th>Section</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. Identity</strong></td><td>Authorship, source organization, date, version clearly stated</td></tr>
+            <tr><td><strong>2. Purpose</strong></td><td>Document purpose and target audience explicitly stated</td></tr>
+            <tr><td><strong>3. Content</strong></td><td>Accurate, relevant, complete information on condition and treatment options</td></tr>
+            <tr><td><strong>4. Recommendations</strong></td><td>Specific, actionable recommendations provided; basis for recommendations explained</td></tr>
+            <tr><td><strong>5. Comprehensibility</strong></td><td>Language appropriate; jargon avoided; short sentences; active voice</td></tr>
+            <tr><td><strong>6. Layout &amp; Design</strong></td><td>Logical structure; headings used; white space; font size adequate</td></tr>
+            <tr><td><strong>7. Illustrations</strong></td><td>Visuals present, appropriate, and labeled</td></tr>
+            <tr><td><strong>8. References / Sources</strong></td><td>Evidence cited; references listed; evidence base dated</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Moult B, Franck LS, Brady H. (2004). Ensuring quality information for patients: Development and preliminary validation of a new instrument to improve the quality of written health care information. <em>Health Expectations</em>, 7(2), 165–175. <a href="https://doi.org/10.1111/j.1369-7625.2004.00273.x" target="_blank">doi:10.1111/j.1369-7625.2004.00273.x</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- READABILITY -->
+  <div class="fw-card anchor" id="readability">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">Readability</div>
+        <div class="fw-long">Flesch-Kincaid / SMOG / Flesch Reading Ease</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">Flesch Reading Ease</div>
+        <div class="score-box">
+          <div class="score-formula">FRE = 206.835 − (1.015 × ASL) − (84.6 × ASW)</div>
+          <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">ASL = Average Sentence Length (words/sentence) · ASW = Average Syllables per Word</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">60–70</span><span class="threshold-label">Standard / Plain</span></div>
+            <div class="threshold amber"><span class="threshold-val">50–59</span><span class="threshold-label">Fairly Difficult</span></div>
+            <div class="threshold red"><span class="threshold-val">&lt;50</span><span class="threshold-label">Difficult</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">Flesch-Kincaid Grade Level</div>
+        <div class="score-box">
+          <div class="score-formula">FKGL = (0.39 × ASL) + (11.8 × ASW) − 15.59</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">6–8</span><span class="threshold-label">Target for health materials</span></div>
+            <div class="threshold amber"><span class="threshold-val">9–10</span><span class="threshold-label">Borderline</span></div>
+            <div class="threshold red"><span class="threshold-val">&gt;10</span><span class="threshold-label">Too complex</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">SMOG (Simple Measure of Gobbledygook)</div>
+        <div class="score-box">
+          <div class="score-formula">SMOG Grade = √(Polysyllabic word count × [30 / # sentences]) + 3</div>
+          <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">Count polysyllabic words (3+ syllables) in 30 sentences (10 from start, 10 from middle, 10 from end). Most accurate when ≥30 sentences available.</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">≤8</span><span class="threshold-label">Suitable (6th–8th grade)</span></div>
+            <div class="threshold amber"><span class="threshold-val">9–10</span><span class="threshold-label">Review</span></div>
+            <div class="threshold red"><span class="threshold-val">&gt;10</span><span class="threshold-label">Simplify</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="note-box">SMOG is considered the most accurate for health materials because it accounts for the density of medical polysyllabic terms. Use it as your primary readability tool; FRE and FKGL as secondary checks.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Flesch R. (1948). A new readability yardstick. <em>Journal of Applied Psychology</em>, 32(3), 221–233. <a href="https://doi.org/10.1037/h0057532" target="_blank">doi:10.1037/h0057532</a></p>
+        <p class="cite">Kincaid JP, Fishburne RP Jr, Rogers RL, Chissom BS. (1975). <em>Derivation of New Readability Formulas (Automated Readability Index, Fog Count and Flesch Reading Ease Formula) for Navy Enlisted Personnel</em>. Research Branch Report 8-75. Naval Technical Training Command. <a href="https://apps.dtic.mil/sti/pdfs/ADA006655.pdf" target="_blank">DTIC ADA006655</a></p>
+        <p class="cite">McLaughlin GH. (1969). SMOG grading: A new readability formula. <em>Journal of Reading</em>, 12(8), 639–646. (International Reading Association)</p>
+        <p class="cite">Paasche-Orlow MK, Taylor HA, Brancati FL. (2003). Readability standards for informed-consent forms as compared with actual readability. <em>New England Journal of Medicine</em>, 348(8), 721–726. <a href="https://doi.org/10.1056/NEJMsa021212" target="_blank">doi:10.1056/NEJMsa021212</a> (validates Grade 6–8 target)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAIN LANGUAGE -->
+  <div class="fw-card anchor" id="plainlang">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">Plain Language</div>
+        <div class="fw-long">U.S. Federal Plain Language Guidelines (PlainLanguage.gov)</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A prescriptive editing checklist, not a scoring rubric. Organized into 5 principles — applied during drafting and revision, not post-hoc auditing.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 5 principles &amp; key rules</div>
+        <table class="items-table">
+          <thead><tr><th>Principle</th><th>Key rules</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. Write for your audience</strong></td><td>Identify who will read it; use "you" and "we"; address their questions, not your org's</td></tr>
+            <tr><td><strong>2. Organize for the reader</strong></td><td>Put most important info first; use headers; use Q&amp;A format where possible</td></tr>
+            <tr><td><strong>3. Choose words carefully</strong></td><td>Common, everyday words; define jargon if unavoidable; avoid legalese/bureaucratese; no nominalizations (use "apply" not "make an application")</td></tr>
+            <tr><td><strong>4. Use short sentences &amp; paragraphs</strong></td><td>≤20 words per sentence (target); one idea per paragraph; use active voice; positive framing</td></tr>
+            <tr><td><strong>5. Use design to aid comprehension</strong></td><td>Bullet lists for series of 3+; tables for complex data; white space; headings parallel in structure</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Plain Language Action and Information Network (PLAIN). (2011). <em>Federal Plain Language Guidelines</em>. PlainLanguage.gov. <a href="https://www.plainlanguage.gov/guidelines/" target="_blank">plainlanguage.gov/guidelines</a></p>
+        <p class="cite">Plain Writing Act of 2010, Pub. L. 111-274, 124 Stat. 2861 (2010). <a href="https://www.govinfo.gov/content/pkg/PLAW-111publ274/pdf/PLAW-111publ274.pdf" target="_blank">govinfo.gov</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NCI PINK BOOK -->
+  <div class="fw-card anchor" id="pinkbook">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">NCI Pink Book</div>
+        <div class="fw-long">National Cancer Institute — Making Health Communication Programs Work</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill clarity">Clarity</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A planning and process guide for health communication campaigns. Not a rubric — it structures the <em>process</em> of creating and testing materials. Success is demonstrated through pre/post audience testing, not by a checklist score.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 6-phase planning process</div>
+        <table class="items-table">
+          <thead><tr><th>Phase</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. Planning &amp; Strategy</strong></td><td>Define problem, audience, objective, channels, resources</td></tr>
+            <tr><td><strong>2. Developing Concepts</strong></td><td>Formative research; concept testing with target audience; message mapping</td></tr>
+            <tr><td><strong>3. Developing Materials</strong></td><td>Draft materials; pretesting; iterative revision</td></tr>
+            <tr><td><strong>4. Implementation</strong></td><td>Channel selection; dissemination planning; partnerships</td></tr>
+            <tr><td><strong>5. Assessing Effectiveness</strong></td><td>Process and outcome evaluation; reach and awareness measurement</td></tr>
+            <tr><td><strong>6. Feedback to Refine</strong></td><td>Use findings to improve future communication</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">The Pink Book mandates audience testing at Phase 2 and 3. A material that hasn't been tested with its target audience fails the Pink Book standard — regardless of how it scores on CCI or SAM.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">National Cancer Institute. (2004). <em>Making Health Communication Programs Work</em> ("The Pink Book"). U.S. Department of Health and Human Services, NIH Publication No. 04-5145. <a href="https://www.cancer.gov/publications/health-communication/pink-book.pdf" target="_blank">cancer.gov/publications/health-communication/pink-book.pdf</a></p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ZONE 2: PROCESS -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="process" class="zone process anchor">
+  <div class="zone-header">
+    <span class="zone-num">②</span>
+    <span class="zone-title">Process &amp; Interaction Quality</span>
+  </div>
+
+  <!-- OPTION SCALE -->
+  <div class="fw-card anchor" id="option">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">OPTION Scale</div>
+        <div class="fw-long">Observing Patient Involvement in Decision Making</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill process">Process</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A trained observer (not the patient) rates a clinical consultation — live or recorded. 12 items, each scored 0–4. Two versions exist: OPTION-5 (condensed) and OPTION-12 (full). The score reflects the <em>clinician's</em> skill at involving the patient, not patient satisfaction.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring formula</div>
+        <div class="score-box">
+          <div class="score-formula">Raw total = Σ of 12 items (0–48 range)</div>
+          <div class="score-formula">Rescaled: (Raw total / 48) × 100 → 0–100</div>
+          <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">0 = behavior not observed; 1 = minimal attempt; 2 = notable effort; 3 = consistent behavior; 4 = fully applied, exemplary</div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 12 items</div>
+        <ul class="item-list">
+          <li>Clinician draws attention to there being a problem that requires a decision</li>
+          <li>States that there is more than one way to deal with the problem</li>
+          <li>Assesses the preferred format for information delivery</li>
+          <li>Lists options including the option of no active treatment</li>
+          <li>Explains pros and cons of each option</li>
+          <li>Explores the patient's expectations or ideas about how the problem is to be managed</li>
+          <li>Explores the patient's concerns about each option</li>
+          <li>Checks that the patient has understood the information</li>
+          <li>Explores whether the patient has any preferred option</li>
+          <li>Negotiates a decision with the patient</li>
+          <li>Indicates a need to review the decision</li>
+          <li>Indicates that the doctor has deferred to the patient's preferred option</li>
+        </ul>
+      </div>
+      <div class="note-box">No single benchmark threshold exists — OPTION is used for research comparisons and training feedback, not pass/fail. Published studies report means of 20–40/100 in real-world primary care consultations.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Elwyn G, Edwards A, Wensing M, Hood K, Atwell C, Grol R. (2003). Shared decision making: Developing the OPTION scale for measuring patient involvement. <em>Quality and Safety in Health Care</em>, 12(2), 93–99. <a href="https://doi.org/10.1136/qhc.12.2.93" target="_blank">doi:10.1136/qhc.12.2.93</a></p>
+        <p class="cite">Elwyn G, Hutchings H, Edwards A, et al. (2005). The OPTION scale: Measuring the extent that clinicians involve patients in decision-making tasks. <em>Health Expectations</em>, 8(1), 34–42. <a href="https://doi.org/10.1111/j.1369-7625.2004.00311.x" target="_blank">doi:10.1111/j.1369-7625.2004.00311.x</a> (reliability/validity)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- IPDAS -->
+  <div class="fw-card anchor" id="ipdas">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">IPDAS</div>
+        <div class="fw-long">International Patient Decision Aid Standards</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill process">Process</span>
+        <span class="pill partial">⚠️ Semi-scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">Two-tier criteria: <strong>Qualifying criteria</strong> (must pass all to call it a decision aid) and <strong>Certifying criteria</strong> (for formal certification). Items are Yes/No with some level-of-evidence ratings.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Qualifying criteria (6 — must meet ALL)</div>
+        <ul class="item-list">
+          <li>Describes the health condition for which the index decision is required</li>
+          <li>Explicitly states the index decision</li>
+          <li>Describes the options available for the index decision</li>
+          <li>Describes the positive features (benefits or advantages) of each option</li>
+          <li>Describes the negative features (harms, side effects, disadvantages) of each option</li>
+          <li>Describes what it is like to experience the consequences of the options</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label">Certifying criteria (grouped domains)</div>
+        <table class="items-table">
+          <thead><tr><th>Domain</th><th>Key items</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Information</strong></td><td>Probabilities presented; absolute risk used; time horizon explicit; uncertainty acknowledged</td></tr>
+            <tr><td><strong>Probabilities</strong></td><td>Event rates in same denominator; comparison group stated; sources cited; date of evidence</td></tr>
+            <tr><td><strong>Values Clarification</strong></td><td>Features most important to patients described; exercise to clarify values included</td></tr>
+            <tr><td><strong>Guidance / Coaching</strong></td><td>Steps to decision-making described; preparation for consultation included; no pressure toward one option</td></tr>
+            <tr><td><strong>Development</strong></td><td>Systematic development process; patient/clinician involvement; plain language review; field testing done</td></tr>
+            <tr><td><strong>Evidence</strong></td><td>Systematic review of evidence; update policy stated</td></tr>
+            <tr><td><strong>Disclosure</strong></td><td>Funding source; conflict of interest disclosed</td></tr>
+            <tr><td><strong>Plain Language</strong></td><td>Reading level ≤8th grade; layout aids comprehension</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Elwyn G, O'Connor A, Stacey D, et al.; International Patient Decision Aids Standards (IPDAS) Collaboration. (2006). Developing a quality criteria framework for patient decision aids: Online international Delphi consensus process. <em>BMJ</em>, 333(7565), 417. <a href="https://doi.org/10.1136/bmj.38926.629329.AE" target="_blank">doi:10.1136/bmj.38926.629329.AE</a></p>
+        <p class="cite">Stacey D, Légaré F, Pouliot S, Kryworuchko J, Dunn S. (2010). Shared decision making models to inform an interprofessional perspective on decision support for people facing health decisions. <em>Patient Education and Counseling</em>, 80(2), 164–172. <a href="https://doi.org/10.1016/j.pec.2009.10.015" target="_blank">doi:10.1016/j.pec.2009.10.015</a></p>
+        <p class="cite">IPDAS Collaboration. <em>Patient Decision Aids</em>. Ottawa Hospital Research Institute. <a href="https://ipdas.ohri.ca/" target="_blank">ipdas.ohri.ca</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AHRQ TOOLKIT -->
+  <div class="fw-card anchor" id="ahrq">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">AHRQ Toolkit</div>
+        <div class="fw-long">Health Literacy Universal Precautions Toolkit (2nd ed.)</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill process">Process</span>
+        <span class="pill partial">⚠️ Partial</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A practice improvement toolkit — 21 tools across 4 action areas. The "score" is implementation completeness: which tools have been adopted and sustained. No single numerical score; practices self-assess against a checklist.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">4 action areas &amp; sample tools</div>
+        <table class="items-table">
+          <thead><tr><th>Area</th><th>Sample tools</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Spoken Communication</strong></td><td>Teach-back technique; before-visit preparation; slowing down communication; using interpreters; communicating in non-English languages</td></tr>
+            <tr><td><strong>Written Communication</strong></td><td>Creating easy-to-read materials; using CCI to review; improving consent forms; addressing medication instructions</td></tr>
+            <tr><td><strong>Self-Management &amp; Empowerment</strong></td><td>Improving medication management; designing easy-to-use forms; supporting self-management</td></tr>
+            <tr><td><strong>Supportive Systems</strong></td><td>Team-based approach; making appointment instructions clear; improving referral process; addressing shame</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">The toolkit includes a "Practice Assessment" to baseline current state. Retaking the assessment after implementation is the closest thing to a score: # of tools implemented vs. total applicable.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Agency for Healthcare Research and Quality. (2015). <em>Health Literacy Universal Precautions Toolkit</em> (2nd ed.). AHRQ Publication No. 15-0023-EF. <a href="https://www.ahrq.gov/health-literacy/improve/precautions/index.html" target="_blank">ahrq.gov/health-literacy/improve/precautions</a></p>
+        <p class="cite">DeWalt DA, Callahan LF, Hawk VH, et al. (2010). Health literacy universal precautions toolkit. <em>AHRQ Publication No. 10-0046-EF</em>. Agency for Healthcare Research and Quality.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- OTTAWA DMSF -->
+  <div class="fw-card anchor" id="ottawa">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">Ottawa DMSF</div>
+        <div class="fw-long">Ottawa Decision Support Framework + Decisional Conflict Scale</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill process">Process</span>
+        <span class="pill noscore">❌ Framework (DCS is scored)</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">The DMSF itself is a design and counseling framework (not scored). It's always paired with the <strong>Decisional Conflict Scale (DCS)</strong> to measure whether an intervention reduced conflict. The DCS is the measurement instrument.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Ottawa DMSF — 3 components</div>
+        <table class="items-table">
+          <thead><tr><th>Component</th><th>What it includes</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Decision needs assessment</strong></td><td>Identify: patient's knowledge gaps, unclear values, support needs, communication barriers, prior decision-making experience</td></tr>
+            <tr><td><strong>Decision support interventions</strong></td><td>Provide: risk communication, values clarification exercises, social support, deliberation aids</td></tr>
+            <tr><td><strong>Decisions, outcomes, quality</strong></td><td>Evaluate: decision quality (informed + values-concordant), decision process quality, health outcomes</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">Decisional Conflict Scale (DCS) — the scoring companion</div>
+        <div class="score-box">
+          <div style="margin-bottom:6px;font-size:13px;">16 items (or 10-item low-literacy version), 5-point Likert (0 = strongly agree, 4 = strongly disagree). Items reversed and summed.</div>
+          <div class="score-formula">DCS Score = (sum / 64) × 25 → range 0–100</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">&lt;25</span><span class="threshold-label">Low conflict — decision supported</span></div>
+            <div class="threshold amber"><span class="threshold-val">25–37.4</span><span class="threshold-label">Moderate conflict</span></div>
+            <div class="threshold red"><span class="threshold-val">≥37.5</span><span class="threshold-label">High conflict — action needed</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">DCS subscales</div>
+        <ul class="item-list">
+          <li><strong>Informed</strong>: knows enough about options, risks, benefits</li>
+          <li><strong>Values clarity</strong>: knows which benefits and risks matter most to them</li>
+          <li><strong>Support</strong>: has enough support and advice</li>
+          <li><strong>Uncertainty</strong>: uncertain about the choice</li>
+          <li><strong>Effective decision</strong>: feels decision is informed, value-based, supported</li>
+        </ul>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">O'Connor AM. (1995). Validation of a decisional conflict scale. <em>Medical Decision Making</em>, 15(1), 25–30. <a href="https://doi.org/10.1177/0272989X9501500105" target="_blank">doi:10.1177/0272989X9501500105</a></p>
+        <p class="cite">O'Connor AM, Tugwell P, Wells GA, et al. (1998). A decision aid for women considering hormone therapy after menopause: Decision support framework and evaluation. <em>Patient Education and Counseling</em>, 33(3), 267–279. <a href="https://doi.org/10.1016/S0738-3991(98)00026-3" target="_blank">doi:10.1016/S0738-3991(98)00026-3</a> (DMSF framework paper)</p>
+        <p class="cite">Ottawa Hospital Research Institute. <em>Decision Support &amp; Decision Aids</em>. <a href="https://decisionaid.ohri.ca/" target="_blank">decisionaid.ohri.ca</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHARE -->
+  <div class="fw-card anchor" id="share">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">SHARE Approach</div>
+        <div class="fw-long">AHRQ Shared Decision Making Framework</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill process">Process</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A 5-step conversation model for clinicians. Implementation-evaluated, not numerically scored. Used primarily for clinician training and workflow design — not material evaluation.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 5 steps</div>
+        <table class="items-table">
+          <thead><tr><th>Step</th><th>What happens</th><th>Clinician behavior</th></tr></thead>
+          <tbody>
+            <tr><td><strong>S — Seek</strong></td><td>Patient participation invited</td><td>Explicitly invite patient into decision; explain it's a choice, not a directive</td></tr>
+            <tr><td><strong>H — Help</strong></td><td>Explore options</td><td>Present all reasonable options including watchful waiting; give balanced information</td></tr>
+            <tr><td><strong>A — Assess</strong></td><td>Patient values &amp; preferences</td><td>Elicit what matters most; use open questions; avoid steering</td></tr>
+            <tr><td><strong>R — Reach</strong></td><td>A decision together</td><td>Negotiate; confirm patient is comfortable; document the decision and rationale</td></tr>
+            <tr><td><strong>E — Evaluate</strong></td><td>The decision</td><td>Follow up; revisit if needed; check for decisional regret</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Agency for Healthcare Research and Quality. (2014). <em>The SHARE Approach — A Model for Shared Decision Making: A Resource for Clinicians</em>. AHRQ Publication No. 14-0058-1-EF. <a href="https://www.ahrq.gov/health-literacy/professional-training/shared-decision/index.html" target="_blank">ahrq.gov/health-literacy/professional-training/shared-decision</a></p>
+        <p class="cite">Elwyn G, Frosch D, Thomson R, et al. (2012). Shared decision making: A model for clinical practice. <em>Journal of General Internal Medicine</em>, 27(10), 1361–1367. <a href="https://doi.org/10.1007/s11606-012-2077-6" target="_blank">doi:10.1007/s11606-012-2077-6</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACH-BACK -->
+  <div class="fw-card anchor" id="teachback">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">Teach-Back / Ask Me 3</div>
+        <div class="fw-long">Teach-Back Method &amp; Ask Me 3 Patient Questions</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill process">Process</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">Teach-Back — how it works</div>
+        <div class="block-content">Clinician explains information, then asks the patient to explain it back <em>in their own words</em>. If the patient cannot, the clinician re-explains (not blamed on the patient — "I must not have explained that well"). Repeated until patient can accurately demonstrate understanding. Pass/fail qualitative.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Teach-Back assessment criteria</div>
+        <table class="items-table">
+          <thead><tr><th>Result</th><th>What it means</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Pass</strong></td><td>Patient explains the key information accurately in their own words, demonstrates the skill, or can describe the next step without prompting</td></tr>
+            <tr><td><strong>Partial</strong></td><td>Patient understands main idea but misses critical details — re-teach specific gaps</td></tr>
+            <tr><td><strong>Fail</strong></td><td>Significant misunderstanding — full re-explanation needed</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">Ask Me 3 — the 3 questions patients should be able to answer</div>
+        <ul class="item-list">
+          <li><strong>Q1:</strong> What is my main problem?</li>
+          <li><strong>Q2:</strong> What do I need to do?</li>
+          <li><strong>Q3:</strong> Why is it important for me to do this?</li>
+        </ul>
+      </div>
+      <div class="note-box">For material design: if a patient can't answer all 3 Ask Me 3 questions after reading/viewing your material alone, the material needs revision — regardless of CCI or readability scores.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Agency for Healthcare Research and Quality. (2020). <em>Use the Teach-Back Method: Tool #5</em>. Health Literacy Universal Precautions Toolkit. <a href="https://www.ahrq.gov/health-literacy/improve/precautions/tool5.html" target="_blank">ahrq.gov/health-literacy/improve/precautions/tool5</a></p>
+        <p class="cite">Schillinger D, Piette J, Grumbach K, et al. (2003). Closing the loop: Physician communication with diabetic patients who have low health literacy. <em>Archives of Internal Medicine</em>, 163(1), 83–90. <a href="https://doi.org/10.1001/archinte.163.1.83" target="_blank">doi:10.1001/archinte.163.1.83</a> (foundational teach-back outcomes study)</p>
+        <p class="cite">Pfizer. (n.d.). <em>Ask Me 3: Good Questions for Your Good Health</em>. National Patient Safety Foundation. <a href="https://www.npsf.org/page/askme3" target="_blank">npsf.org/page/askme3</a></p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ZONE 3: BEHAVIOR -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="behavior" class="zone behavior anchor">
+  <div class="zone-header">
+    <span class="zone-num">③</span>
+    <span class="zone-title">Behavior &amp; Psychology</span>
+  </div>
+
+  <!-- COM-B -->
+  <div class="fw-card anchor" id="comb">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">COM-B</div>
+        <div class="fw-long">COM-B Behaviour System + Behaviour Change Wheel</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill behavior">Behavior</span>
+        <span class="pill partial">⚠️ Indirect</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A diagnostic framework: identify <em>why</em> a behavior isn't happening by locating the gap in Capability, Opportunity, or Motivation — then select intervention types accordingly via the Behaviour Change Wheel (BCW). Not scored; outputs are gap diagnoses and intervention maps.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 3 components × 6 sub-components</div>
+        <table class="items-table">
+          <thead><tr><th>Component</th><th>Sub-component</th><th>Definition</th><th>Example gap</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="2"><strong>Capability (C)</strong></td><td>Physical</td><td>Physical ability to perform the behavior</td><td>Patient can't open pill bottle</td></tr>
+            <tr><td>Psychological</td><td>Knowledge, understanding, memory, attention</td><td>Patient doesn't understand drug schedule</td></tr>
+            <tr><td rowspan="2"><strong>Opportunity (O)</strong></td><td>Physical</td><td>Resources, environment, time, location</td><td>No pharmacy near home</td></tr>
+            <tr><td>Social</td><td>Social influences, cultural norms, peer support</td><td>Family discourages medication</td></tr>
+            <tr><td rowspan="2"><strong>Motivation (M)</strong></td><td>Automatic</td><td>Habits, emotional responses, impulses</td><td>Fear-avoidance of injections</td></tr>
+            <tr><td>Reflective</td><td>Beliefs, intentions, goals, reasoning</td><td>Doesn't believe treatment works</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">BCW intervention mapping</div>
+        <table class="items-table">
+          <thead><tr><th>COM-B gap</th><th>Intervention type</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td>Psychological Capability</td><td>Education, Training</td><td>Plain language leaflet; teach-back session</td></tr>
+            <tr><td>Physical Capability</td><td>Training, Enablement</td><td>Device demonstration; physical aid</td></tr>
+            <tr><td>Physical Opportunity</td><td>Environmental restructuring</td><td>On-site pharmacy; reminder packaging</td></tr>
+            <tr><td>Social Opportunity</td><td>Modeling, Enablement</td><td>Peer support group; family counseling</td></tr>
+            <tr><td>Automatic Motivation</td><td>Persuasion, Incentivization</td><td>Positive framing; habit triggers</td></tr>
+            <tr><td>Reflective Motivation</td><td>Persuasion, Education</td><td>Risk communication; testimonials</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Michie S, van Stralen MM, West R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. <em>Implementation Science</em>, 6(1), 42. <a href="https://doi.org/10.1186/1748-5908-6-42" target="_blank">doi:10.1186/1748-5908-6-42</a></p>
+        <p class="cite">Michie S, Atkins L, West R. (2014). <em>The Behaviour Change Wheel: A Guide to Designing Interventions</em>. Silverback Publishing. ISBN 978-1-909567-00-4.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- HBM -->
+  <div class="fw-card anchor" id="hbm">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">HBM</div>
+        <div class="fw-long">Health Belief Model</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill behavior">Behavior</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A message design framework based on 6 cognitive constructs. Each construct is a lever — content must address all relevant ones to motivate behavior. Constructs are measured via validated Likert-scale surveys for research; in design practice, they're used as a checklist.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 6 constructs</div>
+        <table class="items-table">
+          <thead><tr><th>Construct</th><th>Definition</th><th>Message strategy</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Perceived Susceptibility</strong></td><td>Belief that one can get the condition</td><td>"People like you are at risk…"</td></tr>
+            <tr><td><strong>Perceived Severity</strong></td><td>Belief about the seriousness of the condition/consequences</td><td>"Untreated, this leads to…"</td></tr>
+            <tr><td><strong>Perceived Benefits</strong></td><td>Belief that the recommended action will reduce risk or harm</td><td>"Taking this medication reduces your risk by X%"</td></tr>
+            <tr><td><strong>Perceived Barriers</strong></td><td>Belief about the costs or obstacles of taking action</td><td>Address objections directly; simplify access</td></tr>
+            <tr><td><strong>Cues to Action</strong></td><td>External or internal triggers that prompt behavior</td><td>Reminder cards; symptom awareness campaigns</td></tr>
+            <tr><td><strong>Self-Efficacy</strong></td><td>Confidence in ability to perform the action</td><td>"Here's exactly how to do it in 3 steps…"</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">The most common HBM design error: content addresses Susceptibility and Severity but neglects Barriers and Self-Efficacy — resulting in fear without action.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Rosenstock IM. (1974). Historical origins of the health belief model. <em>Health Education Monographs</em>, 2(4), 328–335. <a href="https://doi.org/10.1177/109019817400200403" target="_blank">doi:10.1177/109019817400200403</a></p>
+        <p class="cite">Janz NK, Becker MH. (1984). The health belief model: A decade later. <em>Health Education Quarterly</em>, 11(1), 1–47. <a href="https://doi.org/10.1177/109019818401100101" target="_blank">doi:10.1177/109019818401100101</a></p>
+        <p class="cite">Champion VL, Skinner CS. (2008). The health belief model. In K Glanz, BK Rimer, K Viswanath (Eds.), <em>Health Behavior and Health Education: Theory, Research, and Practice</em> (4th ed., pp. 45–65). Jossey-Bass.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TTM -->
+  <div class="fw-card anchor" id="ttm">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">TTM</div>
+        <div class="fw-long">Transtheoretical Model (Stages of Change)</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill behavior">Behavior</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">Classifies individuals into 1 of 5 stages based on their readiness to change a specific behavior. Different interventions are effective at different stages. Stage is assessed via validated staging algorithms or questionnaires.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 5 stages</div>
+        <table class="items-table">
+          <thead><tr><th>Stage</th><th>Definition</th><th>What they need</th><th>Appropriate intervention</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Pre-contemplation</strong></td><td>Not thinking about changing (within 6 months)</td><td>Awareness of risk; consciousness-raising</td><td>Education about consequences; normalization</td></tr>
+            <tr><td><strong>Contemplation</strong></td><td>Aware of the problem, considering change (within 6 months)</td><td>Help weighing pros and cons</td><td>Motivational content; testimonials; decisional balance</td></tr>
+            <tr><td><strong>Preparation</strong></td><td>Intending to act within 30 days; may be making small changes</td><td>Specific plan and resources</td><td>Action planning tools; How-to guides</td></tr>
+            <tr><td><strong>Action</strong></td><td>Has made the change (within past 6 months)</td><td>Support and reinforcement</td><td>Progress tracking; problem-solving aids</td></tr>
+            <tr><td><strong>Maintenance</strong></td><td>Sustained change for &gt;6 months</td><td>Relapse prevention</td><td>Long-term habit support; coping strategies</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">Key TTM companion constructs</div>
+        <ul class="item-list">
+          <li><strong>Decisional Balance</strong>: pros vs. cons of changing; shifts across stages</li>
+          <li><strong>Self-Efficacy</strong>: confidence to maintain change in tempting situations</li>
+          <li><strong>Processes of Change</strong>: 10 cognitive/behavioral strategies that drive stage movement</li>
+        </ul>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Prochaska JO, DiClemente CC. (1983). Stages and processes of self-change of smoking: Toward an integrative model of change. <em>Journal of Consulting and Clinical Psychology</em>, 51(3), 390–395. <a href="https://doi.org/10.1037/0022-006X.51.3.390" target="_blank">doi:10.1037/0022-006X.51.3.390</a></p>
+        <p class="cite">Prochaska JO, Velicer WF. (1997). The transtheoretical model of health behavior change. <em>American Journal of Health Promotion</em>, 12(1), 38–48. <a href="https://doi.org/10.4278/0890-1171-12.1.38" target="_blank">doi:10.4278/0890-1171-12.1.38</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EPPM -->
+  <div class="fw-card anchor" id="eppm">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">EPPM</div>
+        <div class="fw-long">Extended Parallel Process Model</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill behavior">Behavior</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A framework for designing fear-appeal messages (risk communication). Predicts whether high-threat messages lead to behavior change (danger control) or backfire (fear control / boomerang). The key ratio is Perceived Threat vs. Perceived Efficacy.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 4 constructs (measured via 4-point Likert)</div>
+        <table class="items-table">
+          <thead><tr><th>Construct</th><th>What it measures</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Perceived Susceptibility</strong></td><td>"I am at risk for this"</td></tr>
+            <tr><td><strong>Perceived Severity</strong></td><td>"This condition is serious"</td></tr>
+            <tr><td><strong>Response Efficacy</strong></td><td>"This recommended action actually works"</td></tr>
+            <tr><td><strong>Self-Efficacy</strong></td><td>"I can perform this recommended action"</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">The 2 pathways</div>
+        <table class="items-table">
+          <thead><tr><th>Condition</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>High threat + <strong>High efficacy</strong></td><td><strong>Danger control</strong> → behavior change (what you want)</td></tr>
+            <tr><td>High threat + <strong>Low efficacy</strong></td><td><strong>Fear control</strong> → denial, avoidance, anger, boomerang (what you don't want)</td></tr>
+            <tr><td>Low threat</td><td>No motivation to change — message ignored</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">Design rule: never raise perceived threat without simultaneously and convincingly raising efficacy. Every fear appeal must pair "here's the risk" with "here's what works and here's how you can do it."</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Witte K. (1992). Putting the fear back into fear appeals: The Extended Parallel Process Model. <em>Communication Monographs</em>, 59(4), 329–349. <a href="https://doi.org/10.1080/03637759209376276" target="_blank">doi:10.1080/03637759209376276</a></p>
+        <p class="cite">Witte K, Allen M. (2000). A meta-analysis of fear appeals: Implications for effective public health campaigns. <em>Health Education &amp; Behavior</em>, 27(5), 591–615. <a href="https://doi.org/10.1177/109019810002700506" target="_blank">doi:10.1177/109019810002700506</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHO RISK COMMS -->
+  <div class="fw-card anchor" id="whorisks">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">WHO Risk Comms</div>
+        <div class="fw-long">WHO Risk Communication Framework</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill behavior">Behavior</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A set of principles and operational standards for public health communication during emergencies or health crises. No numerical scoring — evaluated through process indicators (did you do this?) and outcome indicators (trust, behavior change).</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Core principles</div>
+        <table class="items-table">
+          <thead><tr><th>Principle</th><th>What it requires</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Trust</strong></td><td>Build credibility before the crisis; disclose conflicts; use trusted community messengers</td></tr>
+            <tr><td><strong>Early announcement</strong></td><td>Communicate early even with incomplete information; silence creates rumor</td></tr>
+            <tr><td><strong>Transparency</strong></td><td>Share what is known and unknown; acknowledge uncertainty; correct errors publicly</td></tr>
+            <tr><td><strong>Respect public</strong></td><td>Listen to community concerns; respond to rumors; include affected communities in planning</td></tr>
+            <tr><td><strong>Planning</strong></td><td>Pre-establish channels, roles, and messages; coordinate across agencies; train spokespeople</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">RCCE (Risk Communication &amp; Community Engagement) — the applied form</div>
+        <div class="block-content">WHO operationalizes its framework through RCCE plans that specify: audiences, channels, message calendar, community feedback loops, rumor monitoring, and evaluation metrics (reach, sentiment, behavior indicators).</div>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">World Health Organization. (2017). <em>Communicating Risk in Public Health Emergencies: A WHO Guideline for Emergency Risk Communication (ERC) Policy and Practice</em>. WHO. <a href="https://www.who.int/publications/i/item/9789241550208" target="_blank">who.int/publications/i/item/9789241550208</a></p>
+        <p class="cite">Covello VT, Peters RG, Wojtecki JG, Hyde RC. (2001). Risk communication, the West Nile Virus epidemic, and bioterrorism: Responding to the communication challenges posed by the intentional or unintentional release of a pathogen in an urban setting. <em>Journal of Urban Health</em>, 78(2), 382–391. <a href="https://doi.org/10.1093/jurban/78.2.382" target="_blank">doi:10.1093/jurban/78.2.382</a></p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- ZONE 4: OUTCOMES -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="outcomes" class="zone outcomes anchor">
+  <div class="zone-header">
+    <span class="zone-num">④</span>
+    <span class="zone-title">Outcomes &amp; Experience</span>
+  </div>
+
+  <!-- PAM -->
+  <div class="fw-card anchor" id="pam">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">PAM</div>
+        <div class="fw-long">Patient Activation Measure (Hibbard et al.)</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">13 items (PAM-13) or 22 items (PAM-22). Scored via Item Response Theory (IRT) — not a simple sum. Each item answered on a 4-point scale (Disagree Strongly → Agree Strongly, plus N/A). Raw responses are converted to a 0–100 score using Insignia's licensed scoring algorithm.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 4 activation levels</div>
+        <div class="score-box">
+          <div class="threshold-row">
+            <div class="threshold red"><span class="threshold-val">≤47.0</span><span class="threshold-label">Level 1 — Disengaged/Overwhelmed</span></div>
+            <div class="threshold amber"><span class="threshold-val">47.1–55.1</span><span class="threshold-label">Level 2 — Aware but struggling</span></div>
+            <div class="threshold amber"><span class="threshold-val">55.2–67.0</span><span class="threshold-label">Level 3 — Taking action</span></div>
+            <div class="threshold green"><span class="threshold-val">≥67.1</span><span class="threshold-label">Level 4 — Maintaining behaviors</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">What PAM-13 measures (sample items)</div>
+        <table class="items-table">
+          <thead><tr><th>Domain</th><th>Sample item</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Role understanding</strong></td><td>"When it comes to managing my health, I am the one responsible"</td></tr>
+            <tr><td><strong>Confidence</strong></td><td>"I am confident I can tell when I need to seek medical care"</td></tr>
+            <tr><td><strong>Knowledge &amp; skills</strong></td><td>"I know what each of my prescribed medications does"</td></tr>
+            <tr><td><strong>Self-management</strong></td><td>"I can maintain lifestyle changes in difficult times"</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">PAM is proprietary (Insignia Health). Commercial licensing is required to use the scoring algorithm. A clinically meaningful change is a 3–6 point increase over 6–12 months. Moving one full level is a significant intervention effect.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Hibbard JH, Stockard J, Mahoney ER, Tusler M. (2004). Development of the Patient Activation Measure (PAM): Conceptualizing and measuring activation in patients and consumers. <em>Health Services Research</em>, 39(4 Pt 1), 1005–1026. <a href="https://doi.org/10.1111/j.1475-6773.2004.00269.x" target="_blank">doi:10.1111/j.1475-6773.2004.00269.x</a></p>
+        <p class="cite">Hibbard JH, Mahoney ER, Stockard J, Tusler M. (2005). Development and testing of a short form of the patient activation measure. <em>Health Services Research</em>, 40(6 Pt 1), 1918–1930. <a href="https://doi.org/10.1111/j.1475-6773.2005.00438.x" target="_blank">doi:10.1111/j.1475-6773.2005.00438.x</a> (PAM-13 paper)</p>
+        <p class="cite">Greene J, Hibbard JH. (2012). Why does patient activation matter? An examination of the relationships between patient activation and health-related outcomes. <em>Journal of General Internal Medicine</em>, 27(5), 520–526. <a href="https://doi.org/10.1007/s11606-011-1931-2" target="_blank">doi:10.1007/s11606-011-1931-2</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAHPS -->
+  <div class="fw-card anchor" id="cahps">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">CAHPS / HCAHPS</div>
+        <div class="fw-long">Consumer Assessment of Healthcare Providers and Systems</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">HCAHPS (Hospital version) is the federally mandated patient experience survey. 29 items (21 core patient-facing). Responses are reduced to <strong>Top-Box scores</strong> — the percentage of respondents selecting the most favorable response category. Scores are publicly reported after risk adjustment for patient mix.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring method</div>
+        <div class="score-box">
+          <div class="score-formula">Top-Box % = (# "Always" or "9–10" responses / total responses) × 100</div>
+          <div style="margin-top:6px;font-size:12.5px;color:var(--muted)">Publicly reported scores are case-mix adjusted to account for patient characteristics (age, health status, education, service line).</div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label">HCAHPS domains (10 composite measures publicly reported)</div>
+        <table class="items-table">
+          <thead><tr><th>Domain</th><th>Items</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Nurse Communication</strong></td><td>3 items: nurses listen, explain, treat with courtesy</td></tr>
+            <tr><td><strong>Doctor Communication</strong></td><td>3 items: doctors listen, explain, treat with courtesy</td></tr>
+            <tr><td><strong>Staff Responsiveness</strong></td><td>2 items: call button, bathroom assistance response time</td></tr>
+            <tr><td><strong>Communication about Medicines</strong></td><td>2 items: explained new meds, side effects discussed</td></tr>
+            <tr><td><strong>Discharge Information</strong></td><td>2 items: written discharge info, symptoms to watch for</td></tr>
+            <tr><td><strong>Care Transitions</strong></td><td>3 items: understood care after discharge, questions answered, preferences understood</td></tr>
+            <tr><td><strong>Cleanliness</strong></td><td>1 item: room always clean</td></tr>
+            <tr><td><strong>Quietness</strong></td><td>1 item: room always quiet at night</td></tr>
+            <tr><td><strong>Overall Hospital Rating</strong></td><td>1 item: 0–10 global rating</td></tr>
+            <tr><td><strong>Willingness to Recommend</strong></td><td>1 item: Definitely Yes / Probably Yes / No</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">CAHPS is a family of surveys — different versions exist for clinicians (CG-CAHPS), home health, nursing homes, dialysis, and more. Each version uses the same Top-Box methodology but different items.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Agency for Healthcare Research and Quality. <em>CAHPS: Surveys and Tools to Advance Patient-Centered Care</em>. <a href="https://www.ahrq.gov/cahps/index.html" target="_blank">ahrq.gov/cahps</a></p>
+        <p class="cite">Centers for Medicare &amp; Medicaid Services. <em>HCAHPS: Patients' Perspectives of Care Survey</em>. <a href="https://www.cms.gov/medicare/quality/initiatives/hospital-quality-initiative/hcahps-patients-perspectives-care-survey" target="_blank">cms.gov — HCAHPS</a></p>
+        <p class="cite">Cleary PD, Edgman-Levitan S. (1997). Health care quality: Incorporating consumer perspectives. <em>JAMA</em>, 278(19), 1608–1612. <a href="https://doi.org/10.1001/jama.1997.03550190072047" target="_blank">doi:10.1001/jama.1997.03550190072047</a> (foundational CAHPS framework paper)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- NPS -->
+  <div class="fw-card anchor" id="nps">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">NPS</div>
+        <div class="fw-long">Net Promoter Score</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill scored">✅ Scored</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A single 0–10 "Recommend" question. Respondents are classified into 3 groups; the score is the gap between Promoters and Detractors.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">Scoring formula</div>
+        <div class="score-box">
+          <div style="margin-bottom:8px;">
+            <strong>Promoters</strong>: scored 9–10 · <strong>Passives</strong>: scored 7–8 · <strong>Detractors</strong>: scored 0–6
+          </div>
+          <div class="score-formula">NPS = % Promoters − % Detractors</div>
+          <div class="threshold-row">
+            <div class="threshold green"><span class="threshold-val">&gt;70</span><span class="threshold-label">Excellent (World-class)</span></div>
+            <div class="threshold green"><span class="threshold-val">50–70</span><span class="threshold-label">Very Good</span></div>
+            <div class="threshold amber"><span class="threshold-val">0–49</span><span class="threshold-label">Average to Good</span></div>
+            <div class="threshold red"><span class="threshold-val">&lt;0</span><span class="threshold-label">Needs improvement</span></div>
+          </div>
+          <div style="margin-top:8px;font-size:12.5px;color:var(--muted)">Healthcare sector benchmarks typically run 20–50. Compare within your own sector, not against general consumer benchmarks.</div>
+        </div>
+      </div>
+      <div class="note-box">NPS is a directional indicator, not a diagnostic tool. A low NPS tells you there's a problem; it doesn't tell you where. Pair with open-ended "Why?" questions to make it actionable.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Reichheld FF. (2003). The one number you need to grow. <em>Harvard Business Review</em>, 81(12), 46–54. <a href="https://hbr.org/2003/12/the-one-number-you-need-to-grow" target="_blank">hbr.org — "The One Number You Need to Grow"</a></p>
+        <p class="cite">Reichheld FF, Markey R. (2011). <em>The Ultimate Question 2.0: How Net Promoter Companies Thrive in a Customer-Driven World</em> (rev. ed.). Harvard Business Review Press. ISBN 978-1-4221-7335-0.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PICKER -->
+  <div class="fw-card anchor" id="picker">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">Picker Principles</div>
+        <div class="fw-long">Picker Institute — Principles of Patient-Centered Care</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill noscore">❌ Framework only</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">8 principles define what patient-centered care looks like. Used as a design framework and organizational standard. Picker survey instruments (separate tools) measure how well each principle is being met. The principles themselves don't carry a score.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 8 principles</div>
+        <table class="items-table">
+          <thead><tr><th>#</th><th>Principle</th><th>What it covers</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>Respect for patients' values, preferences, and expressed needs</strong></td><td>Patient is treated as a person; their choices and dignity honored</td></tr>
+            <tr><td>2</td><td><strong>Coordination and integration of care</strong></td><td>Care is coordinated across services; patients not lost in transition</td></tr>
+            <tr><td>3</td><td><strong>Information, communication, and education</strong></td><td>Patients informed about condition and treatment; health literacy supported</td></tr>
+            <tr><td>4</td><td><strong>Physical comfort</strong></td><td>Pain managed; environment comfortable; privacy respected</td></tr>
+            <tr><td>5</td><td><strong>Emotional support and alleviation of fear and anxiety</strong></td><td>Emotional needs addressed; impact on family acknowledged</td></tr>
+            <tr><td>6</td><td><strong>Involvement of family and friends</strong></td><td>Family/caregiver included in care as appropriate; their needs addressed</td></tr>
+            <tr><td>7</td><td><strong>Continuity and transition</strong></td><td>Discharge planning; clear follow-up; coordination with community services</td></tr>
+            <tr><td>8</td><td><strong>Access to care</strong></td><td>Appointment access; wait times; after-hours access; geographic/language access</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Gerteis M, Edgman-Levitan S, Daley J, Delbanco TL (Eds.). (1993). <em>Through the Patient's Eyes: Understanding and Promoting Patient-Centered Care</em>. Jossey-Bass. ISBN 978-1555425159.</p>
+        <p class="cite">Picker Institute. <em>About Picker</em>. <a href="https://www.picker.org/" target="_blank">picker.org</a></p>
+        <p class="cite">Jenkinson C, Coulter A, Bruster S. (2002). The Picker Patient Experience Questionnaire: Development and validation using data from in-patient surveys in five countries. <em>International Journal for Quality in Health Care</em>, 14(5), 353–358. <a href="https://doi.org/10.1093/intqhc/14.5.353" target="_blank">doi:10.1093/intqhc/14.5.353</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BERYL PX -->
+  <div class="fw-card anchor" id="berylpx">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">Beryl PX</div>
+        <div class="fw-long">The Beryl Institute Patient Experience Framework</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">An organizational framework defining patient experience as "the sum of all interactions, shaped by an organization's culture, that influence patient perceptions across the continuum of care." Used for org-level strategy and culture change, not individual material evaluation.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">4 pillars of the framework</div>
+        <table class="items-table">
+          <thead><tr><th>Pillar</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Culture &amp; Leadership</strong></td><td>Executive commitment; values alignment; accountability structures for PX</td></tr>
+            <tr><td><strong>Infrastructure &amp; Governance</strong></td><td>Dedicated PX roles; patient advisory councils; feedback systems</td></tr>
+            <tr><td><strong>Evidence &amp; Measurement</strong></td><td>Data collection (CAHPS, NPS); outcome tracking; benchmarking; continuous improvement cycles</td></tr>
+            <tr><td><strong>Practice &amp; Innovation</strong></td><td>Care model redesign; environmental design; service recovery; staff engagement</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-box">Beryl's annual "State of Patient Experience" benchmarking report is a useful calibration tool — it shows how healthcare orgs are prioritizing PX investment and where gaps exist industry-wide.</div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">The Beryl Institute. (2023). <em>Defining Patient Experience</em>. <a href="https://www.theberylinstitute.org/page/DefiningPatientExp" target="_blank">theberylinstitute.org/page/DefiningPatientExp</a></p>
+        <p class="cite">Wolf JA, Niederhauser V, Marshburn D, LaVela SL. (2014). Defining patient experience. <em>Patient Experience Journal</em>, 1(1), 7–19. <a href="https://doi.org/10.35680/2372-0247.1004" target="_blank">doi:10.35680/2372-0247.1004</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EBCD -->
+  <div class="fw-card anchor" id="ebcd">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">EBCD</div>
+        <div class="fw-long">Experience-Based Co-Design</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A participatory design methodology where patients and staff together identify emotional experience touchpoints and co-design improvements. Outputs are qualitative: prioritized improvement themes, prototyped solutions, and implementation commitments. No scoring; success is measured by implemented changes and patient/staff-reported improvement.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 6-phase process</div>
+        <table class="items-table">
+          <thead><tr><th>Phase</th><th>What happens</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1. Set up</strong></td><td>Define scope; recruit patient and staff participants; ethical approval</td></tr>
+            <tr><td><strong>2. Staff experience</strong></td><td>Observe care; interview staff about their experience; identify touchpoints</td></tr>
+            <tr><td><strong>3. Patient experience</strong></td><td>Interview patients (filmed where possible); emotional touchpoint mapping</td></tr>
+            <tr><td><strong>4. Share &amp; bring together</strong></td><td>Share edited patient films with staff; identify shared touchpoints; joint event</td></tr>
+            <tr><td><strong>5. Co-design</strong></td><td>Mixed patient-staff co-design groups work on priority touchpoints; prototype solutions</td></tr>
+            <tr><td><strong>6. Celebrate &amp; share</strong></td><td>Present changes; evaluate impact; sustainability planning</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Bate P, Robert G. (2006). Experience-based design: From redesigning the system around the patient to co-designing services with the patient. <em>Quality and Safety in Health Care</em>, 15(5), 307–310. <a href="https://doi.org/10.1136/qshc.2005.016527" target="_blank">doi:10.1136/qshc.2005.016527</a></p>
+        <p class="cite">Donetto S, Tsianakas V, Robert G. (2014). <em>Using Experience-based Co-design (EBCD) to Improve the Quality of Healthcare: Mapping Where We Are Now and Establishing Future Directions</em>. King's College London. <a href="https://www.kcl.ac.uk/nmpc/research/nnru/publications/reports/ebcd-where-are-we-now-report.pdf" target="_blank">kcl.ac.uk — EBCD mapping report</a></p>
+        <p class="cite">The Point of Care Foundation. <em>EBCD: Experience-based Co-design</em>. <a href="https://www.pointofcarefoundation.org.uk/our-programmes/ebcd/" target="_blank">pointofcarefoundation.org.uk/our-programmes/ebcd</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEIPS -->
+  <div class="fw-card anchor" id="seips">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">SEIPS</div>
+        <div class="fw-long">Systems Engineering Initiative for Patient Safety (SEIPS 2.0)</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A systems model for analyzing healthcare work systems and their relationship to patient safety outcomes. Used to frame design decisions in clinical contexts. The model is analytical — no score; outputs are work system analyses and redesign recommendations.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">SEIPS 2.0 model components</div>
+        <table class="items-table">
+          <thead><tr><th>Layer</th><th>Components</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Work System</strong></td><td>Person(s) · Tasks · Tools &amp; Technologies · Organization · Environment — all interact together</td></tr>
+            <tr><td><strong>Processes</strong></td><td>Care processes (clinical) · Collaborative processes (team) · Patient processes (self-care)</td></tr>
+            <tr><td><strong>Outcomes</strong></td><td>Patient outcomes (safety, quality of life) · Professional outcomes (burnout, satisfaction) · Organizational outcomes (efficiency, accreditation)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block">
+        <div class="block-label">How to use it in design</div>
+        <ul class="item-list">
+          <li>Map the work system for your target process (e.g., medication reconciliation at discharge)</li>
+          <li>Identify misalignments between any two components that create unsafe or poor-experience processes</li>
+          <li>Design interventions that improve the work system (not just the individual behavior)</li>
+          <li>Measure downstream outcome changes as the evaluation</li>
+        </ul>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Carayon P, Schoofs Hundt A, Karsh BT, et al. (2006). Work system design for patient safety: The SEIPS model. <em>Quality and Safety in Health Care</em>, 15(Suppl 1), i50–i58. <a href="https://doi.org/10.1136/qshc.2005.015842" target="_blank">doi:10.1136/qshc.2005.015842</a></p>
+        <p class="cite">Holden RJ, Carayon P, Gurses AP, et al. (2013). SEIPS 2.0: A human factors framework for studying and improving the work of healthcare professionals and patients. <em>Ergonomics</em>, 56(11), 1669–1686. <a href="https://doi.org/10.1080/00140139.2013.838643" target="_blank">doi:10.1080/00140139.2013.838643</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANETREE -->
+  <div class="fw-card anchor" id="planetree">
+    <div class="fw-card-head">
+      <div class="fw-card-title">
+        <div class="fw-abbr">Planetree</div>
+        <div class="fw-long">Planetree Model of Person-Centered Care</div>
+      </div>
+      <div class="fw-pills">
+        <span class="pill outcomes">Outcomes</span>
+        <span class="pill noscore">❌ No score</span>
+      </div>
+    </div>
+    <div class="fw-card-body">
+      <div class="block">
+        <div class="block-label">How it works</div>
+        <div class="block-content">A whole-organization philosophy and designation program. Organizations work toward Planetree Designation by demonstrating adherence to the model across 10 components. Designation is assessed via on-site review, patient/staff survey data, and evidence of culture change — not a numerical score.</div>
+      </div>
+      <div class="block">
+        <div class="block-label">The 10 Planetree components</div>
+        <table class="items-table">
+          <thead><tr><th>#</th><th>Component</th><th>Focus</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><strong>Human interactions</strong></td><td>Staff compassion; emotional connection; dignity</td></tr>
+            <tr><td>2</td><td><strong>Patient &amp; family education / access to information</strong></td><td>Open charts; health literacy; educational resources</td></tr>
+            <tr><td>3</td><td><strong>Nutritional &amp; nurturing care</strong></td><td>Food quality; mealtimes as healing; family meals</td></tr>
+            <tr><td>4</td><td><strong>Spirituality / diversity</strong></td><td>Chaplaincy; cultural accommodation; spiritual care</td></tr>
+            <tr><td>5</td><td><strong>Human touch</strong></td><td>Therapeutic touch; massage; comfort care</td></tr>
+            <tr><td>6</td><td><strong>Arts &amp; entertainment</strong></td><td>Healing arts; music; nature views; distraction</td></tr>
+            <tr><td>7</td><td><strong>Integrative therapies</strong></td><td>Complementary care; mind-body practices</td></tr>
+            <tr><td>8</td><td><strong>Healthy communities</strong></td><td>Community health; prevention; social determinants</td></tr>
+            <tr><td>9</td><td><strong>Healing environment</strong></td><td>Wayfinding; noise; light; green space; room design</td></tr>
+            <tr><td>10</td><td><strong>Staff care</strong></td><td>Caregiver wellbeing; burnout prevention; organizational support</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="block citation-block">
+        <div class="block-label">Sources</div>
+        <p class="cite">Planetree International. <em>The Planetree Model</em>. <a href="https://planetree.org/planetree-model/" target="_blank">planetree.org/planetree-model</a></p>
+        <p class="cite">Frampton SB, Gilpin L, Charmel PA (Eds.). (2003). <em>Putting Patients First: Designing and Practicing Patient-Centered Care</em>. Jossey-Bass. ISBN 978-0787964542.</p>
+        <p class="cite">Stone S. (2008). A retrospective evaluation of the impact of the Planetree patient-centered model of care on inpatient quality outcomes. <em>HERD: Health Environments Research &amp; Design Journal</em>, 1(4), 55–69. <a href="https://doi.org/10.1177/193758670800100406" target="_blank">doi:10.1177/193758670800100406</a></p>
+      </div>
+    </div>
+  </div>
+
+</section>
+</main>
+
+<script>
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  });
+});
+</script>
+</body>
+</html>
