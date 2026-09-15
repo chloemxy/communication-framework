@@ -50,7 +50,12 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
   background:var(--navy);height:48px;
   display:flex;align-items:center;gap:10px;padding:0 20px;
   flex-shrink:0;border-bottom:1px solid rgba(30,20,10,0.10);z-index:600;
+  justify-content:space-between;
 }
+.mode-toggle{display:flex;gap:4px;background:rgba(30,20,10,0.06);border-radius:8px;padding:3px;margin-left:14px}
+.mode-toggle button{border:none;background:transparent;font-family:var(--sans);font-size:11px;font-weight:600;color:rgba(30,20,10,0.55);padding:5px 10px;border-radius:6px;cursor:pointer}
+.mode-toggle button.on{background:#fff;color:var(--n900);box-shadow:0 1px 3px rgba(0,0,0,0.10)}
+.topbar-left{display:flex;align-items:center}
 .topbar-sub{font-size:16px;font-weight:500;color:rgba(30,20,10,0.72)}
 
 
@@ -65,7 +70,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 
 /* ── CANVAS (document workspace) ── */
 .canvas{
-  position:absolute;top:26px;bottom:74px;left:282px;right:282px;
+  position:absolute;top:72px;bottom:14px;left:282px;right:282px;
   min-width:320px;
   background:#fff;border:1px solid var(--n300);border-radius:10px;
   box-shadow:0 3px 18px rgba(0,0,0,0.07);
@@ -329,7 +334,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 
 /* ── MODULE RAILS (fixed columns, no free placement) ── */
 .mod-rail{
-  position:absolute;top:24px;bottom:90px;
+  position:absolute;top:70px;bottom:14px;
   width:252px;display:flex;flex-direction:column;gap:14px;
   overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;padding:2px 2px 2px 0;
 }
@@ -384,6 +389,12 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 }
 .mod-body input, .mod-body textarea, .mod-body select{max-width:100%}
 .brief-hint{font-size:10px;color:var(--n400);line-height:1.45;margin-top:4px;font-style:italic}
+.brief-targets{
+  margin:10px 0 4px;padding:8px 10px;background:var(--n50);border:1px solid var(--n200);border-radius:7px;
+  font-size:10.5px;color:var(--n700);line-height:1.6;
+}
+.brief-targets b{color:var(--n900)}
+.brief-targets .bt-empty{color:var(--n400);font-style:italic}
 
 /* reveal-on-demand input */
 .add-more{
@@ -559,6 +570,10 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .seg.seg-grid button:last-child:nth-child(odd){grid-column:1 / -1}
 input[type=range]{width:100%;accent-color:var(--blue)}
 .range-ticks{display:flex;justify-content:space-between;font-size:9px;color:var(--n400);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.tune-preview{
+  margin-top:12px;padding:8px 10px;background:var(--n50);border:1px solid var(--n200);border-radius:7px;
+  font-size:10.5px;color:var(--n700);line-height:1.55;font-style:italic;
+}
 
 /* goal result tags */
 .fw-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
@@ -569,35 +584,72 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-tag.outcomes {background:rgba(22,163,74,.10);color:var(--zone-outcomes)}
 .goal-note{font-size:11px;color:var(--n500);line-height:1.5;margin-top:6px;font-style:italic}
 
-/* ── DOCK (TE-style key row) ── */
-.dock{
-  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:6px;
-  background:var(--navy);border:1px solid rgba(30,20,10,0.14);
-  border-radius:12px;padding:7px 9px;
-  box-shadow:0 6px 24px rgba(0,0,0,0.14);z-index:550;
+/* ── TOP FRAMEWORK BAR (prototype) ── */
+.fw-topbar{
+  position:absolute;top:14px;left:14px;right:14px;height:44px;z-index:80;
+  background:#fff;border:1px solid var(--n300);border-radius:10px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.09);
+  display:flex;align-items:center;gap:14px;padding:0 14px;cursor:pointer;
+  transition:box-shadow .15s;
 }
-.dock-sep{width:1px;height:34px;background:rgba(30,20,10,0.14);margin:0 3px}
-.dock-preset{display:flex;flex-direction:column;gap:2px;justify-content:center}
+.fw-topbar:hover{box-shadow:0 6px 20px rgba(0,0,0,0.13)}
+.fw-topbar .fw-top-name{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n700);white-space:nowrap;flex-shrink:0}
+.fw-topbar .fw-top-count{font-size:11px;color:var(--n500);white-space:nowrap;flex-shrink:0}
+.fw-top-chips{display:flex;gap:6px;flex:1;overflow:hidden;min-width:0}
+.fw-top-chips .fw-tag{flex-shrink:0}
+.fw-top-empty{font-size:11px;color:var(--n400);font-style:italic;white-space:nowrap}
+.fw-top-toggle{font-size:10px;font-weight:700;color:var(--n500);white-space:nowrap;flex-shrink:0;letter-spacing:.03em}
+.fw-topbar.open .fw-top-toggle{color:var(--n900)}
+
+.fw-top-panel{
+  position:absolute;top:64px;left:14px;right:14px;z-index:79;
+  max-height:0;overflow:hidden;opacity:0;
+  background:#fff;border:1px solid var(--n300);border-radius:10px;
+  box-shadow:0 10px 32px rgba(0,0,0,0.16);
+  transition:max-height .18s ease,opacity .15s ease;
+}
+.fw-top-panel.open{max-height:min(66vh,520px);overflow-y:auto;opacity:1}
+.fw-top-panel-inner{padding:16px 18px 18px}
+.fw-top-controls{display:flex;gap:22px;flex-wrap:wrap;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--n200)}
+.fw-top-controls .fw-top-ctl-group{min-width:180px;flex:1}
+.fw-top-grid-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.fw-top-grid-hdr .lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n500)}
+.fw-top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.fw-top-card{
+  border:1px solid var(--n200);border-radius:8px;padding:9px 11px;cursor:default;
+  transition:border-color .12s,background .12s;
+}
+.fw-top-card.match{border-color:currentColor}
+.fw-top-card .name{font-size:11.5px;font-weight:700}
+.fw-top-card .full{font-size:10.5px;color:var(--n500);line-height:1.45;margin-top:3px}
+
+
+/* ── DOCK (now docked top-right, inline in the topbar) ── */
+.dock{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.55);border:1px solid rgba(30,20,10,0.14);
+  border-radius:10px;padding:5px 7px;
+}
+.dock-sep{width:1px;height:24px;background:rgba(30,20,10,0.14);margin:0 3px}
+.dock-preset{display:flex;align-items:center;gap:6px}
 .dock-preset-lbl{
   font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(30,20,10,0.42);padding-left:2px;
+  color:rgba(30,20,10,0.42);
 }
 #layout-sel{
-  max-width:168px;border:1px solid rgba(30,20,10,0.16);border-radius:6px;background:#fff;
+  max-width:150px;border:1px solid rgba(30,20,10,0.16);border-radius:6px;background:#fff;
   font-family:var(--sans);font-size:11px;font-weight:600;color:var(--n800,#2b2622);
   padding:3px 5px;cursor:pointer;outline:none;
 }
 #layout-sel:hover{border-color:rgba(30,20,10,0.32)}
 .dock-mini{
-  align-self:flex-end;margin-bottom:1px;
   border:1px solid rgba(30,20,10,0.16);background:#fff;border-radius:6px;
   font-family:var(--sans);font-size:10px;font-weight:700;color:var(--n600);
   padding:4px 8px;cursor:pointer;transition:border-color .13s,color .13s;
 }
 .dock-mini:hover{border-color:var(--dark);color:var(--dark)}
 .dock-add{
-  align-self:flex-end;margin-bottom:1px;max-width:150px;
+  align-self:center;max-width:130px;
   border:1px dashed rgba(30,20,10,0.24);border-radius:6px;background:#fff;
   font-family:var(--sans);font-size:10px;font-weight:700;color:var(--n600);
   padding:4px 6px;cursor:pointer;outline:none;transition:border-color .13s,color .13s;
@@ -623,10 +675,70 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 <body>
 
 <div class="topbar">
-  <span class="topbar-sub">Patient Education Analyzer</span>
+  <div class="topbar-left">
+    <span class="topbar-sub">Patient Education Analyzer</span>
+    <div class="mode-toggle" id="mode-toggle">
+      <button class="on" data-m="evaluate" onclick="setMode('evaluate',this)" title="Upload a draft and score it against frameworks">Evaluate a draft</button>
+      <button data-m="plan" onclick="setMode('plan',this)" title="No draft yet — use Brief and Frameworks to plan before writing">Plan from an idea</button>
+    </div>
+  </div>
+
+  <div class="dock" id="dock">
+    <div class="dock-preset">
+      <span class="dock-preset-lbl">Workspace</span>
+      <select id="layout-sel" onchange="applyLayout(this.value)" title="Pick a starting set of modules for what you're doing"></select>
+    </div>
+    <select id="add-mod-sel" class="dock-add" onchange="addModule(this.value)" title="Add a module to this workspace"></select>
+    <button class="dock-mini" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
+    <button class="dock-reset" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
+  </div>
 </div>
 
 <div class="stage" id="stage">
+
+  <!-- ── TOP FRAMEWORK BAR (prototype: moved out of the right rail) ── -->
+  <div class="fw-topbar" id="fw-topbar" onclick="toggleFwTop()">
+    <span class="fw-top-name">Frameworks</span>
+    <span class="fw-top-count" id="fw-top-count">Set Goal / Stage / Scored to see matches</span>
+    <div class="fw-top-chips" id="fw-top-chips"></div>
+    <span class="fw-top-toggle" id="fw-top-toggle">Show all 26 ▸</span>
+  </div>
+  <div class="fw-top-panel" id="fw-top-panel">
+    <div class="fw-top-panel-inner">
+      <div class="fw-top-controls" onclick="event.stopPropagation()">
+        <div class="fw-top-ctl-group">
+          <div class="tune-lbl">Goal</div>
+          <div class="seg seg-goal seg-grid" id="seg-g1top">
+            <button data-v="clarity"  onclick="setGoalTop(1,'clarity',this)">Understand</button>
+            <button data-v="process"  onclick="setGoalTop(1,'process',this)">Decide</button>
+            <button data-v="behavior" onclick="setGoalTop(1,'behavior',this)">Behavior</button>
+            <button data-v="outcomes" onclick="setGoalTop(1,'outcomes',this)">Experience</button>
+          </div>
+        </div>
+        <div class="fw-top-ctl-group">
+          <div class="tune-lbl">Stage</div>
+          <div class="seg" id="seg-g2top">
+            <button data-v="designing" onclick="setGoalTop(2,'designing',this)">Drafting</button>
+            <button data-v="auditing"  onclick="setGoalTop(2,'auditing',this)">Auditing</button>
+            <button data-v="measuring" onclick="setGoalTop(2,'measuring',this)">Measuring</button>
+          </div>
+        </div>
+        <div class="fw-top-ctl-group">
+          <div class="tune-lbl">Scored output?</div>
+          <div class="seg" id="seg-g3top">
+            <button data-v="yes"    onclick="setGoalTop(3,'yes',this)">Scored</button>
+            <button data-v="no"     onclick="setGoalTop(3,'no',this)">Qualitative</button>
+            <button data-v="either" onclick="setGoalTop(3,'either',this)">Either</button>
+          </div>
+        </div>
+      </div>
+      <div class="fw-top-grid-hdr">
+        <span class="lbl">All 26 frameworks</span>
+        <span class="goal-note" id="goal-note-top" style="margin-top:0"></span>
+      </div>
+      <div class="fw-top-grid" id="fw-top-grid"></div>
+    </div>
+  </div>
 
   <!-- ── CANVAS ── -->
   <div class="canvas" id="canvas">
@@ -782,6 +894,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
           <button data-v="manual"   onclick="setBrief('format','manual',this)">Guideline / manual</button>
         </div>
 
+        <div class="brief-targets" id="brief-targets"></div>
+
         <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="The one thing a reader must take away. It's checked against your opening paragraph — CCI item 1 requires the main message up front, and that item scores itself once you fill this in.">Main message</span></div>
         <input class="brief-input" id="brief-msg" type="text" maxlength="140"
                placeholder="e.g. Check your blood pressure twice a day"
@@ -878,6 +992,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
           <button data-v="inline" onclick="setTune('disc','inline',this)">Inline</button>
           <button data-v="none" onclick="setTune('disc','none',this)">None</button>
         </div>
+        <div class="tune-preview" id="tune-preview"></div>
       </div>
     </div>
 
@@ -954,50 +1069,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
       </div>
     </div>
 
-    <!-- ── MODULE: GOAL / FRAMEWORK PICKER ── -->
-    <div class="mod mod-goal" id="mod-goal">
-      <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Answer three questions and this recommends which of the 26 patient-experience frameworks fit your project. Hover any result tag for its full name.">Frameworks</span>
-        
-        
-        <button class="mod-min" onclick="toggleCollapse('mod-goal')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-goal')" title="Remove from this workspace">✕</button>
-      </div>
-      <div class="mod-body">
-        <div class="tune-lbl">Goal</div>
-        <div class="seg seg-goal seg-grid" id="seg-g1">
-          <button data-v="clarity"  onclick="setGoal(1,'clarity',this)">Understand</button>
-          <button data-v="process"  onclick="setGoal(1,'process',this)">Decide</button>
-          <button data-v="behavior" onclick="setGoal(1,'behavior',this)">Behavior</button>
-          <button data-v="outcomes" onclick="setGoal(1,'outcomes',this)">Experience</button>
-        </div>
-        <div class="tune-lbl">Stage</div>
-        <div class="seg" id="seg-g2">
-          <button data-v="designing" onclick="setGoal(2,'designing',this)">Drafting</button>
-          <button data-v="auditing"  onclick="setGoal(2,'auditing',this)">Auditing</button>
-          <button data-v="measuring" onclick="setGoal(2,'measuring',this)">Measuring</button>
-        </div>
-        <div class="tune-lbl">Scored output?</div>
-        <div class="seg" id="seg-g3">
-          <button data-v="yes"    onclick="setGoal(3,'yes',this)">Scored</button>
-          <button data-v="no"     onclick="setGoal(3,'no',this)">Qualitative</button>
-          <button data-v="either" onclick="setGoal(3,'either',this)">Either</button>
-        </div>
-        <div class="fw-tags" id="fw-tags"></div>
-        <div class="goal-note" id="goal-note"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ── DOCK ── -->
-  <div class="dock" id="dock">
-    <div class="dock-preset">
-      <span class="dock-preset-lbl">Workspace</span>
-      <select id="layout-sel" onchange="applyLayout(this.value)" title="Pick a starting set of modules for what you're doing"></select>
-    </div>
-    <select id="add-mod-sel" class="dock-add" onchange="addModule(this.value)" title="Add a module to this workspace"></select>
-    <button class="dock-mini" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
-    <button class="dock-reset" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
   </div>
 
 </div><!-- /stage -->
@@ -1264,8 +1335,25 @@ function setBrief(key, val, btn){
       : 'Sets the word budget and which checks apply.';
   }
   renderBriefHeader();
+  renderBriefTargets();
   analyze();
   if(key === 'audience' || key === 'format') pushNav();
+}
+function renderBriefTargets(){
+  const el = $('brief-targets');
+  if(!el) return;
+  const a = AUDIENCE_SPEC[brief.audience];
+  const f = FORMAT_SPEC[brief.format];
+  if(!a && !f){
+    el.innerHTML = '<span class="bt-empty">Set Audience and Format above to see live targets.</span>';
+    return;
+  }
+  const parts = [];
+  if(a) parts.push('Grade ≤ <b>'+a.grade+'</b> · Ease <b>'+a.ease+'+</b> · Sentences ≤ <b>'+a.sentLen+'</b>w');
+  else parts.push('<span class="bt-empty">Set Audience for a reading-level target</span>');
+  if(f) parts.push('Word budget <b>'+f.words[0]+'–'+f.words[1]+'</b>');
+  else parts.push('<span class="bt-empty">Set Format for a word budget</span>');
+  el.innerHTML = parts.join(' &nbsp;·&nbsp; ');
 }
 
 function toggleReq(id, on){ brief.reqs[id] = on; renderBriefHeader(); refreshScores(); }
@@ -2680,8 +2768,16 @@ function setTune(key, val, btn){
   if(btn){
     btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
   }
-  const toneLbl = {clinical:'clinical',conversational:'plain',empathetic:'warm'}[tune.tone];
-  const lvlLbl = {expert:'expert',general:'general',lay:'lay'}[tune.level];
+  renderTunePreview();
+}
+function renderTunePreview(){
+  const el = $('tune-preview');
+  if(!el) return;
+  const toneTxt = {clinical:'clinical, precise wording', conversational:'plain, everyday wording', empathetic:'warm, reassuring wording'}[tune.tone] || 'plain wording';
+  const lvlTxt = {expert:'expert reading level', general:'general reading level', lay:'lay reading level'}[tune.level] || 'lay reading level';
+  const verbTxt = {'1':'concise — essentials only', '2':'balanced explanation', '3':'detailed, more context and examples'}[String(tune.verb)] || 'balanced explanation';
+  const discTxt = {full:'a standalone disclaimer block', inline:'caveats woven into the text', none:'no disclaimer text added'}[tune.disc] || 'a standalone disclaimer block';
+  el.innerHTML = 'Preview: <b>'+toneTxt+'</b> at <b>'+lvlTxt+'</b>, <b>'+verbTxt+'</b>, with <b>'+discTxt+'</b>.';
 }
 
 // ── GOAL / framework recommender (same result map as Classic) ──
@@ -2780,8 +2876,55 @@ function setGoal(step, val, btn){
   }
 }
 
+// ── TOP FRAMEWORK BAR (prototype) — same data, new home ──
+const goalStateTop = {};
+function currentMatchSet(){
+  const key = [goalStateTop[1],goalStateTop[2],goalStateTop[3]].filter(Boolean).join('-');
+  const res = GOAL_RESULTS[key];
+  return res ? res.fws : [];
+}
+function renderFwTopGrid(){
+  const matched = currentMatchSet();
+  const grid = $('fw-top-grid');
+  grid.innerHTML = Object.keys(FW_LABEL).map(f => {
+    const isMatch = matched.includes(f);
+    const zone = FW_ZONE[f];
+    return '<div class="fw-top-card'+(isMatch?' match':'')+'" style="'+(isMatch?'color:var(--zone-'+zone+');background:rgba(0,0,0,0.015)':'')+'">'
+      + '<div class="name" style="color:'+(isMatch?'var(--zone-'+zone+')':'var(--n700)')+'">'+FW_LABEL[f]+(isMatch?' ✓':'')+'</div>'
+      + '<div class="full">'+FW_FULL[f]+'</div></div>';
+  }).join('');
+}
+function renderFwTopBar(){
+  const matched = currentMatchSet();
+  const chips = $('fw-top-chips'), count = $('fw-top-count'), note = $('goal-note-top');
+  const key = [goalStateTop[1],goalStateTop[2],goalStateTop[3]].filter(Boolean).join('-');
+  const res = GOAL_RESULTS[key];
+  if(matched.length){
+    chips.innerHTML = matched.map(f => '<span class="fw-tag '+FW_ZONE[f]+'" title="'+(FW_FULL[f]||FW_LABEL[f])+'">'+FW_LABEL[f]+'</span>').join('');
+    count.textContent = matched.length + ' of 26 match';
+    note.textContent = (res && res.note) || '';
+  } else {
+    chips.innerHTML = '<span class="fw-top-empty">Set Goal · Stage · Scored output to see matches</span>';
+    count.textContent = '';
+    note.textContent = '';
+  }
+  renderFwTopGrid();
+}
+function setGoalTop(step, val, btn){
+  goalStateTop[step] = val;
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
+  renderFwTopBar();
+}
+function toggleFwTop(){
+  const bar = $('fw-topbar'), panel = $('fw-top-panel'), toggle = $('fw-top-toggle');
+  const open = panel.classList.toggle('open');
+  bar.classList.toggle('open', open);
+  toggle.textContent = open ? 'Show top only ▾' : 'Show all 26 ▸';
+}
+renderFwTopBar();
+
 // ── Module dock / rails (fixed columns — drag only reorders) ──
-const MODS = ['mod-brief','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc','mod-tune','mod-goal'];
+const MODS = ['mod-brief','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc','mod-tune'];
 
 // ════════════════════════════════════════
 // WORKSPACE PRESETS — a starting set of modules per scenario
@@ -2789,7 +2932,7 @@ const MODS = ['mod-brief','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y'
 const LAYOUTS = {
   'everything': { name:'Everything', note:'All nine modules.',
     left:['mod-brief','mod-read','mod-cci','mod-tune'],
-    right:['mod-pemat','mod-scan','mod-a11y','mod-acc','mod-goal'] },
+    right:['mod-pemat','mod-scan','mod-a11y','mod-acc'] },
 
   'drafting': { name:'Drafting a new piece', note:'Brief, readability, tone and the plain-language scan — what you need while writing.',
     left:['mod-brief','mod-read','mod-tune'],
@@ -2811,8 +2954,8 @@ const LAYOUTS = {
     left:['mod-brief','mod-acc'],
     right:['mod-pemat','mod-cci'] },
 
-  'frameworks': { name:'Choosing a framework', note:'The framework picker with the three scored tools for reference.',
-    left:['mod-brief','mod-goal'],
+  'frameworks': { name:'Choosing a framework', note:'The framework bar at top handles picking now — this just keeps the three scored tools for reference.',
+    left:['mod-brief'],
     right:['mod-cci','mod-pemat','mod-read'] },
 };
 const LS_KEY = 'pea-studio-layouts';
@@ -2847,6 +2990,17 @@ function renderLayoutSelect(){
   sel.value = currentLayout;
 }
 
+function setMode(m, btn){
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
+  if(m === 'plan'){
+    applyLayout('frameworks', true);
+    flashHint('Planning mode — set Brief and Frameworks first. Add scoring modules (CCI, PEMAT…) once you have a draft to check them against.');
+  } else {
+    applyLayout('everything', true);
+    flashHint('Evaluate mode — upload or paste a draft and it scores against your Brief and the frameworks.');
+  }
+}
+
 function applyLayout(key, silent){
   const L = allLayouts()[key];
   if(!L) return;
@@ -2874,7 +3028,7 @@ function applyLayout(key, silent){
 const MOD_NAMES = {
   'mod-brief':'Brief', 'mod-read':'Readability', 'mod-cci':'CCI',
   'mod-pemat':'PEMAT', 'mod-scan':'Plain language', 'mod-a11y':'Accessibility',
-  'mod-acc':'Accuracy', 'mod-tune':'Tune', 'mod-goal':'Frameworks',
+  'mod-acc':'Accuracy', 'mod-tune':'Tune',
 };
 
 // The "add module" menu only lists what isn't already on screen
@@ -3143,6 +3297,7 @@ window.addEventListener('resize', hideTip);
 setTune('tone','conversational', document.querySelector('#seg-tone button.on'));
 renderReqs();
 renderBriefHeader();
+renderBriefTargets();
 renderFileHistory();
 renderVersions();
 renderPalette();
