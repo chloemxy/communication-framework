@@ -50,8 +50,14 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
   background:var(--navy);height:48px;
   display:flex;align-items:center;gap:10px;padding:0 20px;
   flex-shrink:0;border-bottom:1px solid rgba(30,20,10,0.10);z-index:600;
+  justify-content:space-between;
+  overflow-x:auto;overflow-y:hidden;
 }
-.topbar-sub{font-size:16px;font-weight:500;color:rgba(30,20,10,0.72)}
+.mode-toggle{display:flex;gap:4px;background:rgba(30,20,10,0.06);border-radius:8px;padding:3px;margin-left:14px;flex-shrink:0}
+.mode-toggle button{border:none;background:transparent;font-family:var(--sans);font-size:11px;font-weight:600;color:rgba(30,20,10,0.55);padding:5px 10px;border-radius:6px;cursor:pointer;white-space:nowrap}
+.mode-toggle button.on{background:#fff;color:var(--n900);box-shadow:0 1px 3px rgba(0,0,0,0.10)}
+.topbar-left{display:flex;align-items:center;flex-shrink:0}
+.topbar-sub{font-size:16px;font-weight:500;color:rgba(30,20,10,0.72);white-space:nowrap}
 
 
 .topbar-hint{font-size:12px;color:rgba(30,20,10,0.40);margin-left:12px}
@@ -65,7 +71,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 
 /* ── CANVAS (document workspace) ── */
 .canvas{
-  position:absolute;top:26px;bottom:74px;left:282px;right:282px;
+  position:absolute;top:72px;bottom:14px;left:14px;right:348px;
   min-width:320px;
   background:#fff;border:1px solid var(--n300);border-radius:10px;
   box-shadow:0 3px 18px rgba(0,0,0,0.07);
@@ -329,12 +335,11 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 
 /* ── MODULE RAILS (fixed columns, no free placement) ── */
 .mod-rail{
-  position:absolute;top:24px;bottom:90px;
-  width:252px;display:flex;flex-direction:column;gap:14px;
+  position:absolute;top:70px;bottom:14px;
+  display:flex;flex-direction:column;gap:14px;
   overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;padding:2px 2px 2px 0;
 }
-.mod-rail-left{left:14px}
-.mod-rail-right{right:14px}
+.mod-rail-right{right:14px;width:320px}
 .mod-rail.drag-target{background:rgba(123,97,255,0.05);border-radius:10px}
 
 /* ── MODULES (stacked in rail, reorder-only drag) ── */
@@ -384,6 +389,12 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 }
 .mod-body input, .mod-body textarea, .mod-body select{max-width:100%}
 .brief-hint{font-size:10px;color:var(--n400);line-height:1.45;margin-top:4px;font-style:italic}
+.brief-targets{
+  margin:10px 0 4px;padding:8px 10px;background:var(--n50);border:1px solid var(--n200);border-radius:7px;
+  font-size:10.5px;color:var(--n700);line-height:1.6;
+}
+.brief-targets b{color:var(--n900)}
+.brief-targets .bt-empty{color:var(--n400);font-style:italic}
 
 /* reveal-on-demand input */
 .add-more{
@@ -559,6 +570,10 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .seg.seg-grid button:last-child:nth-child(odd){grid-column:1 / -1}
 input[type=range]{width:100%;accent-color:var(--blue)}
 .range-ticks{display:flex;justify-content:space-between;font-size:9px;color:var(--n400);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
+.tune-preview{
+  margin-top:12px;padding:8px 10px;background:var(--n50);border:1px solid var(--n200);border-radius:7px;
+  font-size:10.5px;color:var(--n700);line-height:1.55;font-style:italic;
+}
 
 /* goal result tags */
 .fw-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
@@ -569,35 +584,127 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-tag.outcomes {background:rgba(22,163,74,.10);color:var(--zone-outcomes)}
 .goal-note{font-size:11px;color:var(--n500);line-height:1.5;margin-top:6px;font-style:italic}
 
-/* ── DOCK (TE-style key row) ── */
-.dock{
-  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:6px;
-  background:var(--navy);border:1px solid rgba(30,20,10,0.14);
-  border-radius:12px;padding:7px 9px;
-  box-shadow:0 6px 24px rgba(0,0,0,0.14);z-index:550;
+/* ── TOP FRAMEWORK BAR (prototype) ── */
+.top-bars{position:absolute;top:14px;left:14px;right:14px;display:flex;gap:14px;z-index:80}
+.top-bar-col{min-width:0;position:relative}
+.top-bar-col:first-child{flex:0 0 38%}
+.top-bar-col:last-child{flex:1}
+
+.fw-topbar{
+  position:static;height:44px;
+  background:#fff;border:1px solid var(--n300);border-radius:10px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.09);
+  display:flex;align-items:center;gap:14px;padding:0 14px;cursor:pointer;
+  transition:box-shadow .15s;
 }
-.dock-sep{width:1px;height:34px;background:rgba(30,20,10,0.14);margin:0 3px}
-.dock-preset{display:flex;flex-direction:column;gap:2px;justify-content:center}
+.fw-topbar:hover{box-shadow:0 6px 20px rgba(0,0,0,0.13)}
+.fw-topbar .fw-top-name{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n700);white-space:nowrap;flex-shrink:0}
+.fw-topbar .fw-top-count{font-size:11px;color:var(--n500);white-space:nowrap;flex-shrink:0;overflow:hidden;text-overflow:ellipsis}
+.fw-top-chips{display:flex;gap:6px;flex:1;overflow:hidden;min-width:0}
+.fw-top-chips .fw-tag{flex-shrink:0}
+.fw-top-empty{font-size:11px;color:var(--n400);font-style:italic;white-space:nowrap}
+.fw-top-toggle{font-size:10px;font-weight:700;color:var(--n500);white-space:nowrap;flex-shrink:0;letter-spacing:.03em;margin-left:auto;padding-left:8px}
+.fw-topbar.open .fw-top-toggle{color:var(--n900)}
+#brief-top-summary{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+
+.fw-top-panel{
+  position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:79;
+  max-height:0;overflow:hidden;opacity:0;
+  background:#fff;border:1px solid var(--n300);border-radius:10px;
+  box-shadow:0 10px 32px rgba(0,0,0,0.16);
+  transition:max-height .18s ease,opacity .15s ease;
+}
+.fw-top-panel.open{max-height:min(70vh,640px);overflow-y:auto;opacity:1}
+.fw-top-panel-inner{padding:16px 18px 18px}
+.fw-top-controls{display:flex;gap:16px;flex-wrap:wrap;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--n200)}
+.fw-top-controls .fw-top-ctl-group{min-width:140px;flex:1}
+.fw-top-grid-hdr{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.fw-top-grid-hdr .lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n500)}
+.fw-top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.fw-top-card{
+  border:1px solid var(--n200);border-radius:8px;padding:9px 11px;cursor:default;
+  transition:border-color .12s,background .12s;
+}
+.fw-top-card.match{border-color:currentColor}
+.fw-top-card .name{font-size:11.5px;font-weight:700}
+.fw-top-card .full{font-size:10.5px;color:var(--n500);line-height:1.45;margin-top:3px}
+
+/* ── FRAMEWORK OUTPUTS card + selection reflected on live cards ── */
+.mod.fw-off{opacity:.5;transition:opacity .15s}
+.mod.fw-off:hover{opacity:1}
+.mod.fw-on{border-color:var(--zone-clarity)}
+.fwo-note{font-size:10.5px;color:var(--n500);line-height:1.5;margin-bottom:10px}
+.fwo-item{border:1px solid var(--n200);border-radius:8px;margin-bottom:8px;overflow:hidden;background:#fff}
+.fwo-hdr{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;user-select:none}
+.fwo-hdr:hover{background:var(--n50)}
+.fwo-zone{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.fwo-name{font-size:12px;font-weight:700;color:var(--n900);flex:1;min-width:0}
+.fwo-stat{font-size:10px;color:var(--n500);white-space:nowrap}
+.fwo-chev{font-size:9px;color:var(--n400);transition:transform .12s}
+.fwo-item.open .fwo-chev{transform:rotate(90deg)}
+.fwo-body{display:none;padding:4px 10px 10px;border-top:1px solid var(--n100)}
+.fwo-item.open .fwo-body{display:block}
+.fwo-meta{font-size:10.5px;color:var(--n500);line-height:1.5;margin:6px 0 2px}
+.fwo-link{border:1px solid var(--n300);background:#fff;border-radius:6px;font-family:var(--sans);font-size:10px;font-weight:700;color:var(--n600);padding:3px 8px;cursor:pointer;white-space:nowrap}
+.fwo-link:hover{border-color:var(--n500)}
+.fwo-need{background:#fff8e6;border:1px solid #f0e2c0;border-radius:8px;padding:9px 11px;font-size:11px;line-height:1.5;color:#7a5a00;margin-bottom:10px}
+.fwo-need b{color:#5c4300}
+.vm-hint{display:none;margin-top:6px;padding:7px 9px;background:#fff8e6;border:1px solid #f0e2c0;border-radius:7px;font-size:11px;line-height:1.45;color:#7a5a00}
+.fwo-dom{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n400);margin:10px 0 3px}
+.fwo-row{display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-bottom:1px solid var(--n100)}
+.fwo-row .t{flex:1;font-size:11px;line-height:1.4;color:var(--n700)}
+.fwo-row select{font-size:10px;padding:2px 3px;border:1px solid var(--n300);border-radius:5px;background:#fff;max-width:74px;font-family:var(--sans)}
+.fwo-row.na .t{color:var(--n400);font-style:italic}
+.fwo-row.na .fwo-stat{font-size:9px;max-width:74px;white-space:normal;text-align:right}
+.fwo-about{margin-top:10px;font-size:10.5px;color:var(--n500);line-height:1.5}
+.fwo-about b{color:var(--n700)}
+.fwo-about a{color:var(--zone-clarity)}
+.fwo-src{margin:4px 0 0;padding-left:14px}
+.fw-clear-btn{border:none;background:none;font-family:var(--sans);font-size:10px;font-weight:700;color:var(--n500);cursor:pointer;padding:0;margin-left:10px;white-space:nowrap}
+.fw-clear-btn:hover{color:var(--n900);text-decoration:underline}
+.fw-top-clear{font-size:11px;font-weight:700;color:var(--n400);cursor:pointer;padding:2px 6px;border-radius:5px;flex-shrink:0}
+.fw-top-clear:hover{background:var(--n100);color:var(--n900)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.fw-ico{font-size:11px;margin-right:4px;opacity:.85}
+.fw-card-badge{font-size:10px;color:var(--n500);margin-top:2px}
+.fw-badge-row{padding:6px 12px 8px;font-size:10.5px;color:var(--n500);display:flex;align-items:flex-start;gap:6px;line-height:1.35}
+.fw-badge-row .ico{font-size:12px;color:var(--n600);flex-shrink:0}
+.fwo-group{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n500);margin:14px 0 6px;display:flex;align-items:center;gap:6px}
+.fwo-note + .fwo-group{margin-top:4px}
+.fwo-list{margin:4px 0 0;padding-left:16px;font-size:11px;line-height:1.45;color:var(--n700)}
+.fwo-list li{margin:3px 0}
+.fwo-hdr:focus-visible{outline:2px solid var(--zone-clarity);outline-offset:-2px}
+
+
+
+
+/* ── DOCK (now docked top-right, inline in the topbar) ── */
+.dock{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.55);border:1px solid rgba(30,20,10,0.14);
+  border-radius:10px;padding:5px 7px;
+  flex-shrink:0;
+}
+.dock-sep{width:1px;height:24px;background:rgba(30,20,10,0.14);margin:0 3px}
+.dock-preset{display:flex;align-items:center;gap:6px}
 .dock-preset-lbl{
   font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  color:rgba(30,20,10,0.42);padding-left:2px;
+  color:rgba(30,20,10,0.42);
 }
 #layout-sel{
-  max-width:168px;border:1px solid rgba(30,20,10,0.16);border-radius:6px;background:#fff;
+  max-width:150px;border:1px solid rgba(30,20,10,0.16);border-radius:6px;background:#fff;
   font-family:var(--sans);font-size:11px;font-weight:600;color:var(--n800,#2b2622);
   padding:3px 5px;cursor:pointer;outline:none;
 }
 #layout-sel:hover{border-color:rgba(30,20,10,0.32)}
 .dock-mini{
-  align-self:flex-end;margin-bottom:1px;
   border:1px solid rgba(30,20,10,0.16);background:#fff;border-radius:6px;
   font-family:var(--sans);font-size:10px;font-weight:700;color:var(--n600);
   padding:4px 8px;cursor:pointer;transition:border-color .13s,color .13s;
 }
 .dock-mini:hover{border-color:var(--dark);color:var(--dark)}
 .dock-add{
-  align-self:flex-end;margin-bottom:1px;max-width:150px;
+  align-self:center;max-width:130px;
   border:1px dashed rgba(30,20,10,0.24);border-radius:6px;background:#fff;
   font-family:var(--sans);font-size:10px;font-weight:700;color:var(--n600);
   padding:4px 6px;cursor:pointer;outline:none;transition:border-color .13s,color .13s;
@@ -623,10 +730,131 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 <body>
 
 <div class="topbar">
-  <span class="topbar-sub">Patient Education Analyzer</span>
+  <div class="topbar-left">
+    <span class="topbar-sub">Patient Education Analyzer</span>
+    <div class="mode-toggle" id="mode-toggle">
+      <button class="on" data-m="evaluate" onclick="setMode('evaluate',this)" title="Upload a draft and score it against frameworks">Evaluate a draft</button>
+      <button data-m="plan" onclick="setMode('plan',this)" title="No draft yet — use Brief and Frameworks to plan before writing">Plan from an idea</button>
+    </div>
+  </div>
+
+  <div class="dock" id="dock">
+    <div class="dock-preset">
+      <span class="dock-preset-lbl">Workspace</span>
+      <select id="layout-sel" onchange="applyLayout(this.value)" title="Pick a starting set of modules for what you're doing"></select>
+    </div>
+    <select id="add-mod-sel" class="dock-add" onchange="addModule(this.value)" title="Add a module to this workspace"></select>
+    <button class="dock-mini" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
+    <button class="dock-reset" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
+    <button class="dock-reset" onclick="clearInputs()" title="Clear the Brief (Audience, Format, Main message, Deadline, Requirements) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
+  </div>
 </div>
 
 <div class="stage" id="stage">
+
+  <!-- ── TOP BARS: BRIEF + FRAMEWORKS, side by side ── -->
+  <div class="top-bars" id="top-bars">
+
+    <div class="top-bar-col">
+      <div class="fw-topbar" id="brief-topbar" onclick="toggleBriefTop()" title="Answer these first. Your brief sets the targets every other module scores against — change the audience or format and the whole analysis re-tunes.">
+        <span class="fw-top-name">Brief</span>
+        <span class="fw-top-count" id="brief-top-summary">Set Audience and Format to see live targets.</span>
+        <span class="fw-top-toggle" id="brief-top-toggle">Edit ▸</span>
+      </div>
+      <div class="fw-top-panel" id="brief-top-panel">
+        <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
+          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="aud-hint" data-tip="Sets the reading-level target used by Read·ability, CCI and PEMAT. Clinical audiences also stop jargon counting as a failure.">Audience</span></div>
+          <div class="seg seg-grid" id="seg-aud">
+            <button data-v="patient"   onclick="setBrief('audience','patient',this)">Patients</button>
+            <button data-v="caregiver" onclick="setBrief('audience','caregiver',this)">Caregivers</button>
+            <button data-v="lowlit"    onclick="setBrief('audience','lowlit',this)">Low literacy</button>
+            <button data-v="hcp"       onclick="setBrief('audience','hcp',this)">Clinicians</button>
+          </div>
+
+          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="fmt-hint" data-tip="Sets the word budget and which checks apply. Digital pieces make alt text and link text mandatory rather than advisory.">Format</span></div>
+          <div class="seg seg-grid" id="seg-fmt">
+            <button data-v="poster"   onclick="setBrief('format','poster',this)">Poster</button>
+            <button data-v="brochure" onclick="setBrief('format','brochure',this)">Brochure</button>
+            <button data-v="handout"  onclick="setBrief('format','handout',this)">Handout</button>
+            <button data-v="digital"  onclick="setBrief('format','digital',this)">Digital</button>
+            <button data-v="manual"   onclick="setBrief('format','manual',this)">Guideline / manual</button>
+          </div>
+
+          <div class="brief-targets" id="brief-targets"></div>
+
+          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="The one thing a reader must take away. It's checked against your opening paragraph — CCI item 1 requires the main message up front, and that item scores itself once you fill this in.">Main message</span></div>
+          <input class="brief-input" id="brief-msg" type="text" maxlength="140"
+                 placeholder="e.g. Check your blood pressure twice a day"
+                 oninput="setBrief('message',this.value)">
+
+          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Shows a live countdown beside the date. Turns amber inside 3 days, red when overdue.">Deadline</span></div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input class="brief-input" id="brief-due" type="date" style="flex:1;margin:0"
+                   onchange="setBrief('deadline',this.value)">
+            <span class="brief-due-badge" id="due-badge"></span>
+          </div>
+
+          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Constraints no automated check can see — confirm each one before sign-off.">Requirements &amp; restrictions</span></div>
+          <div id="req-list"></div>
+          <button class="add-more" id="notes-add" onclick="showNotes()">＋ Add another constraint</button>
+          <div id="notes-wrap" style="display:none">
+            <textarea class="brief-input" id="brief-notes" rows="3" style="resize:vertical"
+                      placeholder="Brand rules, legal copy, print specs, translations…"
+                      oninput="setBrief('notes',this.value)" onblur="maybeHideNotes()"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-bar-col">
+      <div class="fw-topbar" id="fw-topbar" onclick="toggleFwTop()" title="Answer three questions and this recommends which of the 26 patient-experience frameworks fit your project. Check a card to include or exclude it manually; click a card's source link to read the original.">
+        <span class="fw-top-name">Frameworks</span>
+        <span class="fw-top-count" id="fw-top-count">Set Goal · Stage · Scored to see matches</span>
+        <div class="fw-top-chips" id="fw-top-chips"></div>
+        <span class="fw-top-clear" id="fw-top-clear" style="display:none" onclick="event.stopPropagation();clearFrameworks()" title="Clear Goal, Stage, Scored and any frameworks you ticked">✕ Clear</span>
+        <span class="fw-top-toggle" id="fw-top-toggle">Show all 26 ▸</span>
+      </div>
+      <div class="fw-top-panel" id="fw-top-panel">
+        <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
+          <div class="fw-top-controls">
+            <div class="fw-top-ctl-group">
+              <div class="tune-lbl">Goal</div>
+              <div class="seg seg-goal seg-grid" id="seg-g1top">
+                <button data-v="clarity"  onclick="setGoalTop(1,'clarity',this)">Understand</button>
+                <button data-v="process"  onclick="setGoalTop(1,'process',this)">Decide</button>
+                <button data-v="behavior" onclick="setGoalTop(1,'behavior',this)">Behavior</button>
+                <button data-v="outcomes" onclick="setGoalTop(1,'outcomes',this)">Experience</button>
+              </div>
+            </div>
+            <div class="fw-top-ctl-group">
+              <div class="tune-lbl">Stage</div>
+              <div class="seg" id="seg-g2top">
+                <button data-v="designing" onclick="setGoalTop(2,'designing',this)">Drafting</button>
+                <button data-v="auditing"  onclick="setGoalTop(2,'auditing',this)">Auditing</button>
+                <button data-v="measuring" onclick="setGoalTop(2,'measuring',this)">Measuring</button>
+              </div>
+            </div>
+            <div class="fw-top-ctl-group">
+              <div class="tune-lbl">Scored output?</div>
+              <div class="seg" id="seg-g3top">
+                <button data-v="yes"    onclick="setGoalTop(3,'yes',this)">Scored</button>
+                <button data-v="no"     onclick="setGoalTop(3,'no',this)">Qualitative</button>
+                <button data-v="either" onclick="setGoalTop(3,'either',this)">Either</button>
+              </div>
+            </div>
+          </div>
+          <div class="fw-top-grid-hdr">
+            <span class="lbl">All 26 frameworks — check to include, uncheck to exclude</span>
+            <a href="framework-compass.html" target="_blank" rel="noopener" style="font-size:10px;font-weight:700;color:var(--n500);text-decoration:none;white-space:nowrap" onclick="event.stopPropagation()">Full compass ↗</a>
+            <button class="fw-clear-btn" onclick="clearFrameworks()" title="Clear Goal, Stage, Scored and any frameworks you ticked">Clear selection</button>
+          </div>
+          <div class="goal-note" id="goal-note-top" style="margin:-4px 0 8px"></div>
+          <div class="fw-top-grid" id="fw-top-grid"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <!-- ── CANVAS ── -->
   <div class="canvas" id="canvas">
@@ -702,6 +930,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
             <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Type or paste every word that appears in the artwork — headline, body, captions, labels, call to action.<br><br>This text is what Read·ability, CCI, PEMAT, the plain-language scan and content accuracy all score. Without it a poster can't be analysed.">Text in the artwork</span></div>
             <textarea class="brief-input" id="vm-transcript" rows="10" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
             <div class="vm-count" id="vm-txt-count">0 words</div>
+            <div class="vm-hint" id="vm-txt-hint"><b>Add the text to start scoring.</b> CCI, PEMAT, Readability and Plain language can't read an image. Type or paste every word from the artwork here and their cards will appear.</div>
 
             <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="What kind of visual this is. Data visualisations get extra checks — axis labels, legends and whether meaning is carried by colour alone.">Visual type</span></div>
             <div class="seg seg-grid" id="seg-vtype">
@@ -754,55 +983,17 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     </div>
   </div>
 
-  <!-- ── MODULE RAILS (neatly stacked, reorder by drag) ── -->
-  <div class="mod-rail mod-rail-left" id="rail-left">
+  <!-- ── MODULE RAILS (single rail now — Brief and Frameworks moved to the top bars) ── -->
+  <div class="mod-rail mod-rail-right" id="rail-right">
 
-    <!-- ── MODULE: BRIEF ── -->
-    <div class="mod mod-brief" id="mod-brief">
+    <!-- ── MODULE: FRAMEWORK OUTPUTS (reflects whatever is selected in the Frameworks bar) ── -->
+    <div class="mod mod-fwout" id="mod-fwout">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Answer these first. Your brief sets the targets every other module scores against — change the audience or format and the whole analysis re-tunes.">Brief</span>
-        
-        <button class="mod-min" onclick="toggleCollapse('mod-brief')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-brief')" title="Remove from this workspace">✕</button>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you select that the tool does not score by itself appear here. <b>You score it</b>: a checklist you rate yourself. <b>Needs real-world data</b>: reference only, because the real score comes from patients, observers or a live process. CCI, PEMAT, Readability and Plain language are scored in their own cards.">Framework checklists</span>
+        <span class="pill pill-empty" id="fwout-pill">—</span>
+        <button class="mod-min" onclick="toggleCollapse('mod-fwout')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
       </div>
-      <div class="mod-body">
-        <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="aud-hint" data-tip="Sets the reading-level target used by Read·ability, CCI and PEMAT. Clinical audiences also stop jargon counting as a failure.">Audience</span></div>
-        <div class="seg seg-grid" id="seg-aud">
-          <button data-v="patient"   onclick="setBrief('audience','patient',this)">Patients</button>
-          <button data-v="caregiver" onclick="setBrief('audience','caregiver',this)">Caregivers</button>
-          <button data-v="lowlit"    onclick="setBrief('audience','lowlit',this)">Low literacy</button>
-          <button data-v="hcp"       onclick="setBrief('audience','hcp',this)">Clinicians</button>
-        </div>
-
-        <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="fmt-hint" data-tip="Sets the word budget and which checks apply. Digital pieces make alt text and link text mandatory rather than advisory.">Format</span></div>
-        <div class="seg seg-grid" id="seg-fmt">
-          <button data-v="poster"   onclick="setBrief('format','poster',this)">Poster</button>
-          <button data-v="brochure" onclick="setBrief('format','brochure',this)">Brochure</button>
-          <button data-v="handout"  onclick="setBrief('format','handout',this)">Handout</button>
-          <button data-v="digital"  onclick="setBrief('format','digital',this)">Digital</button>
-          <button data-v="manual"   onclick="setBrief('format','manual',this)">Guideline / manual</button>
-        </div>
-
-        <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="The one thing a reader must take away. It's checked against your opening paragraph — CCI item 1 requires the main message up front, and that item scores itself once you fill this in.">Main message</span></div>
-        <input class="brief-input" id="brief-msg" type="text" maxlength="140"
-               placeholder="e.g. Check your blood pressure twice a day"
-               oninput="setBrief('message',this.value)">
-
-        <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Shows a live countdown beside the date. Turns amber inside 3 days, red when overdue.">Deadline</span></div>
-        <div style="display:flex;gap:6px;align-items:center">
-          <input class="brief-input" id="brief-due" type="date" style="flex:1;margin:0"
-                 onchange="setBrief('deadline',this.value)">
-          <span class="brief-due-badge" id="due-badge"></span>
-        </div>
-
-        <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Constraints no automated check can see — confirm each one before sign-off.">Requirements &amp; restrictions</span></div>
-        <div id="req-list"></div>
-        <button class="add-more" id="notes-add" onclick="showNotes()">＋ Add another constraint</button>
-        <div id="notes-wrap" style="display:none">
-          <textarea class="brief-input" id="brief-notes" rows="3" style="resize:vertical"
-                    placeholder="Brand rules, legal copy, print specs, translations…"
-                    oninput="setBrief('notes',this.value)" onblur="maybeHideNotes()"></textarea>
-        </div>
-      </div>
+      <div class="mod-body"><div id="fwout-body"></div></div>
     </div>
 
     <!-- ── MODULE: READABILITY ── -->
@@ -813,6 +1004,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         
         <button class="mod-min" onclick="toggleCollapse('mod-read')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
       </div>
+      <div class="fw-badge-row" id="badge-readability"></div>
       <div class="mod-body" id="read-body">
         <div class="score-why" id="read-why"></div>
         <div class="meter-lbl"><span class="meter-name">Flesch ease</span><span class="meter-num" id="ease-num">—</span></div>
@@ -841,6 +1033,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         
         <button class="mod-min" onclick="toggleCollapse('mod-cci')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
       </div>
+      <div class="fw-badge-row" id="badge-cci"></div>
       <div class="mod-body">
         <div class="status-line mod-status" id="cci-status"></div>
         <div class="score-why" id="cci-why"></div>
@@ -848,42 +1041,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
       </div>
     </div>
 
-    <!-- ── MODULE: TUNE ── -->
-    <div class="mod mod-tune" id="mod-tune">
-      <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Knobs that shape the AI rewrite pass. Reading level follows your brief's audience automatically. Prototype controls — wired for demo.">Tune</span>
-        
-        
-        <button class="mod-min" onclick="toggleCollapse('mod-tune')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-tune')" title="Remove from this workspace">✕</button>
-      </div>
-      <div class="mod-body">
-        <div class="tune-lbl">Tone</div>
-        <div class="seg" id="seg-tone">
-          <button data-v="clinical" onclick="setTune('tone','clinical',this)">Clinical</button>
-          <button data-v="conversational" class="on" onclick="setTune('tone','conversational',this)">Plain</button>
-          <button data-v="empathetic" onclick="setTune('tone','empathetic',this)">Warm</button>
-        </div>
-        <div class="tune-lbl">Reading level</div>
-        <div class="seg" id="seg-level">
-          <button data-v="expert" onclick="setTune('level','expert',this)">Expert</button>
-          <button data-v="general" onclick="setTune('level','general',this)">General</button>
-          <button data-v="lay" class="on" onclick="setTune('level','lay',this)">Lay · Gr 6</button>
-        </div>
-        <div class="tune-lbl">Verbosity</div>
-        <input type="range" min="1" max="3" step="1" value="2" id="tune-verb" oninput="setTune('verb',this.value)">
-        <div class="range-ticks"><span>Concise</span><span>Balanced</span><span>Detailed</span></div>
-        <div class="tune-lbl">Disclaimers</div>
-        <div class="seg" id="seg-disc">
-          <button data-v="full" class="on" onclick="setTune('disc','full',this)">Full</button>
-          <button data-v="inline" onclick="setTune('disc','inline',this)">Inline</button>
-          <button data-v="none" onclick="setTune('disc','none',this)">None</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="mod-rail mod-rail-right" id="rail-right">
 
     <!-- ── MODULE: PEMAT ── -->
     <div class="mod mod-pemat" id="mod-pemat">
@@ -893,6 +1050,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         
         <button class="mod-min" onclick="toggleCollapse('mod-pemat')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
       </div>
+      <div class="fw-badge-row" id="badge-pemat"></div>
       <div class="mod-body">
         <div class="status-line mod-status" id="pemat-status"></div>
         <div class="score-why" id="pemat-why"></div>
@@ -913,6 +1071,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         
         <button class="mod-min" onclick="toggleCollapse('mod-scan')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
       </div>
+      <div class="fw-badge-row" id="badge-plainlang"></div>
       <div class="mod-body">
         <div class="scan-summary">
           <div class="scan-count sc-err" id="scan-err">0<small>fix</small></div>
@@ -954,50 +1113,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
       </div>
     </div>
 
-    <!-- ── MODULE: GOAL / FRAMEWORK PICKER ── -->
-    <div class="mod mod-goal" id="mod-goal">
-      <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Answer three questions and this recommends which of the 26 patient-experience frameworks fit your project. Hover any result tag for its full name.">Frameworks</span>
-        
-        
-        <button class="mod-min" onclick="toggleCollapse('mod-goal')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-goal')" title="Remove from this workspace">✕</button>
-      </div>
-      <div class="mod-body">
-        <div class="tune-lbl">Goal</div>
-        <div class="seg seg-goal seg-grid" id="seg-g1">
-          <button data-v="clarity"  onclick="setGoal(1,'clarity',this)">Understand</button>
-          <button data-v="process"  onclick="setGoal(1,'process',this)">Decide</button>
-          <button data-v="behavior" onclick="setGoal(1,'behavior',this)">Behavior</button>
-          <button data-v="outcomes" onclick="setGoal(1,'outcomes',this)">Experience</button>
-        </div>
-        <div class="tune-lbl">Stage</div>
-        <div class="seg" id="seg-g2">
-          <button data-v="designing" onclick="setGoal(2,'designing',this)">Drafting</button>
-          <button data-v="auditing"  onclick="setGoal(2,'auditing',this)">Auditing</button>
-          <button data-v="measuring" onclick="setGoal(2,'measuring',this)">Measuring</button>
-        </div>
-        <div class="tune-lbl">Scored output?</div>
-        <div class="seg" id="seg-g3">
-          <button data-v="yes"    onclick="setGoal(3,'yes',this)">Scored</button>
-          <button data-v="no"     onclick="setGoal(3,'no',this)">Qualitative</button>
-          <button data-v="either" onclick="setGoal(3,'either',this)">Either</button>
-        </div>
-        <div class="fw-tags" id="fw-tags"></div>
-        <div class="goal-note" id="goal-note"></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ── DOCK ── -->
-  <div class="dock" id="dock">
-    <div class="dock-preset">
-      <span class="dock-preset-lbl">Workspace</span>
-      <select id="layout-sel" onchange="applyLayout(this.value)" title="Pick a starting set of modules for what you're doing"></select>
-    </div>
-    <select id="add-mod-sel" class="dock-add" onchange="addModule(this.value)" title="Add a module to this workspace"></select>
-    <button class="dock-mini" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
-    <button class="dock-reset" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
   </div>
 
 </div><!-- /stage -->
@@ -1252,10 +1367,6 @@ function setBrief(key, val, btn){
     $('aud-hint').dataset.tip = s
       ? '<b>'+s.label+'</b><br>'+s.note+'<br><br>Targets: grade ≤'+s.grade+', ease '+s.ease+'+, sentences ≤'+s.sentLen+' words.'
       : 'Sets the reading-level target used by Read·ability, CCI and PEMAT.';
-    // reading-level tune segment follows the audience
-    const lvl = val === 'hcp' ? 'expert' : val === 'lowlit' ? 'lay' : val === 'caregiver' ? 'general' : 'lay';
-    const lvlBtn = document.querySelector('#seg-level button[data-v="'+lvl+'"]');
-    if(lvlBtn) setTune('level', lvl, lvlBtn);
   }
   if(key === 'format'){
     const s = FORMAT_SPEC[val];
@@ -1264,8 +1375,29 @@ function setBrief(key, val, btn){
       : 'Sets the word budget and which checks apply.';
   }
   renderBriefHeader();
+  renderBriefTargets();
   analyze();
   if(key === 'audience' || key === 'format') pushNav();
+}
+function renderBriefTargets(){
+  const el = $('brief-targets');
+  const summary = $('brief-top-summary');
+  const a = AUDIENCE_SPEC[brief.audience];
+  const f = FORMAT_SPEC[brief.format];
+  if(!a && !f){
+    const msg = '<span class="bt-empty">Set Audience and Format above to see live targets.</span>';
+    if(el) el.innerHTML = msg;
+    if(summary) summary.innerHTML = 'Set Audience and Format to see live targets.';
+    return;
+  }
+  const parts = [];
+  if(a) parts.push('Grade ≤ <b>'+a.grade+'</b> · Ease <b>'+a.ease+'+</b> · Sentences ≤ <b>'+a.sentLen+'</b>w');
+  else parts.push('<span class="bt-empty">Set Audience for a reading-level target</span>');
+  if(f) parts.push('Word budget <b>'+f.words[0]+'–'+f.words[1]+'</b>');
+  else parts.push('<span class="bt-empty">Set Format for a word budget</span>');
+  const html = parts.join(' &nbsp;·&nbsp; ');
+  if(el) el.innerHTML = html;
+  if(summary) summary.innerHTML = html;
 }
 
 function toggleReq(id, on){ brief.reqs[id] = on; renderBriefHeader(); refreshScores(); }
@@ -1412,7 +1544,6 @@ function hasArtwork(){
 
 // Each rule answers: can this module say anything useful right now?
 const APPLIES = {
-  'mod-brief': () => true,                       // always — it sets everyone else's targets
   'mod-goal':  () => true,                       // choosing a framework needs no content
   'mod-a11y':  () => true,                       // guidance is useful before you write
   'mod-read':  () => hasContent(),
@@ -1420,11 +1551,10 @@ const APPLIES = {
   'mod-pemat': () => hasContent(),
   'mod-scan':  () => hasContent(),
   'mod-acc':   () => hasContent(),
-  'mod-tune':  () => !visualOn,                  // shapes text rewrites, not artwork
 };
 const NA_REASON = {
   'mod-read':'needs text', 'mod-cci':'needs text', 'mod-pemat':'needs text',
-  'mod-scan':'needs text', 'mod-acc':'needs text', 'mod-tune':'text only',
+  'mod-scan':'needs text', 'mod-acc':'needs text',
 };
 
 function updateApplicability(){
@@ -1435,6 +1565,7 @@ function updateApplicability(){
     m.classList.toggle('na-hidden', !ok);
   });
   syncDockKeys();
+  syncFwNeedText();
 }
 
 // ════════════════════════════════════════
@@ -1654,6 +1785,13 @@ function analyze(){
 function runA11y(empty){
   const findings = [];
 
+  if(empty && !visualOn){
+    $('a11y-list').innerHTML = '<div class="mod-note">Checks appear here once there\'s content to review.</div>';
+    const pill = $('a11y-pill');
+    pill.textContent = '—'; pill.className = 'pill pill-empty';
+    return;
+  }
+
   // ── Visual mode: judge the artwork, not a DOM ──
   if(visualOn){
     const alt = $('vm-alt').value.trim();
@@ -1799,6 +1937,16 @@ const ACC_SIGNOFF = [
 function toggleAcc(id, on){ manual[id] = on; refreshScores(); }
 
 function runAccuracy(empty){
+  if(empty){
+    $('acc-list').innerHTML = '<div class="mod-note">Findings appear here once there\'s content to review.</div>';
+    $('acc-signoff').innerHTML = ACC_SIGNOFF.map(s =>
+      '<div class="ck-item"><input type="checkbox" id="'+s.id+'" '+(manual[s.id]?'checked':'')+
+      ' onchange="toggleAcc(\''+s.id+'\',this.checked)"><label for="'+s.id+'">'+s.text+'</label></div>'
+    ).join('');
+    const pill = $('acc-pill');
+    pill.textContent = '—'; pill.className = 'pill pill-empty';
+    return;
+  }
   const text = visualOn ? ($('vm-transcript').value || '') : (editor.textContent || '');
   const findings = [];
 
@@ -2122,6 +2270,7 @@ function onVisualInput(){
   const txt = $('vm-transcript').value.trim();
   $('vm-alt-count').textContent = alt.length + ' characters' + (alt.length > 150 ? ' — over 150, trim it' : '');
   $('vm-txt-count').textContent = ((txt.match(/\b\w+\b/g)||[]).length) + ' words';
+  $('vm-txt-hint').style.display = txt.length > 20 ? 'none' : 'block';
   const cur = fileHistory.find(f => f.id === activeFileId);
   if(cur){ cur.alt = alt; cur.transcript = txt; cur.vtype = visualType; cur.words = (txt.match(/\b\w+\b/g)||[]).length; }
   scheduleAnalysis();
@@ -2673,17 +2822,6 @@ function loadSample(){
   saveVersion('Loaded sample handout');
 }
 
-// ── TUNE state ──
-const tune = { tone:'conversational', level:'lay', verb:'2', disc:'full' };
-function setTune(key, val, btn){
-  tune[key] = val;
-  if(btn){
-    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
-  }
-  const toneLbl = {clinical:'clinical',conversational:'plain',empathetic:'warm'}[tune.tone];
-  const lvlLbl = {expert:'expert',general:'general',lay:'lay'}[tune.level];
-}
-
 // ── GOAL / framework recommender (same result map as Classic) ──
 const FW_ZONE = {
   cci:'clarity',pemat:'clarity',sam:'clarity',discern:'clarity',eqip:'clarity',
@@ -2765,6 +2903,247 @@ const FW_FULL = {
   seips:'SEIPS — systems view of patient safety',
   planetree:'Planetree — person-centred care designation',
 };
+
+// Direct links to each framework's home/reference page, verified rather than guessed.
+// Entries left out below don't have one confirmed official page — those fall back to
+// a search link at render time rather than risk a wrong or dead URL.
+const FW_SOURCE = {
+  cci:'https://www.cdc.gov/ccindex/index.html',
+  pemat:'https://www.ahrq.gov/health-literacy/patient-education/pemat1.html',
+  discern:'https://www.discern.org.uk/',
+  readability:'https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests',
+  plainlang:'https://www.plainlanguage.gov/',
+  ipdas:'https://decisionaid.ohri.ca/ipdas.html',
+  ahrq:'https://www.ahrq.gov/health-literacy/improve/precautions/index.html',
+  ottawa:'https://decisionaid.ohri.ca/odsf.html',
+  share:'https://www.ahrq.gov/sdm/share-approach/index.html',
+  teachback:'https://www.ihi.org/library/tools/ask-me-3-good-questions-your-good-health',
+  hbm:'https://en.wikipedia.org/wiki/Health_belief_model',
+  ttm:'https://en.wikipedia.org/wiki/Transtheoretical_model',
+  whorisks:'https://www.who.int/activities/communicating-risk-in-public-health-emergencies',
+  cahps:'https://www.ahrq.gov/cahps/index.html',
+  planetree:'https://planetree.org/',
+};
+function fwSourceUrl(f){
+  return FW_SOURCE[f] || ('https://www.google.com/search?q=' + encodeURIComponent(FW_LABEL[f] + ' ' + FW_FULL[f]));
+}
+// Framework criteria, scoring types and sources — generated from analysis-engine.js FRAMEWORK_REGISTRY.
+// cci / pemat / readability / plainlang have no criteria here: they are scored live by their own cards.
+const FW_REG = {"cci":{"n":"CDC Clear Communication Index","t":"scored","th":"≥90% (18+ items)","sc":null,"note":"Items 1–7 (main message domain) carry the most weight in practice. CCI does not distinguish severity of failure; every item counts equally. A score \u003c90% requires revision regardless of how many items pass.","src":["Centers for Disease Control and Prevention. (2019). CDC Clear Communication Index: A Tool for Developing and Assessing CDC Public Communication Products. U.S. Department of Health and Human Services. https://www.cdc.gov/ccindex/","Baur C, Prue C. (2014). The CDC Clear Communication Index is a new evidence-based tool to prepare and review health information. Health Promotion Practice, 15(5), 629–637. https://doi.org/10.1177/1524839914538969"]},"pemat":{"n":"Patient Education Materials Assessment Tool","t":"scored","th":"Both scores must exceed 70%","sc":null,"note":"PEMAT produces two separate scores — Understandability and Actionability — never combined. N/A items are excluded from the denominator. Both scores must exceed 70% independently. PEMAT-A/V version applies to audiovisual materials.","src":["Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. Patient Education and Counseling, 96(3), 395–403. https://doi.org/10.1016/j.pec.2014.05.027","Agency for Healthcare Research and Quality. PEMAT and User's Guide. https://www.ahrq.gov/health-literacy/patient-education/pemat.html"]},"sam":{"n":"Suitability Assessment of Materials","t":"scored","th":null,"sc":"0 = Not Suitable / 1 = Adequate / 2 = Superior","note":"A score of 0 (Not Suitable) on any Content factor (SAM-C1 through SAM-C6) should be treated as a blocker regardless of total score. SAM is the most granular content auditing tool in the library.","src":["Doak CC, Doak LG, Root JH. (1996). Teaching Patients with Low Literacy Skills (2nd ed.). J.B. Lippincott. (SAM instrument: pp. 41–59)","Winslow EH. (2001). Patient education materials: Can patients read them, or are they ending up in the trash? American Journal of Nursing, 101(10), 33–38. https://doi.org/10.1097/00000446-200110000-00020"],"cr":[["Content","Purpose of the material is stated explicitly.",0],["Content","Content is limited to the essential message (not overloaded).",0],["Content","A summary or review is included.",0],["Content","Reading level matches the target audience (Fry formula ≤5th grade preferred).",0],["Content","Scope is appropriate to the purpose.",0],["Content","Common vocabulary is used throughout.",0],["Literacy Demand","Writing style is active voice and conversational.",0],["Literacy Demand","Sentence structure is simple; compound-complex sentences avoided.",0],["Literacy Demand","Context is established before adding detail.",0],["Literacy Demand","Learning aids (examples, analogies) are used.",0],["Literacy Demand","Vocabulary uses common words; technical terms defined when necessary.",0],["Literacy Demand","Reading grade level is ≤5th grade (preferred) or ≤8th grade (minimum).",0],["Literacy Demand","Sentence length is appropriate (short sentences preferred).",0],["Graphics","Cover graphic draws audience interest and is relevant.",0],["Graphics","Type of visuals used is appropriate for the audience and content.",0],["Graphics","Captions are present and explain visuals.",0],["Graphics","Visuals are culturally relevant and free from bias.",0],["Layout & Typography","Layout uses columns, white space, and margins effectively.",0],["Layout & Typography","Font size is ≥12pt for body text.",0],["Layout & Typography","Subheadings break up text and are informative.",0],["Learning & Motivation","Material includes interaction (questions, checklists, problems to solve).",0],["Learning & Motivation","Behavior modeling shows positive desired behaviors.",0],["Cultural Appropriateness","Images and examples match the target audience's cultural context.",0],["Cultural Appropriateness","Cultural logic, values, and norms are respected.",0]]},"discern":{"n":"DISCERN Quality Instrument for Consumer Health Information","t":"scored","th":null,"sc":"1 = No/Poor → 5 = Yes/Excellent","note":"No absolute pass/fail threshold. DISCERN scores are comparative — used against published benchmarks (peer-reviewed health leaflets average ~3.5–4/5 per question). Q16 is kept separate from Part 1 and Part 2 totals.","src":["Charnock D, Shepperd S, Needham G, Gann R. (1999). DISCERN: An instrument for judging the quality of written consumer health information on treatment choices. Journal of Epidemiology and Community Health, 53(2), 105–111. https://doi.org/10.1136/jech.53.2.105","DISCERN Online. University of Oxford & British Library. http://www.discern.org.uk"],"cr":[["Reliability","Q1: Are the aims of the publication clearly stated at the beginning?",0],["Reliability","Q2: Does it achieve its aims?",0],["Reliability","Q3: Is it relevant to patients?",0],["Reliability","Q4: Are the sources of information used explicit (referenced)?",0],["Reliability","Q5: Is the date of information stated (when it was produced or reviewed)?",0],["Reliability","Q6: Is it balanced and unbiased?",0],["Reliability","Q7: Does it provide details of additional sources of support and information?",0],["Reliability","Q8: Does it refer to areas of uncertainty?",0],["Treatment Choices","Q9: Does it describe how each treatment works?",0],["Treatment Choices","Q10: Does it describe the benefits of each treatment?",0],["Treatment Choices","Q11: Does it describe the risks and side effects of each treatment?",0],["Treatment Choices","Q12: Does it describe what would happen if no treatment is chosen?",0],["Treatment Choices","Q13: Does it describe how the treatment choices may affect overall quality of life?",0],["Treatment Choices","Q14: Is it clear that there may be more than one possible treatment choice?",0],["Treatment Choices","Q15: Does it provide support for shared decision-making?",0],["Overall","Q16: Overall, how would you rate the quality of this publication? (standalone 1–5 rating)",0]]},"eqip":{"n":"Ensuring Quality Information for Patients","t":"scored","th":null,"sc":"Yes (1) / No (0) / N/A (excluded from denominator)","note":"EQIP uses 36 items across 8 sections in the full instrument. Separate section scores are useful for diagnostic targeting. No universal pass threshold — used normatively across document versions.","src":["Moult B, Franck LS, Brady H. (2004). Ensuring quality information for patients: Development and preliminary validation of a new instrument to improve the quality of written health care information. Health Expectations, 7(2), 165–175. https://doi.org/10.1111/j.1369-7625.2004.00273.x"],"cr":[["Identity","Authorship, source organization, date, and version are clearly stated.",0],["Purpose","The document purpose is explicitly stated.",0],["Purpose","The target audience is explicitly stated.",0],["Content","Information on the condition or topic is accurate and complete.",0],["Content","Treatment options are described.",0],["Recommendations","Specific, actionable recommendations are provided.",0],["Recommendations","The basis or rationale for recommendations is explained.",0],["Comprehensibility","Language is appropriate for the target audience; jargon is avoided.",0],["Comprehensibility","Sentences are short and active voice is used.",0],["Layout & Design","Logical structure and headings are used to aid navigation.",0],["Layout & Design","White space and font size are adequate for readability.",0],["Illustrations","Visuals are present and appropriate to the content.",0],["Illustrations","Visuals are labeled and clearly explained.",0],["References","Evidence is cited and references are listed.",0],["References","The evidence base is dated (sources have publication years).",0]]},"readability":{"n":"Readability Measures (Flesch-Kincaid / SMOG / Flesch Reading Ease)","t":"scored","th":null,"sc":null,"note":"SMOG is the most accurate readability measure for health materials because it accounts for medical polysyllabic term density. Use SMOG as primary; FRE and FKGL as secondary checks.","src":["Flesch R. (1948). A new readability yardstick. Journal of Applied Psychology, 32(3), 221–233. https://doi.org/10.1037/h0057532","Kincaid JP, Fishburne RP Jr, Rogers RL, Chissom BS. (1975). Derivation of New Readability Formulas for Navy Enlisted Personnel. Research Branch Report 8-75. Naval Technical Training Command. https://apps.dtic.mil/sti/pdfs/ADA006655.pdf","McLaughlin GH. (1969). SMOG grading: A new readability formula. Journal of Reading, 12(8), 639–646.","Paasche-Orlow MK, Taylor HA, Brancati FL. (2003). Readability standards for informed-consent forms as compared with actual readability. New England Journal of Medicine, 348(8), 721–726. https://doi.org/10.1056/NEJMsa021212"]},"plainlang":{"n":"U.S. Federal Plain Language Guidelines","t":"checklist","th":null,"sc":null,"note":"Plain Language is a prescriptive editing checklist, not a scoring rubric. Applied during drafting and revision, not as post-hoc auditing. No numerical score — compliance is qualitative.","src":["Plain Language Action and Information Network (PLAIN). (2011). Federal Plain Language Guidelines. PlainLanguage.gov. https://www.plainlanguage.gov/guidelines/","Plain Writing Act of 2010, Pub. L. 111-274, 124 Stat. 2861 (2010). https://www.govinfo.gov/content/pkg/PLAW-111publ274/pdf/PLAW-111publ274.pdf"]},"pinkbook":{"n":"National Cancer Institute — Making Health Communication Programs Work","t":"process-guide","th":null,"sc":null,"note":"The Pink Book mandates audience testing at Phase 2 and Phase 3. A material that has not been tested with its target audience fails the Pink Book standard regardless of CCI or SAM scores. Most criteria are NOT_ASSESSABLE from document content alone — they require process documentation.","src":["National Cancer Institute. (2004). Making Health Communication Programs Work (\"The Pink Book\"). U.S. Department of Health and Human Services, NIH Publication No. 04-5145. https://www.cancer.gov/publications/health-communication/pink-book.pdf"],"cr":[["Phase 1: Planning & Strategy","The problem, audience, objective, channels, and available resources are defined.",0],["Phase 2: Developing Concepts","Formative research with the target audience has been conducted.",0],["Phase 2: Developing Concepts","Message concepts have been tested with the target audience.",0],["Phase 3: Developing Materials","Draft materials were pretested with the target audience.",0],["Phase 3: Developing Materials","Iterative revision was performed based on pretesting feedback.",0],["Phase 4: Implementation","Channel selection and dissemination plan are documented.",0],["Phase 5: Assessing Effectiveness","Process and outcome evaluation methods are specified.",0],["Phase 6: Feedback to Refine","Findings are used to improve future communication.",0]]},"teachback":{"n":"Teach-Back Method & Ask Me 3","t":"checklist","th":null,"sc":null,"note":"Teach-Back is a live clinical interaction method. TB-1 through TB-3 can be partially assessed from written materials (are they written to support teach-back?). Ask Me 3 (AM3-1 to AM3-3) can be fully assessed from document content. If a patient cannot answer all three Ask Me 3 questions from the document alone, the material needs revision regardless of readability scores.","src":["Agency for Healthcare Research and Quality. (2020). Use the Teach-Back Method: Tool #5. Health Literacy Universal Precautions Toolkit. https://www.ahrq.gov/health-literacy/improve/precautions/tool5.html","Schillinger D, Piette J, Grumbach K, et al. (2003). Closing the loop: Physician communication with diabetic patients who have low health literacy. Archives of Internal Medicine, 163(1), 83–90. https://doi.org/10.1001/archinte.163.1.83","Pfizer. (n.d.). Ask Me 3: Good Questions for Your Good Health. National Patient Safety Foundation. https://www.npsf.org/page/askme3"],"cr":[["Teach-Back","Key information is presented in a way that a patient could explain it back in their own words.",0],["Teach-Back","The material is structured so the clinician can ask the patient to demonstrate understanding (teach-back prompt built in).",0],["Teach-Back","If misunderstanding occurs, the material provides a re-explanation path without blaming the patient.",0],["Ask Me 3","Q1 answered: What is my main problem? — The document clearly states the main health problem.",0],["Ask Me 3","Q2 answered: What do I need to do? — The document clearly states the action the patient should take.",0],["Ask Me 3","Q3 answered: Why is it important for me to do this? — The document explains why the action matters.",0]]},"option":{"n":"Observing Patient Involvement in Decision Making","t":"scored","th":null,"sc":"0 = not observed | 1 = minimal attempt | 2 = notable effort | 3 = consistent | 4 = fully applied","note":"OPTION requires a trained observer rating a clinical consultation (live or recorded). Most criteria are NOT_ASSESSABLE when evaluating written materials. Published real-world primary care consultations average 20–40/100.","src":["Elwyn G, Edwards A, Wensing M, Hood K, Atwell C, Grol R. (2003). Shared decision making: Developing the OPTION scale for measuring patient involvement. Quality and Safety in Health Care, 12(2), 93–99. https://doi.org/10.1136/qhc.12.2.93","Elwyn G, Hutchings H, Edwards A, et al. (2005). The OPTION scale: Measuring the extent that clinicians involve patients in decision-making tasks. Health Expectations, 8(1), 34–42. https://doi.org/10.1111/j.1369-7625.2004.00311.x"],"cr":[["Shared Decision Making","The clinician draws attention to there being a problem that requires a decision.",0],["Shared Decision Making","The clinician states that there is more than one way to deal with the problem.",0],["Shared Decision Making","The clinician assesses the patient's preferred format for receiving information.",0],["Shared Decision Making","The clinician lists options including the option of no active treatment.",0],["Shared Decision Making","The clinician explains the pros and cons of each option.",0],["Shared Decision Making","The clinician explores the patient's expectations or ideas about how the problem is to be managed.",0],["Shared Decision Making","The clinician explores the patient's concerns about each option.",0],["Shared Decision Making","The clinician checks that the patient has understood the information.",0],["Shared Decision Making","The clinician explores whether the patient has a preferred option.",0],["Shared Decision Making","The clinician negotiates a decision with the patient.",0],["Shared Decision Making","The clinician indicates a need to review the decision.",0],["Shared Decision Making","The clinician defers to the patient's preferred option.",0]]},"ipdas":{"n":"International Patient Decision Aid Standards","t":"semi-scored","th":null,"sc":null,"note":"Qualifying criteria are a gate — failing any one disqualifies the material as a patient decision aid. Certifying criteria are aspirational standards for formal certification. Development and process criteria (C12–C15) are typically NOT_ASSESSABLE from document content alone.","src":["Elwyn G, O'Connor A, Stacey D, et al. (2006). Developing a quality criteria framework for patient decision aids: Online international Delphi consensus process. BMJ, 333(7565), 417. https://doi.org/10.1136/bmj.38926.629329.AE","Stacey D, Légaré F, Pouliot S, Kryworuchko J, Dunn S. (2010). Shared decision making models to inform an interprofessional perspective on decision support for people facing health decisions. Patient Education and Counseling, 80(2), 164–172. https://doi.org/10.1016/j.pec.2009.10.015","IPDAS Collaboration. Patient Decision Aids. Ottawa Hospital Research Institute. https://ipdas.ohri.ca/"],"cr":[["Qualifying (must meet all 6)","The health condition for which the index decision is required is described.",0],["Qualifying (must meet all 6)","The index decision is explicitly stated.",0],["Qualifying (must meet all 6)","The options available for the index decision are described.",0],["Qualifying (must meet all 6)","The positive features (benefits/advantages) of each option are described.",0],["Qualifying (must meet all 6)","The negative features (harms/side effects/disadvantages) of each option are described.",0],["Qualifying (must meet all 6)","What it is like to experience the consequences of the options is described.",0],["Information","Probabilities are presented for outcomes of each option.",0],["Information","Absolute risk is used (not relative risk only).",0],["Information","A time horizon for outcomes is explicit.",0],["Information","Uncertainty in the evidence is acknowledged.",0],["Probabilities","Event rates use the same denominator across options.",0],["Probabilities","Sources and dates of evidence are cited.",0],["Values Clarification","Features most important to patients are described.",0],["Values Clarification","An exercise to help the patient clarify their values is included.",0],["Guidance / Coaching","Steps for deliberation and decision-making are described.",0],["Guidance / Coaching","Guidance for preparing for a clinical consultation is included.",0],["Guidance / Coaching","The material does not pressure the patient toward one option.",0],["Development","A systematic development process is documented.",0],["Development","Patients and clinicians were involved in development.",0],["Development","Plain language review was conducted.",0],["Development","Field testing with the target audience was done.",0],["Disclosure","Funding sources are disclosed.",0],["Disclosure","Conflicts of interest are disclosed.",0],["Plain Language","Reading level is ≤8th grade.",0]]},"ahrq":{"n":"AHRQ Health Literacy Universal Precautions Toolkit (2nd ed.)","t":"checklist","th":null,"sc":null,"note":"The Toolkit is a practice improvement framework, not a document scoring tool. Spoken communication and system criteria (AHRQ-1, AHRQ-2, AHRQ-8, AHRQ-9) are typically NOT_ASSESSABLE from written materials alone.","src":["Agency for Healthcare Research and Quality. (2015). Health Literacy Universal Precautions Toolkit (2nd ed.). AHRQ Publication No. 15-0023-EF. https://www.ahrq.gov/health-literacy/improve/precautions/index.html","DeWalt DA, Callahan LF, Hawk VH, et al. (2010). Health literacy universal precautions toolkit. AHRQ Publication No. 10-0046-EF. Agency for Healthcare Research and Quality."],"cr":[["Spoken Communication","Teach-back technique is incorporated into patient communication.",0],["Spoken Communication","Communication is designed to be accessible for non-English speakers.",0],["Written Communication","Materials are easy to read (reviewed using CCI or equivalent).",0],["Written Communication","Consent forms are written at an appropriate reading level.",0],["Written Communication","Medication instructions are clear and actionable.",0],["Self-Management","Materials support patient self-management goals.",0],["Self-Management","Forms and documents are designed to be easy to use and complete.",0],["Supportive Systems","Appointment and referral instructions are clear.",0],["Supportive Systems","A team-based approach to health literacy is reflected.",0]]},"ottawa":{"n":"Ottawa Decision Support Framework + Decisional Conflict Scale","t":"semi-scored","th":null,"sc":null,"note":"The DMSF is a design framework (not scored). The Decisional Conflict Scale (DCS) is the measurement instrument and requires a patient survey — criteria marked notAssessableFromDoc cannot be evaluated from document content alone.","src":["O'Connor AM. (1995). Validation of a decisional conflict scale. Medical Decision Making, 15(1), 25–30. https://doi.org/10.1177/0272989X9501500105","O'Connor AM, Tugwell P, Wells GA, et al. (1998). A decision aid for women considering hormone therapy after menopause. Patient Education and Counseling, 33(3), 267–279. https://doi.org/10.1016/S0738-3991(98)00026-3","Ottawa Hospital Research Institute. Decision Support & Decision Aids. https://decisionaid.ohri.ca/"],"cr":[["Decision Needs Assessment","Knowledge gaps about options are addressed.",0],["Decision Needs Assessment","Patient values are acknowledged as relevant to the decision.",0],["Decision Needs Assessment","Barriers to communication are recognized and addressed.",0],["Decision Support Interventions","Risk communication is provided in an understandable format.",0],["Decision Support Interventions","A values clarification exercise is included.",0],["DCS: Informed","Patient feels they know enough about options, risks, and benefits. (Requires DCS survey — not assessable from document alone)",1],["DCS: Values Clarity","Patient knows which benefits/risks matter most to them. (Requires DCS survey)",1],["DCS: Support","Patient has enough support and advice. (Requires DCS survey)",1],["DCS: Uncertainty","Patient is not uncertain about the choice. (Requires DCS survey)",1],["DCS: Effective Decision","Patient feels decision is informed, value-based, and supported. (Requires DCS survey)",1]]},"share":{"n":"AHRQ SHARE Approach — Shared Decision Making Framework","t":"checklist","th":null,"sc":null,"note":"SHARE is a clinician conversation model used for training and workflow design. Steps R and E (reaching a decision together, follow-up) are typically NOT_ASSESSABLE from written materials alone.","src":["Agency for Healthcare Research and Quality. (2014). The SHARE Approach — A Model for Shared Decision Making: A Resource for Clinicians. AHRQ Publication No. 14-0058-1-EF. https://www.ahrq.gov/health-literacy/professional-training/shared-decision/index.html","Elwyn G, Frosch D, Thomson R, et al. (2012). Shared decision making: A model for clinical practice. Journal of General Internal Medicine, 27(10), 1361–1367. https://doi.org/10.1007/s11606-012-2077-6"],"cr":[["Seek patient participation","The material or process explicitly invites the patient into the decision; explains it is a choice, not a directive.",0],["Help explore options","All reasonable options including watchful waiting are presented with balanced information.",0],["Assess values & preferences","Patient values and what matters most are elicited; open questions are used; no steering toward one option.",0],["Reach a decision together","The decision is negotiated; patient comfort is confirmed; decision and rationale are documented.",0],["Evaluate the decision","Follow-up and revisiting are planned; decisional regret is acknowledged as possible.",0]]},"comb":{"n":"COM-B Behaviour System + Behaviour Change Wheel","t":"checklist","th":null,"sc":null,"note":"COM-B is a diagnostic framework — outputs are gap diagnoses and intervention maps, not scores. Assessment requires knowing which COM-B sub-component is the barrier before evaluating whether the document addresses it. COMB-BCW requires evaluator judgment about intervention match.","src":["Michie S, van Stralen MM, West R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6(1), 42. https://doi.org/10.1186/1748-5908-6-42","Michie S, Atkins L, West R. (2014). The Behaviour Change Wheel: A Guide to Designing Interventions. Silverback Publishing. ISBN 978-1-909567-00-4."],"cr":[["Capability — Physical","The document addresses physical ability barriers to performing the target behavior.",0],["Capability — Psychological","The document provides knowledge, understanding, or memory aids to support the target behavior.",0],["Opportunity — Physical","The document addresses resources, environmental, or timing factors needed to perform the behavior.",0],["Opportunity — Social","The document acknowledges social influences, cultural norms, or peer support factors.",0],["Motivation — Automatic","The document addresses habits, emotional responses, or impulse triggers related to the behavior.",0],["Motivation — Reflective","The document addresses beliefs, intentions, goals, or reasoning about the behavior.",0],["BCW Intervention Match","The intervention type(s) used in the document match the diagnosed COM-B gap (e.g., education for psychological capability gaps; persuasion for reflective motivation gaps).",0]]},"hbm":{"n":"Health Belief Model","t":"checklist","th":null,"sc":null,"note":"The most common HBM design error: addressing Susceptibility (HBM-1) and Severity (HBM-2) while neglecting Barriers (HBM-4) and Self-Efficacy (HBM-6) — fear without actionable path. All 6 constructs should be present for complete HBM compliance.","src":["Rosenstock IM. (1974). Historical origins of the health belief model. Health Education Monographs, 2(4), 328–335. https://doi.org/10.1177/109019817400200403","Janz NK, Becker MH. (1984). The health belief model: A decade later. Health Education Quarterly, 11(1), 1–47. https://doi.org/10.1177/109019818401100101","Champion VL, Skinner CS. (2008). The health belief model. In K Glanz, BK Rimer, K Viswanath (Eds.), Health Behavior and Health Education: Theory, Research, and Practice (4th ed., pp. 45–65). Jossey-Bass."],"cr":[["Perceived Susceptibility","The document communicates that the audience is at risk for the condition (\"People like you are at risk…\").",0],["Perceived Severity","The document communicates the seriousness of the condition or its consequences if left unaddressed.",0],["Perceived Benefits","The document explains how taking the recommended action will reduce risk or harm.",0],["Perceived Barriers","The document acknowledges and directly addresses barriers or objections to taking the recommended action.",0],["Cues to Action","The document provides external or internal triggers that prompt the desired behavior (e.g., reminder prompts, symptom descriptions).",0],["Self-Efficacy","The document builds confidence that the audience can perform the recommended action (step-by-step instructions, \"you can do this\" framing).",0]]},"ttm":{"n":"Transtheoretical Model (Stages of Change)","t":"checklist","th":null,"sc":null,"note":"TTM stage assessment requires knowing the audience's current stage — this may be NOT_ASSESSABLE from document content alone without that context. A document cannot meet criteria for all 5 stages simultaneously; the assessment should focus on which stage(s) it targets.","src":["Prochaska JO, DiClemente CC. (1983). Stages and processes of self-change of smoking: Toward an integrative model of change. Journal of Consulting and Clinical Psychology, 51(3), 390–395. https://doi.org/10.1037/0022-006X.51.3.390","Prochaska JO, Velicer WF. (1997). The transtheoretical model of health behavior change. American Journal of Health Promotion, 12(1), 38–48. https://doi.org/10.4278/0890-1171-12.1.38"],"cr":[["Stage Targeting","The document is clearly targeted to one or more specific stages of change (Pre-contemplation, Contemplation, Preparation, Action, Maintenance) — or explicitly addresses multiple stages.",0],["Pre-contemplation","The document raises awareness and consciousness about the health problem for those not yet considering change.",0],["Contemplation","The document helps the audience weigh pros and cons of changing (decisional balance).",0],["Preparation","The document provides a specific action plan and resources for those ready to act within 30 days.",0],["Action","The document provides support and reinforcement for those who have recently made the change.",0],["Maintenance","The document provides long-term habit support or relapse prevention strategies.",0],["Self-Efficacy","The document builds confidence in the ability to maintain the change in difficult situations.",0]]},"eppm":{"n":"Extended Parallel Process Model","t":"checklist","th":null,"sc":null,"note":"Critical design rule: never raise perceived threat (EPPM-1, EPPM-2) without simultaneously and convincingly raising efficacy (EPPM-3, EPPM-4). Every fear appeal must pair the risk with what works and how to do it. EPPM-BALANCE requires evaluator judgment.","src":["Witte K. (1992). Putting the fear back into fear appeals: The Extended Parallel Process Model. Communication Monographs, 59(4), 329–349. https://doi.org/10.1080/03637759209376276","Witte K, Allen M. (2000). A meta-analysis of fear appeals: Implications for effective public health campaigns. Health Education & Behavior, 27(5), 591–615. https://doi.org/10.1177/109019810002700506"],"cr":[["Perceived Susceptibility","The document communicates that the audience is personally at risk.",0],["Perceived Severity","The document communicates the seriousness of the threat.",0],["Response Efficacy","The document demonstrates that the recommended action actually works to reduce the threat.",0],["Self-Efficacy","The document builds confidence that the audience can perform the recommended action.",0],["Threat-Efficacy Balance","Threat (EPPM-1 + EPPM-2) is balanced with efficacy (EPPM-3 + EPPM-4). High threat without high efficacy predicts fear control (avoidance/denial) rather than behavior change.",0]]},"whorisks":{"n":"WHO Risk Communication Framework","t":"checklist","th":null,"sc":null,"note":"WHO Risk Communication Framework is designed for public health emergency communication. Apply to materials in crisis or outbreak contexts. Planning and coordination criteria (channel selection, spokesperson training) are typically NOT_ASSESSABLE from document content alone.","src":["World Health Organization. (2017). Communicating Risk in Public Health Emergencies: A WHO Guideline for Emergency Risk Communication (ERC) Policy and Practice. WHO. https://www.who.int/publications/i/item/9789241550208","Covello VT, Peters RG, Wojtecki JG, Hyde RC. (2001). Risk communication, the West Nile Virus epidemic, and bioterrorism: Responding to the communication challenges posed by the intentional or unintentional release of a pathogen in an urban setting. Journal of Urban Health, 78(2), 382–391. https://doi.org/10.1093/jurban/78.2.382"],"cr":[["Trust","The document uses credible, trusted sources or messengers; conflicts of interest are disclosed.",0],["Transparency","The document shares what is known AND what is unknown; uncertainty is acknowledged explicitly.",0],["Transparency","Errors or limitations are acknowledged rather than suppressed.",0],["Respect for Public","Community concerns and questions are addressed; the audience is not talked down to.",0],["Respect for Public","Rumors or common misconceptions are identified and addressed.",0],["Actionability","The document provides clear, actionable guidance alongside risk information.",0]]},"pam":{"n":"Patient Activation Measure","t":"scored","th":null,"sc":null,"note":"PAM is proprietary (Insignia Health) — commercial licensing is required for the scoring algorithm. The PAM score itself requires a patient survey and cannot be derived from document analysis. PAM-D1 through PAM-D4 assess how well the material supports activation from a design perspective.","src":["Hibbard JH, Stockard J, Mahoney ER, Tusler M. (2004). Development of the Patient Activation Measure (PAM): Conceptualizing and measuring activation in patients and consumers. Health Services Research, 39(4 Pt 1), 1005–1026. https://doi.org/10.1111/j.1475-6773.2004.00269.x","Hibbard JH, Mahoney ER, Stockard J, Tusler M. (2005). Development and testing of a short form of the patient activation measure. Health Services Research, 40(6 Pt 1), 1918–1930. https://doi.org/10.1111/j.1475-6773.2005.00438.x","Greene J, Hibbard JH. (2012). Why does patient activation matter? An examination of the relationships between patient activation and health-related outcomes. Journal of General Internal Medicine, 27(5), 520–526. https://doi.org/10.1007/s11606-011-1931-2"],"cr":[["Role Understanding","The material reinforces that the patient is the one responsible for managing their health.",0],["Confidence","The material builds patient confidence in their ability to manage their health condition.",0],["Knowledge & Skills","The material explains what the patient's medications or treatments do and why.",0],["Self-Management","The material provides strategies for maintaining healthy behaviors during difficult times.",0],["PAM Score (survey)","Patient's PAM activation level (Level 1–4). Requires PAM-13 or PAM-22 survey administered to the patient — cannot be assessed from document content.",1]]},"cahps":{"n":"Consumer Assessment of Healthcare Providers and Systems (CAHPS/HCAHPS)","t":"scored","th":null,"sc":null,"note":"CAHPS is a family of surveys — HCAHPS (hospital), CG-CAHPS (clinician/group), and others. Survey domains requiring patient responses are marked NOT_ASSESSABLE from document content. CAHPS-1 through CAHPS-6 can be assessed from written discharge and medication materials.","src":["Agency for Healthcare Research and Quality. CAHPS: Surveys and Tools to Advance Patient-Centered Care. https://www.ahrq.gov/cahps/index.html","Centers for Medicare & Medicaid Services. HCAHPS: Patients' Perspectives of Care Survey. https://www.cms.gov/medicare/quality/initiatives/hospital-quality-initiative/hcahps-patients-perspectives-care-survey","Cleary PD, Edgman-Levitan S. (1997). Health care quality: Incorporating consumer perspectives. JAMA, 278(19), 1608–1612. https://doi.org/10.1001/jama.1997.03550190072047"],"cr":[["Communication about Medicines","The document explains new medications and their purpose in plain language.",0],["Communication about Medicines","Side effects or risks of medications are discussed.",0],["Discharge Information","Written discharge instructions or aftercare information are provided.",0],["Discharge Information","Symptoms to watch for after discharge are specified.",0],["Care Transitions","The document addresses what the patient should do after the clinical encounter (follow-up, self-care).",0],["Care Transitions","Questions the patient may have about post-discharge care are anticipated and answered.",0],["Nurse Communication (survey)","Nurses listened, explained clearly, and treated patient with courtesy. Requires HCAHPS survey — not assessable from document.",1],["Doctor Communication (survey)","Doctors listened, explained clearly, and treated patient with courtesy. Requires HCAHPS survey — not assessable from document.",1],["Overall Rating (survey)","Patient 0–10 global hospital rating. Requires HCAHPS survey — not assessable from document.",1]]},"nps":{"n":"Net Promoter Score","t":"scored","th":null,"sc":null,"note":"NPS is a directional indicator, not a diagnostic tool. A low NPS signals a problem but does not identify the cause. Pair with open-ended \"Why?\" questions. Healthcare sector NPS benchmarks (20–50) differ substantially from general consumer benchmarks — compare within sector.","src":["Reichheld FF. (2003). The one number you need to grow. Harvard Business Review, 81(12), 46–54. https://hbr.org/2003/12/the-one-number-you-need-to-grow","Reichheld FF, Markey R. (2011). The Ultimate Question 2.0: How Net Promoter Companies Thrive in a Customer-Driven World (rev. ed.). Harvard Business Review Press. ISBN 978-1-4221-7335-0."],"cr":[["NPS Survey Score","NPS is derived from a patient survey (\"How likely are you to recommend us?\") — cannot be assessed from document content alone.",1],["Promoter Drivers","The document or communication creates a memorable positive experience that a patient would want to share.",0],["Detractor Mitigation","The document addresses common pain points or confusion that lead to patient dissatisfaction.",0],["Follow-up Trigger","The document includes a mechanism or invitation for patients to provide feedback.",0]]},"picker":{"n":"Picker Institute — Principles of Patient-Centered Care","t":"checklist","th":null,"sc":null,"note":"Picker Principles are an organizational and design standard. Separate Picker survey instruments measure how well each principle is being met by a care organization — those scores require patient surveys. The 8 principles can be assessed from written materials as design criteria.","src":["Gerteis M, Edgman-Levitan S, Daley J, Delbanco TL (Eds.). (1993). Through the Patient's Eyes: Understanding and Promoting Patient-Centered Care. Jossey-Bass. ISBN 978-1555425159.","Picker Institute. About Picker. https://www.picker.org/","Jenkinson C, Coulter A, Bruster S. (2002). The Picker Patient Experience Questionnaire: Development and validation using data from in-patient surveys in five countries. International Journal for Quality in Health Care, 14(5), 353–358. https://doi.org/10.1093/intqhc/14.5.353"],"cr":[["Values & Preferences","The document treats the patient as a person; their choices and dignity are honored.",0],["Coordination & Integration","The document addresses coordination of care across services; care transitions are acknowledged.",0],["Information, Communication & Education","The document informs the patient about their condition and treatment; health literacy is supported.",0],["Physical Comfort","Physical comfort needs (pain management, environment) are addressed.",0],["Emotional Support","Emotional needs and fear/anxiety are acknowledged and addressed.",0],["Family & Friends Involvement","Family or caregiver involvement is acknowledged and supported as appropriate.",0],["Continuity & Transition","Discharge planning, follow-up, and community service coordination are addressed.",0],["Access to Care","Access to care (appointments, after-hours, language/geographic access) is addressed.",0]]},"ebcd":{"n":"Experience-Based Co-Design","t":"process-guide","th":null,"sc":null,"note":"EBCD is a participatory design methodology requiring live patient and staff engagement across 6 phases. All criteria are NOT_ASSESSABLE from document content alone — EBCD produces qualitative outputs (implemented changes, patient/staff-reported improvement), not scores.","src":["Bate P, Robert G. (2006). Experience-based design: From redesigning the system around the patient to co-designing services with the patient. Quality and Safety in Health Care, 15(5), 307–310. https://doi.org/10.1136/qshc.2005.016527","Donetto S, Tsianakas V, Robert G. (2014). Using Experience-based Co-design (EBCD) to Improve the Quality of Healthcare: Mapping Where We Are Now and Establishing Future Directions. King's College London. https://www.kcl.ac.uk/nmpc/research/nnru/publications/reports/ebcd-where-are-we-now-report.pdf","The Point of Care Foundation. EBCD: Experience-based Co-design. https://www.pointofcarefoundation.org.uk/our-programmes/ebcd/"],"cr":[["Phase 1: Setup","The scope of the co-design project is defined; patient and staff participants are identified.",1],["Phase 2: Staff Experience","Staff experience has been observed and emotional touchpoints identified.",1],["Phase 3: Patient Experience","Patient experience has been captured (interviews, filmed where possible) and emotional touchpoints mapped.",1],["Phase 4: Share & Bring Together","Patient films or stories have been shared with staff; shared priority touchpoints have been identified.",1],["Phase 5: Co-Design","Mixed patient-staff co-design groups have worked on priority touchpoints and prototyped solutions.",1],["Phase 6: Celebrate & Share","Changes implemented, impact evaluated, sustainability planned.",1]]},"seips":{"n":"Systems Engineering Initiative for Patient Safety (SEIPS 2.0)","t":"checklist","th":null,"sc":null,"note":"SEIPS is a systems analysis model for clinical workflow design. Use for evaluating clinical process documentation, care pathway materials, or patient safety tools. SEIPS assessment produces work system analyses and redesign recommendations, not numerical scores.","src":["Carayon P, Schoofs Hundt A, Karsh BT, et al. (2006). Work system design for patient safety: The SEIPS model. Quality and Safety in Health Care, 15(Suppl 1), i50–i58. https://doi.org/10.1136/qshc.2005.015842","Holden RJ, Carayon P, Gurses AP, et al. (2013). SEIPS 2.0: A human factors framework for studying and improving the work of healthcare professionals and patients. Ergonomics, 56(11), 1669–1686. https://doi.org/10.1080/00140139.2013.838643"],"cr":[["Work System — Person","The document accounts for the people involved (patient, clinician, caregiver) and their characteristics.",0],["Work System — Tasks","The document identifies the specific tasks the patient or clinician must perform.",0],["Work System — Tools & Technology","The document addresses the tools, devices, or technologies involved in performing the task.",0],["Work System — Organization","The document reflects organizational factors (policies, workflows, staffing) relevant to care delivery.",0],["Work System — Environment","The document accounts for the physical or social environment in which care occurs.",0],["Processes — Clinical","Clinical care processes are accurately and completely described.",0],["Processes — Collaborative","Team or interprofessional collaboration processes are acknowledged where relevant.",0],["Processes — Patient","Patient self-care and self-management processes are supported.",0],["Outcomes","The document connects process changes to expected patient safety or quality-of-life outcomes.",0]]},"planetree":{"n":"Planetree Model of Person-Centered Care","t":"checklist","th":null,"sc":null,"note":"Planetree is a whole-organization philosophy. Designation requires on-site review, patient/staff survey data, and evidence of culture change — not a numerical score. For written materials, apply the 10 components as design principles. PT-3 through PT-10 will often be NOT_APPLICABLE for clinical educational documents.","src":["Planetree International. The Planetree Model. https://planetree.org/planetree-model/","Frampton SB, Gilpin L, Charmel PA (Eds.). (2003). Putting Patients First: Designing and Practicing Patient-Centered Care. Jossey-Bass. ISBN 978-0787964542.","Stone S. (2008). A retrospective evaluation of the impact of the Planetree patient-centered model of care on inpatient quality outcomes. HERD: Health Environments Research & Design Journal, 1(4), 55–69. https://doi.org/10.1177/193758670800100406"],"cr":[["Human Interactions","The document reflects compassion, emotional connection, and respect for human dignity.",0],["Patient & Family Education","Patient education and access to health information is supported; health literacy is addressed.",0],["Nutritional & Nurturing Care","Nutritional needs or the healing role of food/nourishment is acknowledged where relevant.",0],["Spirituality & Diversity","Spiritual, cultural, or diversity needs of the patient population are acknowledged.",0],["Human Touch","Comfort care, therapeutic touch, or physical comfort is addressed where relevant.",0],["Arts & Entertainment","Healing environment, arts, or distraction as part of care experience is referenced where applicable.",0],["Integrative Therapies","Complementary or integrative care options are referenced where clinically appropriate.",0],["Healthy Communities","Community health, prevention, or social determinants of health are addressed.",0],["Healing Environment","The physical environment, wayfinding, or environmental design is addressed.",0],["Staff Care","Staff wellbeing and organizational support for caregivers is reflected in organizational documents.",0]]}};
+
+const FW_LIVE = { cci:'mod-cci', pemat:'mod-pemat', readability:'mod-read', plainlang:'mod-scan' };
+const FW_LIVE_NAME = { cci:'CCI', pemat:'PEMAT', readability:'Readability', plainlang:'Plain language' };
+const fwRatings = {};   // framework key -> { criterionIndex: value }
+const fwOpen = {};      // framework key -> expanded?
+
+
+const FW_LEVEL = {};
+Object.keys(FW_LABEL).forEach(k => { FW_LEVEL[k] = 'SELF'; });
+['cci','pemat','plainlang'].forEach(k => { FW_LEVEL[k] = 'PARTIAL'; });
+FW_LEVEL.readability = 'AUTO';
+['pinkbook','option','pam','cahps','nps','ebcd'].forEach(k => { FW_LEVEL[k] = 'OFFDOC'; });
+const FW_BADGE = {
+  AUTO:    { icon:'●', label:'Scored for you',        tip:'The tool computes the result directly from your text.' },
+  PARTIAL: { icon:'◐', label:'Partly scored for you', tip:'The tool scores the countable items; you judge the rest.' },
+  SELF:    { icon:'○', label:'You score it',          tip:'The tool gives you the framework\'s checklist; you rate each item.' },
+  OFFDOC:  { icon:'⊘', label:'Needs real-world data', tip:'The real score comes from patients, observers or a live process, so a document alone can\'t produce it.' }
+};
+const FW_OFF_WHY = {
+  pinkbook:'A campaign-planning process. Formative research and audience pretesting happen outside the document.',
+  option:'A trained observer rates a live or recorded consultation (12 items, 0–4 each).',
+  pam:'A patient survey (PAM-13) with a licensed scoring algorithm.',
+  cahps:'A family of patient surveys, reported as top-box %.',
+  nps:'A patient survey: % promoters minus % detractors.',
+  ebcd:'Co-design sessions with patients and staff across several phases.'
+};
+function fwAutoCount(key){
+  if(key === 'cci')   return { auto: CCI_ITEMS.filter(i => i.auto).length, total: CCI_ITEMS.length };
+  if(key === 'pemat'){ const all = PEMAT_U.concat(PEMAT_A); return { auto: all.filter(i => i.auto).length, total: all.length }; }
+  return null;
+}
+
+let fwNeedState = null;
+function joinNames(a){ return a.length < 2 ? a.join('') : a.slice(0,-1).join(', ') + ' and ' + a[a.length-1]; }
+function focusArtworkText(){
+  const t = visualOn ? $('vm-transcript') : editor;
+  if(!t) return;
+  if(t.scrollIntoView) t.scrollIntoView({ behavior:'smooth', block:'center' });
+  t.focus();
+}
+// re-render the checklist card when text appears/disappears, so its message never goes stale
+function syncFwNeedText(){
+  try {
+    const need = selectedFrameworks().some(k => FW_LIVE[k]) && !hasContent();
+    if(need !== fwNeedState) renderFwOut();
+  } catch(e){}
+}
+function renderLiveBadges(){
+  Object.keys(FW_LIVE).forEach(k => {
+    const el = $('badge-' + k);
+    if(!el) return;
+    const b = FW_BADGE[FW_LEVEL[k]], c = fwAutoCount(k);
+    let txt = b.label + (c ? ' · ' + c.auto + ' of ' + c.total + ' items' : '');
+    if(k === 'plainlang') txt += ' · flags issues, no official score';
+    el.innerHTML = '<span class="ico" aria-hidden="true">' + b.icon + '</span><span title="' + escapeHtml(b.tip) + '">' + escapeHtml(txt) + '</span>';
+  });
+}
+function fwGroupHdr(level, n){
+  const b = FW_BADGE[level];
+  return '<div class="fwo-group"><span aria-hidden="true">' + b.icon + '</span>' + escapeHtml(b.label) + ' · ' + n + '</div>';
+}
+
+const FW_TYPE_LABEL = { 'scored':'Scored instrument', 'semi-scored':'Partly scored', 'checklist':'Checklist', 'process-guide':'Process guide (qualitative)' };
+
+function fwScaleOptions(key){
+  if(key==='discern') return [['','—'],['1','1'],['2','2'],['3','3'],['4','4'],['5','5']];
+  if(key==='option')  return [['','—'],['0','0'],['1','1'],['2','2'],['3','3'],['4','4']];
+  if(key==='sam')     return [['','—'],['0','0'],['1','1'],['2','2']];
+  if(key==='eqip')    return [['','—'],['y','Yes'],['n','No'],['na','N/A']];
+  return [['','—'],['met','Met'],['part','Partly'],['no','Not met'],['na','N/A']];
+}
+function fwScaleHint(key){
+  return ({
+    discern:'Rate each question 1 (no/poor) to 5 (yes/excellent).',
+    option:'Rate 0 (not observed) to 4 (fully applied).',
+    sam:'Rate 0 (not suitable), 1 (adequate) or 2 (superior).',
+    eqip:'Answer Yes / No. N/A items are left out of the score.'
+  })[key] || 'Rate each item Met, Partly or Not met. N/A items are left out.';
+}
+function fwStat(key){
+  const r = FW_REG[key];
+  if(FW_LEVEL[key] === 'OFFDOC') return 'reference only';
+  const rt = fwRatings[key] || {};
+  let assessable = 0, rated = 0;
+  const v = { met:0, part:0, no:0, na:0, y:0, n:0, sum:0, cnt:0 };
+  r.cr.forEach((c,i) => {
+    if(c[2]) return;
+    assessable++;
+    const x = rt[i];
+    if(x === undefined || x === '') return;
+    rated++;
+    if(x==='met') v.met++; else if(x==='part') v.part++; else if(x==='no') v.no++; else if(x==='na') v.na++;
+    else if(x==='y') v.y++; else if(x==='n') v.n++;
+    else { v.sum += Number(x); v.cnt++; }
+  });
+  let out = rated + '/' + assessable + ' rated';
+  if(key==='sam' && v.cnt){
+    const pct = Math.round(v.sum / (2*v.cnt) * 100);
+    out += ' · ' + pct + '% ' + (pct>=70 ? 'superior' : pct>=40 ? 'adequate' : 'not suitable');
+  } else if(key==='eqip' && (v.y+v.n)){
+    out += ' · ' + Math.round(v.y/(v.y+v.n)*100) + '%';
+  } else if(key==='discern' && v.cnt){
+    out += ' · avg ' + (v.sum/v.cnt).toFixed(1) + '/5';
+  } else if(key==='option' && v.cnt){
+    out += ' · ' + v.sum + ' pts';
+  } else if(!FW_SCALED(key) && rated){
+    out += ' · ' + v.met + ' met';
+  }
+  return out;
+}
+function FW_SCALED(key){ return key==='discern' || key==='option' || key==='sam' || key==='eqip'; }
+
+function linkifyEsc(str){
+  return escapeHtml(str).replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+function renderFwItem(key){
+  const r = FW_REG[key], level = FW_LEVEL[key];
+  const open = !!fwOpen[key];
+  let body = '';
+  const typeLine = (FW_TYPE_LABEL[r.t] || r.t) + (r.th ? ' · Pass: ' + r.th : '');
+  body += '<div class="fwo-meta">' + escapeHtml(typeLine) + '</div>';
+  if(level === 'OFFDOC'){
+    body += '<div class="fwo-meta"><b>Not scored here.</b> ' + escapeHtml(FW_OFF_WHY[key] || 'Its real score needs patients, observers or a live process.') + '</div>';
+    body += '<div class="fwo-dom">What it looks at</div><ul class="fwo-list">' + r.cr.map(c => '<li>' + escapeHtml(c[1]) + '</li>').join('') + '</ul>';
+  } else {
+    body += '<div class="fwo-meta">' + escapeHtml(fwScaleHint(key)) + '</div>';
+    const opts = fwScaleOptions(key);
+    const rt = fwRatings[key] || {};
+    let lastDom = null;
+    r.cr.forEach((c,i) => {
+      if(c[0] !== lastDom){ body += '<div class="fwo-dom">' + escapeHtml(c[0]) + '</div>'; lastDom = c[0]; }
+      if(c[2]){
+        body += '<div class="fwo-row na"><div class="t">' + escapeHtml(c[1]) + '</div><span class="fwo-stat">needs survey / live process</span></div>';
+      } else {
+        const sel = opts.map(o => '<option value="' + o[0] + '"' + (String(rt[i]||'')===o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('');
+        body += '<div class="fwo-row"><div class="t">' + escapeHtml(c[1]) + '</div><select aria-label="Rating" onchange="setFwRating(\'' + key + '\',' + i + ',this.value)">' + sel + '</select></div>';
+      }
+    });
+  }
+  let about = '';
+  if(r.note) about += '<div>' + escapeHtml(r.note) + '</div>';
+  if(r.src && r.src.length) about += '<div style="margin-top:6px"><b>Sources</b></div><ul class="fwo-src">' + r.src.map(x => '<li>' + linkifyEsc(x) + '</li>').join('') + '</ul>';
+  about += '<div style="margin-top:6px"><a href="' + fwSourceUrl(key) + '" target="_blank" rel="noopener">Open original source ↗</a></div>';
+  body += '<div class="fwo-about">' + about + '</div>';
+
+  return '<div class="fwo-item' + (open ? ' open' : '') + '" id="fwo-item-' + key + '">'
+    + '<div class="fwo-hdr" role="button" tabindex="0" aria-expanded="' + open + '" onclick="toggleFwOpen(\'' + key + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFwOpen(\'' + key + '\')}">'
+    + '<span class="fwo-name">' + escapeHtml(FW_LABEL[key]) + '</span>'
+    + '<span class="fwo-stat" id="fwo-stat-' + key + '">' + escapeHtml(fwStat(key)) + '</span>'
+    + '<span class="fwo-chev" aria-hidden="true">▸</span></div>'
+    + '<div class="fwo-body">' + body + '</div></div>';
+}
+function renderFwOut(){
+  const body = $('fwout-body'), pill = $('fwout-pill');
+  if(!body) return;
+  const sel = selectedFrameworks();
+  if(!sel.length){
+    body.innerHTML = '<div class="mod-note">Choose a Goal, Stage and Scored-output in the Frameworks bar (or tick frameworks in its full list). Frameworks the tool scores itself get their own cards below; the others appear here as checklists.</div>';
+    pill.textContent = '—'; pill.className = 'pill pill-empty';
+    return;
+  }
+  const live = sel.filter(k => FW_LIVE[k]);
+  const self = sel.filter(k => !FW_LIVE[k] && FW_LEVEL[k] === 'SELF');
+  const off  = sel.filter(k => !FW_LIVE[k] && FW_LEVEL[k] === 'OFFDOC');
+  pill.textContent = (self.length + off.length) ? (self.length + off.length) + ' listed' : '—';
+  pill.className = 'pill pill-empty';
+  const needText = live.length > 0 && !hasContent();
+  fwNeedState = needText;
+  const names = joinNames(live.map(k => FW_LIVE_NAME[k]));
+  let html = '';
+  if(needText){
+    const what = visualOn
+      ? 'A poster image or scanned page has no text the tool can read. Type or paste the words from the artwork into “Text in the artwork”'
+      : 'Paste or type your material into the workspace';
+    html += '<div class="fwo-need"><b>' + escapeHtml(names) + (live.length === 1 ? ' needs' : ' need') + ' text to score.</b> '
+          + escapeHtml(what) + ' and ' + (live.length === 1 ? 'its card' : 'their cards') + ' will appear below.'
+          + '<div><button class="fwo-link" style="margin-top:6px" onclick="focusArtworkText()">' + (visualOn ? 'Add the poster\'s text' : 'Go to the workspace') + '</button></div></div>';
+  } else {
+    let note = '';
+    if(live.length) note += names + (live.length === 1 ? ' is' : ' are') + ' scored in ' + (live.length === 1 ? 'its own card' : 'their own cards') + ' below. ';
+    note += 'Scoring cards for frameworks you didn\'t select are dimmed; they still work.';
+    html += '<div class="fwo-note">' + escapeHtml(note) + '</div>';
+  }
+  if(self.length) html += fwGroupHdr('SELF', self.length) + self.map(renderFwItem).join('');
+  if(off.length)  html += fwGroupHdr('OFFDOC', off.length) + off.map(renderFwItem).join('');
+  body.innerHTML = html;
+}
+function toggleFwOpen(key){
+  fwOpen[key] = !fwOpen[key];
+  const el = $('fwo-item-' + key);
+  if(el){
+    el.classList.toggle('open', fwOpen[key]);
+    const h = el.querySelector('.fwo-hdr'); if(h) h.setAttribute('aria-expanded', String(!!fwOpen[key]));
+  }
+}
+function setFwRating(key, i, val){
+  (fwRatings[key] = fwRatings[key] || {})[i] = val;
+  const el = $('fwo-stat-' + key);
+  if(el) el.textContent = fwStat(key);
+}
+function applyFwToModules(){
+  const sel = selectedFrameworks();
+  Object.keys(FW_LIVE).forEach(k => {
+    const m = $(FW_LIVE[k]);
+    if(!m) return;
+    m.classList.toggle('fw-off', sel.length > 0 && !sel.includes(k));
+    m.classList.toggle('fw-on',  sel.length > 0 &&  sel.includes(k));
+  });
+}
+function clearFrameworks(){
+  [goalStateTop, fwManual, fwRatings, fwOpen].forEach(o => Object.keys(o).forEach(k => delete o[k]));
+  document.querySelectorAll('#seg-g1top button, #seg-g2top button, #seg-g3top button').forEach(b => b.classList.remove('on'));
+  renderFwTopBar();
+}
 const goalState = {};
 function setGoal(step, val, btn){
   goalState[step] = val;
@@ -2780,40 +3159,118 @@ function setGoal(step, val, btn){
   }
 }
 
+// ── TOP FRAMEWORK BAR (prototype) — same data, new home ──
+const goalStateTop = {};
+const fwManual = {};   // f -> true (forced on) | false (forced off) | undefined (auto)
+function currentMatchSet(){
+  const key = [goalStateTop[1],goalStateTop[2],goalStateTop[3]].filter(Boolean).join('-');
+  const res = GOAL_RESULTS[key];
+  return res ? res.fws : [];
+}
+function selectedFrameworks(){
+  const matched = currentMatchSet();
+  return Object.keys(FW_LABEL).filter(f =>
+    fwManual[f] === true || (fwManual[f] !== false && matched.includes(f))
+  );
+}
+function toggleFwManual(f){
+  const currentlySelected = selectedFrameworks().includes(f);
+  fwManual[f] = !currentlySelected;
+  renderFwTopBar();
+}
+function renderFwTopGrid(){
+  const selected = selectedFrameworks();
+  const auto = currentMatchSet();
+  const grid = $('fw-top-grid');
+  grid.innerHTML = Object.keys(FW_LABEL).map(f => {
+    const isSel = selected.includes(f);
+    const isAuto = auto.includes(f) && fwManual[f] === undefined;
+    const zone = FW_ZONE[f];
+    const bd = FW_BADGE[FW_LEVEL[f]];
+    return '<div class="fw-top-card'+(isSel?' match':'')+'" onclick="toggleFwManual(\''+f+'\')" style="cursor:pointer;'+(isSel?'color:var(--zone-'+zone+');background:rgba(0,0,0,0.015)':'')+'">'
+      + '<label style="display:flex;gap:7px;align-items:flex-start;cursor:pointer" onclick="event.stopPropagation();toggleFwManual(\''+f+'\')">'
+      + '<input type="checkbox" '+(isSel?'checked':'')+' style="margin-top:2px" onclick="event.stopPropagation();toggleFwManual(\''+f+'\')">'
+      + '<span style="flex:1"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">'
+      + '<div class="name" style="color:'+(isSel?'var(--zone-'+zone+')':'var(--n700)')+'">'+FW_LABEL[f]+(isAuto?' <span style="font-weight:400;opacity:.6">(suggested)</span>':'')+'</div>'
+      + '<a href="'+fwSourceUrl(f)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="font-size:9px;color:var(--n500);white-space:nowrap;text-decoration:none;flex-shrink:0" title="Open original source in a new tab">source ↗</a>'
+      + '</div><div class="fw-card-badge" title="'+escapeHtml(bd.tip)+'"><span aria-hidden="true">'+bd.icon+'</span> '+bd.label+'</div><div class="full">'+FW_FULL[f]+'</div></span></label></div>';
+  }).join('');
+}
+function renderFwTopBar(){
+  const selected = selectedFrameworks();
+  const chips = $('fw-top-chips'), count = $('fw-top-count'), note = $('goal-note-top');
+  const key = [goalStateTop[1],goalStateTop[2],goalStateTop[3]].filter(Boolean).join('-');
+  const res = GOAL_RESULTS[key];
+  if(selected.length){
+    chips.innerHTML = selected.map(f => {
+      const b = FW_BADGE[FW_LEVEL[f]];
+      return '<span class="fw-tag '+FW_ZONE[f]+'" title="'+escapeHtml(b.label+' — '+(FW_FULL[f]||FW_LABEL[f]))+'"><span class="fw-ico" aria-hidden="true">'+b.icon+'</span>'+FW_LABEL[f]+'<span class="sr-only"> — '+b.label+'</span></span>';
+    }).join('');
+    count.textContent = selected.length + ' of 26 selected';
+    note.textContent = (res && res.note) || '';
+  } else {
+    chips.innerHTML = '<span class="fw-top-empty">Set Goal · Stage · Scored output to see matches</span>';
+    count.textContent = '';
+    note.textContent = '';
+  }
+  const anyState = selected.length || Object.keys(goalStateTop).length || Object.keys(fwManual).length;
+  const clr = $('fw-top-clear'); if(clr) clr.style.display = anyState ? '' : 'none';
+  renderFwTopGrid();
+  renderFwOut();
+  applyFwToModules();
+  renderLiveBadges();
+}
+function setGoalTop(step, val, btn){
+  if(goalStateTop[step] === val){            // click the lit button again to unset it
+    delete goalStateTop[step];
+    btn.classList.remove('on');
+  } else {
+    goalStateTop[step] = val;
+    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
+  }
+  renderFwTopBar();
+}
+function toggleFwTop(){
+  const bar = $('fw-topbar'), panel = $('fw-top-panel'), toggle = $('fw-top-toggle');
+  const open = panel.classList.toggle('open');
+  bar.classList.toggle('open', open);
+  toggle.textContent = open ? 'Show top only ▾' : 'Show all 26 ▸';
+}
+function toggleBriefTop(){
+  const bar = $('brief-topbar'), panel = $('brief-top-panel'), toggle = $('brief-top-toggle');
+  const open = panel.classList.toggle('open');
+  bar.classList.toggle('open', open);
+  toggle.textContent = open ? 'Show summary ▾' : 'Edit brief ▸';
+}
+renderFwTopBar();
+
 // ── Module dock / rails (fixed columns — drag only reorders) ──
-const MODS = ['mod-brief','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc','mod-tune','mod-goal'];
+const MODS = ['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc'];
 
 // ════════════════════════════════════════
 // WORKSPACE PRESETS — a starting set of modules per scenario
 // ════════════════════════════════════════
 const LAYOUTS = {
-  'everything': { name:'Everything', note:'All nine modules.',
-    left:['mod-brief','mod-read','mod-cci','mod-tune'],
-    right:['mod-pemat','mod-scan','mod-a11y','mod-acc','mod-goal'] },
+  'everything': { name:'Everything', note:'All modules.',
+    right:['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc'] },
 
-  'drafting': { name:'Drafting a new piece', note:'Brief, readability, tone and the plain-language scan — what you need while writing.',
-    left:['mod-brief','mod-read','mod-tune'],
-    right:['mod-scan'] },
+  'drafting': { name:'Drafting a new piece', note:'Readability and the plain-language scan — what you need while writing.',
+    right:['mod-fwout','mod-read','mod-scan'] },
 
   'audit': { name:'Auditing existing material', note:'The scored audit stack: CCI, PEMAT and readability, with the plain-language scan.',
-    left:['mod-brief','mod-read','mod-cci'],
-    right:['mod-pemat','mod-scan'] },
+    right:['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan'] },
 
   'accessibility': { name:'Accessibility pass', note:'WCAG checks, contrast and read-aloud clarity, with readability alongside.',
-    left:['mod-brief','mod-read'],
-    right:['mod-a11y','mod-scan'] },
+    right:['mod-fwout','mod-read','mod-a11y','mod-scan'] },
 
   'visual': { name:'Poster / chart review', note:'For artwork: accessibility, colour and readability against a short word budget.',
-    left:['mod-brief','mod-read'],
-    right:['mod-a11y','mod-acc','mod-scan'] },
+    right:['mod-fwout','mod-read','mod-a11y','mod-acc','mod-scan'] },
 
   'clinical': { name:'Clinical / content review', note:'Sources, currency and claims, checked against understandability.',
-    left:['mod-brief','mod-acc'],
-    right:['mod-pemat','mod-cci'] },
+    right:['mod-fwout','mod-acc','mod-pemat','mod-cci'] },
 
-  'frameworks': { name:'Choosing a framework', note:'The framework picker with the three scored tools for reference.',
-    left:['mod-brief','mod-goal'],
-    right:['mod-cci','mod-pemat','mod-read'] },
+  'frameworks': { name:'Choosing a framework', note:'Frameworks lives in the top bar now — this keeps the three scored tools for reference.',
+    right:['mod-fwout','mod-cci','mod-pemat','mod-read'] },
 };
 const LS_KEY = 'pea-studio-layouts';
 const LS_LAST = 'pea-studio-last-layout';
@@ -2847,6 +3304,17 @@ function renderLayoutSelect(){
   sel.value = currentLayout;
 }
 
+function setMode(m, btn){
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
+  if(m === 'plan'){
+    applyLayout('frameworks', true);
+    flashHint('Planning mode — set Brief and Frameworks first. Add scoring modules (CCI, PEMAT…) once you have a draft to check them against.');
+  } else {
+    applyLayout('everything', true);
+    flashHint('Evaluate mode — upload or paste a draft and it scores against your Brief and the frameworks.');
+  }
+}
+
 function applyLayout(key, silent){
   const L = allLayouts()[key];
   if(!L) return;
@@ -2872,9 +3340,9 @@ function applyLayout(key, silent){
 }
 
 const MOD_NAMES = {
-  'mod-brief':'Brief', 'mod-read':'Readability', 'mod-cci':'CCI',
+  'mod-fwout':'Framework checklists', 'mod-read':'Readability', 'mod-cci':'CCI',
   'mod-pemat':'PEMAT', 'mod-scan':'Plain language', 'mod-a11y':'Accessibility',
-  'mod-acc':'Accuracy', 'mod-tune':'Tune', 'mod-goal':'Frameworks',
+  'mod-acc':'Accuracy',
 };
 
 // The "add module" menu only lists what isn't already on screen
@@ -2899,10 +3367,7 @@ function addModule(id){
   if(!m) return;
   m.classList.remove('hidden','collapsed');
   updateApplicability();
-  // put it at the bottom of the shorter rail so the two stay balanced
-  const l = $('rail-left').querySelectorAll('.mod:not(.hidden):not(.na-hidden)').length;
-  const r = $('rail-right').querySelectorAll('.mod:not(.hidden):not(.na-hidden)').length;
-  $(l <= r ? 'rail-left' : 'rail-right').appendChild(m);
+  $('rail-right').appendChild(m);
   if(m.scrollIntoView) m.scrollIntoView({ behavior:'smooth', block:'nearest' });
   syncDockKeys();
   touchLayout();
@@ -2922,7 +3387,6 @@ function captureLayout(name){
   return {
     name,
     note:'Your saved workspace.',
-    left: grab('rail-left'),
     right: grab('rail-right'),
     collapsed: MODS.filter(id => $(id).classList.contains('collapsed')),
   };
@@ -2944,6 +3408,23 @@ function saveLayout(){
 }
 
 function resetLayout(){ applyLayout(currentLayout); }
+
+function clearInputs(){
+  Object.assign(brief, { audience:null, format:null, message:'', deadline:'', notes:'', reqs:{} });
+  document.querySelectorAll('#seg-aud button, #seg-fmt button').forEach(b => b.classList.remove('on'));
+  if($('brief-msg')) $('brief-msg').value = '';
+  if($('brief-due')) $('brief-due').value = '';
+  if($('due-badge')) $('due-badge').textContent = '';
+  if($('brief-notes')) $('brief-notes').value = '';
+  renderReqs();
+  renderBriefHeader();
+  renderBriefTargets();
+
+  clearFrameworks();
+
+  flashHint('Brief and Frameworks cleared — your document and layout are untouched.');
+  analyze();
+}
 
 function toggleCollapse(id){
   $(id).classList.toggle('collapsed');
@@ -3140,9 +3621,9 @@ window.addEventListener('scroll', hideTip, true);
 window.addEventListener('resize', hideTip);
 
 // ── Init ──
-setTune('tone','conversational', document.querySelector('#seg-tone button.on'));
 renderReqs();
 renderBriefHeader();
+renderBriefTargets();
 renderFileHistory();
 renderVersions();
 renderPalette();
