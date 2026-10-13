@@ -30,6 +30,15 @@
 
 ---
 
+## Status of fixes
+
+| Fix | Status | Notes |
+|---|---|---|
+| CCI items and scoring | **Done** | All 20 CDC items in Parts A–D across `index.html`, `classic.html`, `analysis-engine.js` and `framework-scoring-logic.html`, plus the compass summary. Score = points ÷ applicable items × 100; 90+ passes. Parts B–D have a "Doesn't apply" toggle (Part C defaults to N/A when the text has no digits); items 19–20 can be marked N/A. AUTO checks now map only to real items (2 main message at top, 8 lists); items 3, 4, 7 and 9 auto-fail when the prerequisite is missing and otherwise ask the reviewer to confirm. Wording of items 12–14 and the 4-part structure confirmed by search; items 1–11 and 15–20 follow the July 2014 score sheet, and the 2014 PDF has not been opened to confirm their exact wording. The classic page's mislabelled "Consumer Comprehension Index" description was also replaced. |
+| PEMAT items and scoring | **Done** | All 24 PEMAT-P items (understandability 1–12, 15–19; actionability 20–26) with N/A handling (auto N/A for numbers, visual aids and tables when absent). The pass rule is now ≥70% on each score (developers' cut-off). The PDF has not been opened to confirm whether exactly 70% counts as passing. |
+| DCS formula | **Done** | `(sum of 16 items / 16) × 25` in `framework-scoring-logic.html` and `analysis-engine.js`; removed the incorrect "items reversed" note. |
+| Everything else in §5 | Open | |
+
 ## 1. Executive summary
 
 The bibliography is mostly sound. Nearly all journal citations (authors, year, journal, volume, pages, DOI) are real and correctly formed. **The problems are in the instrument content:** several checklists the site presents as the published instrument were paraphrased or invented, and the analyzer scores real documents against them.
