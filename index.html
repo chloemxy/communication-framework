@@ -384,7 +384,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .mod, .mod-hdr, .mod-body, .canvas, .canvas-hdr, .canvas-foot, .dock{min-width:0}
 .mod-body *, .mod-hdr *, .canvas-foot *{max-width:100%;min-width:0}
 .mod-body, .mod-body p, .mod-body label, .mod-body span, .mod-body div,
-.find-msg, .find-lbl, .issue-msg, .issue-lbl, .ck-item label, .goal-note, .mod-note{
+.find-msg, .find-lbl, .issue-msg, .issue-lbl, .ck-item label, .mod-note{
   overflow-wrap:anywhere;word-break:normal;
 }
 .mod-body input, .mod-body textarea, .mod-body select{max-width:100%}
@@ -455,14 +455,6 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 }
 .brief-input:focus{border-color:var(--blue)}
 .brief-input::placeholder{color:var(--n400)}
-.brief-due-badge{
-  font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;
-  background:var(--n200);color:var(--n500);
-}
-.brief-due-badge:empty{display:none}
-.brief-due-badge.soon{background:var(--orange-bg);color:#7a5a00}
-.brief-due-badge.late{background:var(--red-bg);color:#b91c1c}
-.brief-due-badge.ok{background:var(--teal-bg);color:#14713e}
 .brief-summary{
   display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;
 }
@@ -564,7 +556,6 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 }
 .seg button:hover{color:var(--n700)}
 .seg button.on{background:#fff;color:var(--n900);box-shadow:0 1px 3px rgba(0,0,0,0.10)}
-.seg.seg-goal button.on{background:var(--dark);color:#fff}
 
 /* Multi-option pickers — even 2-column grid instead of ragged wrapping */
 .seg.seg-grid{
@@ -585,13 +576,11 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 }
 
 /* goal result tags */
-.fw-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
 .fw-tag{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
 .fw-tag.clarity  {background:rgba(29,111,168,.10);color:var(--zone-clarity)}
 .fw-tag.process  {background:rgba(109,63,200,.10);color:var(--zone-process)}
 .fw-tag.behavior {background:rgba(192,85,6,.10);color:var(--zone-behavior)}
 .fw-tag.outcomes {background:rgba(22,163,74,.10);color:var(--zone-outcomes)}
-.goal-note{font-size:11px;color:var(--n500);line-height:1.5;margin-top:6px;font-style:italic}
 
 /* ── TOP FRAMEWORK BAR (prototype) ── */
 .top-bars{position:absolute;top:14px;left:14px;right:14px;display:flex;gap:14px;z-index:80}
@@ -625,18 +614,30 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 }
 .fw-top-panel.open{max-height:min(70vh,640px);overflow-y:auto;opacity:1}
 .fw-top-panel-inner{padding:16px 18px 18px}
-.fw-top-controls{display:flex;gap:16px;flex-wrap:wrap;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid var(--n200)}
-.fw-top-controls .fw-top-ctl-group{min-width:140px;flex:1}
 .fw-top-grid-hdr{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
 .fw-top-grid-hdr .lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n500)}
 .fw-top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
 .fw-top-card{
-  border:1px solid var(--n200);border-radius:8px;padding:9px 11px;cursor:default;
-  transition:border-color .12s,background .12s;
+  --zc:var(--n700);
+  border:1px solid var(--n200);border-radius:8px;padding:9px 11px;cursor:pointer;
+  display:flex;flex-direction:column;gap:4px;min-height:84px;
+  transition:border-color .12s,background .12s,box-shadow .12s;
 }
-.fw-top-card.match{border-color:currentColor}
-.fw-top-card .name{font-size:11.5px;font-weight:700}
-.fw-top-card .full{font-size:10.5px;color:var(--n500);line-height:1.45;margin-top:3px}
+.fw-top-card:hover{border-color:var(--n400)}
+.fw-top-card:focus-visible{outline:2px solid var(--zc);outline-offset:1px}
+.fw-top-card.match{border-color:var(--zc);box-shadow:inset 3px 0 0 var(--zc);background:rgba(0,0,0,0.015)}
+.fwc-top{display:flex;align-items:center;gap:7px}
+.fwc-box{width:13px;height:13px;border:1.5px solid var(--n400);border-radius:3px;flex-shrink:0;background:#fff}
+.fw-top-card.match .fwc-box{background:var(--zc);border-color:var(--zc);box-shadow:inset 0 0 0 2px #fff}
+.fw-top-card .name{font-size:12px;font-weight:700;color:var(--n900)}
+.fw-top-card.match .name{color:var(--zc)}
+.fwc-src{margin-left:auto;font-size:9px;color:var(--n400);text-decoration:none;white-space:nowrap}
+.fwc-src:hover{color:var(--n700)}
+.fw-top-card .full{font-size:10.5px;color:var(--n600);line-height:1.4}
+.fwc-meta{display:flex;align-items:center;gap:6px;margin-top:auto}
+.fwc-how{font-size:9.5px;color:var(--n500)}
+.fw-compass-link{font-size:10px;font-weight:700;color:var(--n500);text-decoration:none;white-space:nowrap}
+.fw-compass-link:hover{color:var(--n900)}
 
 /* ── FRAMEWORK OUTPUTS card + selection reflected on live cards ── */
 .mod.fw-off{opacity:.5;transition:opacity .15s}
@@ -761,7 +762,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <select id="add-mod-sel" class="dock-add" onchange="addModule(this.value)" title="Add a module to this workspace"></select>
     <button class="dock-mini" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
     <button class="dock-reset" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
-    <button class="dock-reset" onclick="clearInputs()" title="Clear the Brief (Audience, Format, Main message, Deadline) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
+    <button class="dock-reset" onclick="clearInputs()" title="Clear the Brief (Audience, Format) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
   </div>
 </div>
 
@@ -797,18 +798,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 
           <div class="brief-targets" id="brief-targets"></div>
 
-          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="The one thing a reader must take away. It's checked against your opening paragraph — CCI item 2 asks whether the main message is at the top, and that item scores itself once you fill this in.">Main message</span></div>
-          <input class="brief-input" id="brief-msg" type="text" maxlength="140"
-                 placeholder="e.g. Check your blood pressure twice a day"
-                 oninput="setBrief('message',this.value)">
-
-          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Shows a live countdown beside the date. Turns amber inside 3 days, red when overdue.">Deadline</span></div>
-          <div style="display:flex;gap:6px;align-items:center">
-            <input class="brief-input" id="brief-due" type="date" style="flex:1;margin:0"
-                   onchange="setBrief('deadline',this.value)">
-            <span class="brief-due-badge" id="due-badge"></span>
-          </div>
-
           <!-- Requirements & restrictions: hidden until something reads these answers (no score or check uses them yet) -->
           <div id="brief-reqs" hidden>
           <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Constraints no automated check can see — confirm each one before sign-off.">Requirements &amp; restrictions</span></div>
@@ -825,46 +814,26 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     </div>
 
     <div class="top-bar-col">
-      <div class="fw-topbar" id="fw-topbar" onclick="toggleFwTop()" title="Pick a Goal and Stage and this recommends which of the patient-experience frameworks with checklists or scoring here fit your project (the Full compass catalogues all 26). Check a card to include or exclude it manually; click a card's source link to read the original.">
+      <div class="fw-topbar" id="fw-topbar" onclick="toggleFwTop()" title="Tick the frameworks you want to apply. Frameworks the tool scores get their own cards; the rest become checklists. The Full compass catalogues all 26.">
         <span class="fw-top-name">Frameworks</span>
-        <span class="fw-top-count" id="fw-top-count">Set Goal · Stage to see matches</span>
+        <span class="fw-top-count" id="fw-top-count"></span>
         <div class="fw-top-chips" id="fw-top-chips"></div>
-        <span class="fw-top-clear" id="fw-top-clear" style="display:none" onclick="event.stopPropagation();clearFrameworks()" title="Clear Goal, Stage and any frameworks you ticked">✕ Clear</span>
+        <span class="fw-top-clear" id="fw-top-clear" style="display:none" onclick="event.stopPropagation();clearFrameworks()" title="Untick every framework">✕ Clear</span>
         <span class="fw-top-toggle" id="fw-top-toggle">Show all 20 ▸</span>
       </div>
       <div class="fw-top-panel" id="fw-top-panel">
         <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
-          <div class="fw-top-controls">
-            <div class="fw-top-ctl-group">
-              <div class="tune-lbl">Goal</div>
-              <div class="seg seg-goal seg-grid" id="seg-g1top">
-                <button data-v="clarity"  onclick="setGoalTop(1,'clarity',this)">Understand</button>
-                <button data-v="process"  onclick="setGoalTop(1,'process',this)">Decide</button>
-                <button data-v="behavior" onclick="setGoalTop(1,'behavior',this)">Behavior</button>
-                <button data-v="outcomes" onclick="setGoalTop(1,'outcomes',this)">Experience</button>
-              </div>
-            </div>
-            <div class="fw-top-ctl-group">
-              <div class="tune-lbl">Stage</div>
-              <div class="seg" id="seg-g2top">
-                <button data-v="designing" onclick="setGoalTop(2,'designing',this)">Drafting</button>
-                <button data-v="auditing"  onclick="setGoalTop(2,'auditing',this)">Auditing</button>
-                <button data-v="measuring" onclick="setGoalTop(2,'measuring',this)">Measuring</button>
-              </div>
-            </div>
-          </div>
           <div class="fw-top-grid-hdr">
-            <span class="lbl" id="fw-grid-lbl">All 20 frameworks — check to include, uncheck to exclude</span>
+            <span class="lbl" id="fw-grid-lbl">20 frameworks</span>
             <div class="seg fw-out-filter" id="seg-outtype" title="Show only frameworks that produce this kind of output">
               <button data-v="all" class="on" onclick="setOutFilter('all')">All</button>
-              <button data-v="scored" onclick="setOutFilter('scored')">Scored</button>
-              <button data-v="partial" onclick="setOutFilter('partial')">Partly scored</button>
+              <button data-v="scored" onclick="setOutFilter('scored')">Score</button>
+              <button data-v="partial" onclick="setOutFilter('partial')">Partial score</button>
               <button data-v="qual" onclick="setOutFilter('qual')">Qualitative</button>
             </div>
-            <a href="framework-compass.html" target="_blank" rel="noopener" style="font-size:10px;font-weight:700;color:var(--n500);text-decoration:none;white-space:nowrap" onclick="event.stopPropagation()" title="All 26 frameworks, including the 6 that need real-world data (Pink Book, OPTION, PAM, CAHPS, NPS, EBCD)">Full compass · all 26 ↗</a>
-            <button class="fw-clear-btn" onclick="clearFrameworks()" title="Clear Goal, Stage, the output filter and any frameworks you ticked">Clear selection</button>
+            <a href="framework-compass.html" target="_blank" rel="noopener" class="fw-compass-link" onclick="event.stopPropagation()" title="All 26 frameworks, including the 6 that need real-world data (Pink Book, OPTION, PAM, CAHPS, NPS, EBCD)">Full compass (26) ↗</a>
+            <button class="fw-clear-btn" onclick="clearFrameworks()" title="Untick every framework and reset the filter">Clear selection</button>
           </div>
-          <div class="goal-note" id="goal-note-top" style="margin:-4px 0 8px"></div>
           <div class="fw-top-grid" id="fw-top-grid"></div>
         </div>
       </div>
@@ -1169,7 +1138,7 @@ const CCI_PARTS = {
 };
 const CCI_ITEMS = [
   { id:'c1',  n:1,  part:'A', text:'The material contains one main message statement.' },
-  { id:'c2',  n:2,  part:'A', text:'The main message is at the top, beginning, or front of the material.', auto:'msgUpFront' },
+  { id:'c2',  n:2,  part:'A', text:'The main message is at the top, beginning, or front of the material.' },
   { id:'c3',  n:3,  part:'A', text:'The main message is emphasized with visual cues (bold, larger type, colour, a box).', gate:'hasBold' },
   { id:'c4',  n:4,  part:'A', text:'The material contains at least one visual that conveys or supports the main message.', gate:'hasImages' },
   { id:'c5',  n:5,  part:'A', text:'The material includes one or more calls to action for the primary audience.' },
@@ -1313,7 +1282,6 @@ function autoFlags(stats, struct){
     sentLen:    stats ? stats.avgSentLen <= t.sentLen : null,
     sentLen20:  stats ? stats.avgSentLen <= t.sentLen + 5 : null,
     grade:      stats ? stats.grade <= t.grade : null,
-    msgUpFront: struct ? messageUpFront(struct.text) : null,
     activeVoice:struct ? struct.passiveRate < 0.25 : null,
     noJargon:   jargonFlag,
     hasList:    struct ? struct.hasList : null,
@@ -1361,7 +1329,7 @@ function scanIssues(text){
 // ════════════════════════════════════════
 // PROJECT BRIEF — the answers that set every target below
 // ════════════════════════════════════════
-const brief = { audience:null, format:null, message:'', deadline:'', notes:'', reqs:{} };
+const brief = { audience:null, format:null, notes:'', reqs:{} };
 
 // Audience → reading targets + word for the UI
 const AUDIENCE_SPEC = {
@@ -1422,7 +1390,6 @@ function setBrief(key, val, btn){
       ? '<b>'+s.label+'</b><br>'+s.note+'<br><br>Word budget <b>'+s.words[0]+'–'+s.words[1]+'</b>.'
       : 'Sets the word budget and which checks apply.';
   }
-  renderBriefHeader();
   renderBriefTargets();
   analyze();
   if(key === 'audience' || key === 'format') pushNav();
@@ -1448,7 +1415,7 @@ function renderBriefTargets(){
   if(summary) summary.innerHTML = html;
 }
 
-function toggleReq(id, on){ brief.reqs[id] = on; renderBriefHeader(); refreshScores(); }
+function toggleReq(id, on){ brief.reqs[id] = on; refreshScores(); }
 
 // Free-text constraints stay hidden until asked for
 function showNotes(){
@@ -1468,34 +1435,6 @@ function renderReqs(){
     '<div class="ck-item"><input type="checkbox" id="'+r.id+'" '+(brief.reqs[r.id]?'checked':'')+
     ' onchange="toggleReq(\''+r.id+'\',this.checked)"><label for="'+r.id+'">'+r.text+'</label></div>'
   ).join('');
-}
-
-function daysUntil(d){
-  if(!d) return null;
-  const due = new Date(d + 'T23:59:59');
-  return Math.ceil((due - new Date()) / 86400000);
-}
-
-function renderBriefHeader(){
-  // deadline badge
-  const badge = $('due-badge');
-  const days = daysUntil(brief.deadline);
-  if(days === null){ badge.textContent = ''; badge.className = 'brief-due-badge'; }
-  else if(days < 0){ badge.textContent = Math.abs(days)+'d overdue'; badge.className = 'brief-due-badge late'; }
-  else if(days === 0){ badge.textContent = 'due today'; badge.className = 'brief-due-badge late'; }
-  else if(days <= 3){ badge.textContent = days+'d left'; badge.className = 'brief-due-badge soon'; }
-  else { badge.textContent = days+'d left'; badge.className = 'brief-due-badge ok'; }
-
-}
-
-// Does the stated main message appear near the top of the material?
-function messageUpFront(text){
-  if(!brief.message || brief.message.trim().length < 4) return null;
-  const opening = text.trim().slice(0, 400).toLowerCase();
-  const words = brief.message.toLowerCase().match(/\b[a-z]{4,}\b/g) || [];
-  if(!words.length) return null;
-  const hits = words.filter(w => opening.includes(w)).length;
-  return hits / words.length >= 0.5;
 }
 
 // ── State ──
@@ -2927,7 +2866,6 @@ function loadSample(){
   saveVersion('Loaded sample handout');
 }
 
-// ── GOAL / framework recommender (same result map as Classic) ──
 const FW_ZONE = {
   cci:'clarity',pemat:'clarity',sam:'clarity',discern:'clarity',eqip:'clarity',
   readability:'clarity',plainlang:'clarity',pinkbook:'clarity',
@@ -2937,78 +2875,39 @@ const FW_ZONE = {
 };
 const FW_LABEL = {
   cci:'CCI',pemat:'PEMAT',sam:'SAM',discern:'DISCERN',eqip:'EQIP',readability:'Readability',
-  plainlang:'Plain Language',pinkbook:'NCI Pink Book',option:'OPTION',ipdas:'IPDAS',
-  ahrq:'AHRQ Toolkit',ottawa:'Ottawa DMSF',share:'SHARE',teachback:'Teach-Back',
-  comb:'COM-B',hbm:'HBM',ttm:'TTM',eppm:'EPPM',whorisks:'WHO Risk Comms',
+  plainlang:'Plain Language',pinkbook:'Pink Book',option:'OPTION',ipdas:'IPDAS',
+  ahrq:'AHRQ Toolkit',ottawa:'ODSF',share:'SHARE',teachback:'Teach-Back',
+  comb:'COM-B',hbm:'HBM',ttm:'TTM',eppm:'EPPM',whorisks:'WHO ERC',
   pam:'PAM',cahps:'CAHPS',nps:'NPS',picker:'Picker',ebcd:'EBCD',seips:'SEIPS',planetree:'Planetree'
 };
-const GOAL_RESULTS = {
-  'clarity-designing-yes':    {fws:['plainlang','cci','readability'],note:'Draft with Plain Language, then run CCI + Readability as the final gate.'},
-  'clarity-designing-no':     {fws:['plainlang','pinkbook','discern'],note:null},
-  'clarity-designing-either': {fws:['plainlang','cci','readability'],note:null},
-  'clarity-auditing-yes':     {fws:['pemat','sam','cci'],note:'The classic audit stack — all three score against published benchmarks.'},
-  'clarity-auditing-no':      {fws:['discern','eqip','plainlang'],note:null},
-  'clarity-auditing-either':  {fws:['pemat','sam','discern'],note:null},
-  'clarity-measuring-yes':    {fws:['cci','pemat'],note:'Both give % scores you can track across versions.'},
-  'clarity-measuring-no':     {fws:['discern','plainlang'],note:null},
-  'clarity-measuring-either': {fws:['cci','pemat','discern'],note:null},
-  'process-designing-yes':    {fws:['ottawa','ipdas','option'],note:'Framework → standards check → scored interaction audit.'},
-  'process-designing-no':     {fws:['ottawa','share','teachback'],note:null},
-  'process-designing-either': {fws:['ottawa','ipdas','share'],note:null},
-  'process-auditing-yes':     {fws:['option','ipdas'],note:'OPTION scores the interaction; IPDAS checks standards.'},
-  'process-auditing-no':      {fws:['ahrq','teachback','share'],note:null},
-  'process-auditing-either':  {fws:['option','ipdas','ahrq'],note:null},
-  'process-measuring-yes':    {fws:['option'],note:'Pair with PAM for a fuller picture.'},
-  'process-measuring-no':     {fws:['teachback','ahrq'],note:null},
-  'process-measuring-either': {fws:['option','teachback'],note:null},
-  'behavior-designing-yes':   {fws:['comb','ttm','hbm'],note:'Diagnose with COM-B, segment with TTM, frame with HBM.'},
-  'behavior-designing-no':    {fws:['comb','hbm','eppm'],note:null},
-  'behavior-designing-either':{fws:['comb','ttm','hbm'],note:null},
-  'behavior-auditing-yes':    {fws:['comb','eppm'],note:null},
-  'behavior-auditing-no':     {fws:['comb','whorisks','eppm'],note:null},
-  'behavior-auditing-either': {fws:['comb','eppm','whorisks'],note:null},
-  'behavior-measuring-yes':   {fws:['comb'],note:'COM-B companion tools give indirect measures.'},
-  'behavior-measuring-no':    {fws:['whorisks','eppm'],note:null},
-  'behavior-measuring-either':{fws:['comb','whorisks'],note:null},
-  'outcomes-designing-yes':   {fws:['pam','cahps','nps'],note:'Set baselines before launch to measure the delta.'},
-  'outcomes-designing-no':    {fws:['ebcd','picker','seips'],note:null},
-  'outcomes-designing-either':{fws:['pam','ebcd','seips'],note:null},
-  'outcomes-auditing-yes':    {fws:['cahps','pam','nps'],note:null},
-  'outcomes-auditing-no':     {fws:['ebcd','planetree','picker'],note:null},
-  'outcomes-auditing-either': {fws:['cahps','ebcd','seips'],note:null},
-  'outcomes-measuring-yes':   {fws:['pam','cahps','nps'],note:'Layer activation, experience and satisfaction.'},
-  'outcomes-measuring-no':    {fws:['ebcd','seips','picker'],note:null},
-  'outcomes-measuring-either':{fws:['pam','cahps','ebcd'],note:null},
-};
 const FW_FULL = {
-  cci:'CDC Clear Communication Index — 20-item clarity checklist',
-  pemat:'Patient Education Materials Assessment Tool (AHRQ)',
-  sam:'Suitability Assessment of Materials — rapid print-material audit',
-  discern:'DISCERN — quality of treatment-choice information',
-  eqip:'EQuality of Information for Patients — leaflet checklist',
-  readability:'Readability formulas (Flesch-Kincaid, SMOG)',
-  plainlang:'Plain Language Guidelines (HHS/NIH)',
-  pinkbook:'NCI Pink Book — health communication program planning',
-  option:'OPTION Scale — scores shared decision-making conversations',
-  ipdas:'International Patient Decision Aid Standards',
-  ahrq:'AHRQ Shared Decision Making Toolkit',
-  ottawa:'Ottawa Decision Support Framework',
-  share:'SHARE Approach — 5-step shared decision-making process',
-  teachback:'Teach-Back — verify patient understanding by recall',
-  comb:'COM-B — diagnoses why a behaviour isn\'t happening',
-  hbm:'Health Belief Model — beliefs that drive health behaviour',
-  ttm:'Transtheoretical Model — stages of change',
-  eppm:'Extended Parallel Process Model — fear-appeal messaging',
-  whorisks:'WHO Risk Communication Framework',
-  pam:'Patient Activation Measure — patient engagement level',
-  cahps:'CAHPS — standardized patient experience surveys',
-  nps:'Net Promoter Score — likelihood to recommend',
-  picker:'Picker PPE-15 — person-centred care experience',
-  ebcd:'Experience-Based Co-Design',
-  seips:'SEIPS — systems view of patient safety',
-  planetree:'Planetree — person-centred care designation',
+  cci:'CDC checklist for clear health messages',
+  pemat:'AHRQ test of understanding and action',
+  sam:'Suitability for low-literacy readers',
+  discern:'Quality of treatment-choice information',
+  eqip:'Quality of patient information leaflets',
+  readability:'Reading grade and reading-ease formulas',
+  plainlang:'U.S. federal plain-writing guidelines',
+  pinkbook:'NCI guide to planning health campaigns',
+  option:'Observer rating of shared decisions',
+  ipdas:'Quality standards for decision aids',
+  ahrq:'Health literacy universal precautions',
+  ottawa:'Ottawa framework for decision support',
+  share:'AHRQ five-step shared decision model',
+  teachback:'Patients explain back what they heard',
+  comb:'Why a behaviour is or isn\'t happening',
+  hbm:'Beliefs that drive health behaviour',
+  ttm:'Stages of readiness to change',
+  eppm:'Balancing threat with self-efficacy',
+  whorisks:'WHO emergency risk communication',
+  pam:'Patient activation survey (licensed)',
+  cahps:'Standard patient experience surveys',
+  nps:'Likelihood-to-recommend survey',
+  picker:'Eight principles of person-centred care',
+  ebcd:'Co-designing services with patients',
+  seips:'Work-system model of patient safety',
+  planetree:'Organisation-wide person-centred care',
 };
-
 // Direct links to each framework's home/reference page, verified rather than guessed.
 // Entries left out below don't have one confirmed official page — those fall back to
 // a search link at render time rather than risk a wrong or dead URL.
@@ -3051,9 +2950,9 @@ FW_LEVEL.readability = 'AUTO';
 // reference-only ones (real-world data needed) stay catalogued in the Full compass
 const FW_AVAILABLE = Object.keys(FW_LABEL).filter(k => FW_LEVEL[k] !== 'OFFDOC');
 const FW_BADGE = {
-  AUTO:    { icon:'●', label:'Scored for you',        tip:'The tool computes the result directly from your text.' },
-  PARTIAL: { icon:'◐', label:'Partly scored for you', tip:'The tool scores the countable items; you judge the rest.' },
-  SELF:    { icon:'○', label:'You score it',          tip:'The tool gives you the framework\'s checklist; you rate each item.' },
+  AUTO:    { icon:'●', label:'Auto-scored',     tip:'The tool computes the result directly from your text.' },
+  PARTIAL: { icon:'◐', label:'Auto + review',   tip:'The tool scores the countable items; you judge the rest.' },
+  SELF:    { icon:'○', label:'Self-rated',      tip:'The tool gives you the framework\'s checklist; you rate each item.' },
   OFFDOC:  { icon:'⊘', label:'Needs real-world data', tip:'The real score comes from patients, observers or a live process, so a document alone can\'t produce it.' }
 };
 const FW_OFF_WHY = {
@@ -3195,7 +3094,7 @@ function renderFwOut(){
   if(!body) return;
   const sel = selectedFrameworks();
   if(!sel.length){
-    body.innerHTML = '<div class="mod-note">Choose a Goal and Stage in the Frameworks bar (or tick frameworks in its full list). Frameworks the tool scores itself get their own cards below; the others appear here as checklists.</div>';
+    body.innerHTML = '<div class="mod-note">Tick frameworks in the Frameworks bar. Frameworks the tool scores itself get their own cards below; the others appear here as checklists.</div>';
     pill.textContent = '—'; pill.className = 'pill pill-empty';
     return;
   }
@@ -3248,49 +3147,15 @@ function applyFwToModules(){
   });
 }
 function clearFrameworks(){
-  [goalStateTop, fwManual, fwRatings, fwOpen].forEach(o => Object.keys(o).forEach(k => delete o[k]));
-  document.querySelectorAll('#seg-g1top button, #seg-g2top button').forEach(b => b.classList.remove('on'));
+  [fwManual, fwRatings, fwOpen].forEach(o => Object.keys(o).forEach(k => delete o[k]));
   fwOutFilter = 'all';
   document.querySelectorAll('#seg-outtype button').forEach(b => b.classList.toggle('on', b.dataset.v === 'all'));
   renderFwTopBar();
 }
-const goalState = {};
-function setGoal(step, val, btn){
-  goalState[step] = val;
-  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
-  const key = [goalState[1],goalState[2],goalState[3]].filter(Boolean).join('-');
-  const res = GOAL_RESULTS[key];
-  const tags = $('fw-tags'), note = $('goal-note');
-  if(res){
-    tags.innerHTML = res.fws.map(f => '<span class="fw-tag '+FW_ZONE[f]+'" title="'+(FW_FULL[f]||FW_LABEL[f])+'">'+FW_LABEL[f]+'</span>').join('');
-    note.textContent = res.note || '';
-  } else {
-    tags.innerHTML = ''; note.textContent = '';
-  }
-}
-
 // ── TOP FRAMEWORK BAR (prototype) — same data, new home ──
-const goalStateTop = {};
 const fwManual = {};   // f -> true (forced on) | false (forced off) | undefined (auto)
-// Recommendations come from Goal + Stage; output type is shown on each card and filtered in the list instead
-function goalKey(){
-  return goalStateTop[1] && goalStateTop[2] ? goalStateTop[1] + '-' + goalStateTop[2] + '-either' : '';
-}
-function currentMatchSet(){
-  const key = goalKey();
-  const res = GOAL_RESULTS[key];
-  return res ? res.fws.filter(f => FW_AVAILABLE.includes(f)) : [];
-}
-// recommended for this Goal + Stage but only catalogued in the Full compass
-function compassOnlyMatches(){
-  const res = GOAL_RESULTS[goalKey()];
-  return res ? res.fws.filter(f => !FW_AVAILABLE.includes(f)) : [];
-}
 function selectedFrameworks(){
-  const matched = currentMatchSet();
-  return FW_AVAILABLE.filter(f =>
-    fwManual[f] === true || (fwManual[f] !== false && matched.includes(f))
-  );
+  return FW_AVAILABLE.filter(f => fwManual[f] === true);
 }
 function toggleFwManual(f){
   const currentlySelected = selectedFrameworks().includes(f);
@@ -3299,7 +3164,7 @@ function toggleFwManual(f){
 }
 // Output type per framework, from its registry scoring type
 const OUT_TYPE = { 'scored':'scored', 'semi-scored':'partial', 'checklist':'qual', 'process-guide':'qual' };
-const OUT_LABEL = { scored:'Scored', partial:'Partly scored', qual:'Qualitative' };
+const OUT_LABEL = { scored:'Score', partial:'Partial score', qual:'Qualitative' };
 let fwOutFilter = 'all';
 function fwOutType(f){ return OUT_TYPE[(FW_REG[f] || {}).t] || 'qual'; }
 function setOutFilter(v){
@@ -3309,76 +3174,68 @@ function setOutFilter(v){
 }
 function renderFwTopGrid(){
   const selected = selectedFrameworks();
-  const auto = currentMatchSet();
   const grid = $('fw-top-grid');
   const shown = FW_AVAILABLE.filter(f => fwOutFilter === 'all' || fwOutType(f) === fwOutFilter);
-  $('fw-grid-lbl').textContent = (fwOutFilter === 'all' ? 'All ' + shown.length + ' frameworks'
-    : shown.length + ' ' + OUT_LABEL[fwOutFilter].toLowerCase() + ' of ' + FW_AVAILABLE.length) + ' — check to include, uncheck to exclude';
+  $('fw-grid-lbl').textContent = fwOutFilter === 'all'
+    ? shown.length + ' frameworks'
+    : shown.length + ' of ' + FW_AVAILABLE.length + ' · ' + OUT_LABEL[fwOutFilter].toLowerCase();
   grid.innerHTML = shown.map(f => {
     const isSel = selected.includes(f);
-    const isAuto = auto.includes(f) && fwManual[f] === undefined;
-    const zone = FW_ZONE[f];
     const bd = FW_BADGE[FW_LEVEL[f]];
-    return '<div class="fw-top-card'+(isSel?' match':'')+'" onclick="toggleFwManual(\''+f+'\')" style="cursor:pointer;'+(isSel?'color:var(--zone-'+zone+');background:rgba(0,0,0,0.015)':'')+'">'
-      + '<label style="display:flex;gap:7px;align-items:flex-start;cursor:pointer" onclick="event.stopPropagation();toggleFwManual(\''+f+'\')">'
-      + '<input type="checkbox" '+(isSel?'checked':'')+' style="margin-top:2px" onclick="event.stopPropagation();toggleFwManual(\''+f+'\')">'
-      + '<span style="flex:1"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">'
-      + '<div class="name" style="color:'+(isSel?'var(--zone-'+zone+')':'var(--n700)')+'">'+FW_LABEL[f]+(isAuto?' <span style="font-weight:400;opacity:.6">(suggested)</span>':'')+'</div>'
-      + '<a href="'+fwSourceUrl(f)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()" style="font-size:9px;color:var(--n500);white-space:nowrap;text-decoration:none;flex-shrink:0" title="Open original source in a new tab">source ↗</a>'
-      + '</div><div class="fw-card-badge" title="'+escapeHtml(bd.tip)+'"><span class="fw-out-tag '+fwOutType(f)+'">'+OUT_LABEL[fwOutType(f)]+'</span> <span aria-hidden="true">'+bd.icon+'</span> '+bd.label+'</div><div class="full">'+FW_FULL[f]+'</div></span></label></div>';
+    const out = fwOutType(f);
+    return '<div class="fw-top-card' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '"'
+      + ' style="--zc:var(--zone-' + FW_ZONE[f] + ')"'
+      + ' onclick="toggleFwManual(\'' + f + '\')" onkeydown="if(event.key===\' \'||event.key===\'Enter\'){event.preventDefault();toggleFwManual(\'' + f + '\')}">'
+      + '<div class="fwc-top"><span class="fwc-box" aria-hidden="true"></span><span class="name">' + FW_LABEL[f] + '</span>'
+      + '<a class="fwc-src" href="' + fwSourceUrl(f) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Open the original source">source ↗</a></div>'
+      + '<div class="full">' + FW_FULL[f] + '</div>'
+      + '<div class="fwc-meta"><span class="fw-out-tag ' + out + '">' + OUT_LABEL[out] + '</span>'
+      + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></div>'
+      + '</div>';
   }).join('');
 }
 function renderFwTopBar(){
   const selected = selectedFrameworks();
-  const chips = $('fw-top-chips'), count = $('fw-top-count'), note = $('goal-note-top');
-  const res = GOAL_RESULTS[goalKey()];
+  const chips = $('fw-top-chips'), count = $('fw-top-count');
   if(selected.length){
     chips.innerHTML = selected.map(f => {
       const b = FW_BADGE[FW_LEVEL[f]];
-      return '<span class="fw-tag '+FW_ZONE[f]+'" title="'+escapeHtml(b.label+' — '+(FW_FULL[f]||FW_LABEL[f]))+'"><span class="fw-ico" aria-hidden="true">'+b.icon+'</span>'+FW_LABEL[f]+'<span class="sr-only"> — '+b.label+'</span></span>';
+      return '<span class="fw-tag '+FW_ZONE[f]+'" title="'+escapeHtml(b.label+' — '+FW_FULL[f])+'"><span class="fw-ico" aria-hidden="true">'+b.icon+'</span>'+FW_LABEL[f]+'<span class="sr-only"> — '+b.label+'</span></span>';
     }).join('');
-    count.textContent = selected.length + ' of ' + FW_AVAILABLE.length + ' selected';
+    count.textContent = selected.length + ' of ' + FW_AVAILABLE.length;
   } else {
-    chips.innerHTML = '<span class="fw-top-empty">' + (res
-      ? 'No frameworks with checklists here for this Goal · Stage'
-      : 'Set Goal · Stage to see matches') + '</span>';
+    chips.innerHTML = '<span class="fw-top-empty">None selected — open the list to pick</span>';
     count.textContent = '';
   }
-  // the preset note can name frameworks that only live in the compass, so swap it for a pointer there
-  const elsewhere = compassOnlyMatches();
-  note.innerHTML = elsewhere.length
-    ? 'Also fits, but needs real-world data rather than a document: <b>' + escapeHtml(joinNames(elsewhere.map(f => FW_LABEL[f]))) +
-      '</b> — see the <a href="framework-compass.html" target="_blank" rel="noopener">Full compass ↗</a>.'
-    : escapeHtml((res && res.note) || '');
-  const anyState = selected.length || Object.keys(goalStateTop).length || Object.keys(fwManual).length;
-  const clr = $('fw-top-clear'); if(clr) clr.style.display = anyState ? '' : 'none';
+  const clr = $('fw-top-clear'); if(clr) clr.style.display = selected.length ? '' : 'none';
   renderFwTopGrid();
   renderFwOut();
   applyFwToModules();
   renderLiveBadges();
 }
-function setGoalTop(step, val, btn){
-  if(goalStateTop[step] === val){            // click the lit button again to unset it
-    delete goalStateTop[step];
-    btn.classList.remove('on');
-  } else {
-    goalStateTop[step] = val;
-    btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
-  }
-  renderFwTopBar();
+// Brief and Frameworks dropdowns: one open at a time; click outside or press Escape to close
+const TOP_PANELS = {
+  brief: { bar:'brief-topbar', panel:'brief-top-panel', toggle:'brief-top-toggle', open:'Close ▾', closed:() => 'Edit brief ▸' },
+  fw:    { bar:'fw-topbar',    panel:'fw-top-panel',    toggle:'fw-top-toggle',    open:'Close ▾', closed:() => 'Show all ' + FW_AVAILABLE.length + ' ▸' },
+};
+function setTopPanel(key, open){
+  const p = TOP_PANELS[key];
+  $(p.panel).classList.toggle('open', open);
+  $(p.bar).classList.toggle('open', open);
+  $(p.toggle).textContent = open ? p.open : p.closed();
 }
-function toggleFwTop(){
-  const bar = $('fw-topbar'), panel = $('fw-top-panel'), toggle = $('fw-top-toggle');
-  const open = panel.classList.toggle('open');
-  bar.classList.toggle('open', open);
-  toggle.textContent = open ? 'Show top only ▾' : 'Show all ' + FW_AVAILABLE.length + ' ▸';
+function toggleTopPanel(key){
+  const open = !$(TOP_PANELS[key].panel).classList.contains('open');
+  Object.keys(TOP_PANELS).forEach(k => setTopPanel(k, k === key && open));
 }
-function toggleBriefTop(){
-  const bar = $('brief-topbar'), panel = $('brief-top-panel'), toggle = $('brief-top-toggle');
-  const open = panel.classList.toggle('open');
-  bar.classList.toggle('open', open);
-  toggle.textContent = open ? 'Show summary ▾' : 'Edit brief ▸';
-}
+function closeTopPanels(){ Object.keys(TOP_PANELS).forEach(k => setTopPanel(k, false)); }
+function toggleFwTop(){ toggleTopPanel('fw'); }
+function toggleBriefTop(){ toggleTopPanel('brief'); }
+// capture phase, so it runs before card clicks re-render (and detach) their targets
+document.addEventListener('click', e => {
+  if(!e.target.closest('.top-bar-col') && !e.target.closest('#tip')) closeTopPanels();
+}, true);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeTopPanels(); });
 renderFwTopBar();
 
 // ── Module dock / rails (fixed columns — drag only reorders) ──
@@ -3547,14 +3404,10 @@ function saveLayout(){
 function resetLayout(){ applyLayout(currentLayout); }
 
 function clearInputs(){
-  Object.assign(brief, { audience:null, format:null, message:'', deadline:'', notes:'', reqs:{} });
+  Object.assign(brief, { audience:null, format:null, notes:'', reqs:{} });
   document.querySelectorAll('#seg-aud button, #seg-fmt button').forEach(b => b.classList.remove('on'));
-  if($('brief-msg')) $('brief-msg').value = '';
-  if($('brief-due')) $('brief-due').value = '';
-  if($('due-badge')) $('due-badge').textContent = '';
   if($('brief-notes')) $('brief-notes').value = '';
   renderReqs();
-  renderBriefHeader();
   renderBriefTargets();
 
   clearFrameworks();
@@ -3759,7 +3612,6 @@ window.addEventListener('resize', hideTip);
 
 // ── Init ──
 renderReqs();
-renderBriefHeader();
 renderBriefTargets();
 renderFileHistory();
 renderVersions();
