@@ -394,6 +394,8 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
   font-size:10.5px;color:var(--n700);line-height:1.6;
 }
 .brief-targets b{color:var(--n900)}
+.brief-targets > div + div{margin-top:2px}
+.brief-targets .bt-k{display:inline-block;width:58px;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n500)}
 .brief-targets .bt-empty{color:var(--n400);font-style:italic}
 
 /* reveal-on-demand input */
@@ -608,7 +610,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-top-empty{font-size:11px;color:var(--n400);font-style:italic;white-space:nowrap}
 .fw-top-toggle{font-size:10px;font-weight:700;color:var(--n500);white-space:nowrap;flex-shrink:0;letter-spacing:.03em;margin-left:auto;padding-left:8px}
 .fw-topbar.open .fw-top-toggle{color:var(--n900)}
-#brief-top-summary{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+#brief-top-summary{flex:1;min-width:0}
 
 .fw-top-panel{
   position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:79;
@@ -779,7 +781,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <div class="top-bar-col">
       <div class="fw-topbar" id="brief-topbar" onclick="toggleBriefTop()" title="Answer these first. Your brief sets the targets every other module scores against — change the audience or format and the whole analysis re-tunes.">
         <span class="fw-top-name">Brief</span>
-        <span class="fw-top-count" id="brief-top-summary">Set Audience and Format to see live targets.</span>
+        <span class="fw-top-chips" id="brief-top-summary"></span>
         <span class="fw-top-toggle" id="brief-top-toggle">Edit ▸</span>
       </div>
       <div class="fw-top-panel" id="brief-top-panel">
@@ -800,6 +802,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
             <button data-v="digital"  onclick="setBrief('format','digital',this)">Digital</button>
             <button data-v="manual"   onclick="setBrief('format','manual',this)">Manual</button>
           </div>
+
+          <div class="brief-targets" id="brief-targets"></div>
 
 
           <!-- Requirements & restrictions: hidden until something reads these answers (no score or check uses them yet) -->
@@ -1398,25 +1402,24 @@ function setBrief(key, val, btn){
   analyze();
   if(key === 'audience' || key === 'format') pushNav();
 }
+// Brief bar shows just the picks; the full targets live in the panel, where there's room to wrap
 function renderBriefTargets(){
   const el = $('brief-targets');
   const summary = $('brief-top-summary');
   const a = AUDIENCE_SPEC[brief.audience];
   const f = FORMAT_SPEC[brief.format];
-  if(!a && !f){
-    const msg = '<span class="bt-empty">Set Audience and Format above to see live targets.</span>';
-    if(el) el.innerHTML = msg;
-    if(summary) summary.innerHTML = 'Set Audience and Format to see live targets.';
-    return;
-  }
-  const parts = [];
-  if(a) parts.push('Grade ≤ <b>'+a.grade+'</b> · Ease <b>'+a.ease+'+</b> · Sentences ≤ <b>'+a.sentLen+'</b>w');
-  else parts.push('<span class="bt-empty">Set Audience for a reading-level target</span>');
-  if(f) parts.push('Word budget <b>'+f.words[0]+'–'+f.words[1]+'</b>');
-  else parts.push('<span class="bt-empty">Set Format for a word budget</span>');
-  const html = parts.join(' &nbsp;·&nbsp; ');
-  if(el) el.innerHTML = html;
-  if(summary) summary.innerHTML = html;
+  const pick = (seg, v) => { const b = v && document.querySelector('#' + seg + ' button[data-v="' + v + '"]'); return b ? b.textContent : null; };
+  const picks = [pick('seg-aud', brief.audience), pick('seg-fmt', brief.format)].filter(Boolean);
+  if(summary) summary.innerHTML = picks.length
+    ? picks.map(t => '<span class="fw-tag">' + escapeHtml(t) + '</span>').join('')
+    : '<span class="fw-top-empty">Pick an audience and format</span>';
+  if(el) el.innerHTML =
+    '<div><span class="bt-k">Reading</span>' + (a
+      ? 'Grade <b>' + a.grade + '</b> or lower · ease <b>' + a.ease + '</b>+ · sentences up to <b>' + a.sentLen + '</b> words'
+      : '<span class="bt-empty">Pick an audience to set a reading goal</span>') + '</div>' +
+    '<div><span class="bt-k">Length</span>' + (f
+      ? '<b>' + f.words[0] + '–' + f.words[1] + '</b> words'
+      : '<span class="bt-empty">Pick a format to set a word count</span>') + '</div>';
 }
 
 function toggleReq(id, on){ brief.reqs[id] = on; refreshScores(); }
