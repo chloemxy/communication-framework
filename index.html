@@ -576,7 +576,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 }
 
 /* goal result tags */
-.fw-tag{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700}
+.fw-tag{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;background:var(--n100);color:var(--n700)}
 .fw-tag.clarity  {background:rgba(29,111,168,.10);color:var(--zone-clarity)}
 .fw-tag.process  {background:rgba(109,63,200,.10);color:var(--zone-process)}
 .fw-tag.behavior {background:rgba(192,85,6,.10);color:var(--zone-behavior)}
@@ -618,7 +618,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-top-grid-hdr .lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n500)}
 .fw-top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
 .fw-top-card{
-  --zc:var(--n700);
+  --zc:var(--dark);
   border:1px solid var(--n200);border-radius:8px;padding:9px 11px;cursor:pointer;
   display:flex;flex-direction:column;gap:4px;min-height:84px;
   transition:border-color .12s,background .12s,box-shadow .12s;
@@ -675,7 +675,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-top-clear{font-size:11px;font-weight:700;color:var(--n400);cursor:pointer;padding:2px 6px;border-radius:5px;flex-shrink:0}
 .fw-top-clear:hover{background:var(--n100);color:var(--n900)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-.fw-ico{font-size:11px;margin-right:4px;opacity:.85}
 .fw-card-badge{font-size:10px;color:var(--n500);margin-top:2px}
 .fw-out-tag{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.02em;padding:0 5px;border-radius:3px;margin-right:3px}
 .fw-out-tag.scored{background:#d4f5e2;color:#14713e}
@@ -684,7 +683,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .seg.fw-out-filter{margin-left:auto;flex:0 0 auto}
 .seg.fw-out-filter button{flex:0 0 auto;padding:3px 9px;font-size:10.5px}
 .fw-badge-row{padding:6px 12px 8px;font-size:10.5px;color:var(--n500);display:flex;align-items:flex-start;gap:6px;line-height:1.35}
-.fw-badge-row .ico{font-size:12px;color:var(--n600);flex-shrink:0}
 .fwo-group{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n500);margin:14px 0 6px;display:flex;align-items:center;gap:6px}
 .fwo-note + .fwo-group{margin-top:4px}
 .fwo-list{margin:4px 0 0;padding-left:16px;font-size:11px;line-height:1.45;color:var(--n700)}
@@ -701,6 +699,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
   border-radius:10px;padding:5px 7px;
   flex-shrink:0;
 }
+.dock[hidden]{display:none}
 .dock-sep{width:1px;height:24px;background:rgba(30,20,10,0.14);margin:0 3px}
 .dock-preset{display:flex;align-items:center;gap:6px}
 .dock-preset-lbl{
@@ -726,7 +725,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
   padding:4px 6px;cursor:pointer;outline:none;transition:border-color .13s,color .13s;
 }
 .dock-add:hover:not(:disabled){border-color:var(--dark);color:var(--dark)}
-.mod-hide{font-size:10px}
+.mod-hide{font-size:10px;display:none}   /* removing a module needs the hidden Workspace bar to undo */
 .mod-hide:hover{background:var(--red-bg);color:var(--red)}
 .dock-reset{
   border:none;background:transparent;color:rgba(30,20,10,0.45);
@@ -754,7 +753,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     </div>
   </div>
 
-  <div class="dock" id="dock">
+  <!-- Workspace presets, add/save/reset and Clear inputs: hidden until the feature is ready for public use -->
+  <div class="dock" id="dock" hidden>
     <div class="dock-preset">
       <span class="dock-preset-lbl">Workspace</span>
       <select id="layout-sel" onchange="applyLayout(this.value)" title="Pick a starting set of modules for what you're doing"></select>
@@ -2950,10 +2950,10 @@ FW_LEVEL.readability = 'AUTO';
 // reference-only ones (real-world data needed) stay catalogued in the Full compass
 const FW_AVAILABLE = Object.keys(FW_LABEL).filter(k => FW_LEVEL[k] !== 'OFFDOC');
 const FW_BADGE = {
-  AUTO:    { icon:'●', label:'Auto-scored',     tip:'The tool computes the result directly from your text.' },
-  PARTIAL: { icon:'◐', label:'Auto + review',   tip:'The tool scores the countable items; you judge the rest.' },
-  SELF:    { icon:'○', label:'Self-rated',      tip:'The tool gives you the framework\'s checklist; you rate each item.' },
-  OFFDOC:  { icon:'⊘', label:'Needs real-world data', tip:'The real score comes from patients, observers or a live process, so a document alone can\'t produce it.' }
+  AUTO:    { label:'Auto-scored',     tip:'The tool computes the result directly from your text.' },
+  PARTIAL: { label:'Auto + review',   tip:'The tool scores the countable items; you judge the rest.' },
+  SELF:    { label:'Self-rated',      tip:'The tool gives you the framework\'s checklist; you rate each item.' },
+  OFFDOC:  { label:'Needs real-world data', tip:'The real score comes from patients, observers or a live process, so a document alone can\'t produce it.' }
 };
 const FW_OFF_WHY = {
   pinkbook:'A campaign-planning process. Formative research and audience pretesting happen outside the document.',
@@ -2988,15 +2988,16 @@ function renderLiveBadges(){
   Object.keys(FW_LIVE).forEach(k => {
     const el = $('badge-' + k);
     if(!el) return;
-    const b = FW_BADGE[FW_LEVEL[k]], c = fwAutoCount(k);
-    let txt = b.label + (c ? ' · ' + c.auto + ' of ' + c.total + ' items' : '');
-    if(k === 'plainlang') txt += ' · flags issues, no official score';
-    el.innerHTML = '<span class="ico" aria-hidden="true">' + b.icon + '</span><span title="' + escapeHtml(b.tip) + '">' + escapeHtml(txt) + '</span>';
+    const c = fwAutoCount(k);
+    const txt = k === 'readability' ? 'Calculated automatically from your text'
+              : k === 'plainlang'   ? 'Flags issues automatically · no official score'
+              : c.auto + ' of ' + c.total + ' items scored from your text · you tick the rest';
+    el.textContent = txt;
   });
 }
 function fwGroupHdr(level, n){
   const b = FW_BADGE[level];
-  return '<div class="fwo-group"><span aria-hidden="true">' + b.icon + '</span>' + escapeHtml(b.label) + ' · ' + n + '</div>';
+  return '<div class="fwo-group">' + escapeHtml(b.label) + ' · ' + n + '</div>';
 }
 
 const FW_TYPE_LABEL = { 'scored':'Scored instrument', 'semi-scored':'Partly scored', 'checklist':'Checklist', 'process-guide':'Process guide (qualitative)' };
@@ -3184,8 +3185,7 @@ function renderFwTopGrid(){
     const bd = FW_BADGE[FW_LEVEL[f]];
     const out = fwOutType(f);
     return '<div class="fw-top-card' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '"'
-      + ' style="--zc:var(--zone-' + FW_ZONE[f] + ')"'
-      + ' onclick="toggleFwManual(\'' + f + '\')" onkeydown="if(event.key===\' \'||event.key===\'Enter\'){event.preventDefault();toggleFwManual(\'' + f + '\')}">'
+           + ' onclick="toggleFwManual(\'' + f + '\')" onkeydown="if(event.key===\' \'||event.key===\'Enter\'){event.preventDefault();toggleFwManual(\'' + f + '\')}">'
       + '<div class="fwc-top"><span class="fwc-box" aria-hidden="true"></span><span class="name">' + FW_LABEL[f] + '</span>'
       + '<a class="fwc-src" href="' + fwSourceUrl(f) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Open the original source">source ↗</a></div>'
       + '<div class="full">' + FW_FULL[f] + '</div>'
@@ -3200,7 +3200,7 @@ function renderFwTopBar(){
   if(selected.length){
     chips.innerHTML = selected.map(f => {
       const b = FW_BADGE[FW_LEVEL[f]];
-      return '<span class="fw-tag '+FW_ZONE[f]+'" title="'+escapeHtml(b.label+' — '+FW_FULL[f])+'"><span class="fw-ico" aria-hidden="true">'+b.icon+'</span>'+FW_LABEL[f]+'<span class="sr-only"> — '+b.label+'</span></span>';
+      return '<span class="fw-tag" title="'+escapeHtml(FW_FULL[f]+' · '+b.label)+'">'+FW_LABEL[f]+'</span>';
     }).join('');
     count.textContent = selected.length + ' of ' + FW_AVAILABLE.length;
   } else {
@@ -3619,9 +3619,9 @@ renderPalette();
 renderContrastCard();
 
 // workspace presets: restore saved ones and the last one used
+// While the Workspace bar is hidden, always start with every module, ignoring a previously saved layout
 customLayouts = lsGet(LS_KEY, {}) || {};
-const lastLayout = lsGet(LS_LAST, 'everything');
-currentLayout = allLayouts()[lastLayout] ? lastLayout : 'everything';
+currentLayout = 'everything';
 renderLayoutSelect();
 applyLayout(currentLayout, true);
 
