@@ -568,6 +568,11 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 }
 /* a lone trailing option fills the row rather than sitting half-width */
 .seg.seg-grid button:last-child:nth-child(odd){grid-column:1 / -1}
+/* compact chip row (Brief) */
+.seg.seg-chips{display:flex;flex-wrap:wrap;gap:5px;background:none;border:none;padding:0}
+.seg.seg-chips button{flex:0 0 auto;border:1px solid var(--n300);border-radius:14px;padding:4px 11px;background:#fff;color:var(--n600)}
+.seg.seg-chips button:hover{border-color:var(--n500);color:var(--n900)}
+.seg.seg-chips button.on{background:var(--dark);border-color:var(--dark);color:#fff;box-shadow:none}
 input[type=range]{width:100%;accent-color:var(--blue)}
 .range-ticks{display:flex;justify-content:space-between;font-size:9px;color:var(--n400);letter-spacing:.04em;text-transform:uppercase;font-weight:600}
 .tune-preview{
@@ -779,24 +784,23 @@ input[type=range]{width:100%;accent-color:var(--blue)}
       </div>
       <div class="fw-top-panel" id="brief-top-panel">
         <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
-          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="aud-hint" data-tip="Sets the reading-level target used by Readability and the plain-language scan. Clinical audiences also stop jargon counting as a failure.">Audience</span></div>
-          <div class="seg seg-grid" id="seg-aud">
+          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="aud-hint" data-tip="Sets the reading level to aim for. For clinicians, medical words are fine.">Audience</span></div>
+          <div class="seg seg-chips" id="seg-aud">
             <button data-v="patient"   onclick="setBrief('audience','patient',this)">Patients</button>
             <button data-v="caregiver" onclick="setBrief('audience','caregiver',this)">Caregivers</button>
             <button data-v="lowlit"    onclick="setBrief('audience','lowlit',this)">Low literacy</button>
             <button data-v="hcp"       onclick="setBrief('audience','hcp',this)">Clinicians</button>
           </div>
 
-          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="fmt-hint" data-tip="Sets the word budget and which checks apply. Digital pieces make alt text and link text mandatory rather than advisory.">Format</span></div>
-          <div class="seg seg-grid" id="seg-fmt">
+          <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="fmt-hint" data-tip="Sets how many words to aim for. Web pieces must have alt text and clear links.">Format</span></div>
+          <div class="seg seg-chips" id="seg-fmt">
             <button data-v="poster"   onclick="setBrief('format','poster',this)">Poster</button>
             <button data-v="brochure" onclick="setBrief('format','brochure',this)">Brochure</button>
             <button data-v="handout"  onclick="setBrief('format','handout',this)">Handout</button>
             <button data-v="digital"  onclick="setBrief('format','digital',this)">Digital</button>
-            <button data-v="manual"   onclick="setBrief('format','manual',this)">Guideline / manual</button>
+            <button data-v="manual"   onclick="setBrief('format','manual',this)">Manual</button>
           </div>
 
-          <div class="brief-targets" id="brief-targets"></div>
 
           <!-- Requirements & restrictions: hidden until something reads these answers (no score or check uses them yet) -->
           <div id="brief-reqs" hidden>
@@ -908,16 +912,16 @@ input[type=range]{width:100%;accent-color:var(--blue)}
             </div>
           </div>
           <div class="vm-side">
-            <div class="vm-sec-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Screen readers announce this instead of the image. Describe what the artwork <b>tells</b> the reader, not what it looks like. Skip &quot;image of…&quot; — that is already announced.">Alt text</span></div>
+            <div class="vm-sec-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="A screen reader reads this out in place of the image. Say what the image tells the reader. Don’t start with “image of”.">Alt text</span></div>
             <textarea class="brief-input" id="vm-alt" rows="3" placeholder="e.g. Blood pressure log with three steps: sit, measure, record" oninput="onVisualInput()"></textarea>
             <div class="vm-count" id="vm-alt-count">0 characters</div>
 
-            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Type or paste every word that appears in the artwork — headline, body, captions, labels, call to action.<br><br>This text is what Read·ability, CCI, PEMAT, the plain-language scan and content accuracy all score. Without it a poster can't be analysed.">Text in the artwork</span></div>
+            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Type every word you see in the artwork. This is the text the tool checks. Without it, a poster can’t be scored.">Text in the artwork</span></div>
             <textarea class="brief-input" id="vm-transcript" rows="10" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
             <div class="vm-count" id="vm-txt-count">0 words</div>
             <div class="vm-hint" id="vm-txt-hint"><b>Add the text to start scoring.</b> CCI, PEMAT, Readability and Plain language can't read an image. Type or paste every word from the artwork here and their cards will appear.</div>
 
-            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="What kind of visual this is. Data visualisations get extra checks — axis labels, legends and whether meaning is carried by colour alone.">Visual type</span></div>
+            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Charts get extra checks. They need labels and a key, and must not rely on colour alone.">Visual type</span></div>
             <div class="seg seg-grid" id="seg-vtype">
               <button data-v="poster"  onclick="setVisualType('poster',this)">Poster</button>
               <button data-v="datavis" onclick="setVisualType('datavis',this)">Chart / data</button>
@@ -925,11 +929,11 @@ input[type=range]{width:100%;accent-color:var(--blue)}
               <button data-v="photo"   onclick="setVisualType('photo',this)">Photo</button>
             </div>
 
-            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Sampled from the artwork itself. Click any two swatches to check their contrast ratio, and use the simulation buttons to see the design as colour-blind readers do.">Palette from artwork</span></div>
+            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Colours taken from the artwork. Pick two to see how well they stand out from each other.">Palette from artwork</span></div>
             <div class="vm-palette" id="vm-palette"></div>
             <div class="vm-pair" id="vm-pair"></div>
 
-            <div class="vm-sec-lbl" style="margin-top:10px"><span class="lbl-info" role="button" tabindex="0" data-tip="Roughly 1 in 12 men has a colour vision deficiency. Deuteranopia (red-green) is the most common. If two data series become the same colour here, the chart needs labels, patterns or shapes as well.">Colour-blind simulation</span></div>
+            <div class="vm-sec-lbl" style="margin-top:10px"><span class="lbl-info" role="button" tabindex="0" data-tip="About 1 in 12 men see some colours differently. Red-green is the most common kind. If two parts of a chart turn the same colour here, add labels or patterns.">Colour-blind simulation</span></div>
             <div class="seg seg-grid" id="seg-cvd">
               <button class="on" data-v="none" onclick="setCvd('none',this)">Normal</button>
               <button data-v="deuter" onclick="setCvd('deuter',this)">Deuteranopia</button>
@@ -974,7 +978,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: FRAMEWORK OUTPUTS (reflects whatever is selected in the Frameworks bar) ── -->
     <div class="mod mod-fwout" id="mod-fwout">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you select that the tool does not score by itself appear here. <b>You score it</b>: a checklist you rate yourself. <b>Needs real-world data</b>: reference only, because the real score comes from patients, observers or a live process. CCI, PEMAT, Readability and Plain language are scored in their own cards.">Framework checklists</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you pick that the tool can’t score show up here as lists. You rate each item yourself. CCI, PEMAT, Readability and Plain language have their own cards.">Framework checklists</span>
         <span class="pill pill-empty" id="fwout-pill">—</span>
         <button class="mod-min" onclick="toggleCollapse('mod-fwout')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
       </div>
@@ -984,7 +988,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: READABILITY ── -->
     <div class="mod mod-read" id="mod-read">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read — sentence length plus word complexity (Flesch-Kincaid). Targets follow the audience set in your brief.">Readability</span>
+        <span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid). Your audience sets the goal.">Readability</span>
         
         
         <button class="mod-min" onclick="toggleCollapse('mod-read')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
@@ -1013,7 +1017,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: CCI ── -->
     <div class="mod mod-cci" id="mod-cci">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index — 20 items in 4 parts: Core (11), Behavioral recommendations (3), Numbers (3) and Risk (3). Parts B–D are scored only when the material has that content. <b>A score of 90 or higher passes</b> (points ÷ applicable items × 100).<br><br>Items tagged AUTO score themselves from your text as you write; tick the remaining ones yourself.">CCI</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. <b>A score of 90 or more passes.</b><br><br>AUTO items are scored from your text. Tick the rest yourself.">CCI</span>
         <span class="pill pill-empty" id="cci-pill">—</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-cci')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
@@ -1030,7 +1034,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: PEMAT ── -->
     <div class="mod mod-pemat" id="mod-pemat">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Patient Education Materials Assessment Tool (AHRQ). Two separate scores: can a patient <b>understand</b> this (17 items) and can they <b>act</b> on it (7 items)? Items that don't apply are left out of the denominator.<br><br>Target is <b>70% or higher on both</b> (the developers' cut-off) — a material can be perfectly clear and still fail actionability.">PEMAT</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="PEMAT, from AHRQ, gives two scores. Can a patient <b>understand</b> it (17 items)? Can they <b>act</b> on it (7 items)? Items that don’t apply are left out.<br><br>Aim for <b>70% or more on both</b>.">PEMAT</span>
         <span class="pill pill-empty" id="pemat-pill">U — · A —</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-pemat')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
@@ -1051,7 +1055,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: SCAN ── -->
     <div class="mod mod-scan" id="mod-scan">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Sentence-level plain-language check: jargon, passive voice, vague words, bare percentages, unexplained acronyms and long sentences.<br><br>Click any issue to jump to it in the material.">Plain language</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Checks each sentence for long sentences, medical words, passive voice, vague words, bare percents and short forms.<br><br>Click an issue to jump to it.">Plain language</span>
         
         
         <button class="mod-min" onclick="toggleCollapse('mod-scan')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
@@ -1070,7 +1074,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: ACCESSIBILITY ── -->
     <div class="mod mod-a11y" id="mod-a11y">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks you can run <b>before</b> the Adobe Reader accessibility test — alt text, heading order, link text, all-caps runs and colour-only instructions.<br><br>Catching these here means fewer errors to fix back in InDesign.">Accessibility</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks to run <b>before</b> the Adobe test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fix them here and you fix less in InDesign.">Accessibility</span>
         <span class="pill pill-empty" id="a11y-pill">—</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-a11y')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
@@ -1085,7 +1089,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <!-- ── MODULE: CONTENT ACCURACY ── -->
     <div class="mod mod-acc" id="mod-acc">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer trace every clinical claim back to a source? Flags unsourced statistics, ageing references, a missing review date, and overstated claims like &quot;always&quot; or &quot;100% safe&quot;.">Accuracy</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer find a source for each health claim? This flags numbers with no source, old dates, no review date, and words like “always” or “100% safe”.">Accuracy</span>
         <span class="pill pill-empty" id="acc-pill">—</span>
         
         <button class="mod-min" onclick="toggleCollapse('mod-acc')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
@@ -1093,7 +1097,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
       <div class="mod-body">
         <div class="score-why" id="acc-why"></div>
         <div id="acc-list"></div>
-        <div class="tune-lbl" style="margin-top:10px"><span class="lbl-info" role="button" tabindex="0" data-tip="The things software can't verify. Tick these only once a named human has actually checked them.">Sign-off</span></div>
+        <div class="tune-lbl" style="margin-top:10px"><span class="lbl-info" role="button" tabindex="0" data-tip="Things software can’t check. Tick each one only after a named person has checked it.">Sign-off</span></div>
         <div id="acc-signoff"></div>
       </div>
     </div>
@@ -1306,22 +1310,22 @@ function scanIssues(text){
     const words = sentence.match(/\b\w+\b/g) || [];
     const snip = sentence.length > 60 ? sentence.slice(0,58)+'…' : sentence;
     if(words.length > 25)
-      issues.push({sev:'error',lbl:'Long sentence',msg:words.length+' words — split at "and / but / so".',snip,src:sentence});
+      issues.push({sev:'error',lbl:'Long sentence',msg:words.length+' words. Split it at “and”, “but” or “so”.',snip,src:sentence});
     else if(words.length > 18)
-      issues.push({sev:'warn',lbl:'Longish sentence',msg:words.length+' words — aim for ≤15.',snip,src:sentence});
+      issues.push({sev:'warn',lbl:'Longish sentence',msg:words.length+' words. Aim for 15 or less.',snip,src:sentence});
     const found = JARGON_KEYS.filter(j => sentence.toLowerCase().includes(j));
     if(found.length)
       issues.push({sev:'error',lbl:'Jargon',msg:found.slice(0,3).map(j=>'"'+j+'" → '+JARGON[j]).join(' · '),snip,src:sentence});
     if(/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/i.test(sentence))
-      issues.push({sev:'warn',lbl:'Passive voice',msg:'Rewrite as "Your doctor will…", not "…will be scheduled".',snip,src:sentence});
+      issues.push({sev:'warn',lbl:'Passive voice',msg:'Say who does it: “Your doctor will…”, not “…will be done”.',snip,src:sentence});
     if(/\d+\s*%/.test(sentence))
-      issues.push({sev:'warn',lbl:'Bare percentage',msg:'Use "1 in 10", not "10%" — easier for low-numeracy readers.',snip,src:sentence});
+      issues.push({sev:'warn',lbl:'Bare percentage',msg:'Say “1 in 10”, not “10%”. It is easier to grasp.',snip,src:sentence});
     const vague = VAGUE.find(v => new RegExp('\\b'+v+'\\b','i').test(sentence));
     if(vague)
-      issues.push({sev:'warn',lbl:'Vague: "'+vague+'"',msg:'Swap for a specific number or timeframe.',snip,src:sentence});
+      issues.push({sev:'warn',lbl:'Vague: "'+vague+'"',msg:'Use an exact number or time.',snip,src:sentence});
     const acr = (sentence.match(/\b[A-Z]{2,}\b/g) || []).filter(a => !['US','UK','HIV','AIDS','CPR','ER','ICU','COVID','DNA','GP','NHS','BMI','BP'].includes(a));
     if(acr.length)
-      issues.push({sev:'warn',lbl:'Acronym',msg:[...new Set(acr)].join(', ')+' — spell out on first use.',snip,src:sentence});
+      issues.push({sev:'warn',lbl:'Acronym',msg:[...new Set(acr)].join(', ')+': spell it out the first time.',snip,src:sentence});
   });
   return issues;
 }
@@ -1334,27 +1338,27 @@ const brief = { audience:null, format:null, notes:'', reqs:{} };
 // Audience → reading targets + word for the UI
 const AUDIENCE_SPEC = {
   patient:   { label:'Patients / public', grade:6,  ease:60, sentLen:15,
-    note:'Grade 6 target — the standard for general patient material (NCI, CDC).' },
+    note:'Aim for grade 6. This is the usual goal for patient material.' },
   caregiver: { label:'Caregivers',        grade:7,  ease:55, sentLen:15,
-    note:'Grade 7 target — caregivers read under stress and often skim for actions.' },
+    note:'Aim for grade 7. Caregivers are often stressed and skim for what to do.' },
   lowlit:    { label:'Low literacy',      grade:5,  ease:70, sentLen:12,
-    note:'Grade 5 target — shortest sentences, most visuals, one idea per line (Doak et al.).' },
+    note:'Aim for grade 5. Use short lines, more pictures and one idea at a time.' },
   hcp:       { label:'Clinicians (HCP)',  grade:12, ease:30, sentLen:22,
-    note:'Clinical audience — technical terms are fine; precision matters more than plain language.' },
+    note:'Medical words are fine here. Being exact matters most.' },
 };
 
 // Format → word budget + which checks are relevant
 const FORMAT_SPEC = {
   poster:   { label:'Poster',      words:[40,250],   visualCritical:true,
-    note:'Read at a distance in seconds — one message, big type, minimal words.' },
+    note:'Read from far away in a few seconds. Use one message, big type and few words.' },
   brochure: { label:'Brochure',    words:[250,900],  visualCritical:true,
-    note:'Panel-by-panel structure — each panel needs its own heading and one idea.' },
+    note:'Each panel needs its own heading and one idea.' },
   handout:  { label:'Handout',     words:[150,700],  visualCritical:false,
-    note:'Taken home and re-read — action steps and contact details are essential.' },
+    note:'People take it home and read it again. Give clear steps and who to call.' },
   digital:  { label:'Digital/web', words:[100,1200], visualCritical:false,
-    note:'Screen reader and keyboard access apply — alt text and heading order are mandatory.' },
+    note:'Some people use a screen reader or keys only. Alt text and heading order are a must.' },
   manual:   { label:'Manual',      words:[600,6000], visualCritical:false,
-    note:'Long-form — navigation, summaries and a review date carry the burden.' },
+    note:'Long pieces need clear parts, short summaries and a review date.' },
 };
 
 // Requirements / restrictions the designer confirms per project
@@ -1370,7 +1374,7 @@ const REQ_ITEMS = [
 function targets(){
   const a = AUDIENCE_SPEC[brief.audience];
   return a ? a : { grade:6, ease:60, sentLen:15, label:'Patients / public (default)',
-    note:'No audience set yet — scoring against the general patient standard (grade 6).' };
+    note:'No audience yet, so the goal is grade 6, as for most patients.' };
 }
 
 function setBrief(key, val, btn){
@@ -1381,14 +1385,14 @@ function setBrief(key, val, btn){
   if(key === 'audience'){
     const s = AUDIENCE_SPEC[val];
     $('aud-hint').dataset.tip = s
-      ? '<b>'+s.label+'</b><br>'+s.note+'<br><br>Targets: grade ≤'+s.grade+', ease '+s.ease+'+, sentences ≤'+s.sentLen+' words.'
-      : 'Sets the reading-level target used by Readability and the plain-language scan.';
+      ? '<b>'+s.label+'</b><br>'+s.note+'<br><br>Aim for grade '+s.grade+' or lower, ease '+s.ease+' or more, and sentences of '+s.sentLen+' words or less.'
+      : 'Sets the reading level to aim for. For clinicians, medical words are fine.';
   }
   if(key === 'format'){
     const s = FORMAT_SPEC[val];
     $('fmt-hint').dataset.tip = s
-      ? '<b>'+s.label+'</b><br>'+s.note+'<br><br>Word budget <b>'+s.words[0]+'–'+s.words[1]+'</b>.'
-      : 'Sets the word budget and which checks apply.';
+      ? '<b>'+s.label+'</b><br>'+s.note+'<br><br>Aim for <b>'+s.words[0]+'–'+s.words[1]+'</b> words.'
+      : 'Sets how many words to aim for.';
   }
   renderBriefTargets();
   analyze();
@@ -1615,11 +1619,11 @@ function why(id, tone, text, action){
 }
 
 const GRADE_AUDIENCE = g =>
-  g <= 5  ? 'most adults, including people who struggle with reading'
-: g <= 6  ? 'the average adult reader — the standard target for patient material'
-: g <= 8  ? 'a confident reader who finished secondary school'
-: g <= 12 ? 'someone comfortable with newspapers and official letters'
-:           'a university-level reader';
+  g <= 5  ? 'most adults, even those who find reading hard'
+: g <= 6  ? 'the average adult'
+: g <= 8  ? 'a strong reader who finished high school'
+: g <= 12 ? 'someone who reads the news with ease'
+:           'a college-level reader';
 
 function explainScores(stats, empty){
   if(empty){
@@ -1635,15 +1639,15 @@ function explainScores(stats, empty){
     const over = Math.round((stats.grade - t.grade) * 10) / 10;
     if(stats.grade <= t.grade){
       why('read-why','good',
-        'Reads at <b>grade '+stats.grade+'</b> — suitable for '+GRADE_AUDIENCE(stats.grade)+'. That meets your target of grade '+t.grade+'.',
-        'Keep sentences at this length as you edit.');
+        'Reads at <b>grade '+stats.grade+'</b>. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets your goal of grade '+t.grade+'.',
+        'Keep your sentences this short as you edit.');
     } else {
       const yrs = over >= 1 ? Math.round(over) + ' year' + (Math.round(over)===1?'':'s') : 'under a year';
       why('read-why', over > 2 ? 'bad' : 'mid',
-        'Reads at <b>grade '+stats.grade+'</b>, about '+yrs+' of schooling above your grade '+t.grade+' target. As written it suits '+GRADE_AUDIENCE(stats.grade)+'.',
+        'Reads at <b>grade '+stats.grade+'</b>. That is about '+yrs+' above your goal of grade '+t.grade+'. It suits '+GRADE_AUDIENCE(stats.grade)+'.',
         stats.avgSentLen > t.sentLen
-          ? 'Sentences average '+stats.avgSentLen+' words — split them at "and", "but", "so" to get under '+t.sentLen+'.'
-          : 'Sentence length is fine; the words are the problem. Swap long clinical terms for everyday ones.');
+          ? 'Sentences have '+stats.avgSentLen+' words on average. Split them at “and”, “but” or “so” to get under '+t.sentLen+'.'
+          : 'Your sentences are short enough. Swap long medical words for everyday ones.');
     }
   }
 
@@ -1656,11 +1660,11 @@ function explainScores(stats, empty){
   const cciNA = CCI_ITEMS.length - cci.applicable;
   if(cci.pct !== null){
     why('cci-why', cci.pct>=CCI_PASS ? 'good' : cci.pct>=70 ? 'mid' : 'bad',
-      'Scores <b>'+cci.pct+'</b> — '+cci.met+' of '+cci.applicable+' applicable items met'+
-      (cciNA ? ' ('+cciNA+' not applicable)' : '')+'. CDC treats 90 or higher as passing; below that, readers are more likely to miss the main message or the call to action.',
+      'Score: <b>'+cci.pct+'</b>. You met '+cci.met+' of '+cci.applicable+' items'+
+      (cciNA ? ' ('+cciNA+' don’t apply)' : '')+'. CDC says 90 or more passes. Below that, readers may miss the main point or what to do.',
       cci.pct >= CCI_PASS
-        ? 'Passing. Re-check after any rewrite.'
-        : (cciAuto ? cciAuto+' item'+(cciAuto===1?' is':'s are')+' decided from your text; ' : '')+'the rest need your judgement — work down the unticked list below. Mark Parts B–D "Doesn\'t apply" if the material has no recommendations, numbers or risk.');
+        ? 'Passing. Check again after you edit.'
+        : (cciAuto ? cciAuto+' item'+(cciAuto===1?' is':'s are')+' scored from your text. ' : '')+'Tick the rest below. No steps, numbers or risks? Mark that part “Doesn’t apply”.');
   }
 
   // ── PEMAT ──
@@ -1669,20 +1673,20 @@ function explainScores(stats, empty){
   let pemMsg, pemTone, pemDo;
   if(u >= PEMAT_PASS && a >= PEMAT_PASS){
     pemTone='good';
-    pemMsg='<b>Understandability '+u+'%</b> and <b>Actionability '+a+'%</b> — both at or above the 70% cut-off, so a patient should both follow this and know what to do.';
-    pemDo='On target for AHRQ benchmarking.';
+    pemMsg='<b>Understand: '+u+'%</b> and <b>Act: '+a+'%</b>. Both meet the 70% goal. A patient should follow it and know what to do.';
+    pemDo='On target.';
   } else if(u >= PEMAT_PASS){
     pemTone='mid';
-    pemMsg='Patients can <b>understand</b> this ('+u+'%) but not necessarily <b>act</b> on it ('+a+'%). Actionability is the more common failure — clear writing that never says what to do.';
-    pemDo='Name one specific action, address the reader directly, and break it into explicit steps.';
+    pemMsg='Patients can <b>understand</b> it ('+u+'%), but may not know what to <b>do</b> ('+a+'%).';
+    pemDo='Name one clear step. Talk to the reader as “you”. Break the step into small parts.';
   } else if(a >= PEMAT_PASS){
     pemTone='mid';
-    pemMsg='The actions are clear (<b>'+a+'%</b>) but the material is hard to follow (<b>'+u+'%</b>). Readers may know what to do without understanding why.';
-    pemDo='Use everyday words, define medical terms, chunk the content under informative headers, and add a summary.';
+    pemMsg='The steps are clear (<b>'+a+'%</b>), but the text is hard to follow (<b>'+u+'%</b>).';
+    pemDo='Use plain words. Explain medical words. Split the text under clear headings. Add a summary.';
   } else {
     pemTone='bad';
-    pemMsg='<b>Understandability '+u+'%</b>, <b>Actionability '+a+'%</b> — both below the 70% cut-off, so this is likely to be misread and not acted on.';
-    pemDo='Start with the single action you want, then explain it in everyday words.';
+    pemMsg='<b>Understand: '+u+'%</b>, <b>Act: '+a+'%</b>. Both are under the 70% goal. Readers may get it wrong and not act.';
+    pemDo='Start with the one thing you want them to do. Then explain it in plain words.';
   }
   why('pemat-why', pemTone, pemMsg, pemDo);
 
@@ -1691,15 +1695,15 @@ function explainScores(stats, empty){
   const a11yFails = parseInt(a11yPill, 10);
   if(a11yPill.includes('to fix')){
     why('a11y-why','bad',
-      '<b>'+a11yFails+' blocker'+(a11yFails===1?'':'s')+'</b> — these would fail a WCAG 2.2 AA audit and the Adobe Reader accessibility check.',
-      'Fix the red items first; they stop screen reader users completely.');
+      '<b>'+a11yFails+' problem'+(a11yFails===1?'':'s')+' to fix.</b> These would fail a WCAG 2.2 AA check and the Adobe test.',
+      'Fix the red items first. They block people who use screen readers.');
   } else if(a11yPill.includes('to check')){
     why('a11y-why','mid',
-      'No outright failures, but <b>'+parseInt(a11yPill,10)+' item'+(parseInt(a11yPill,10)===1?'':'s')+'</b> can\'t be judged from text alone — colour contrast and colour-only meaning need your eyes on the design.',
-      'Work through the amber items, then run the Adobe check on the exported file.');
+      'Nothing fails, but <b>'+parseInt(a11yPill,10)+' item'+(parseInt(a11yPill,10)===1?'':'s')+'</b> can’t be checked from text. Look at the colours in the design.',
+      'Check the amber items. Then run the Adobe test on the final file.');
   } else {
-    why('a11y-why','good','Everything checkable here passes AA.',
-      'Still confirm contrast and colour independence in the design file itself.');
+    why('a11y-why','good','All the checks we can run here pass AA.',
+      'Still check the colours in the design file.');
   }
 
   // ── Content accuracy ──
@@ -1707,15 +1711,15 @@ function explainScores(stats, empty){
   const signed = ACC_SIGNOFF.filter(s => manual[s.id]).length;
   if(accFails){
     why('acc-why','bad',
-      '<b>'+accFails+' item'+(accFails===1?'':'s')+'</b> a clinical reviewer would send back — usually an unsourced number, a missing review date, or an overstated claim.',
-      'Clear these before the piece goes for sign-off.');
+      '<b>'+accFails+' item'+(accFails===1?'':'s')+'</b> a health reviewer would send back. Often it’s a number with no source, no review date, or a claim that is too strong.',
+      'Fix these before sign-off.');
   } else if(signed < ACC_SIGNOFF.length){
     why('acc-why','mid',
-      'Nothing automatic is failing, but <b>'+signed+' of '+ACC_SIGNOFF.length+'</b> human checks are signed off. Software can spot a missing citation; it cannot confirm the science is right.',
-      'Get a named reviewer to confirm the remaining items.');
+      'Nothing fails, but only <b>'+signed+' of '+ACC_SIGNOFF.length+'</b> checks are signed off. Software can spot a missing source. It can’t tell if the facts are right.',
+      'Ask a named reviewer to check the rest.');
   } else {
-    why('acc-why','good','Automated checks pass and all four human checks are signed off.',
-      'Record who reviewed it and when, in case it is queried later.');
+    why('acc-why','good','All checks pass and all four are signed off.',
+      'Write down who checked it and when.');
   }
 }
 
@@ -1745,7 +1749,7 @@ function analyze(){
   // READ module — targets come from the brief's audience
   const t = targets();
   $('read-audience-note').dataset.tip =
-    'How easy the text is to read — sentence length plus word complexity (Flesch-Kincaid).<br><br><b>'+
+    'How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid).<br><br><b>'+
     (t.label||'')+'</b><br>'+t.note;
   $('ease-bench').innerHTML = 'target <b>'+t.ease+'+</b> · higher = easier';
   $('grade-bench').innerHTML = 'target <b>≤ grade '+t.grade+'</b> · '+ (t.label||'') ;
@@ -1777,9 +1781,9 @@ function analyze(){
     const sev = n < lo ? 'warn' : n > hi ? 'fail' : 'pass';
     $('wb-ico').className = 'find-ico ' + sev;
     $('wb-ico').textContent = sev === 'pass' ? '✓' : sev === 'warn' ? '~' : '!';
-    $('wb-msg').textContent = n.toLocaleString() + ' words — a ' + fspec.label.toLowerCase() +
+    $('wb-msg').textContent = n.toLocaleString() + ' words. A ' + fspec.label.toLowerCase() +
       ' works best at ' + lo + '–' + hi + '. ' +
-      (sev === 'pass' ? 'On budget.' : sev === 'warn' ? 'Thin — readers may need more context.' : 'Over budget — cut or split across pages.');
+      (sev === 'pass' ? 'On target.' : sev === 'warn' ? 'A bit short. Readers may need more.' : 'Too long. Cut it or split it.');
     wbRow.style.display = 'flex';
   } else {
     wbRow.style.display = 'none';
@@ -1841,28 +1845,28 @@ function runA11y(empty){
     const txt = $('vm-transcript').value.trim();
 
     findings.push(!alt
-      ? { sev:'fail', lbl:'Alt text', msg:'No alt text yet. Every published image needs one — a screen reader user gets nothing from this artwork without it.' }
+      ? { sev:'fail', lbl:'Alt text', msg:'No alt text yet. Without it, a screen reader user gets nothing from this image.' }
       : alt.length < 15
-      ? { sev:'warn', lbl:'Alt text', msg:'Only '+alt.length+' characters. Describe what the artwork tells the reader, not just its subject.' }
+      ? { sev:'warn', lbl:'Alt text', msg:'Only '+alt.length+' characters. Say what the image tells the reader.' }
       : alt.length > 150
-      ? { sev:'warn', lbl:'Alt text', msg:alt.length+' characters — over the ~150 limit some readers truncate at. Move detail into a caption or the body copy.' }
+      ? { sev:'warn', lbl:'Alt text', msg:alt.length+' characters. Some screen readers stop near 150. Move details to a caption.' }
       : /^(image|picture|photo|graphic|logo) (of|showing)/i.test(alt)
-      ? { sev:'warn', lbl:'Alt text', msg:'Starts with "image of…" — screen readers already announce it as an image. Cut straight to the content.' }
-      : { sev:'pass', lbl:'Alt text', msg:'Alt text present and a sensible length.' });
+      ? { sev:'warn', lbl:'Alt text', msg:'It starts with “image of”. Screen readers already say it is an image. Skip to the point.' }
+      : { sev:'pass', lbl:'Alt text', msg:'Alt text is there and a good length.' });
 
     findings.push(!txt
-      ? { sev:'fail', lbl:'Text in artwork', msg:'No transcript yet, so none of the language modules can score this piece. Type the words that appear in the design.' }
-      : { sev:'pass', lbl:'Text in artwork', msg:((txt.match(/\b\w+\b/g)||[]).length)+' words transcribed — language modules are scoring them.' });
+      ? { sev:'fail', lbl:'Text in artwork', msg:'No text yet, so nothing can be scored. Type the words in the design.' }
+      : { sev:'pass', lbl:'Text in artwork', msg:((txt.match(/\b\w+\b/g)||[]).length)+' words typed in. The text checks are scoring them.' });
 
     // colour-only meaning matters most for charts
     if(visualType === 'datavis'){
       const hasLegendWords = /\b(legend|key|axis|x[- ]axis|y[- ]axis|label)\b/i.test(txt);
       findings.push(hasLegendWords
-        ? { sev:'pass', lbl:'Chart labelling', msg:'Axis or legend text found in the transcript.' }
-        : { sev:'warn', lbl:'Chart labelling', msg:'No axis or legend text transcribed. Charts need labelled axes and a key — and data series need patterns or direct labels, not colour alone.' });
-      findings.push({ sev:'warn', lbl:'Colour-only encoding', msg:'Switch on Deuteranopia and Greyscale below. If two series become the same shade, add patterns, shapes or direct labels.' });
+        ? { sev:'pass', lbl:'Chart labels', msg:'Axis or key text found.' }
+        : { sev:'warn', lbl:'Chart labels', msg:'No axis or key text typed in. Charts need labels on each axis and a key. Use patterns or labels, not just colour.' });
+      findings.push({ sev:'warn', lbl:'Colour only', msg:'Turn on Deuteranopia and Greyscale below. If two parts turn the same shade, add patterns, shapes or labels.' });
     } else {
-      findings.push({ sev:'warn', lbl:'Colour independence', msg:'Run the Greyscale simulation. Anything that stops being readable relies on colour alone (WCAG 1.4.1).' });
+      findings.push({ sev:'warn', lbl:'Colour only', msg:'Turn on Greyscale. If something gets hard to read, it relies on colour alone (WCAG 1.4.1).' });
     }
 
     // contrast from the sampled palette
@@ -1870,10 +1874,10 @@ function runA11y(empty){
       const l1 = lum(vmPicked[0]), l2 = lum(vmPicked[1]);
       const r = (Math.max(l1,l2)+0.05)/(Math.min(l1,l2)+0.05);
       findings.push(r >= 4.5
-        ? { sev:'pass', lbl:'Sampled contrast', msg:vmPicked[0]+' on '+vmPicked[1]+' = '+(Math.round(r*100)/100)+':1 — passes AA.' }
-        : { sev:'fail', lbl:'Sampled contrast', msg:vmPicked[0]+' on '+vmPicked[1]+' = '+(Math.round(r*100)/100)+':1 — below the 4.5:1 body-text minimum.' });
+        ? { sev:'pass', lbl:'Sampled contrast', msg:vmPicked[0]+' on '+vmPicked[1]+' = '+(Math.round(r*100)/100)+':1. Passes AA.' }
+        : { sev:'fail', lbl:'Sampled contrast', msg:vmPicked[0]+' on '+vmPicked[1]+' = '+(Math.round(r*100)/100)+':1. Body text needs at least 4.5:1.' });
     } else {
-      findings.push({ sev:'warn', lbl:'Contrast', msg:'Pick two swatches from the artwork palette to test a colour pair.' });
+      findings.push({ sev:'warn', lbl:'Contrast', msg:'Pick two colours from the artwork to test them.' });
     }
 
     // read-aloud clarity
@@ -1893,51 +1897,51 @@ function runA11y(empty){
   if(imgs.length){
     const missing = imgs.filter(i => !(i.alt||'').trim() || /^(image|img|photo|untitled|screenshot)/i.test(i.alt.trim()));
     findings.push(missing.length
-      ? { sev:'fail', lbl:'Alt text', msg:missing.length+' of '+imgs.length+' image'+(imgs.length===1?'':'s')+' has no meaningful alt text. Describe what the image tells the reader, not what it looks like.' }
+      ? { sev:'fail', lbl:'Alt text', msg:missing.length+' of '+imgs.length+' image'+(imgs.length===1?'':'s')+' has no useful alt text. Say what the image tells the reader.' }
       : { sev:'pass', lbl:'Alt text', msg:'All '+imgs.length+' image'+(imgs.length===1?' has':'s have')+' alt text.' });
   } else {
-    findings.push({ sev:'warn', lbl:'Alt text', msg:'No images yet. Every image you add needs alt text — in InDesign, set Object Export Options → Alt Text.' });
+    findings.push({ sev:'warn', lbl:'Alt text', msg:'No images yet. Each image you add needs alt text. In InDesign, use Object Export Options → Alt Text.' });
   }
 
   // 2. Heading structure and order
   if(!headings.length){
-    findings.push({ sev:'fail', lbl:'Heading structure', msg:'No real headings. Screen readers and the Adobe accessibility check need tagged headings, not just bigger bold text.' });
+    findings.push({ sev:'fail', lbl:'Headings', msg:'No real headings. Screen readers need tagged headings, not just big bold text.' });
   } else {
     const levels = headings.map(h => +h.tagName[1]);
     let skipped = false;
     for(let i=1;i<levels.length;i++) if(levels[i] - levels[i-1] > 1) skipped = true;
     if(levels[0] !== 1)
-      findings.push({ sev:'warn', lbl:'Heading structure', msg:'Starts at H'+levels[0]+' — the document title should be H1.' });
+      findings.push({ sev:'warn', lbl:'Headings', msg:'It starts at H'+levels[0]+'. The title should be H1.' });
     else if(skipped)
-      findings.push({ sev:'warn', lbl:'Heading structure', msg:'A heading level is skipped (e.g. H1 → H3). Keep the order sequential.' });
+      findings.push({ sev:'warn', lbl:'Headings', msg:'A heading level is skipped, like H1 to H3. Keep them in order.' });
     else
-      findings.push({ sev:'pass', lbl:'Heading structure', msg:headings.length+' headings, correctly nested.' });
+      findings.push({ sev:'pass', lbl:'Headings', msg:headings.length+' headings, in the right order.' });
   }
 
   // 3. Meaningful link text (web/digital only)
   if(links.length){
     const vague = links.filter(a => /^(click here|here|read more|more|link|this)$/i.test((a.textContent||'').trim()));
     findings.push(vague.length
-      ? { sev:'fail', lbl:'Link text', msg:vague.length+' link'+(vague.length===1?'':'s')+' say "click here" or similar. Link text must describe its destination when read on its own.' }
-      : { sev:'pass', lbl:'Link text', msg:'All '+links.length+' link'+(links.length===1?'':'s')+' describe their destination.' });
+      ? { sev:'fail', lbl:'Link text', msg:vague.length+' link'+(vague.length===1?'':'s')+' say “click here” or the like. Link text should say where it goes.' }
+      : { sev:'pass', lbl:'Link text', msg:'All '+links.length+' link'+(links.length===1?'':'s')+' say where they go.' });
   } else if(digital){
-    findings.push({ sev:'warn', lbl:'Link text', msg:'No links yet. Digital pieces need descriptive link text — never "click here".' });
+    findings.push({ sev:'warn', lbl:'Link text', msg:'No links yet. Web links should say where they go, not “click here”.' });
   }
 
   // 4. ALL-CAPS runs — screen readers spell these out and they slow every reader
   const caps = (text.match(/\b[A-Z][A-Z\s]{14,}\b/g) || []).length;
   findings.push(caps
-    ? { sev:'warn', lbl:'ALL-CAPS text', msg:caps+' long all-caps run'+(caps===1?'':'s')+'. Screen readers may read these letter by letter, and they cut sighted reading speed. Use bold or size instead.' }
-    : { sev:'pass', lbl:'ALL-CAPS text', msg:'No long all-caps runs.' });
+    ? { sev:'warn', lbl:'ALL-CAPS text', msg:caps+' long bit'+(caps===1?'':'s')+' in ALL CAPS. Screen readers may spell them out, and caps are slow to read. Use bold or size.' }
+    : { sev:'pass', lbl:'ALL-CAPS text', msg:'No long ALL CAPS text.' });
 
   // 5. Sensory-only instructions ("the red box", "see below")
   const sensory = /\b(the (red|green|blue|yellow) (box|button|section|text)|see (below|above|the right|the left)|in the (left|right)-hand)\b/i.test(text);
   findings.push(sensory
-    ? { sev:'warn', lbl:'Sensory instructions', msg:'Instructions rely on colour or position alone. Add a label or heading name so they work without sight of the layout (WCAG 1.3.3).' }
-    : { sev:'pass', lbl:'Sensory instructions', msg:'No colour- or position-only instructions.' });
+    ? { sev:'warn', lbl:'Colour or place', msg:'Some steps rely on colour or place on the page. Add a label or heading so they work for people who can’t see the layout (WCAG 1.3.3).' }
+    : { sev:'pass', lbl:'Colour or place', msg:'No steps rely on colour or place alone.' });
 
   // 6. Contrast — can't be read from text; the artwork panel handles it when there's a design to sample
-  findings.push({ sev:'warn', lbl:'Colour contrast', msg:'Not detectable from text. Upload the artwork to sample its palette, or check pairs in your design file — body text needs 4.5:1.' });
+  findings.push({ sev:'warn', lbl:'Colour contrast', msg:'Can’t be checked from text. Upload the artwork to test its colours, or check them in your design file. Body text needs 4.5:1.' });
 
   // 7. Read-aloud clarity
   if(text.trim()) readAloudFindings(text).forEach(f => findings.push(f));
@@ -1972,10 +1976,10 @@ function lum(hex){
 // CONTENT ACCURACY — can a reviewer trace every claim?
 // ════════════════════════════════════════
 const ACC_SIGNOFF = [
-  { id:'a-review',  text:'Clinically reviewed by a named subject expert' },
-  { id:'a-source',  text:'Every statistic traced to a cited source' },
-  { id:'a-current', text:'Sources checked against the current guideline version' },
-  { id:'a-plain',   text:'Plain-language rewrites re-checked for meaning drift' },
+  { id:'a-review',  text:'Checked by a named health expert' },
+  { id:'a-source',  text:'Each number has a source' },
+  { id:'a-current', text:'Sources match the latest guidelines' },
+  { id:'a-plain',   text:'Plain rewrites still mean the same thing' },
 ];
 function toggleAcc(id, on){ manual[id] = on; refreshScores(); }
 
@@ -1998,10 +2002,10 @@ function runAccuracy(empty){
   const hasCitation = /\((?:[A-Z][a-zA-Z]+,?\s*(?:et al\.?,?)?\s*)?(19|20)\d{2}\)|\bsource[s]?:|\breference[s]?:|\baccording to\b|\bdoi:|https?:\/\//i.test(text);
   if(statCount){
     findings.push(hasCitation
-      ? { sev:'pass', lbl:'Sourced statistics', msg:statCount+' statistic'+(statCount===1?'':'s')+' with at least one source cited. Confirm each number maps to its own source.' }
-      : { sev:'fail', lbl:'Unsourced statistics', msg:statCount+' statistic'+(statCount===1?' has':'s have')+' no visible citation. Add a source line — reviewers and regulators will ask.' });
+      ? { sev:'pass', lbl:'Sourced statistics', msg:statCount+' number'+(statCount===1?'':'s')+' with a source. Check each number has its own source.' }
+      : { sev:'fail', lbl:'Unsourced statistics', msg:statCount+' number'+(statCount===1?' has':'s have')+' no source. Add a source line. Reviewers will ask.' });
   } else {
-    findings.push({ sev:'warn', lbl:'Statistics', msg:'No numbers detected. If you add any, cite the source alongside them.' });
+    findings.push({ sev:'warn', lbl:'Numbers', msg:'No numbers found. If you add any, give the source.' });
   }
 
   // Dated sources
@@ -2011,29 +2015,29 @@ function runAccuracy(empty){
     const newest = Math.max(...years);
     const age = thisYear - newest;
     findings.push(age <= 5
-      ? { sev:'pass', lbl:'Source currency', msg:'Most recent date referenced is '+newest+' — within the usual 5-year window.' }
-      : { sev:'warn', lbl:'Source currency', msg:'Newest date referenced is '+newest+' ('+age+' years old). Check the guideline hasn\'t been superseded.' });
+      ? { sev:'pass', lbl:'Source currency', msg:'The newest date is '+newest+'. That is within 5 years.' }
+      : { sev:'warn', lbl:'Source currency', msg:'The newest date is '+newest+' ('+age+' years old). Check the advice is still current.' });
   } else {
-    findings.push({ sev:'warn', lbl:'Source currency', msg:'No dates found. Readers and reviewers need to know how current this is.' });
+    findings.push({ sev:'warn', lbl:'Source currency', msg:'No dates found. Readers need to know how new this is.' });
   }
 
   // Review / revision date on the piece itself
   const hasReviewDate = /\b(last (reviewed|updated|revised)|review date|next review|version \d|rev\.?\s*\d)\b/i.test(text);
   findings.push(hasReviewDate
-    ? { sev:'pass', lbl:'Review date', msg:'A review or version date appears on the material.' }
-    : { sev:'fail', lbl:'Review date', msg:'No "last reviewed" or version line. Add one — it is the first thing a clinical reviewer looks for.' });
+    ? { sev:'pass', lbl:'Review date', msg:'A review or version date is shown.' }
+    : { sev:'fail', lbl:'Review date', msg:'No “last reviewed” or version line. Add one. Reviewers look for it first.' });
 
   // Absolute claims that overstate certainty
   const absolutes = (text.match(/\b(always|never|guaranteed|completely safe|no side effects|cures?|100% (safe|effective)|totally)\b/gi) || []);
   findings.push(absolutes.length
-    ? { sev:'fail', lbl:'Absolute claims', msg:'Overstated: "'+[...new Set(absolutes.map(a=>a.toLowerCase()))].slice(0,3).join('", "')+'". Clinical content rarely supports absolutes — soften or cite.' }
-    : { sev:'pass', lbl:'Absolute claims', msg:'No overstated certainty language.' });
+    ? { sev:'fail', lbl:'Absolute claims', msg:'Too strong: “'+[...new Set(absolutes.map(a=>a.toLowerCase()))].slice(0,3).join('”, “')+'”. Health facts rarely allow words like these. Soften them or give a source.' }
+    : { sev:'pass', lbl:'Absolute claims', msg:'No words that claim too much.' });
 
   // Attribution for the material itself
   const hasOwner = /\b(produced by|published by|prepared by|©|\(c\)\s*\d{4}|developed by)\b/i.test(text);
   findings.push(hasOwner
-    ? { sev:'pass', lbl:'Attribution', msg:'The material names who produced it.' }
-    : { sev:'warn', lbl:'Attribution', msg:'No producing organisation named. Readers judge trustworthiness by who published it.' });
+    ? { sev:'pass', lbl:'Who made it', msg:'It says who made it.' }
+    : { sev:'warn', lbl:'Who made it', msg:'It doesn’t say who made it. Readers trust it more when they know.' });
 
   const ico = { pass:'✓', warn:'~', fail:'!' };
   $('acc-list').innerHTML = findings.map(f =>
@@ -2324,18 +2328,18 @@ function readAloudFindings(text){
   const out = [];
   const abbr = [...new Set((text.match(/\b(?:e\.g\.|i\.e\.|etc\.|vs\.|approx\.|hrs?\.|mg|mcg|ml|q\.d\.|b\.i\.d\.|p\.r\.n\.)/gi)||[]))];
   if(abbr.length) out.push({ sev:'warn', lbl:'Spoken abbreviations',
-    msg:'"'+abbr.slice(0,3).join('", "')+'" are read letter-by-letter or misspoken. Write them out — "twice a day", "milligrams".' });
+    msg:'“'+abbr.slice(0,3).join('”, “')+'” may be read out letter by letter or said wrong. Write it out, like “twice a day”.' });
   const ranges = (text.match(/\d+\s*[-–]\s*\d+/g)||[]).length;
   if(ranges) out.push({ sev:'warn', lbl:'Number ranges',
-    msg:ranges+' range'+(ranges===1?'':'s')+' like "2-3" may be spoken as "two minus three". Write "2 to 3".' });
+    msg:ranges+' range'+(ranges===1?'':'s')+' like “2-3” may be read as “two minus three”. Write “2 to 3”.' });
   const slashes = (text.match(/\w\/\w/g)||[]).length;
   if(slashes) out.push({ sev:'warn', lbl:'Slashes',
-    msg:slashes+' slash'+(slashes===1?'':'es')+' — screen readers say "slash" aloud. Use "or".' });
+    msg:slashes+' slash'+(slashes===1?'':'es')+'. Screen readers say “slash” out loud. Use “or”.' });
   const longest = splitSentences(text).reduce((m,s) => Math.max(m, (s.match(/\b\w+\b/g)||[]).length), 0);
   if(longest > 25) out.push({ sev:'fail', lbl:'Breath length',
-    msg:'Longest sentence is '+longest+' words — too long to follow in one listen. Aim under 20.' });
+    msg:'The longest sentence has '+longest+' words. That is hard to follow by ear. Aim for under 20.' });
   else if(longest) out.push({ sev:'pass', lbl:'Breath length',
-    msg:'Longest sentence is '+longest+' words — comfortable to hear.' });
+    msg:'The longest sentence has '+longest+' words. That is easy to follow by ear.' });
   return out;
 }
 
@@ -2881,32 +2885,32 @@ const FW_LABEL = {
   pam:'PAM',cahps:'CAHPS',nps:'NPS',picker:'Picker',ebcd:'EBCD',seips:'SEIPS',planetree:'Planetree'
 };
 const FW_FULL = {
-  cci:'CDC checklist for clear health messages',
-  pemat:'AHRQ test of understanding and action',
-  sam:'Suitability for low-literacy readers',
-  discern:'Quality of treatment-choice information',
-  eqip:'Quality of patient information leaflets',
-  readability:'Reading grade and reading-ease formulas',
-  plainlang:'U.S. federal plain-writing guidelines',
+  cci:'CDC list for clear health messages',
+  pemat:'AHRQ: can readers get it and act on it',
+  sam:'How well it suits weak readers',
+  discern:'How good the info on treatment choices is',
+  eqip:'How good a patient leaflet is',
+  readability:'Reading grade and ease scores',
+  plainlang:'U.S. guide to plain writing',
   pinkbook:'NCI guide to planning health campaigns',
   option:'Observer rating of shared decisions',
-  ipdas:'Quality standards for decision aids',
-  ahrq:'Health literacy universal precautions',
-  ottawa:'Ottawa framework for decision support',
-  share:'AHRQ five-step shared decision model',
-  teachback:'Patients explain back what they heard',
-  comb:'Why a behaviour is or isn\'t happening',
-  hbm:'Beliefs that drive health behaviour',
-  ttm:'Stages of readiness to change',
-  eppm:'Balancing threat with self-efficacy',
-  whorisks:'WHO emergency risk communication',
+  ipdas:'Rules for good decision aids',
+  ahrq:'AHRQ steps to help all patients read and act',
+  ottawa:'Ottawa guide to help with hard choices',
+  share:'AHRQ five steps to decide together',
+  teachback:'Patients say back what they heard',
+  comb:'What helps or blocks a habit',
+  hbm:'Beliefs that shape health choices',
+  ttm:'Stages of being ready to change',
+  eppm:'Fear plus a clear way to act',
+  whorisks:'WHO guide to risk talk in a crisis',
   pam:'Patient activation survey (licensed)',
   cahps:'Standard patient experience surveys',
   nps:'Likelihood-to-recommend survey',
-  picker:'Eight principles of person-centred care',
+  picker:'Eight rules for person-centred care',
   ebcd:'Co-designing services with patients',
-  seips:'Work-system model of patient safety',
-  planetree:'Organisation-wide person-centred care',
+  seips:'How the whole care system keeps patients safe',
+  planetree:'Person-centred care across a whole site',
 };
 // Direct links to each framework's home/reference page, verified rather than guessed.
 // Entries left out below don't have one confirmed official page — those fall back to
@@ -2933,7 +2937,7 @@ function fwSourceUrl(f){
 }
 // Framework criteria, scoring types and sources — generated from analysis-engine.js FRAMEWORK_REGISTRY.
 // cci / pemat / readability / plainlang have no criteria here: they are scored live by their own cards.
-const FW_REG = {"cci":{"n":"CDC Clear Communication Index","t":"scored","th":"90 or higher (points ÷ applicable items × 100)","sc":null,"note":"20 items in 4 parts: Core (1–11), Behavioral Recommendations (12–14), Numbers (15–17), Risk (18–20). Parts B–D are scored only when the material contains that content; items 19–20 can be N/A. Score = points ÷ applicable items × 100. Every item counts equally; below 90, revise.","src":["Centers for Disease Control and Prevention. (2019). CDC Clear Communication Index: A Tool for Developing and Assessing CDC Public Communication Products. U.S. Department of Health and Human Services. https://www.cdc.gov/ccindex/","Baur C, Prue C. (2014). The CDC Clear Communication Index is a new evidence-based tool to prepare and review health information. Health Promotion Practice, 15(5), 629–637. https://doi.org/10.1177/1524839914538969"]},"pemat":{"n":"Patient Education Materials Assessment Tool","t":"scored","th":"70% or higher on both scores","sc":null,"note":"PEMAT-P: 17 understandability items (1–12, 15–19) and 7 actionability items (20–26); PEMAT-A/V uses 13 and 4. Two separate scores, never combined. N/A items are excluded from the denominator. The developers' cut-off is 70% for each score.","src":["Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. Patient Education and Counseling, 96(3), 395–403. https://doi.org/10.1016/j.pec.2014.05.027","Agency for Healthcare Research and Quality. PEMAT and User's Guide. https://www.ahrq.gov/health-literacy/patient-education/pemat.html"]},"sam":{"n":"Suitability Assessment of Materials","t":"scored","th":null,"sc":"0 = Not Suitable / 1 = Adequate / 2 = Superior","note":"A score of 0 (Not Suitable) on any Content factor (SAM-C1 through SAM-C6) should be treated as a blocker regardless of total score. SAM is the most granular content auditing tool in the library.","src":["Doak CC, Doak LG, Root JH. (1996). Teaching Patients with Low Literacy Skills (2nd ed.). J.B. Lippincott. (SAM instrument: pp. 41–59)","Winslow EH. (2001). Patient education materials: Can patients read them, or are they ending up in the trash? American Journal of Nursing, 101(10), 33–38. https://doi.org/10.1097/00000446-200110000-00020"],"cr":[["Content","Purpose of the material is stated explicitly.",0],["Content","Content is limited to the essential message (not overloaded).",0],["Content","A summary or review is included.",0],["Content","Reading level matches the target audience (Fry formula ≤5th grade preferred).",0],["Content","Scope is appropriate to the purpose.",0],["Content","Common vocabulary is used throughout.",0],["Literacy Demand","Writing style is active voice and conversational.",0],["Literacy Demand","Sentence structure is simple; compound-complex sentences avoided.",0],["Literacy Demand","Context is established before adding detail.",0],["Literacy Demand","Learning aids (examples, analogies) are used.",0],["Literacy Demand","Vocabulary uses common words; technical terms defined when necessary.",0],["Literacy Demand","Reading grade level is ≤5th grade (preferred) or ≤8th grade (minimum).",0],["Literacy Demand","Sentence length is appropriate (short sentences preferred).",0],["Graphics","Cover graphic draws audience interest and is relevant.",0],["Graphics","Type of visuals used is appropriate for the audience and content.",0],["Graphics","Captions are present and explain visuals.",0],["Graphics","Visuals are culturally relevant and free from bias.",0],["Layout & Typography","Layout uses columns, white space, and margins effectively.",0],["Layout & Typography","Font size is ≥12pt for body text.",0],["Layout & Typography","Subheadings break up text and are informative.",0],["Learning & Motivation","Material includes interaction (questions, checklists, problems to solve).",0],["Learning & Motivation","Behavior modeling shows positive desired behaviors.",0],["Cultural Appropriateness","Images and examples match the target audience's cultural context.",0],["Cultural Appropriateness","Cultural logic, values, and norms are respected.",0]]},"discern":{"n":"DISCERN Quality Instrument for Consumer Health Information","t":"scored","th":null,"sc":"1 = No/Poor → 5 = Yes/Excellent","note":"No absolute pass/fail threshold. DISCERN scores are comparative — used against published benchmarks (peer-reviewed health leaflets average ~3.5–4/5 per question). Q16 is kept separate from Part 1 and Part 2 totals.","src":["Charnock D, Shepperd S, Needham G, Gann R. (1999). DISCERN: An instrument for judging the quality of written consumer health information on treatment choices. Journal of Epidemiology and Community Health, 53(2), 105–111. https://doi.org/10.1136/jech.53.2.105","DISCERN Online. University of Oxford & British Library. http://www.discern.org.uk"],"cr":[["Reliability","Q1: Are the aims of the publication clearly stated at the beginning?",0],["Reliability","Q2: Does it achieve its aims?",0],["Reliability","Q3: Is it relevant to patients?",0],["Reliability","Q4: Are the sources of information used explicit (referenced)?",0],["Reliability","Q5: Is the date of information stated (when it was produced or reviewed)?",0],["Reliability","Q6: Is it balanced and unbiased?",0],["Reliability","Q7: Does it provide details of additional sources of support and information?",0],["Reliability","Q8: Does it refer to areas of uncertainty?",0],["Treatment Choices","Q9: Does it describe how each treatment works?",0],["Treatment Choices","Q10: Does it describe the benefits of each treatment?",0],["Treatment Choices","Q11: Does it describe the risks and side effects of each treatment?",0],["Treatment Choices","Q12: Does it describe what would happen if no treatment is chosen?",0],["Treatment Choices","Q13: Does it describe how the treatment choices may affect overall quality of life?",0],["Treatment Choices","Q14: Is it clear that there may be more than one possible treatment choice?",0],["Treatment Choices","Q15: Does it provide support for shared decision-making?",0],["Overall","Q16: Overall, how would you rate the quality of this publication? (standalone 1–5 rating)",0]]},"eqip":{"n":"Ensuring Quality Information for Patients","t":"scored","th":null,"sc":"Yes (1) / No (0) / N/A (excluded from denominator)","note":"EQIP uses 36 items across 8 sections in the full instrument. Separate section scores are useful for diagnostic targeting. No universal pass threshold — used normatively across document versions.","src":["Moult B, Franck LS, Brady H. (2004). Ensuring quality information for patients: Development and preliminary validation of a new instrument to improve the quality of written health care information. Health Expectations, 7(2), 165–175. https://doi.org/10.1111/j.1369-7625.2004.00273.x"],"cr":[["Identity","Authorship, source organization, date, and version are clearly stated.",0],["Purpose","The document purpose is explicitly stated.",0],["Purpose","The target audience is explicitly stated.",0],["Content","Information on the condition or topic is accurate and complete.",0],["Content","Treatment options are described.",0],["Recommendations","Specific, actionable recommendations are provided.",0],["Recommendations","The basis or rationale for recommendations is explained.",0],["Comprehensibility","Language is appropriate for the target audience; jargon is avoided.",0],["Comprehensibility","Sentences are short and active voice is used.",0],["Layout & Design","Logical structure and headings are used to aid navigation.",0],["Layout & Design","White space and font size are adequate for readability.",0],["Illustrations","Visuals are present and appropriate to the content.",0],["Illustrations","Visuals are labeled and clearly explained.",0],["References","Evidence is cited and references are listed.",0],["References","The evidence base is dated (sources have publication years).",0]]},"readability":{"n":"Readability Measures (Flesch-Kincaid / SMOG / Flesch Reading Ease)","t":"scored","th":null,"sc":null,"note":"SMOG is the most accurate readability measure for health materials because it accounts for medical polysyllabic term density. Use SMOG as primary; FRE and FKGL as secondary checks.","src":["Flesch R. (1948). A new readability yardstick. Journal of Applied Psychology, 32(3), 221–233. https://doi.org/10.1037/h0057532","Kincaid JP, Fishburne RP Jr, Rogers RL, Chissom BS. (1975). Derivation of New Readability Formulas for Navy Enlisted Personnel. Research Branch Report 8-75. Naval Technical Training Command. https://apps.dtic.mil/sti/pdfs/ADA006655.pdf","McLaughlin GH. (1969). SMOG grading: A new readability formula. Journal of Reading, 12(8), 639–646.","Paasche-Orlow MK, Taylor HA, Brancati FL. (2003). Readability standards for informed-consent forms as compared with actual readability. New England Journal of Medicine, 348(8), 721–726. https://doi.org/10.1056/NEJMsa021212"]},"plainlang":{"n":"U.S. Federal Plain Language Guidelines","t":"checklist","th":null,"sc":null,"note":"Plain Language is a prescriptive editing checklist, not a scoring rubric. Applied during drafting and revision, not as post-hoc auditing. No numerical score — compliance is qualitative.","src":["Plain Language Action and Information Network (PLAIN). (2011). Federal Plain Language Guidelines. PlainLanguage.gov. https://www.plainlanguage.gov/guidelines/","Plain Writing Act of 2010, Pub. L. 111-274, 124 Stat. 2861 (2010). https://www.govinfo.gov/content/pkg/PLAW-111publ274/pdf/PLAW-111publ274.pdf"]},"pinkbook":{"n":"National Cancer Institute — Making Health Communication Programs Work","t":"process-guide","th":null,"sc":null,"note":"The Pink Book mandates audience testing at Phase 2 and Phase 3. A material that has not been tested with its target audience fails the Pink Book standard regardless of CCI or SAM scores. Most criteria are NOT_ASSESSABLE from document content alone — they require process documentation.","src":["National Cancer Institute. (2004). Making Health Communication Programs Work (\"The Pink Book\"). U.S. Department of Health and Human Services, NIH Publication No. 04-5145. https://www.cancer.gov/publications/health-communication/pink-book.pdf"],"cr":[["Phase 1: Planning & Strategy","The problem, audience, objective, channels, and available resources are defined.",0],["Phase 2: Developing Concepts","Formative research with the target audience has been conducted.",0],["Phase 2: Developing Concepts","Message concepts have been tested with the target audience.",0],["Phase 3: Developing Materials","Draft materials were pretested with the target audience.",0],["Phase 3: Developing Materials","Iterative revision was performed based on pretesting feedback.",0],["Phase 4: Implementation","Channel selection and dissemination plan are documented.",0],["Phase 5: Assessing Effectiveness","Process and outcome evaluation methods are specified.",0],["Phase 6: Feedback to Refine","Findings are used to improve future communication.",0]]},"teachback":{"n":"Teach-Back Method & Ask Me 3","t":"checklist","th":null,"sc":null,"note":"Teach-Back is a live clinical interaction method. TB-1 through TB-3 can be partially assessed from written materials (are they written to support teach-back?). Ask Me 3 (AM3-1 to AM3-3) can be fully assessed from document content. If a patient cannot answer all three Ask Me 3 questions from the document alone, the material needs revision regardless of readability scores.","src":["Agency for Healthcare Research and Quality. (2020). Use the Teach-Back Method: Tool #5. Health Literacy Universal Precautions Toolkit. https://www.ahrq.gov/health-literacy/improve/precautions/tool5.html","Schillinger D, Piette J, Grumbach K, et al. (2003). Closing the loop: Physician communication with diabetic patients who have low health literacy. Archives of Internal Medicine, 163(1), 83–90. https://doi.org/10.1001/archinte.163.1.83","Pfizer. (n.d.). Ask Me 3: Good Questions for Your Good Health. National Patient Safety Foundation. https://www.npsf.org/page/askme3"],"cr":[["Teach-Back","Key information is presented in a way that a patient could explain it back in their own words.",0],["Teach-Back","The material is structured so the clinician can ask the patient to demonstrate understanding (teach-back prompt built in).",0],["Teach-Back","If misunderstanding occurs, the material provides a re-explanation path without blaming the patient.",0],["Ask Me 3","Q1 answered: What is my main problem? — The document clearly states the main health problem.",0],["Ask Me 3","Q2 answered: What do I need to do? — The document clearly states the action the patient should take.",0],["Ask Me 3","Q3 answered: Why is it important for me to do this? — The document explains why the action matters.",0]]},"option":{"n":"Observing Patient Involvement in Decision Making","t":"scored","th":null,"sc":"0 = not observed | 1 = minimal attempt | 2 = notable effort | 3 = consistent | 4 = fully applied","note":"OPTION requires a trained observer rating a clinical consultation (live or recorded). Most criteria are NOT_ASSESSABLE when evaluating written materials. Published real-world primary care consultations average 20–40/100.","src":["Elwyn G, Edwards A, Wensing M, Hood K, Atwell C, Grol R. (2003). Shared decision making: Developing the OPTION scale for measuring patient involvement. Quality and Safety in Health Care, 12(2), 93–99. https://doi.org/10.1136/qhc.12.2.93","Elwyn G, Hutchings H, Edwards A, et al. (2005). The OPTION scale: Measuring the extent that clinicians involve patients in decision-making tasks. Health Expectations, 8(1), 34–42. https://doi.org/10.1111/j.1369-7625.2004.00311.x"],"cr":[["Shared Decision Making","The clinician draws attention to there being a problem that requires a decision.",0],["Shared Decision Making","The clinician states that there is more than one way to deal with the problem.",0],["Shared Decision Making","The clinician assesses the patient's preferred format for receiving information.",0],["Shared Decision Making","The clinician lists options including the option of no active treatment.",0],["Shared Decision Making","The clinician explains the pros and cons of each option.",0],["Shared Decision Making","The clinician explores the patient's expectations or ideas about how the problem is to be managed.",0],["Shared Decision Making","The clinician explores the patient's concerns about each option.",0],["Shared Decision Making","The clinician checks that the patient has understood the information.",0],["Shared Decision Making","The clinician explores whether the patient has a preferred option.",0],["Shared Decision Making","The clinician negotiates a decision with the patient.",0],["Shared Decision Making","The clinician indicates a need to review the decision.",0],["Shared Decision Making","The clinician defers to the patient's preferred option.",0]]},"ipdas":{"n":"International Patient Decision Aid Standards","t":"semi-scored","th":null,"sc":null,"note":"Qualifying criteria are a gate — failing any one disqualifies the material as a patient decision aid. Certifying criteria are aspirational standards for formal certification. Development and process criteria (C12–C15) are typically NOT_ASSESSABLE from document content alone.","src":["Elwyn G, O'Connor A, Stacey D, et al. (2006). Developing a quality criteria framework for patient decision aids: Online international Delphi consensus process. BMJ, 333(7565), 417. https://doi.org/10.1136/bmj.38926.629329.AE","Stacey D, Légaré F, Pouliot S, Kryworuchko J, Dunn S. (2010). Shared decision making models to inform an interprofessional perspective on decision support for people facing health decisions. Patient Education and Counseling, 80(2), 164–172. https://doi.org/10.1016/j.pec.2009.10.015","IPDAS Collaboration. Patient Decision Aids. Ottawa Hospital Research Institute. https://ipdas.ohri.ca/"],"cr":[["Qualifying (must meet all 6)","The health condition for which the index decision is required is described.",0],["Qualifying (must meet all 6)","The index decision is explicitly stated.",0],["Qualifying (must meet all 6)","The options available for the index decision are described.",0],["Qualifying (must meet all 6)","The positive features (benefits/advantages) of each option are described.",0],["Qualifying (must meet all 6)","The negative features (harms/side effects/disadvantages) of each option are described.",0],["Qualifying (must meet all 6)","What it is like to experience the consequences of the options is described.",0],["Information","Probabilities are presented for outcomes of each option.",0],["Information","Absolute risk is used (not relative risk only).",0],["Information","A time horizon for outcomes is explicit.",0],["Information","Uncertainty in the evidence is acknowledged.",0],["Probabilities","Event rates use the same denominator across options.",0],["Probabilities","Sources and dates of evidence are cited.",0],["Values Clarification","Features most important to patients are described.",0],["Values Clarification","An exercise to help the patient clarify their values is included.",0],["Guidance / Coaching","Steps for deliberation and decision-making are described.",0],["Guidance / Coaching","Guidance for preparing for a clinical consultation is included.",0],["Guidance / Coaching","The material does not pressure the patient toward one option.",0],["Development","A systematic development process is documented.",0],["Development","Patients and clinicians were involved in development.",0],["Development","Plain language review was conducted.",0],["Development","Field testing with the target audience was done.",0],["Disclosure","Funding sources are disclosed.",0],["Disclosure","Conflicts of interest are disclosed.",0],["Plain Language","Reading level is ≤8th grade.",0]]},"ahrq":{"n":"AHRQ Health Literacy Universal Precautions Toolkit (2nd ed.)","t":"checklist","th":null,"sc":null,"note":"The Toolkit is a practice improvement framework, not a document scoring tool. Spoken communication and system criteria (AHRQ-1, AHRQ-2, AHRQ-8, AHRQ-9) are typically NOT_ASSESSABLE from written materials alone.","src":["Agency for Healthcare Research and Quality. (2015). Health Literacy Universal Precautions Toolkit (2nd ed.). AHRQ Publication No. 15-0023-EF. https://www.ahrq.gov/health-literacy/improve/precautions/index.html","DeWalt DA, Callahan LF, Hawk VH, et al. (2010). Health literacy universal precautions toolkit. AHRQ Publication No. 10-0046-EF. Agency for Healthcare Research and Quality."],"cr":[["Spoken Communication","Teach-back technique is incorporated into patient communication.",0],["Spoken Communication","Communication is designed to be accessible for non-English speakers.",0],["Written Communication","Materials are easy to read (reviewed using CCI or equivalent).",0],["Written Communication","Consent forms are written at an appropriate reading level.",0],["Written Communication","Medication instructions are clear and actionable.",0],["Self-Management","Materials support patient self-management goals.",0],["Self-Management","Forms and documents are designed to be easy to use and complete.",0],["Supportive Systems","Appointment and referral instructions are clear.",0],["Supportive Systems","A team-based approach to health literacy is reflected.",0]]},"ottawa":{"n":"Ottawa Decision Support Framework + Decisional Conflict Scale","t":"semi-scored","th":null,"sc":null,"note":"The DMSF is a design framework (not scored). The Decisional Conflict Scale (DCS) is the measurement instrument and requires a patient survey — criteria marked notAssessableFromDoc cannot be evaluated from document content alone.","src":["O'Connor AM. (1995). Validation of a decisional conflict scale. Medical Decision Making, 15(1), 25–30. https://doi.org/10.1177/0272989X9501500105","O'Connor AM, Tugwell P, Wells GA, et al. (1998). A decision aid for women considering hormone therapy after menopause. Patient Education and Counseling, 33(3), 267–279. https://doi.org/10.1016/S0738-3991(98)00026-3","Ottawa Hospital Research Institute. Decision Support & Decision Aids. https://decisionaid.ohri.ca/"],"cr":[["Decision Needs Assessment","Knowledge gaps about options are addressed.",0],["Decision Needs Assessment","Patient values are acknowledged as relevant to the decision.",0],["Decision Needs Assessment","Barriers to communication are recognized and addressed.",0],["Decision Support Interventions","Risk communication is provided in an understandable format.",0],["Decision Support Interventions","A values clarification exercise is included.",0],["DCS: Informed","Patient feels they know enough about options, risks, and benefits. (Requires DCS survey — not assessable from document alone)",1],["DCS: Values Clarity","Patient knows which benefits/risks matter most to them. (Requires DCS survey)",1],["DCS: Support","Patient has enough support and advice. (Requires DCS survey)",1],["DCS: Uncertainty","Patient is not uncertain about the choice. (Requires DCS survey)",1],["DCS: Effective Decision","Patient feels decision is informed, value-based, and supported. (Requires DCS survey)",1]]},"share":{"n":"AHRQ SHARE Approach — Shared Decision Making Framework","t":"checklist","th":null,"sc":null,"note":"SHARE is a clinician conversation model used for training and workflow design. Steps R and E (reaching a decision together, follow-up) are typically NOT_ASSESSABLE from written materials alone.","src":["Agency for Healthcare Research and Quality. (2014). The SHARE Approach — A Model for Shared Decision Making: A Resource for Clinicians. AHRQ Publication No. 14-0058-1-EF. https://www.ahrq.gov/health-literacy/professional-training/shared-decision/index.html","Elwyn G, Frosch D, Thomson R, et al. (2012). Shared decision making: A model for clinical practice. Journal of General Internal Medicine, 27(10), 1361–1367. https://doi.org/10.1007/s11606-012-2077-6"],"cr":[["Seek patient participation","The material or process explicitly invites the patient into the decision; explains it is a choice, not a directive.",0],["Help explore options","All reasonable options including watchful waiting are presented with balanced information.",0],["Assess values & preferences","Patient values and what matters most are elicited; open questions are used; no steering toward one option.",0],["Reach a decision together","The decision is negotiated; patient comfort is confirmed; decision and rationale are documented.",0],["Evaluate the decision","Follow-up and revisiting are planned; decisional regret is acknowledged as possible.",0]]},"comb":{"n":"COM-B Behaviour System + Behaviour Change Wheel","t":"checklist","th":null,"sc":null,"note":"COM-B is a diagnostic framework — outputs are gap diagnoses and intervention maps, not scores. Assessment requires knowing which COM-B sub-component is the barrier before evaluating whether the document addresses it. COMB-BCW requires evaluator judgment about intervention match.","src":["Michie S, van Stralen MM, West R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6(1), 42. https://doi.org/10.1186/1748-5908-6-42","Michie S, Atkins L, West R. (2014). The Behaviour Change Wheel: A Guide to Designing Interventions. Silverback Publishing. ISBN 978-1-909567-00-4."],"cr":[["Capability — Physical","The document addresses physical ability barriers to performing the target behavior.",0],["Capability — Psychological","The document provides knowledge, understanding, or memory aids to support the target behavior.",0],["Opportunity — Physical","The document addresses resources, environmental, or timing factors needed to perform the behavior.",0],["Opportunity — Social","The document acknowledges social influences, cultural norms, or peer support factors.",0],["Motivation — Automatic","The document addresses habits, emotional responses, or impulse triggers related to the behavior.",0],["Motivation — Reflective","The document addresses beliefs, intentions, goals, or reasoning about the behavior.",0],["BCW Intervention Match","The intervention type(s) used in the document match the diagnosed COM-B gap (e.g., education for psychological capability gaps; persuasion for reflective motivation gaps).",0]]},"hbm":{"n":"Health Belief Model","t":"checklist","th":null,"sc":null,"note":"The most common HBM design error: addressing Susceptibility (HBM-1) and Severity (HBM-2) while neglecting Barriers (HBM-4) and Self-Efficacy (HBM-6) — fear without actionable path. All 6 constructs should be present for complete HBM compliance.","src":["Rosenstock IM. (1974). Historical origins of the health belief model. Health Education Monographs, 2(4), 328–335. https://doi.org/10.1177/109019817400200403","Janz NK, Becker MH. (1984). The health belief model: A decade later. Health Education Quarterly, 11(1), 1–47. https://doi.org/10.1177/109019818401100101","Champion VL, Skinner CS. (2008). The health belief model. In K Glanz, BK Rimer, K Viswanath (Eds.), Health Behavior and Health Education: Theory, Research, and Practice (4th ed., pp. 45–65). Jossey-Bass."],"cr":[["Perceived Susceptibility","The document communicates that the audience is at risk for the condition (\"People like you are at risk…\").",0],["Perceived Severity","The document communicates the seriousness of the condition or its consequences if left unaddressed.",0],["Perceived Benefits","The document explains how taking the recommended action will reduce risk or harm.",0],["Perceived Barriers","The document acknowledges and directly addresses barriers or objections to taking the recommended action.",0],["Cues to Action","The document provides external or internal triggers that prompt the desired behavior (e.g., reminder prompts, symptom descriptions).",0],["Self-Efficacy","The document builds confidence that the audience can perform the recommended action (step-by-step instructions, \"you can do this\" framing).",0]]},"ttm":{"n":"Transtheoretical Model (Stages of Change)","t":"checklist","th":null,"sc":null,"note":"TTM stage assessment requires knowing the audience's current stage — this may be NOT_ASSESSABLE from document content alone without that context. A document cannot meet criteria for all 5 stages simultaneously; the assessment should focus on which stage(s) it targets.","src":["Prochaska JO, DiClemente CC. (1983). Stages and processes of self-change of smoking: Toward an integrative model of change. Journal of Consulting and Clinical Psychology, 51(3), 390–395. https://doi.org/10.1037/0022-006X.51.3.390","Prochaska JO, Velicer WF. (1997). The transtheoretical model of health behavior change. American Journal of Health Promotion, 12(1), 38–48. https://doi.org/10.4278/0890-1171-12.1.38"],"cr":[["Stage Targeting","The document is clearly targeted to one or more specific stages of change (Pre-contemplation, Contemplation, Preparation, Action, Maintenance) — or explicitly addresses multiple stages.",0],["Pre-contemplation","The document raises awareness and consciousness about the health problem for those not yet considering change.",0],["Contemplation","The document helps the audience weigh pros and cons of changing (decisional balance).",0],["Preparation","The document provides a specific action plan and resources for those ready to act within 30 days.",0],["Action","The document provides support and reinforcement for those who have recently made the change.",0],["Maintenance","The document provides long-term habit support or relapse prevention strategies.",0],["Self-Efficacy","The document builds confidence in the ability to maintain the change in difficult situations.",0]]},"eppm":{"n":"Extended Parallel Process Model","t":"checklist","th":null,"sc":null,"note":"Critical design rule: never raise perceived threat (EPPM-1, EPPM-2) without simultaneously and convincingly raising efficacy (EPPM-3, EPPM-4). Every fear appeal must pair the risk with what works and how to do it. EPPM-BALANCE requires evaluator judgment.","src":["Witte K. (1992). Putting the fear back into fear appeals: The Extended Parallel Process Model. Communication Monographs, 59(4), 329–349. https://doi.org/10.1080/03637759209376276","Witte K, Allen M. (2000). A meta-analysis of fear appeals: Implications for effective public health campaigns. Health Education & Behavior, 27(5), 591–615. https://doi.org/10.1177/109019810002700506"],"cr":[["Perceived Susceptibility","The document communicates that the audience is personally at risk.",0],["Perceived Severity","The document communicates the seriousness of the threat.",0],["Response Efficacy","The document demonstrates that the recommended action actually works to reduce the threat.",0],["Self-Efficacy","The document builds confidence that the audience can perform the recommended action.",0],["Threat-Efficacy Balance","Threat (EPPM-1 + EPPM-2) is balanced with efficacy (EPPM-3 + EPPM-4). High threat without high efficacy predicts fear control (avoidance/denial) rather than behavior change.",0]]},"whorisks":{"n":"WHO Risk Communication Framework","t":"checklist","th":null,"sc":null,"note":"WHO Risk Communication Framework is designed for public health emergency communication. Apply to materials in crisis or outbreak contexts. Planning and coordination criteria (channel selection, spokesperson training) are typically NOT_ASSESSABLE from document content alone.","src":["World Health Organization. (2017). Communicating Risk in Public Health Emergencies: A WHO Guideline for Emergency Risk Communication (ERC) Policy and Practice. WHO. https://www.who.int/publications/i/item/9789241550208","Covello VT, Peters RG, Wojtecki JG, Hyde RC. (2001). Risk communication, the West Nile Virus epidemic, and bioterrorism: Responding to the communication challenges posed by the intentional or unintentional release of a pathogen in an urban setting. Journal of Urban Health, 78(2), 382–391. https://doi.org/10.1093/jurban/78.2.382"],"cr":[["Trust","The document uses credible, trusted sources or messengers; conflicts of interest are disclosed.",0],["Transparency","The document shares what is known AND what is unknown; uncertainty is acknowledged explicitly.",0],["Transparency","Errors or limitations are acknowledged rather than suppressed.",0],["Respect for Public","Community concerns and questions are addressed; the audience is not talked down to.",0],["Respect for Public","Rumors or common misconceptions are identified and addressed.",0],["Actionability","The document provides clear, actionable guidance alongside risk information.",0]]},"pam":{"n":"Patient Activation Measure","t":"scored","th":null,"sc":null,"note":"PAM is proprietary (Insignia Health) — commercial licensing is required for the scoring algorithm. The PAM score itself requires a patient survey and cannot be derived from document analysis. PAM-D1 through PAM-D4 assess how well the material supports activation from a design perspective.","src":["Hibbard JH, Stockard J, Mahoney ER, Tusler M. (2004). Development of the Patient Activation Measure (PAM): Conceptualizing and measuring activation in patients and consumers. Health Services Research, 39(4 Pt 1), 1005–1026. https://doi.org/10.1111/j.1475-6773.2004.00269.x","Hibbard JH, Mahoney ER, Stockard J, Tusler M. (2005). Development and testing of a short form of the patient activation measure. Health Services Research, 40(6 Pt 1), 1918–1930. https://doi.org/10.1111/j.1475-6773.2005.00438.x","Greene J, Hibbard JH. (2012). Why does patient activation matter? An examination of the relationships between patient activation and health-related outcomes. Journal of General Internal Medicine, 27(5), 520–526. https://doi.org/10.1007/s11606-011-1931-2"],"cr":[["Role Understanding","The material reinforces that the patient is the one responsible for managing their health.",0],["Confidence","The material builds patient confidence in their ability to manage their health condition.",0],["Knowledge & Skills","The material explains what the patient's medications or treatments do and why.",0],["Self-Management","The material provides strategies for maintaining healthy behaviors during difficult times.",0],["PAM Score (survey)","Patient's PAM activation level (Level 1–4). Requires PAM-13 or PAM-22 survey administered to the patient — cannot be assessed from document content.",1]]},"cahps":{"n":"Consumer Assessment of Healthcare Providers and Systems (CAHPS/HCAHPS)","t":"scored","th":null,"sc":null,"note":"CAHPS is a family of surveys — HCAHPS (hospital), CG-CAHPS (clinician/group), and others. Survey domains requiring patient responses are marked NOT_ASSESSABLE from document content. CAHPS-1 through CAHPS-6 can be assessed from written discharge and medication materials.","src":["Agency for Healthcare Research and Quality. CAHPS: Surveys and Tools to Advance Patient-Centered Care. https://www.ahrq.gov/cahps/index.html","Centers for Medicare & Medicaid Services. HCAHPS: Patients' Perspectives of Care Survey. https://www.cms.gov/medicare/quality/initiatives/hospital-quality-initiative/hcahps-patients-perspectives-care-survey","Cleary PD, Edgman-Levitan S. (1997). Health care quality: Incorporating consumer perspectives. JAMA, 278(19), 1608–1612. https://doi.org/10.1001/jama.1997.03550190072047"],"cr":[["Communication about Medicines","The document explains new medications and their purpose in plain language.",0],["Communication about Medicines","Side effects or risks of medications are discussed.",0],["Discharge Information","Written discharge instructions or aftercare information are provided.",0],["Discharge Information","Symptoms to watch for after discharge are specified.",0],["Care Transitions","The document addresses what the patient should do after the clinical encounter (follow-up, self-care).",0],["Care Transitions","Questions the patient may have about post-discharge care are anticipated and answered.",0],["Nurse Communication (survey)","Nurses listened, explained clearly, and treated patient with courtesy. Requires HCAHPS survey — not assessable from document.",1],["Doctor Communication (survey)","Doctors listened, explained clearly, and treated patient with courtesy. Requires HCAHPS survey — not assessable from document.",1],["Overall Rating (survey)","Patient 0–10 global hospital rating. Requires HCAHPS survey — not assessable from document.",1]]},"nps":{"n":"Net Promoter Score","t":"scored","th":null,"sc":null,"note":"NPS is a directional indicator, not a diagnostic tool. A low NPS signals a problem but does not identify the cause. Pair with open-ended \"Why?\" questions. Healthcare sector NPS benchmarks (20–50) differ substantially from general consumer benchmarks — compare within sector.","src":["Reichheld FF. (2003). The one number you need to grow. Harvard Business Review, 81(12), 46–54. https://hbr.org/2003/12/the-one-number-you-need-to-grow","Reichheld FF, Markey R. (2011). The Ultimate Question 2.0: How Net Promoter Companies Thrive in a Customer-Driven World (rev. ed.). Harvard Business Review Press. ISBN 978-1-4221-7335-0."],"cr":[["NPS Survey Score","NPS is derived from a patient survey (\"How likely are you to recommend us?\") — cannot be assessed from document content alone.",1],["Promoter Drivers","The document or communication creates a memorable positive experience that a patient would want to share.",0],["Detractor Mitigation","The document addresses common pain points or confusion that lead to patient dissatisfaction.",0],["Follow-up Trigger","The document includes a mechanism or invitation for patients to provide feedback.",0]]},"picker":{"n":"Picker Institute — Principles of Patient-Centered Care","t":"checklist","th":null,"sc":null,"note":"Picker Principles are an organizational and design standard. Separate Picker survey instruments measure how well each principle is being met by a care organization — those scores require patient surveys. The 8 principles can be assessed from written materials as design criteria.","src":["Gerteis M, Edgman-Levitan S, Daley J, Delbanco TL (Eds.). (1993). Through the Patient's Eyes: Understanding and Promoting Patient-Centered Care. Jossey-Bass. ISBN 978-1555425159.","Picker Institute. About Picker. https://www.picker.org/","Jenkinson C, Coulter A, Bruster S. (2002). The Picker Patient Experience Questionnaire: Development and validation using data from in-patient surveys in five countries. International Journal for Quality in Health Care, 14(5), 353–358. https://doi.org/10.1093/intqhc/14.5.353"],"cr":[["Values & Preferences","The document treats the patient as a person; their choices and dignity are honored.",0],["Coordination & Integration","The document addresses coordination of care across services; care transitions are acknowledged.",0],["Information, Communication & Education","The document informs the patient about their condition and treatment; health literacy is supported.",0],["Physical Comfort","Physical comfort needs (pain management, environment) are addressed.",0],["Emotional Support","Emotional needs and fear/anxiety are acknowledged and addressed.",0],["Family & Friends Involvement","Family or caregiver involvement is acknowledged and supported as appropriate.",0],["Continuity & Transition","Discharge planning, follow-up, and community service coordination are addressed.",0],["Access to Care","Access to care (appointments, after-hours, language/geographic access) is addressed.",0]]},"ebcd":{"n":"Experience-Based Co-Design","t":"process-guide","th":null,"sc":null,"note":"EBCD is a participatory design methodology requiring live patient and staff engagement across 6 phases. All criteria are NOT_ASSESSABLE from document content alone — EBCD produces qualitative outputs (implemented changes, patient/staff-reported improvement), not scores.","src":["Bate P, Robert G. (2006). Experience-based design: From redesigning the system around the patient to co-designing services with the patient. Quality and Safety in Health Care, 15(5), 307–310. https://doi.org/10.1136/qshc.2005.016527","Donetto S, Tsianakas V, Robert G. (2014). Using Experience-based Co-design (EBCD) to Improve the Quality of Healthcare: Mapping Where We Are Now and Establishing Future Directions. King's College London. https://www.kcl.ac.uk/nmpc/research/nnru/publications/reports/ebcd-where-are-we-now-report.pdf","The Point of Care Foundation. EBCD: Experience-based Co-design. https://www.pointofcarefoundation.org.uk/our-programmes/ebcd/"],"cr":[["Phase 1: Setup","The scope of the co-design project is defined; patient and staff participants are identified.",1],["Phase 2: Staff Experience","Staff experience has been observed and emotional touchpoints identified.",1],["Phase 3: Patient Experience","Patient experience has been captured (interviews, filmed where possible) and emotional touchpoints mapped.",1],["Phase 4: Share & Bring Together","Patient films or stories have been shared with staff; shared priority touchpoints have been identified.",1],["Phase 5: Co-Design","Mixed patient-staff co-design groups have worked on priority touchpoints and prototyped solutions.",1],["Phase 6: Celebrate & Share","Changes implemented, impact evaluated, sustainability planned.",1]]},"seips":{"n":"Systems Engineering Initiative for Patient Safety (SEIPS 2.0)","t":"checklist","th":null,"sc":null,"note":"SEIPS is a systems analysis model for clinical workflow design. Use for evaluating clinical process documentation, care pathway materials, or patient safety tools. SEIPS assessment produces work system analyses and redesign recommendations, not numerical scores.","src":["Carayon P, Schoofs Hundt A, Karsh BT, et al. (2006). Work system design for patient safety: The SEIPS model. Quality and Safety in Health Care, 15(Suppl 1), i50–i58. https://doi.org/10.1136/qshc.2005.015842","Holden RJ, Carayon P, Gurses AP, et al. (2013). SEIPS 2.0: A human factors framework for studying and improving the work of healthcare professionals and patients. Ergonomics, 56(11), 1669–1686. https://doi.org/10.1080/00140139.2013.838643"],"cr":[["Work System — Person","The document accounts for the people involved (patient, clinician, caregiver) and their characteristics.",0],["Work System — Tasks","The document identifies the specific tasks the patient or clinician must perform.",0],["Work System — Tools & Technology","The document addresses the tools, devices, or technologies involved in performing the task.",0],["Work System — Organization","The document reflects organizational factors (policies, workflows, staffing) relevant to care delivery.",0],["Work System — Environment","The document accounts for the physical or social environment in which care occurs.",0],["Processes — Clinical","Clinical care processes are accurately and completely described.",0],["Processes — Collaborative","Team or interprofessional collaboration processes are acknowledged where relevant.",0],["Processes — Patient","Patient self-care and self-management processes are supported.",0],["Outcomes","The document connects process changes to expected patient safety or quality-of-life outcomes.",0]]},"planetree":{"n":"Planetree Model of Person-Centered Care","t":"checklist","th":null,"sc":null,"note":"Planetree is a whole-organization philosophy. Designation requires on-site review, patient/staff survey data, and evidence of culture change — not a numerical score. For written materials, apply the 10 components as design principles. PT-3 through PT-10 will often be NOT_APPLICABLE for clinical educational documents.","src":["Planetree International. The Planetree Model. https://planetree.org/planetree-model/","Frampton SB, Gilpin L, Charmel PA (Eds.). (2003). Putting Patients First: Designing and Practicing Patient-Centered Care. Jossey-Bass. ISBN 978-0787964542.","Stone S. (2008). A retrospective evaluation of the impact of the Planetree patient-centered model of care on inpatient quality outcomes. HERD: Health Environments Research & Design Journal, 1(4), 55–69. https://doi.org/10.1177/193758670800100406"],"cr":[["Human Interactions","The document reflects compassion, emotional connection, and respect for human dignity.",0],["Patient & Family Education","Patient education and access to health information is supported; health literacy is addressed.",0],["Nutritional & Nurturing Care","Nutritional needs or the healing role of food/nourishment is acknowledged where relevant.",0],["Spirituality & Diversity","Spiritual, cultural, or diversity needs of the patient population are acknowledged.",0],["Human Touch","Comfort care, therapeutic touch, or physical comfort is addressed where relevant.",0],["Arts & Entertainment","Healing environment, arts, or distraction as part of care experience is referenced where applicable.",0],["Integrative Therapies","Complementary or integrative care options are referenced where clinically appropriate.",0],["Healthy Communities","Community health, prevention, or social determinants of health are addressed.",0],["Healing Environment","The physical environment, wayfinding, or environmental design is addressed.",0],["Staff Care","Staff wellbeing and organizational support for caregivers is reflected in organizational documents.",0]]}};
+const FW_REG = {"cci":{"n":"CDC Clear Communication Index","t":"scored","th":"90 or higher (points ÷ applicable items × 100)","sc":null,"note":"20 items in 4 parts: Core (1–11), Behavioral Recommendations (12–14), Numbers (15–17), Risk (18–20). Parts B–D are scored only when the material contains that content; items 19–20 can be N/A. Score = points ÷ applicable items × 100. Every item counts equally; below 90, revise.","src":["Centers for Disease Control and Prevention. (2019). CDC Clear Communication Index: A Tool for Developing and Assessing CDC Public Communication Products. U.S. Department of Health and Human Services. https://www.cdc.gov/ccindex/","Baur C, Prue C. (2014). The CDC Clear Communication Index is a new evidence-based tool to prepare and review health information. Health Promotion Practice, 15(5), 629–637. https://doi.org/10.1177/1524839914538969"]},"pemat":{"n":"Patient Education Materials Assessment Tool","t":"scored","th":"70% or higher on both scores","sc":null,"note":"PEMAT-P: 17 understandability items (1–12, 15–19) and 7 actionability items (20–26); PEMAT-A/V uses 13 and 4. Two separate scores, never combined. N/A items are excluded from the denominator. The developers' cut-off is 70% for each score.","src":["Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. Patient Education and Counseling, 96(3), 395–403. https://doi.org/10.1016/j.pec.2014.05.027","Agency for Healthcare Research and Quality. PEMAT and User's Guide. https://www.ahrq.gov/health-literacy/patient-education/pemat.html"]},"sam":{"n":"Suitability Assessment of Materials","t":"scored","th":null,"sc":"0 = Not Suitable / 1 = Adequate / 2 = Superior","note":"Rate each factor 0, 1 or 2. A total of 70% or more is superior. 40–69% is adequate. Under 40% is not suitable.","src":["Doak CC, Doak LG, Root JH. (1996). Teaching Patients with Low Literacy Skills (2nd ed.). J.B. Lippincott. (SAM instrument: pp. 41–59)","Winslow EH. (2001). Patient education materials: Can patients read them, or are they ending up in the trash? American Journal of Nursing, 101(10), 33–38. https://doi.org/10.1097/00000446-200110000-00020"],"cr":[["Content","Purpose of the material is stated explicitly.",0],["Content","Content is limited to the essential message (not overloaded).",0],["Content","A summary or review is included.",0],["Content","Reading level matches the target audience (Fry formula ≤5th grade preferred).",0],["Content","Scope is appropriate to the purpose.",0],["Content","Common vocabulary is used throughout.",0],["Literacy Demand","Writing style is active voice and conversational.",0],["Literacy Demand","Sentence structure is simple; compound-complex sentences avoided.",0],["Literacy Demand","Context is established before adding detail.",0],["Literacy Demand","Learning aids (examples, analogies) are used.",0],["Literacy Demand","Vocabulary uses common words; technical terms defined when necessary.",0],["Literacy Demand","Reading grade level is ≤5th grade (preferred) or ≤8th grade (minimum).",0],["Literacy Demand","Sentence length is appropriate (short sentences preferred).",0],["Graphics","Cover graphic draws audience interest and is relevant.",0],["Graphics","Type of visuals used is appropriate for the audience and content.",0],["Graphics","Captions are present and explain visuals.",0],["Graphics","Visuals are culturally relevant and free from bias.",0],["Layout & Typography","Layout uses columns, white space, and margins effectively.",0],["Layout & Typography","Font size is ≥12pt for body text.",0],["Layout & Typography","Subheadings break up text and are informative.",0],["Learning & Motivation","Material includes interaction (questions, checklists, problems to solve).",0],["Learning & Motivation","Behavior modeling shows positive desired behaviors.",0],["Cultural Appropriateness","Images and examples match the target audience's cultural context.",0],["Cultural Appropriateness","Cultural logic, values, and norms are respected.",0]]},"discern":{"n":"DISCERN Quality Instrument for Consumer Health Information","t":"scored","th":null,"sc":"1 = No/Poor → 5 = Yes/Excellent","note":"16 questions, rated 1 to 5. There is no pass mark, so use it to compare versions. Question 16 is an overall rating.","src":["Charnock D, Shepperd S, Needham G, Gann R. (1999). DISCERN: An instrument for judging the quality of written consumer health information on treatment choices. Journal of Epidemiology and Community Health, 53(2), 105–111. https://doi.org/10.1136/jech.53.2.105","DISCERN Online. University of Oxford & British Library. http://www.discern.org.uk"],"cr":[["Reliability","Q1: Are the aims of the publication clearly stated at the beginning?",0],["Reliability","Q2: Does it achieve its aims?",0],["Reliability","Q3: Is it relevant to patients?",0],["Reliability","Q4: Are the sources of information used explicit (referenced)?",0],["Reliability","Q5: Is the date of information stated (when it was produced or reviewed)?",0],["Reliability","Q6: Is it balanced and unbiased?",0],["Reliability","Q7: Does it provide details of additional sources of support and information?",0],["Reliability","Q8: Does it refer to areas of uncertainty?",0],["Treatment Choices","Q9: Does it describe how each treatment works?",0],["Treatment Choices","Q10: Does it describe the benefits of each treatment?",0],["Treatment Choices","Q11: Does it describe the risks and side effects of each treatment?",0],["Treatment Choices","Q12: Does it describe what would happen if no treatment is chosen?",0],["Treatment Choices","Q13: Does it describe how the treatment choices may affect overall quality of life?",0],["Treatment Choices","Q14: Is it clear that there may be more than one possible treatment choice?",0],["Treatment Choices","Q15: Does it provide support for shared decision-making?",0],["Overall","Q16: Overall, how would you rate the quality of this publication? (standalone 1–5 rating)",0]]},"eqip":{"n":"Ensuring Quality Information for Patients","t":"scored","th":null,"sc":"Yes (1) / No (0) / N/A (excluded from denominator)","note":"The first EQIP had 20 items. A 36-item version came later. There is no pass mark, so use it to compare versions.","src":["Moult B, Franck LS, Brady H. (2004). Ensuring quality information for patients: Development and preliminary validation of a new instrument to improve the quality of written health care information. Health Expectations, 7(2), 165–175. https://doi.org/10.1111/j.1369-7625.2004.00273.x"],"cr":[["Identity","Authorship, source organization, date, and version are clearly stated.",0],["Purpose","The document purpose is explicitly stated.",0],["Purpose","The target audience is explicitly stated.",0],["Content","Information on the condition or topic is accurate and complete.",0],["Content","Treatment options are described.",0],["Recommendations","Specific, actionable recommendations are provided.",0],["Recommendations","The basis or rationale for recommendations is explained.",0],["Comprehensibility","Language is appropriate for the target audience; jargon is avoided.",0],["Comprehensibility","Sentences are short and active voice is used.",0],["Layout & Design","Logical structure and headings are used to aid navigation.",0],["Layout & Design","White space and font size are adequate for readability.",0],["Illustrations","Visuals are present and appropriate to the content.",0],["Illustrations","Visuals are labeled and clearly explained.",0],["References","Evidence is cited and references are listed.",0],["References","The evidence base is dated (sources have publication years).",0]]},"readability":{"n":"Readability Measures (Flesch-Kincaid / SMOG / Flesch Reading Ease)","t":"scored","th":null,"sc":null,"note":"SMOG is the most accurate readability measure for health materials because it accounts for medical polysyllabic term density. Use SMOG as primary; FRE and FKGL as secondary checks.","src":["Flesch R. (1948). A new readability yardstick. Journal of Applied Psychology, 32(3), 221–233. https://doi.org/10.1037/h0057532","Kincaid JP, Fishburne RP Jr, Rogers RL, Chissom BS. (1975). Derivation of New Readability Formulas for Navy Enlisted Personnel. Research Branch Report 8-75. Naval Technical Training Command. https://apps.dtic.mil/sti/pdfs/ADA006655.pdf","McLaughlin GH. (1969). SMOG grading: A new readability formula. Journal of Reading, 12(8), 639–646.","Paasche-Orlow MK, Taylor HA, Brancati FL. (2003). Readability standards for informed-consent forms as compared with actual readability. New England Journal of Medicine, 348(8), 721–726. https://doi.org/10.1056/NEJMsa021212"]},"plainlang":{"n":"U.S. Federal Plain Language Guidelines","t":"checklist","th":null,"sc":null,"note":"Plain Language is a prescriptive editing checklist, not a scoring rubric. Applied during drafting and revision, not as post-hoc auditing. No numerical score — compliance is qualitative.","src":["Plain Language Action and Information Network (PLAIN). (2011). Federal Plain Language Guidelines. PlainLanguage.gov. https://www.plainlanguage.gov/guidelines/","Plain Writing Act of 2010, Pub. L. 111-274, 124 Stat. 2861 (2010). https://www.govinfo.gov/content/pkg/PLAW-111publ274/pdf/PLAW-111publ274.pdf"]},"pinkbook":{"n":"National Cancer Institute — Making Health Communication Programs Work","t":"process-guide","th":null,"sc":null,"note":"The Pink Book mandates audience testing at Phase 2 and Phase 3. A material that has not been tested with its target audience fails the Pink Book standard regardless of CCI or SAM scores. Most criteria are NOT_ASSESSABLE from document content alone — they require process documentation.","src":["National Cancer Institute. (2004). Making Health Communication Programs Work (\"The Pink Book\"). U.S. Department of Health and Human Services, NIH Publication No. 04-5145. https://www.cancer.gov/publications/health-communication/pink-book.pdf"],"cr":[["Phase 1: Planning & Strategy","The problem, audience, objective, channels, and available resources are defined.",0],["Phase 2: Developing Concepts","Formative research with the target audience has been conducted.",0],["Phase 2: Developing Concepts","Message concepts have been tested with the target audience.",0],["Phase 3: Developing Materials","Draft materials were pretested with the target audience.",0],["Phase 3: Developing Materials","Iterative revision was performed based on pretesting feedback.",0],["Phase 4: Implementation","Channel selection and dissemination plan are documented.",0],["Phase 5: Assessing Effectiveness","Process and outcome evaluation methods are specified.",0],["Phase 6: Feedback to Refine","Findings are used to improve future communication.",0]]},"teachback":{"n":"Teach-Back Method & Ask Me 3","t":"checklist","th":null,"sc":null,"note":"Teach-back happens face to face. A page can help by making the main points easy to say back. Can a reader answer all three Ask Me 3 questions?","src":["Agency for Healthcare Research and Quality. (2020). Use the Teach-Back Method: Tool #5. Health Literacy Universal Precautions Toolkit. https://www.ahrq.gov/health-literacy/improve/precautions/tool5.html","Schillinger D, Piette J, Grumbach K, et al. (2003). Closing the loop: Physician communication with diabetic patients who have low health literacy. Archives of Internal Medicine, 163(1), 83–90. https://doi.org/10.1001/archinte.163.1.83","Pfizer. (n.d.). Ask Me 3: Good Questions for Your Good Health. National Patient Safety Foundation. https://www.npsf.org/page/askme3"],"cr":[["Teach-Back","Key information is presented in a way that a patient could explain it back in their own words.",0],["Teach-Back","The material is structured so the clinician can ask the patient to demonstrate understanding (teach-back prompt built in).",0],["Teach-Back","If misunderstanding occurs, the material provides a re-explanation path without blaming the patient.",0],["Ask Me 3","Q1 answered: What is my main problem? — The document clearly states the main health problem.",0],["Ask Me 3","Q2 answered: What do I need to do? — The document clearly states the action the patient should take.",0],["Ask Me 3","Q3 answered: Why is it important for me to do this? — The document explains why the action matters.",0]]},"option":{"n":"Observing Patient Involvement in Decision Making","t":"scored","th":null,"sc":"0 = not observed | 1 = minimal attempt | 2 = notable effort | 3 = consistent | 4 = fully applied","note":"OPTION requires a trained observer rating a clinical consultation (live or recorded). Most criteria are NOT_ASSESSABLE when evaluating written materials. Published real-world primary care consultations average 20–40/100.","src":["Elwyn G, Edwards A, Wensing M, Hood K, Atwell C, Grol R. (2003). Shared decision making: Developing the OPTION scale for measuring patient involvement. Quality and Safety in Health Care, 12(2), 93–99. https://doi.org/10.1136/qhc.12.2.93","Elwyn G, Hutchings H, Edwards A, et al. (2005). The OPTION scale: Measuring the extent that clinicians involve patients in decision-making tasks. Health Expectations, 8(1), 34–42. https://doi.org/10.1111/j.1369-7625.2004.00311.x"],"cr":[["Shared Decision Making","The clinician draws attention to there being a problem that requires a decision.",0],["Shared Decision Making","The clinician states that there is more than one way to deal with the problem.",0],["Shared Decision Making","The clinician assesses the patient's preferred format for receiving information.",0],["Shared Decision Making","The clinician lists options including the option of no active treatment.",0],["Shared Decision Making","The clinician explains the pros and cons of each option.",0],["Shared Decision Making","The clinician explores the patient's expectations or ideas about how the problem is to be managed.",0],["Shared Decision Making","The clinician explores the patient's concerns about each option.",0],["Shared Decision Making","The clinician checks that the patient has understood the information.",0],["Shared Decision Making","The clinician explores whether the patient has a preferred option.",0],["Shared Decision Making","The clinician negotiates a decision with the patient.",0],["Shared Decision Making","The clinician indicates a need to review the decision.",0],["Shared Decision Making","The clinician defers to the patient's preferred option.",0]]},"ipdas":{"n":"International Patient Decision Aid Standards","t":"semi-scored","th":null,"sc":null,"note":"A decision aid must meet all 6 of the first items. The rest are for full sign-off. Items about how it was made can’t be checked from the page.","src":["Elwyn G, O'Connor A, Stacey D, et al. (2006). Developing a quality criteria framework for patient decision aids: Online international Delphi consensus process. BMJ, 333(7565), 417. https://doi.org/10.1136/bmj.38926.629329.AE","Stacey D, Légaré F, Pouliot S, Kryworuchko J, Dunn S. (2010). Shared decision making models to inform an interprofessional perspective on decision support for people facing health decisions. Patient Education and Counseling, 80(2), 164–172. https://doi.org/10.1016/j.pec.2009.10.015","IPDAS Collaboration. Patient Decision Aids. Ottawa Hospital Research Institute. https://ipdas.ohri.ca/"],"cr":[["Qualifying (must meet all 6)","The health condition for which the index decision is required is described.",0],["Qualifying (must meet all 6)","The index decision is explicitly stated.",0],["Qualifying (must meet all 6)","The options available for the index decision are described.",0],["Qualifying (must meet all 6)","The positive features (benefits/advantages) of each option are described.",0],["Qualifying (must meet all 6)","The negative features (harms/side effects/disadvantages) of each option are described.",0],["Qualifying (must meet all 6)","What it is like to experience the consequences of the options is described.",0],["Information","Probabilities are presented for outcomes of each option.",0],["Information","Absolute risk is used (not relative risk only).",0],["Information","A time horizon for outcomes is explicit.",0],["Information","Uncertainty in the evidence is acknowledged.",0],["Probabilities","Event rates use the same denominator across options.",0],["Probabilities","Sources and dates of evidence are cited.",0],["Values Clarification","Features most important to patients are described.",0],["Values Clarification","An exercise to help the patient clarify their values is included.",0],["Guidance / Coaching","Steps for deliberation and decision-making are described.",0],["Guidance / Coaching","Guidance for preparing for a clinical consultation is included.",0],["Guidance / Coaching","The material does not pressure the patient toward one option.",0],["Development","A systematic development process is documented.",0],["Development","Patients and clinicians were involved in development.",0],["Development","Plain language review was conducted.",0],["Development","Field testing with the target audience was done.",0],["Disclosure","Funding sources are disclosed.",0],["Disclosure","Conflicts of interest are disclosed.",0],["Plain Language","Reading level is ≤8th grade.",0]]},"ahrq":{"n":"AHRQ Health Literacy Universal Precautions Toolkit (2nd ed.)","t":"checklist","th":null,"sc":null,"note":"This toolkit helps a practice improve. It is not a score for one page. Items about talking or office systems can’t be checked from text.","src":["Agency for Healthcare Research and Quality. (2015). Health Literacy Universal Precautions Toolkit (2nd ed.). AHRQ Publication No. 15-0023-EF. https://www.ahrq.gov/health-literacy/improve/precautions/index.html","DeWalt DA, Callahan LF, Hawk VH, et al. (2010). Health literacy universal precautions toolkit. AHRQ Publication No. 10-0046-EF. Agency for Healthcare Research and Quality."],"cr":[["Spoken Communication","Teach-back technique is incorporated into patient communication.",0],["Spoken Communication","Communication is designed to be accessible for non-English speakers.",0],["Written Communication","Materials are easy to read (reviewed using CCI or equivalent).",0],["Written Communication","Consent forms are written at an appropriate reading level.",0],["Written Communication","Medication instructions are clear and actionable.",0],["Self-Management","Materials support patient self-management goals.",0],["Self-Management","Forms and documents are designed to be easy to use and complete.",0],["Supportive Systems","Appointment and referral instructions are clear.",0],["Supportive Systems","A team-based approach to health literacy is reflected.",0]]},"ottawa":{"n":"Ottawa Decision Support Framework + Decisional Conflict Scale","t":"semi-scored","th":null,"sc":null,"note":"This is a guide for design, not a score. The score comes from a patient survey (the Decisional Conflict Scale).","src":["O'Connor AM. (1995). Validation of a decisional conflict scale. Medical Decision Making, 15(1), 25–30. https://doi.org/10.1177/0272989X9501500105","O'Connor AM, Tugwell P, Wells GA, et al. (1998). A decision aid for women considering hormone therapy after menopause. Patient Education and Counseling, 33(3), 267–279. https://doi.org/10.1016/S0738-3991(98)00026-3","Ottawa Hospital Research Institute. Decision Support & Decision Aids. https://decisionaid.ohri.ca/"],"cr":[["Decision Needs Assessment","Knowledge gaps about options are addressed.",0],["Decision Needs Assessment","Patient values are acknowledged as relevant to the decision.",0],["Decision Needs Assessment","Barriers to communication are recognized and addressed.",0],["Decision Support Interventions","Risk communication is provided in an understandable format.",0],["Decision Support Interventions","A values clarification exercise is included.",0],["DCS: Informed","Patient feels they know enough about options, risks, and benefits. (Requires DCS survey — not assessable from document alone)",1],["DCS: Values Clarity","Patient knows which benefits/risks matter most to them. (Requires DCS survey)",1],["DCS: Support","Patient has enough support and advice. (Requires DCS survey)",1],["DCS: Uncertainty","Patient is not uncertain about the choice. (Requires DCS survey)",1],["DCS: Effective Decision","Patient feels decision is informed, value-based, and supported. (Requires DCS survey)",1]]},"share":{"n":"AHRQ SHARE Approach — Shared Decision Making Framework","t":"checklist","th":null,"sc":null,"note":"Five steps for how clinicians talk with patients. The last two steps can’t be checked from a page.","src":["Agency for Healthcare Research and Quality. (2014). The SHARE Approach — A Model for Shared Decision Making: A Resource for Clinicians. AHRQ Publication No. 14-0058-1-EF. https://www.ahrq.gov/health-literacy/professional-training/shared-decision/index.html","Elwyn G, Frosch D, Thomson R, et al. (2012). Shared decision making: A model for clinical practice. Journal of General Internal Medicine, 27(10), 1361–1367. https://doi.org/10.1007/s11606-012-2077-6"],"cr":[["Seek patient participation","The material or process explicitly invites the patient into the decision; explains it is a choice, not a directive.",0],["Help explore options","All reasonable options including watchful waiting are presented with balanced information.",0],["Assess values & preferences","Patient values and what matters most are elicited; open questions are used; no steering toward one option.",0],["Reach a decision together","The decision is negotiated; patient comfort is confirmed; decision and rationale are documented.",0],["Evaluate the decision","Follow-up and revisiting are planned; decisional regret is acknowledged as possible.",0]]},"comb":{"n":"COM-B Behaviour System + Behaviour Change Wheel","t":"checklist","th":null,"sc":null,"note":"COM-B finds what blocks a habit. First find the gap, then check if the page helps close it. It gives no score.","src":["Michie S, van Stralen MM, West R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6(1), 42. https://doi.org/10.1186/1748-5908-6-42","Michie S, Atkins L, West R. (2014). The Behaviour Change Wheel: A Guide to Designing Interventions. Silverback Publishing. ISBN 978-1-909567-00-4."],"cr":[["Capability — Physical","The document addresses physical ability barriers to performing the target behavior.",0],["Capability — Psychological","The document provides knowledge, understanding, or memory aids to support the target behavior.",0],["Opportunity — Physical","The document addresses resources, environmental, or timing factors needed to perform the behavior.",0],["Opportunity — Social","The document acknowledges social influences, cultural norms, or peer support factors.",0],["Motivation — Automatic","The document addresses habits, emotional responses, or impulse triggers related to the behavior.",0],["Motivation — Reflective","The document addresses beliefs, intentions, goals, or reasoning about the behavior.",0],["BCW Intervention Match","The intervention type(s) used in the document match the diagnosed COM-B gap (e.g., education for psychological capability gaps; persuasion for reflective motivation gaps).",0]]},"hbm":{"n":"Health Belief Model","t":"checklist","th":null,"sc":null,"note":"Check all 6 parts. Talking about risk without what stops people, or how to act, can leave readers scared but stuck.","src":["Rosenstock IM. (1974). Historical origins of the health belief model. Health Education Monographs, 2(4), 328–335. https://doi.org/10.1177/109019817400200403","Janz NK, Becker MH. (1984). The health belief model: A decade later. Health Education Quarterly, 11(1), 1–47. https://doi.org/10.1177/109019818401100101","Champion VL, Skinner CS. (2008). The health belief model. In K Glanz, BK Rimer, K Viswanath (Eds.), Health Behavior and Health Education: Theory, Research, and Practice (4th ed., pp. 45–65). Jossey-Bass."],"cr":[["Perceived Susceptibility","The document communicates that the audience is at risk for the condition (\"People like you are at risk…\").",0],["Perceived Severity","The document communicates the seriousness of the condition or its consequences if left unaddressed.",0],["Perceived Benefits","The document explains how taking the recommended action will reduce risk or harm.",0],["Perceived Barriers","The document acknowledges and directly addresses barriers or objections to taking the recommended action.",0],["Cues to Action","The document provides external or internal triggers that prompt the desired behavior (e.g., reminder prompts, symptom descriptions).",0],["Self-Efficacy","The document builds confidence that the audience can perform the recommended action (step-by-step instructions, \"you can do this\" framing).",0]]},"ttm":{"n":"Transtheoretical Model (Stages of Change)","t":"checklist","th":null,"sc":null,"note":"You need to know what stage your readers are at. One page rarely fits every stage, so check the stage it aims at.","src":["Prochaska JO, DiClemente CC. (1983). Stages and processes of self-change of smoking: Toward an integrative model of change. Journal of Consulting and Clinical Psychology, 51(3), 390–395. https://doi.org/10.1037/0022-006X.51.3.390","Prochaska JO, Velicer WF. (1997). The transtheoretical model of health behavior change. American Journal of Health Promotion, 12(1), 38–48. https://doi.org/10.4278/0890-1171-12.1.38"],"cr":[["Stage Targeting","The document is clearly targeted to one or more specific stages of change (Pre-contemplation, Contemplation, Preparation, Action, Maintenance) — or explicitly addresses multiple stages.",0],["Pre-contemplation","The document raises awareness and consciousness about the health problem for those not yet considering change.",0],["Contemplation","The document helps the audience weigh pros and cons of changing (decisional balance).",0],["Preparation","The document provides a specific action plan and resources for those ready to act within 30 days.",0],["Action","The document provides support and reinforcement for those who have recently made the change.",0],["Maintenance","The document provides long-term habit support or relapse prevention strategies.",0],["Self-Efficacy","The document builds confidence in the ability to maintain the change in difficult situations.",0]]},"eppm":{"n":"Extended Parallel Process Model","t":"checklist","th":null,"sc":null,"note":"Never raise fear without showing that the step works and that readers can do it.","src":["Witte K. (1992). Putting the fear back into fear appeals: The Extended Parallel Process Model. Communication Monographs, 59(4), 329–349. https://doi.org/10.1080/03637759209376276","Witte K, Allen M. (2000). A meta-analysis of fear appeals: Implications for effective public health campaigns. Health Education & Behavior, 27(5), 591–615. https://doi.org/10.1177/109019810002700506"],"cr":[["Perceived Susceptibility","The document communicates that the audience is personally at risk.",0],["Perceived Severity","The document communicates the seriousness of the threat.",0],["Response Efficacy","The document demonstrates that the recommended action actually works to reduce the threat.",0],["Self-Efficacy","The document builds confidence that the audience can perform the recommended action.",0],["Threat-Efficacy Balance","Threat (EPPM-1 + EPPM-2) is balanced with efficacy (EPPM-3 + EPPM-4). High threat without high efficacy predicts fear control (avoidance/denial) rather than behavior change.",0]]},"whorisks":{"n":"WHO Risk Communication Framework","t":"checklist","th":null,"sc":null,"note":"Made for health emergencies. Use it for outbreak or crisis material. Planning items can’t be checked from a page.","src":["World Health Organization. (2017). Communicating Risk in Public Health Emergencies: A WHO Guideline for Emergency Risk Communication (ERC) Policy and Practice. WHO. https://www.who.int/publications/i/item/9789241550208","Covello VT, Peters RG, Wojtecki JG, Hyde RC. (2001). Risk communication, the West Nile Virus epidemic, and bioterrorism: Responding to the communication challenges posed by the intentional or unintentional release of a pathogen in an urban setting. Journal of Urban Health, 78(2), 382–391. https://doi.org/10.1093/jurban/78.2.382"],"cr":[["Trust","The document uses credible, trusted sources or messengers; conflicts of interest are disclosed.",0],["Transparency","The document shares what is known AND what is unknown; uncertainty is acknowledged explicitly.",0],["Transparency","Errors or limitations are acknowledged rather than suppressed.",0],["Respect for Public","Community concerns and questions are addressed; the audience is not talked down to.",0],["Respect for Public","Rumors or common misconceptions are identified and addressed.",0],["Actionability","The document provides clear, actionable guidance alongside risk information.",0]]},"pam":{"n":"Patient Activation Measure","t":"scored","th":null,"sc":null,"note":"PAM is proprietary (Insignia Health) — commercial licensing is required for the scoring algorithm. The PAM score itself requires a patient survey and cannot be derived from document analysis. PAM-D1 through PAM-D4 assess how well the material supports activation from a design perspective.","src":["Hibbard JH, Stockard J, Mahoney ER, Tusler M. (2004). Development of the Patient Activation Measure (PAM): Conceptualizing and measuring activation in patients and consumers. Health Services Research, 39(4 Pt 1), 1005–1026. https://doi.org/10.1111/j.1475-6773.2004.00269.x","Hibbard JH, Mahoney ER, Stockard J, Tusler M. (2005). Development and testing of a short form of the patient activation measure. Health Services Research, 40(6 Pt 1), 1918–1930. https://doi.org/10.1111/j.1475-6773.2005.00438.x","Greene J, Hibbard JH. (2012). Why does patient activation matter? An examination of the relationships between patient activation and health-related outcomes. Journal of General Internal Medicine, 27(5), 520–526. https://doi.org/10.1007/s11606-011-1931-2"],"cr":[["Role Understanding","The material reinforces that the patient is the one responsible for managing their health.",0],["Confidence","The material builds patient confidence in their ability to manage their health condition.",0],["Knowledge & Skills","The material explains what the patient's medications or treatments do and why.",0],["Self-Management","The material provides strategies for maintaining healthy behaviors during difficult times.",0],["PAM Score (survey)","Patient's PAM activation level (Level 1–4). Requires PAM-13 or PAM-22 survey administered to the patient — cannot be assessed from document content.",1]]},"cahps":{"n":"Consumer Assessment of Healthcare Providers and Systems (CAHPS/HCAHPS)","t":"scored","th":null,"sc":null,"note":"CAHPS is a family of surveys — HCAHPS (hospital), CG-CAHPS (clinician/group), and others. Survey domains requiring patient responses are marked NOT_ASSESSABLE from document content. CAHPS-1 through CAHPS-6 can be assessed from written discharge and medication materials.","src":["Agency for Healthcare Research and Quality. CAHPS: Surveys and Tools to Advance Patient-Centered Care. https://www.ahrq.gov/cahps/index.html","Centers for Medicare & Medicaid Services. HCAHPS: Patients' Perspectives of Care Survey. https://www.cms.gov/medicare/quality/initiatives/hospital-quality-initiative/hcahps-patients-perspectives-care-survey","Cleary PD, Edgman-Levitan S. (1997). Health care quality: Incorporating consumer perspectives. JAMA, 278(19), 1608–1612. https://doi.org/10.1001/jama.1997.03550190072047"],"cr":[["Communication about Medicines","The document explains new medications and their purpose in plain language.",0],["Communication about Medicines","Side effects or risks of medications are discussed.",0],["Discharge Information","Written discharge instructions or aftercare information are provided.",0],["Discharge Information","Symptoms to watch for after discharge are specified.",0],["Care Transitions","The document addresses what the patient should do after the clinical encounter (follow-up, self-care).",0],["Care Transitions","Questions the patient may have about post-discharge care are anticipated and answered.",0],["Nurse Communication (survey)","Nurses listened, explained clearly, and treated patient with courtesy. Requires HCAHPS survey — not assessable from document.",1],["Doctor Communication (survey)","Doctors listened, explained clearly, and treated patient with courtesy. Requires HCAHPS survey — not assessable from document.",1],["Overall Rating (survey)","Patient 0–10 global hospital rating. Requires HCAHPS survey — not assessable from document.",1]]},"nps":{"n":"Net Promoter Score","t":"scored","th":null,"sc":null,"note":"NPS is a directional indicator, not a diagnostic tool. A low NPS signals a problem but does not identify the cause. Pair with open-ended \"Why?\" questions. Healthcare sector NPS benchmarks (20–50) differ substantially from general consumer benchmarks — compare within sector.","src":["Reichheld FF. (2003). The one number you need to grow. Harvard Business Review, 81(12), 46–54. https://hbr.org/2003/12/the-one-number-you-need-to-grow","Reichheld FF, Markey R. (2011). The Ultimate Question 2.0: How Net Promoter Companies Thrive in a Customer-Driven World (rev. ed.). Harvard Business Review Press. ISBN 978-1-4221-7335-0."],"cr":[["NPS Survey Score","NPS is derived from a patient survey (\"How likely are you to recommend us?\") — cannot be assessed from document content alone.",1],["Promoter Drivers","The document or communication creates a memorable positive experience that a patient would want to share.",0],["Detractor Mitigation","The document addresses common pain points or confusion that lead to patient dissatisfaction.",0],["Follow-up Trigger","The document includes a mechanism or invitation for patients to provide feedback.",0]]},"picker":{"n":"Picker Institute — Principles of Patient-Centered Care","t":"checklist","th":null,"sc":null,"note":"Eight rules for person-centred care. Use them as checks when you design written material.","src":["Gerteis M, Edgman-Levitan S, Daley J, Delbanco TL (Eds.). (1993). Through the Patient's Eyes: Understanding and Promoting Patient-Centered Care. Jossey-Bass. ISBN 978-1555425159.","Picker Institute. About Picker. https://www.picker.org/","Jenkinson C, Coulter A, Bruster S. (2002). The Picker Patient Experience Questionnaire: Development and validation using data from in-patient surveys in five countries. International Journal for Quality in Health Care, 14(5), 353–358. https://doi.org/10.1093/intqhc/14.5.353"],"cr":[["Values & Preferences","The document treats the patient as a person; their choices and dignity are honored.",0],["Coordination & Integration","The document addresses coordination of care across services; care transitions are acknowledged.",0],["Information, Communication & Education","The document informs the patient about their condition and treatment; health literacy is supported.",0],["Physical Comfort","Physical comfort needs (pain management, environment) are addressed.",0],["Emotional Support","Emotional needs and fear/anxiety are acknowledged and addressed.",0],["Family & Friends Involvement","Family or caregiver involvement is acknowledged and supported as appropriate.",0],["Continuity & Transition","Discharge planning, follow-up, and community service coordination are addressed.",0],["Access to Care","Access to care (appointments, after-hours, language/geographic access) is addressed.",0]]},"ebcd":{"n":"Experience-Based Co-Design","t":"process-guide","th":null,"sc":null,"note":"EBCD is a participatory design methodology requiring live patient and staff engagement across 6 phases. All criteria are NOT_ASSESSABLE from document content alone — EBCD produces qualitative outputs (implemented changes, patient/staff-reported improvement), not scores.","src":["Bate P, Robert G. (2006). Experience-based design: From redesigning the system around the patient to co-designing services with the patient. Quality and Safety in Health Care, 15(5), 307–310. https://doi.org/10.1136/qshc.2005.016527","Donetto S, Tsianakas V, Robert G. (2014). Using Experience-based Co-design (EBCD) to Improve the Quality of Healthcare: Mapping Where We Are Now and Establishing Future Directions. King's College London. https://www.kcl.ac.uk/nmpc/research/nnru/publications/reports/ebcd-where-are-we-now-report.pdf","The Point of Care Foundation. EBCD: Experience-based Co-design. https://www.pointofcarefoundation.org.uk/our-programmes/ebcd/"],"cr":[["Phase 1: Setup","The scope of the co-design project is defined; patient and staff participants are identified.",1],["Phase 2: Staff Experience","Staff experience has been observed and emotional touchpoints identified.",1],["Phase 3: Patient Experience","Patient experience has been captured (interviews, filmed where possible) and emotional touchpoints mapped.",1],["Phase 4: Share & Bring Together","Patient films or stories have been shared with staff; shared priority touchpoints have been identified.",1],["Phase 5: Co-Design","Mixed patient-staff co-design groups have worked on priority touchpoints and prototyped solutions.",1],["Phase 6: Celebrate & Share","Changes implemented, impact evaluated, sustainability planned.",1]]},"seips":{"n":"Systems Engineering Initiative for Patient Safety (SEIPS 2.0)","t":"checklist","th":null,"sc":null,"note":"A way to look at the whole system around care. It gives ideas to fix it, not a score.","src":["Carayon P, Schoofs Hundt A, Karsh BT, et al. (2006). Work system design for patient safety: The SEIPS model. Quality and Safety in Health Care, 15(Suppl 1), i50–i58. https://doi.org/10.1136/qshc.2005.015842","Holden RJ, Carayon P, Gurses AP, et al. (2013). SEIPS 2.0: A human factors framework for studying and improving the work of healthcare professionals and patients. Ergonomics, 56(11), 1669–1686. https://doi.org/10.1080/00140139.2013.838643"],"cr":[["Work System — Person","The document accounts for the people involved (patient, clinician, caregiver) and their characteristics.",0],["Work System — Tasks","The document identifies the specific tasks the patient or clinician must perform.",0],["Work System — Tools & Technology","The document addresses the tools, devices, or technologies involved in performing the task.",0],["Work System — Organization","The document reflects organizational factors (policies, workflows, staffing) relevant to care delivery.",0],["Work System — Environment","The document accounts for the physical or social environment in which care occurs.",0],["Processes — Clinical","Clinical care processes are accurately and completely described.",0],["Processes — Collaborative","Team or interprofessional collaboration processes are acknowledged where relevant.",0],["Processes — Patient","Patient self-care and self-management processes are supported.",0],["Outcomes","The document connects process changes to expected patient safety or quality-of-life outcomes.",0]]},"planetree":{"n":"Planetree Model of Person-Centered Care","t":"checklist","th":null,"sc":null,"note":"A plan for a whole site. Use the 10 parts as ideas. Many won’t apply to one handout.","src":["Planetree International. The Planetree Model. https://planetree.org/planetree-model/","Frampton SB, Gilpin L, Charmel PA (Eds.). (2003). Putting Patients First: Designing and Practicing Patient-Centered Care. Jossey-Bass. ISBN 978-0787964542.","Stone S. (2008). A retrospective evaluation of the impact of the Planetree patient-centered model of care on inpatient quality outcomes. HERD: Health Environments Research & Design Journal, 1(4), 55–69. https://doi.org/10.1177/193758670800100406"],"cr":[["Human Interactions","The document reflects compassion, emotional connection, and respect for human dignity.",0],["Patient & Family Education","Patient education and access to health information is supported; health literacy is addressed.",0],["Nutritional & Nurturing Care","Nutritional needs or the healing role of food/nourishment is acknowledged where relevant.",0],["Spirituality & Diversity","Spiritual, cultural, or diversity needs of the patient population are acknowledged.",0],["Human Touch","Comfort care, therapeutic touch, or physical comfort is addressed where relevant.",0],["Arts & Entertainment","Healing environment, arts, or distraction as part of care experience is referenced where applicable.",0],["Integrative Therapies","Complementary or integrative care options are referenced where clinically appropriate.",0],["Healthy Communities","Community health, prevention, or social determinants of health are addressed.",0],["Healing Environment","The physical environment, wayfinding, or environmental design is addressed.",0],["Staff Care","Staff wellbeing and organizational support for caregivers is reflected in organizational documents.",0]]}};
 
 const FW_LIVE = { cci:'mod-cci', pemat:'mod-pemat', readability:'mod-read', plainlang:'mod-scan' };
 const FW_LIVE_NAME = { cci:'CCI', pemat:'PEMAT', readability:'Readability', plainlang:'Plain language' };
@@ -2989,8 +2993,8 @@ function renderLiveBadges(){
     const el = $('badge-' + k);
     if(!el) return;
     const c = fwAutoCount(k);
-    const txt = k === 'readability' ? 'Calculated automatically from your text'
-              : k === 'plainlang'   ? 'Flags issues automatically · no official score'
+    const txt = k === 'readability' ? 'Worked out from your text'
+              : k === 'plainlang'   ? 'Flags problems for you · no official score'
               : c.auto + ' of ' + c.total + ' items scored from your text · you tick the rest';
     el.textContent = txt;
   });
@@ -3014,7 +3018,7 @@ function fwScaleHint(key){
     discern:'Rate each question 1 (no/poor) to 5 (yes/excellent).',
     option:'Rate 0 (not observed) to 4 (fully applied).',
     sam:'Rate 0 (not suitable), 1 (adequate) or 2 (superior).',
-    eqip:'Answer Yes / No. N/A items are left out of the score.'
+    eqip:'Answer Yes or No. N/A items are left out.'
   })[key] || 'Rate each item Met, Partly or Not met. N/A items are left out.';
 }
 function fwStat(key){
@@ -3095,7 +3099,7 @@ function renderFwOut(){
   if(!body) return;
   const sel = selectedFrameworks();
   if(!sel.length){
-    body.innerHTML = '<div class="mod-note">Tick frameworks in the Frameworks bar. Frameworks the tool scores itself get their own cards below; the others appear here as checklists.</div>';
+    body.innerHTML = '<div class="mod-note">Pick frameworks in the Frameworks bar. Ones the tool scores get their own cards. The rest show up here as lists to tick.</div>';
     pill.textContent = '—'; pill.className = 'pill pill-empty';
     return;
   }
@@ -3117,8 +3121,8 @@ function renderFwOut(){
           + '<div><button class="fwo-link" style="margin-top:6px" onclick="focusArtworkText()">' + (visualOn ? 'Add the poster\'s text' : 'Go to the workspace') + '</button></div></div>';
   } else {
     let note = '';
-    if(live.length) note += names + (live.length === 1 ? ' is' : ' are') + ' scored in ' + (live.length === 1 ? 'its own card' : 'their own cards') + ' below. ';
-    note += 'Scoring cards for frameworks you didn\'t select are dimmed; they still work.';
+    if(live.length) note += names + (live.length === 1 ? ' has its own card' : ' have their own cards') + ' below. ';
+    note += 'Cards for frameworks you didn’t pick are faded. They still work.';
     html += '<div class="fwo-note">' + escapeHtml(note) + '</div>';
   }
   if(self.length) html += fwGroupHdr('SELF', self.length) + self.map(renderFwItem).join('');
