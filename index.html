@@ -520,7 +520,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .ck-group{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n500);margin:8px 0 3px;padding-bottom:2px;border-bottom:1px solid var(--n100)}
 .ck-group:first-child{margin-top:0}
 .ck-group{display:flex;align-items:center;gap:6px}
-.ck-part-na{margin-left:auto;display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--n500);cursor:pointer}
+.ck-part-na{margin-left:auto;flex-shrink:0;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;font-size:9.5px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--n500);cursor:pointer}
 .ck-part-na input{margin:0;accent-color:var(--n500)}
 .ck-n{color:var(--n400);font-variant-numeric:tabular-nums;font-size:10.5px}
 .ck-item.na label{color:var(--n400);text-decoration:line-through;text-decoration-color:var(--n300)}
@@ -3200,6 +3200,17 @@ function setFwRating(key, i, val){
   const el = $('fwo-stat-' + key);
   if(el) el.textContent = fwStat(key);
 }
+// Using a scoring module selects its framework in the dropdown: any click in its body counts
+// (ticking, N/A, "Doesn't apply", an issue, or Readability, which has nothing to tick); collapsing doesn't
+Object.keys(FW_LIVE).forEach(k => {
+  const body = document.querySelector('#' + FW_LIVE[k] + ' .mod-body');
+  if(!body) return;
+  body.addEventListener('click', () => {
+    if(fwManual[k] === true) return;
+    fwManual[k] = true;
+    renderFwTopBar();
+  });
+});
 function applyFwToModules(){
   const sel = selectedFrameworks();
   Object.keys(FW_LIVE).forEach(k => {
