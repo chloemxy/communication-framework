@@ -1841,6 +1841,7 @@ function analyze(){
   renderCci(); renderPemat(); refreshScores();
   explainScores(stats, empty);
   updateApplicability();
+  renderFwTopBar();          // in-use scoring modules show as selected in the Frameworks bar
   $('led').classList.remove('live');
 }
 
@@ -2619,6 +2620,7 @@ function focusEditor(){ editor.focus(); $('canvas-empty').style.display = 'none'
 function clearEditor(){
   exitVisual();
   editor.innerHTML = '';
+  resetLiveOverrides();
   Object.keys(manual).forEach(k => delete manual[k]);
   Object.keys(cciPartNA).forEach(k => cciPartNA[k] = null);
   $('vm-alt').value = ''; $('vm-transcript').value = '';
@@ -2660,6 +2662,7 @@ async function pasteFromClipboard(){
 // ── Central file intake: routes to visual mode or the text editor ──
 async function intakeFile(file){
   if(!file) return;
+  resetLiveOverrides();
   stashActive();
   $('doc-warn').style.display = 'none';
   const ext = file.name.split('.').pop().toLowerCase();
@@ -2869,6 +2872,7 @@ function mdToHtml(md){
 
 // ── Sample handout ──
 function loadSample(){
+  resetLiveOverrides();
   exitVisual();
   editor.innerHTML =
     '<h1>Managing Your Blood Pressure at Home</h1>'+
@@ -2923,6 +2927,7 @@ function loadSamplePoster(){
     'Recheck in 2-3 days. Your Care Team',
   ].join('\n');
   stashActive();
+  resetLiveOverrides();
   const entry = addToHistory({ name:'sample-poster.png', kind:'image', dataUrl:c.toDataURL('image/png'), alt:'', transcript, vtype:'poster' });
   openVisual(entry);
   flashHint('Sample poster loaded. Pick two colours to test contrast, and add alt text.');
@@ -3222,14 +3227,24 @@ function applyFwToModules(){
 }
 function clearFrameworks(){
   [fwManual, fwRatings, fwOpen].forEach(o => Object.keys(o).forEach(k => delete o[k]));
+  // Clear means none: keep in-use scoring modules off until they're used or ticked again
+  Object.keys(FW_LIVE).forEach(k => { if(fwLiveInUse(k)) fwManual[k] = false; });
   fwOutFilter = 'all';
   document.querySelectorAll('#seg-outtype button').forEach(b => b.classList.toggle('on', b.dataset.v === 'all'));
   renderFwTopBar();
 }
 // ── TOP FRAMEWORK BAR (prototype) — same data, new home ──
 const fwManual = {};   // f -> true (forced on) | false (forced off) | undefined (auto)
+// A scoring module that is showing scores for the material counts as selected automatically.
+// fwManual: true = ticked, false = unticked by the user (wins over auto), undefined = follow the module
+// New material starts fresh: forget "unticked" choices for the scoring modules
+function resetLiveOverrides(){ Object.keys(FW_LIVE).forEach(k => { if(fwManual[k] === false) delete fwManual[k]; }); }
+function fwLiveInUse(f){
+  const m = FW_LIVE[f] && $(FW_LIVE[f]);
+  return !!m && !m.classList.contains('hidden') && !m.classList.contains('na-hidden') && hasContent();
+}
 function selectedFrameworks(){
-  return FW_AVAILABLE.filter(f => fwManual[f] === true);
+  return FW_AVAILABLE.filter(f => fwManual[f] === true || (fwManual[f] !== false && fwLiveInUse(f)));
 }
 function toggleFwManual(f){
   const currentlySelected = selectedFrameworks().includes(f);
