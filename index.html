@@ -825,12 +825,12 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     </div>
 
     <div class="top-bar-col">
-      <div class="fw-topbar" id="fw-topbar" onclick="toggleFwTop()" title="Pick a Goal and Stage and this recommends which of the 26 patient-experience frameworks fit your project. Check a card to include or exclude it manually; click a card's source link to read the original.">
+      <div class="fw-topbar" id="fw-topbar" onclick="toggleFwTop()" title="Pick a Goal and Stage and this recommends which of the patient-experience frameworks with checklists or scoring here fit your project (the Full compass catalogues all 26). Check a card to include or exclude it manually; click a card's source link to read the original.">
         <span class="fw-top-name">Frameworks</span>
         <span class="fw-top-count" id="fw-top-count">Set Goal · Stage to see matches</span>
         <div class="fw-top-chips" id="fw-top-chips"></div>
         <span class="fw-top-clear" id="fw-top-clear" style="display:none" onclick="event.stopPropagation();clearFrameworks()" title="Clear Goal, Stage and any frameworks you ticked">✕ Clear</span>
-        <span class="fw-top-toggle" id="fw-top-toggle">Show all 26 ▸</span>
+        <span class="fw-top-toggle" id="fw-top-toggle">Show all 20 ▸</span>
       </div>
       <div class="fw-top-panel" id="fw-top-panel">
         <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
@@ -854,14 +854,14 @@ input[type=range]{width:100%;accent-color:var(--blue)}
             </div>
           </div>
           <div class="fw-top-grid-hdr">
-            <span class="lbl" id="fw-grid-lbl">All 26 frameworks — check to include, uncheck to exclude</span>
+            <span class="lbl" id="fw-grid-lbl">All 20 frameworks — check to include, uncheck to exclude</span>
             <div class="seg fw-out-filter" id="seg-outtype" title="Show only frameworks that produce this kind of output">
               <button data-v="all" class="on" onclick="setOutFilter('all')">All</button>
               <button data-v="scored" onclick="setOutFilter('scored')">Scored</button>
               <button data-v="partial" onclick="setOutFilter('partial')">Partly scored</button>
               <button data-v="qual" onclick="setOutFilter('qual')">Qualitative</button>
             </div>
-            <a href="framework-compass.html" target="_blank" rel="noopener" style="font-size:10px;font-weight:700;color:var(--n500);text-decoration:none;white-space:nowrap" onclick="event.stopPropagation()">Full compass ↗</a>
+            <a href="framework-compass.html" target="_blank" rel="noopener" style="font-size:10px;font-weight:700;color:var(--n500);text-decoration:none;white-space:nowrap" onclick="event.stopPropagation()" title="All 26 frameworks, including the 6 that need real-world data (Pink Book, OPTION, PAM, CAHPS, NPS, EBCD)">Full compass · all 26 ↗</a>
             <button class="fw-clear-btn" onclick="clearFrameworks()" title="Clear Goal, Stage, the output filter and any frameworks you ticked">Clear selection</button>
           </div>
           <div class="goal-note" id="goal-note-top" style="margin:-4px 0 8px"></div>
@@ -3047,6 +3047,9 @@ Object.keys(FW_LABEL).forEach(k => { FW_LEVEL[k] = 'SELF'; });
 ['cci','pemat','plainlang'].forEach(k => { FW_LEVEL[k] = 'PARTIAL'; });
 FW_LEVEL.readability = 'AUTO';
 ['pinkbook','option','pam','cahps','nps','ebcd'].forEach(k => { FW_LEVEL[k] = 'OFFDOC'; });
+// Main page lists only frameworks with a scoring card or a checklist here;
+// reference-only ones (real-world data needed) stay catalogued in the Full compass
+const FW_AVAILABLE = Object.keys(FW_LABEL).filter(k => FW_LEVEL[k] !== 'OFFDOC');
 const FW_BADGE = {
   AUTO:    { icon:'●', label:'Scored for you',        tip:'The tool computes the result directly from your text.' },
   PARTIAL: { icon:'◐', label:'Partly scored for you', tip:'The tool scores the countable items; you judge the rest.' },
@@ -3276,11 +3279,16 @@ function goalKey(){
 function currentMatchSet(){
   const key = goalKey();
   const res = GOAL_RESULTS[key];
-  return res ? res.fws : [];
+  return res ? res.fws.filter(f => FW_AVAILABLE.includes(f)) : [];
+}
+// recommended for this Goal + Stage but only catalogued in the Full compass
+function compassOnlyMatches(){
+  const res = GOAL_RESULTS[goalKey()];
+  return res ? res.fws.filter(f => !FW_AVAILABLE.includes(f)) : [];
 }
 function selectedFrameworks(){
   const matched = currentMatchSet();
-  return Object.keys(FW_LABEL).filter(f =>
+  return FW_AVAILABLE.filter(f =>
     fwManual[f] === true || (fwManual[f] !== false && matched.includes(f))
   );
 }
@@ -3303,9 +3311,9 @@ function renderFwTopGrid(){
   const selected = selectedFrameworks();
   const auto = currentMatchSet();
   const grid = $('fw-top-grid');
-  const shown = Object.keys(FW_LABEL).filter(f => fwOutFilter === 'all' || fwOutType(f) === fwOutFilter);
+  const shown = FW_AVAILABLE.filter(f => fwOutFilter === 'all' || fwOutType(f) === fwOutFilter);
   $('fw-grid-lbl').textContent = (fwOutFilter === 'all' ? 'All ' + shown.length + ' frameworks'
-    : shown.length + ' ' + OUT_LABEL[fwOutFilter].toLowerCase() + ' of 26') + ' — check to include, uncheck to exclude';
+    : shown.length + ' ' + OUT_LABEL[fwOutFilter].toLowerCase() + ' of ' + FW_AVAILABLE.length) + ' — check to include, uncheck to exclude';
   grid.innerHTML = shown.map(f => {
     const isSel = selected.includes(f);
     const isAuto = auto.includes(f) && fwManual[f] === undefined;
@@ -3329,13 +3337,19 @@ function renderFwTopBar(){
       const b = FW_BADGE[FW_LEVEL[f]];
       return '<span class="fw-tag '+FW_ZONE[f]+'" title="'+escapeHtml(b.label+' — '+(FW_FULL[f]||FW_LABEL[f]))+'"><span class="fw-ico" aria-hidden="true">'+b.icon+'</span>'+FW_LABEL[f]+'<span class="sr-only"> — '+b.label+'</span></span>';
     }).join('');
-    count.textContent = selected.length + ' of 26 selected';
-    note.textContent = (res && res.note) || '';
+    count.textContent = selected.length + ' of ' + FW_AVAILABLE.length + ' selected';
   } else {
-    chips.innerHTML = '<span class="fw-top-empty">Set Goal · Stage to see matches</span>';
+    chips.innerHTML = '<span class="fw-top-empty">' + (res
+      ? 'No frameworks with checklists here for this Goal · Stage'
+      : 'Set Goal · Stage to see matches') + '</span>';
     count.textContent = '';
-    note.textContent = '';
   }
+  // the preset note can name frameworks that only live in the compass, so swap it for a pointer there
+  const elsewhere = compassOnlyMatches();
+  note.innerHTML = elsewhere.length
+    ? 'Also fits, but needs real-world data rather than a document: <b>' + escapeHtml(joinNames(elsewhere.map(f => FW_LABEL[f]))) +
+      '</b> — see the <a href="framework-compass.html" target="_blank" rel="noopener">Full compass ↗</a>.'
+    : escapeHtml((res && res.note) || '');
   const anyState = selected.length || Object.keys(goalStateTop).length || Object.keys(fwManual).length;
   const clr = $('fw-top-clear'); if(clr) clr.style.display = anyState ? '' : 'none';
   renderFwTopGrid();
@@ -3357,7 +3371,7 @@ function toggleFwTop(){
   const bar = $('fw-topbar'), panel = $('fw-top-panel'), toggle = $('fw-top-toggle');
   const open = panel.classList.toggle('open');
   bar.classList.toggle('open', open);
-  toggle.textContent = open ? 'Show top only ▾' : 'Show all 26 ▸';
+  toggle.textContent = open ? 'Show top only ▾' : 'Show all ' + FW_AVAILABLE.length + ' ▸';
 }
 function toggleBriefTop(){
   const bar = $('brief-topbar'), panel = $('brief-top-panel'), toggle = $('brief-top-toggle');
