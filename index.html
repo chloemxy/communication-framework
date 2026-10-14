@@ -459,6 +459,7 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
   font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;
   background:var(--n200);color:var(--n500);
 }
+.brief-due-badge:empty{display:none}
 .brief-due-badge.soon{background:var(--orange-bg);color:#7a5a00}
 .brief-due-badge.late{background:var(--red-bg);color:#b91c1c}
 .brief-due-badge.ok{background:var(--teal-bg);color:#14713e}
@@ -754,7 +755,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
     <select id="add-mod-sel" class="dock-add" onchange="addModule(this.value)" title="Add a module to this workspace"></select>
     <button class="dock-mini" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
     <button class="dock-reset" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
-    <button class="dock-reset" onclick="clearInputs()" title="Clear the Brief (Audience, Format, Main message, Deadline, Requirements) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
+    <button class="dock-reset" onclick="clearInputs()" title="Clear the Brief (Audience, Format, Main message, Deadline) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
   </div>
 </div>
 
@@ -802,6 +803,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
             <span class="brief-due-badge" id="due-badge"></span>
           </div>
 
+          <!-- Requirements & restrictions: hidden until something reads these answers (no score or check uses them yet) -->
+          <div id="brief-reqs" hidden>
           <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Constraints no automated check can see — confirm each one before sign-off.">Requirements &amp; restrictions</span></div>
           <div id="req-list"></div>
           <button class="add-more" id="notes-add" onclick="showNotes()">＋ Add another constraint</button>
@@ -809,6 +812,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
             <textarea class="brief-input" id="brief-notes" rows="3" style="resize:vertical"
                       placeholder="Brand rules, legal copy, print specs, translations…"
                       oninput="setBrief('notes',this.value)" onblur="maybeHideNotes()"></textarea>
+          </div>
           </div>
         </div>
       </div>
