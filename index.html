@@ -366,6 +366,11 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
   width:18px;height:18px;border:none;border-radius:4px;background:transparent;
   color:var(--n400);cursor:pointer;font-size:12px;line-height:1;display:flex;align-items:center;justify-content:center;
 }
+/* an empty score pill ("—") said nothing and looked like the collapse button, so it stays hidden until there's a score */
+.mod-hdr .pill-empty{display:none}
+.pill-count{background:var(--n100);color:var(--n600)}
+.mod-fold{font-size:11px;transition:transform .15s}
+.mod.collapsed .mod-fold{transform:rotate(-90deg)}
 .mod-min:hover{background:var(--n200);color:var(--n700)}
 .mod-body{
   padding:10px 12px;overflow-y:auto;scrollbar-gutter:stable;
@@ -606,7 +611,10 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-topbar .fw-top-name{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--n700);white-space:nowrap;flex-shrink:0}
 .fw-topbar .fw-top-count{font-size:11px;color:var(--n500);white-space:nowrap;flex-shrink:0;overflow:hidden;text-overflow:ellipsis}
 .fw-top-chips{display:flex;gap:6px;flex:1;overflow:hidden;min-width:0}
-.fw-top-chips .fw-tag{flex-shrink:0}
+.fw-top-chips .fw-tag{flex-shrink:0;white-space:nowrap}
+.fw-top-chips .fw-tag.fw-out-tag{font-size:10px;padding:2px 8px;border-radius:4px;margin:0;letter-spacing:0}
+.fw-top-chips .fw-tag[hidden]{display:none}
+.fw-more{background:#fff;color:var(--n600);border:1px solid var(--n300)}
 .fw-top-empty{font-size:11px;color:var(--n400);font-style:italic;white-space:nowrap}
 .fw-top-toggle{font-size:10px;font-weight:700;color:var(--n500);white-space:nowrap;flex-shrink:0;letter-spacing:.03em;margin-left:auto;padding-left:8px}
 .fw-topbar.open .fw-top-toggle{color:var(--n900)}
@@ -956,7 +964,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
           <b>poster, chart, PDF or image</b> to open it in visual mode.</div>
         <div class="ce-actions">
           <button class="in-key k-doc ce-sample" onclick="document.getElementById('file-doc').click()"><span class="k-dot"></span>Upload</button>
-          <button class="in-key k-type ce-sample" onclick="loadSample()"><span class="k-dot" style="background:var(--gold)"></span>Load sample handout</button>
+          <button class="in-key k-type ce-sample" onclick="loadSample()" title="A one-page Word handout, opened in the editor"><span class="k-dot" style="background:var(--gold)"></span>Sample Word handout</button>
+          <button class="in-key k-img ce-sample" onclick="loadSamplePoster()" title="A poster image, opened in visual mode with its text typed in"><span class="k-dot"></span>Sample poster</button>
         </div>
       </div>
     </div>
@@ -984,7 +993,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
       <div class="mod-hdr">
         <span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you pick that the tool can’t score show up here as lists. You rate each item yourself. CCI, PEMAT, Readability and Plain language have their own cards.">Framework checklists</span>
         <span class="pill pill-empty" id="fwout-pill">—</span>
-        <button class="mod-min" onclick="toggleCollapse('mod-fwout')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
+        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-fwout')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body"><div id="fwout-body"></div></div>
     </div>
@@ -995,7 +1004,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         <span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid). Your audience sets the goal.">Readability</span>
         
         
-        <button class="mod-min" onclick="toggleCollapse('mod-read')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
+        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-read')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
       </div>
       <div class="fw-badge-row" id="badge-readability"></div>
       <div class="mod-body" id="read-body">
@@ -1024,7 +1033,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. <b>A score of 90 or more passes.</b><br><br>AUTO items are scored from your text. Tick the rest yourself.">CCI</span>
         <span class="pill pill-empty" id="cci-pill">—</span>
         
-        <button class="mod-min" onclick="toggleCollapse('mod-cci')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
+        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
       </div>
       <div class="fw-badge-row" id="badge-cci"></div>
       <div class="mod-body">
@@ -1041,7 +1050,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         <span class="mod-name" role="button" tabindex="0" data-tip="PEMAT, from AHRQ, gives two scores. Can a patient <b>understand</b> it (17 items)? Can they <b>act</b> on it (7 items)? Items that don’t apply are left out.<br><br>Aim for <b>70% or more on both</b>.">PEMAT</span>
         <span class="pill pill-empty" id="pemat-pill">U — · A —</span>
         
-        <button class="mod-min" onclick="toggleCollapse('mod-pemat')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
+        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-pemat')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
       </div>
       <div class="fw-badge-row" id="badge-pemat"></div>
       <div class="mod-body">
@@ -1062,7 +1071,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         <span class="mod-name" role="button" tabindex="0" data-tip="Checks each sentence for long sentences, medical words, passive voice, vague words, bare percents and short forms.<br><br>Click an issue to jump to it.">Plain language</span>
         
         
-        <button class="mod-min" onclick="toggleCollapse('mod-scan')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
+        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-scan')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
       </div>
       <div class="fw-badge-row" id="badge-plainlang"></div>
       <div class="mod-body">
@@ -1081,7 +1090,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         <span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks to run <b>before</b> the Adobe test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fix them here and you fix less in InDesign.">Accessibility</span>
         <span class="pill pill-empty" id="a11y-pill">—</span>
         
-        <button class="mod-min" onclick="toggleCollapse('mod-a11y')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
+        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-a11y')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="score-why" id="a11y-why"></div>
@@ -1096,7 +1105,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
         <span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer find a source for each health claim? This flags numbers with no source, old dates, no review date, and words like “always” or “100% safe”.">Accuracy</span>
         <span class="pill pill-empty" id="acc-pill">—</span>
         
-        <button class="mod-min" onclick="toggleCollapse('mod-acc')" title="Collapse">–</button><button class="mod-min mod-hide" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
+        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-acc')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="score-why" id="acc-why"></div>
@@ -1242,6 +1251,8 @@ function computeFK(text){
     avgSyll: Math.round(avgSyllWord*100)/100,
   };
 }
+// FK can dip below zero for very short, simple text; show that as "below 1" rather than a negative grade
+const gradeText = g => g < 1 ? 'below 1' : String(g);
 function splitSentences(text){
   return text.split(/(?<=[.!?])\s+(?=[A-Z"'])/).map(s => s.trim()).filter(s => s.length > 8);
 }
@@ -1250,10 +1261,14 @@ function splitSentences(text){
 function readStructure(){
   // In visual mode the transcript IS the material's text
   if(visualOn){
-    const text = $('vm-transcript').value || '';
+    // Each line of artwork text is its own phrase: drop list numbers/bullets and end unpunctuated lines,
+    // so "1. Sit still" isn't split at "1." and a headline doesn't run into the next line
+    const raw = $('vm-transcript').value || '';
+    const text = raw.split('\n').map(l => l.trim().replace(/^([-*•]|\d+[.)])\s+/, '')).filter(Boolean)
+      .map(l => /[.!?:]$/.test(l) ? l : l + '.').join(' ');
     const passive = (text.match(/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/gi) || []).length;
     const sents = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
-    const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     return {
       text,
       // a transcript can't carry markup, so infer structure from how it's laid out
@@ -1642,12 +1657,12 @@ function explainScores(stats, empty){
     const over = Math.round((stats.grade - t.grade) * 10) / 10;
     if(stats.grade <= t.grade){
       why('read-why','good',
-        'Reads at <b>grade '+stats.grade+'</b>. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets your goal of grade '+t.grade+'.',
+        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets your goal of grade '+t.grade+'.',
         'Keep your sentences this short as you edit.');
     } else {
       const yrs = over >= 1 ? Math.round(over) + ' year' + (Math.round(over)===1?'':'s') : 'under a year';
       why('read-why', over > 2 ? 'bad' : 'mid',
-        'Reads at <b>grade '+stats.grade+'</b>. That is about '+yrs+' above your goal of grade '+t.grade+'. It suits '+GRADE_AUDIENCE(stats.grade)+'.',
+        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That is about '+yrs+' above your goal of grade '+t.grade+'. It suits '+GRADE_AUDIENCE(stats.grade)+'.',
         stats.avgSentLen > t.sentLen
           ? 'Sentences have '+stats.avgSentLen+' words on average. Split them at “and”, “but” or “so” to get under '+t.sentLen+'.'
           : 'Your sentences are short enough. Swap long medical words for everyday ones.');
@@ -1763,7 +1778,7 @@ function analyze(){
     $('ease-fill').style.width = e+'%';
     $('ease-fill').style.background = eCol;
     const gCol = stats.grade <= t.grade ? 'var(--teal)' : stats.grade <= t.grade+2 ? 'var(--orange)' : 'var(--red)';
-    $('grade-num').innerHTML = 'Gr '+stats.grade;
+    $('grade-num').innerHTML = stats.grade < 1 ? 'Gr <1' : 'Gr '+stats.grade;
     $('grade-fill').style.width = Math.max(4, Math.min(100, stats.grade/16*100))+'%';
     $('grade-fill').style.background = gCol;
     $('s-avglen').textContent = stats.avgSentLen;
@@ -2866,11 +2881,51 @@ function loadSample(){
     '<p>About 25% of readings will be inaccurate if you talk during the measurement.</p>'+
     '<h2>When to call us</h2>'+
     '<p>Call your care team at (555) 123-4567 if your top number is above 180.</p>';
-  setCanvasTitle('sample-handout.html', 'doc');
-  addToHistory({ name:'sample-handout.html', kind:'doc', html:editor.innerHTML,
+  setCanvasTitle('sample-handout.docx', 'doc');
+  addToHistory({ name:'sample-handout.docx', kind:'doc', html:editor.innerHTML,
                  words:((editor.textContent||'').match(/\b\w+\b/g)||[]).length });
   analyze();
   saveVersion('Loaded sample handout');
+}
+
+// ── Sample poster: drawn on a canvas so it needs no image file; opens in visual mode ──
+// It keeps a few real problems for the checks to find: no alt text, a low-contrast footer, a bare percentage and a number range.
+function loadSamplePoster(){
+  const W = 900, H = 1200;
+  const c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  const font = (w, px) => w + ' ' + px + 'px Inter, -apple-system, Helvetica, Arial, sans-serif';
+  x.fillStyle = '#f6f1e8'; x.fillRect(0, 0, W, H);
+  x.fillStyle = '#b3261e'; x.fillRect(0, 0, W, 330);                       // red header band
+  x.fillStyle = '#ffffff'; x.font = font('800', 92); x.fillText('Know Your', 70, 150); x.fillText('Numbers', 70, 250);
+  x.fillStyle = '#ffe3df'; x.font = font('500', 34); x.fillText('Check your blood pressure at home', 70, 305);
+  x.fillStyle = '#2c2420'; x.font = font('700', 44); x.fillText('Check it 2 times a day', 70, 430);
+  const steps = ['Sit still for 5 minutes', 'Rest your arm on a table', 'Write down the numbers'];
+  steps.forEach((t, i) => {
+    const y = 520 + i * 130;
+    x.fillStyle = '#1d6fa8'; x.beginPath(); x.arc(110, y, 38, 0, Math.PI * 2); x.fill();
+    x.fillStyle = '#ffffff'; x.font = font('800', 40); x.textAlign = 'center'; x.fillText(String(i + 1), 110, y + 14);
+    x.textAlign = 'left'; x.fillStyle = '#2c2420'; x.font = font('500', 38); x.fillText(t, 175, y + 13);
+  });
+  x.fillStyle = '#2c2420'; x.font = font('500', 30); x.fillText('About 25% of readings are wrong if you talk.', 70, 950);
+  x.fillStyle = '#1d6fa8'; x.fillRect(70, 990, W - 140, 110);              // call-to-action box
+  x.fillStyle = '#ffffff'; x.font = font('700', 32); x.fillText('Top number over 180? Call 555-123-4567', 100, 1057, W - 200);
+  x.fillStyle = '#c9c2b8'; x.font = font('400', 22); x.fillText('Recheck in 2-3 days · Your Care Team', 70, 1160);   // low contrast on purpose
+  const transcript = [
+    'Know Your Numbers',
+    'Check your blood pressure at home',
+    'Check it 2 times a day',
+    '1. Sit still for 5 minutes',
+    '2. Rest your arm on a table',
+    '3. Write down the numbers',
+    'About 25% of readings are wrong if you talk.',
+    'Top number over 180? Call 555-123-4567',
+    'Recheck in 2-3 days. Your Care Team',
+  ].join('\n');
+  stashActive();
+  const entry = addToHistory({ name:'sample-poster.png', kind:'image', dataUrl:c.toDataURL('image/png'), alt:'', transcript, vtype:'poster' });
+  openVisual(entry);
+  flashHint('Sample poster loaded. Pick two colours to test contrast, and add alt text.');
 }
 
 const FW_ZONE = {
@@ -3110,7 +3165,7 @@ function renderFwOut(){
   const self = sel.filter(k => !FW_LIVE[k] && FW_LEVEL[k] === 'SELF');
   const off  = sel.filter(k => !FW_LIVE[k] && FW_LEVEL[k] === 'OFFDOC');
   pill.textContent = (self.length + off.length) ? (self.length + off.length) + ' listed' : '—';
-  pill.className = 'pill pill-empty';
+  pill.className = 'pill ' + ((self.length + off.length) ? 'pill-count' : 'pill-empty');
   const needText = live.length > 0 && !hasContent();
   fwNeedState = needText;
   const names = joinNames(live.map(k => FW_LIVE_NAME[k]));
@@ -3201,15 +3256,37 @@ function renderFwTopGrid(){
       + '</div>';
   }).join('');
 }
+// Hide chips that don't fit and add a "+N more" chip in their place
+function fitChips(box){
+  const chips = [...box.querySelectorAll('.fw-tag:not(.fw-more)')];
+  box.querySelectorAll('.fw-more').forEach(m => m.remove());
+  chips.forEach(c => c.hidden = false);
+  if(!chips.length || box.scrollWidth <= box.clientWidth) return;
+  const more = document.createElement('span');
+  more.className = 'fw-tag fw-more';
+  box.appendChild(more);
+  let hidden = 0;
+  for(let i = chips.length - 1; i >= 0; i--){
+    more.textContent = '+' + (hidden) + ' more';
+    if(hidden && box.scrollWidth <= box.clientWidth) break;
+    chips[i].hidden = true; hidden++;
+    more.textContent = '+' + hidden + ' more';
+    if(box.scrollWidth <= box.clientWidth) break;
+  }
+  more.title = chips.filter(c => c.hidden).map(c => c.textContent).join(', ');
+}
+window.addEventListener('resize', () => fitChips($('fw-top-chips')));
 function renderFwTopBar(){
   const selected = selectedFrameworks();
   const chips = $('fw-top-chips'), count = $('fw-top-count');
   if(selected.length){
+    // chip colour = output type, same as the Score / Partial score / Qualitative tags on the cards
     chips.innerHTML = selected.map(f => {
-      const b = FW_BADGE[FW_LEVEL[f]];
-      return '<span class="fw-tag" title="'+escapeHtml(FW_FULL[f]+' · '+b.label)+'">'+FW_LABEL[f]+'</span>';
+      const b = FW_BADGE[FW_LEVEL[f]], out = fwOutType(f);
+      return '<span class="fw-tag fw-out-tag '+out+'" title="'+escapeHtml(FW_FULL[f]+' · '+OUT_LABEL[out]+' · '+b.label)+'">'+FW_LABEL[f]+'</span>';
     }).join('');
     count.textContent = selected.length + ' of ' + FW_AVAILABLE.length;
+    fitChips(chips);
   } else {
     chips.innerHTML = '<span class="fw-top-empty">None selected — open the list to pick</span>';
     count.textContent = '';
