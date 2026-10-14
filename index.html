@@ -1416,10 +1416,10 @@ function renderBriefTargets(){
   if(el) el.innerHTML =
     '<div><span class="bt-k">Reading</span>' + (a
       ? 'Grade <b>' + a.grade + '</b> or lower · ease <b>' + a.ease + '</b>+ · sentences up to <b>' + a.sentLen + '</b> words'
-      : '<span class="bt-empty">Pick an audience to set a reading goal</span>') + '</div>' +
+      : '<span class="bt-empty">Pick an audience to set this.</span>') + '</div>' +
     '<div><span class="bt-k">Length</span>' + (f
       ? '<b>' + f.words[0] + '–' + f.words[1] + '</b> words'
-      : '<span class="bt-empty">Pick a format to set a word count</span>') + '</div>';
+      : '<span class="bt-empty">Pick a format to set this.</span>') + '</div>';
 }
 
 function toggleReq(id, on){ brief.reqs[id] = on; refreshScores(); }
