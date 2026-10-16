@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-16 — Resolve conflicts: merge `master` into PR #2
 
-Branch: `claude/inspiring-faraday-au7zm5` · Vercel: not deployed (local only)
+Branch: `claude/inspiring-faraday-au7zm5` · Vercel: Preview (PR #2)
 
 PR #2 ("Align CCI/PEMAT/DCS with published instruments; simplify Studio UI") was branched
 before T1–T3, so it conflicted with `master` in `analysis-engine.js` and `index.html`.
