@@ -1004,13 +1004,71 @@ button,input,select,textarea{font-family:inherit}
   .canvas.is-visual{height:calc(70vh + 168px);height:calc(70svh + 168px);max-height:100svh;min-height:360px}
   .vm-preview{padding:var(--sp-2)}
 }
+
+/* ════════════════════════════════════════════════════════════════
+   FIX ROUND (accessibility review): real toggle buttons on the top bars,
+   closed panels out of the Tab order, help-trigger focus, footer wrapping.
+   ════════════════════════════════════════════════════════════════ */
+.topbar h1.topbar-sub{font-size:var(--fs-lg);font-weight:600;line-height:1.3;color:var(--n900)}
+
+/* Brief / Frameworks bars: the bar look stays; the toggle is a real button that fills it.
+   Clear sits beside the button, never inside it. */
+.fw-topbar{padding:0;cursor:default}
+.fw-top-btn{
+  flex:1 1 auto;min-width:0;align-self:stretch;
+  display:flex;align-items:center;gap:var(--sp-3);padding:0 var(--sp-4);
+  border:none;border-radius:var(--radius-lg);background:transparent;
+  font-family:var(--sans);font-size:var(--fs-sm);font-weight:400;line-height:1.3;color:var(--n900);
+  text-align:left;cursor:pointer;
+}
+.fw-top-btn:focus-visible{outline:2px solid var(--blue);outline-offset:-2px;box-shadow:var(--focus)}
+.fw-top-btn .fw-top-toggle{margin-left:auto}
+.fw-topbar > .btn{margin-right:var(--sp-2)}
+/* while the panel is open it has its own "Clear selection", and Tab goes from the toggle straight into the panel */
+.fw-topbar.open > #fw-top-clear{display:none !important}
+/* a closed panel is inert (out of the Tab order and the accessibility tree); visibility
+   follows the fade so nothing invisible can take focus */
+.fw-top-panel{visibility:hidden;transition:max-height .18s ease,opacity .15s ease,visibility 0s linear .18s}
+.fw-top-panel.open{visibility:visible;transition:max-height .18s ease,opacity .15s ease,visibility 0s}
+.fw-top-empty{white-space:normal}
+
+/* Help triggers (card titles and field labels that open an explanation): same focus ring as .btn */
+.mod-name[data-tip]:focus-visible, .lbl-info:focus-visible{outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus);border-radius:2px}
+
+/* Framework checklist sources: collapsed by default */
+.fwo-src-wrap{margin-top:var(--sp-2);font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--n600)}
+.fwo-src-wrap summary{display:list-item;padding:3px 0;font-weight:600;color:var(--n600);cursor:pointer;width:max-content;max-width:100%}
+.fwo-src-wrap summary:hover{color:var(--n900)}
+.fwo-src-wrap summary:focus-visible{outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus);border-radius:2px}
+.fwo-src-wrap a{color:var(--blue)}
+.fwo-src-link{margin-top:var(--sp-1)}
+
+/* Neutral framework tags: the label says the output type, colour added nothing */
+.fw-out-tag.scored, .fw-out-tag.partial, .fw-out-tag.qual{background:var(--n100);color:var(--n700)}
+
+/* Read text again / Use the machine-read text */
+.vm-ocr-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-2)}
+.vm-ocr-actions[hidden], .vm-ocr-actions .btn[hidden]{display:none}
+
+/* Material footer: wraps cleanly, the file name ellipsises, stats hide while the canvas is empty */
+.canvas-foot{flex-wrap:wrap;row-gap:0;min-width:0}
+.canvas-foot > span{white-space:nowrap}
+.canvas-foot #f-file{flex:1 1 96px;min-width:0;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.canvas.is-empty .foot-stat{display:none}
+#ver-btn{gap:var(--sp-1)}
+@media (max-width: 600px){
+  .canvas-foot .foot-avg{display:none}
+  .fw-top-btn{flex-wrap:wrap;row-gap:var(--sp-1);padding:var(--sp-2) var(--sp-3)}
+  .fw-top-btn .fw-top-chips, #brief-top-btn #brief-top-summary{flex-basis:100%;order:3;flex-wrap:wrap;overflow:visible}
+  .fw-topbar > #fw-top-clear{margin:calc(-1 * var(--sp-1)) var(--sp-2) var(--sp-2) auto}
+}
 </style>
 </head>
 <body>
 
 <div class="topbar">
   <div class="topbar-left">
-    <span class="topbar-sub">Patient Education Analyzer</span>
+    <h1 class="topbar-sub">Patient Education Analyzer</h1>
     <div class="mode-toggle" id="mode-toggle">
       <button class="on" data-m="evaluate" onclick="setMode('evaluate',this)" title="Upload a draft and score it against frameworks">Evaluate a draft</button>
       <button data-m="plan" onclick="setMode('plan',this)" title="No draft yet — use Brief and Frameworks to plan before writing">Plan from an idea</button>
@@ -1035,18 +1093,20 @@ button,input,select,textarea{font-family:inherit}
   </div>
 </div>
 
-<div class="stage" id="stage">
+<main class="stage" id="stage">
 
   <!-- ── TOP BARS: BRIEF + FRAMEWORKS, side by side ── -->
   <div class="top-bars" id="top-bars">
 
     <div class="top-bar-col">
-      <div class="fw-topbar" id="brief-topbar" onclick="toggleBriefTop()" title="Answer these first. Your brief sets the targets every other module scores against — change the audience or format and the whole analysis re-tunes.">
-        <span class="fw-top-name">Brief</span>
-        <span class="fw-top-chips" id="brief-top-summary"></span>
-        <span class="fw-top-toggle" id="brief-top-toggle">Edit ▸</span>
+      <div class="fw-topbar" id="brief-topbar">
+        <button type="button" class="fw-top-btn" id="brief-top-btn" aria-expanded="false" aria-controls="brief-top-panel" onclick="toggleBriefTop()" title="Your brief sets the targets every other card scores against.">
+          <span class="fw-top-name">Brief</span>
+          <span class="fw-top-chips" id="brief-top-summary"></span>
+          <span class="fw-top-toggle" id="brief-top-toggle">Edit brief ▸</span>
+        </button>
       </div>
-      <div class="fw-top-panel" id="brief-top-panel">
+      <div class="fw-top-panel" id="brief-top-panel" inert>
         <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
           <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" id="aud-hint" data-tip="Sets the reading level to aim for. For clinicians, medical words are fine.">Audience</span></div>
           <div class="seg seg-chips" id="seg-aud">
@@ -1086,14 +1146,16 @@ button,input,select,textarea{font-family:inherit}
     </div>
 
     <div class="top-bar-col">
-      <div class="fw-topbar" id="fw-topbar" onclick="toggleFwTop()" title="Tick the frameworks you want to apply. Frameworks the tool scores get their own cards; the rest become checklists. The Full compass catalogues all 26.">
-        <span class="fw-top-name">Frameworks</span>
-        <span class="fw-top-count" id="fw-top-count"></span>
-        <div class="fw-top-chips" id="fw-top-chips"></div>
-        <button type="button" class="btn btn-quiet" id="fw-top-clear" style="display:none" onclick="event.stopPropagation();clearFrameworks()" title="Untick every framework">Clear</button>
-        <span class="fw-top-toggle" id="fw-top-toggle">Show all 23 ▸</span>
+      <div class="fw-topbar" id="fw-topbar">
+        <button type="button" class="fw-top-btn" id="fw-top-btn" aria-expanded="false" aria-controls="fw-top-panel" onclick="toggleFwTop()" title="Tick the frameworks to apply. Ones the tool scores get their own cards; the rest become checklists.">
+          <span class="fw-top-name">Frameworks</span>
+          <span class="fw-top-count" id="fw-top-count"></span>
+          <span class="fw-top-chips" id="fw-top-chips"></span>
+          <span class="fw-top-toggle" id="fw-top-toggle">Show all 23 ▸</span>
+        </button>
+        <button type="button" class="btn btn-quiet" id="fw-top-clear" style="display:none" onclick="clearFrameworks()" title="Untick every framework">Clear</button>
       </div>
-      <div class="fw-top-panel" id="fw-top-panel">
+      <div class="fw-top-panel" id="fw-top-panel" inert>
         <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
           <div class="fw-top-grid-hdr">
             <span class="lbl" id="fw-grid-lbl">23 frameworks</span>
@@ -1204,11 +1266,11 @@ button,input,select,textarea{font-family:inherit}
     </div>
 
     <div class="canvas-foot">
-      <span><b id="f-words">0</b> words</span>
-      <span><b id="f-sents">0</b> sentences</span>
-      <span><b id="f-avg">0</b> w/sentence</span>
-      <button type="button" class="btn btn-quiet" id="ver-btn" onclick="toggleVersions()" aria-controls="ver-panel" title="Version history, Save version and Track changes"><b id="f-vers">0</b> versions</button>
-      <span style="margin-left:auto" id="f-file">unsaved draft</span>
+      <span class="foot-stat"><b id="f-words">0</b> <span id="f-words-lbl">words</span></span>
+      <span class="foot-stat"><b id="f-sents">0</b> <span id="f-sents-lbl">sentences</span></span>
+      <span class="foot-stat foot-avg"><b id="f-avg">0</b> words per sentence</span>
+      <button type="button" class="btn btn-quiet" id="ver-btn" onclick="toggleVersions()" aria-controls="ver-panel" title="Version history, Save version and Track changes"><b id="f-vers">0</b> <span id="f-vers-lbl">versions</span></button>
+      <span id="f-file">unsaved draft</span>
     </div>
 
     <!-- version / change log drawer: Save version and Track changes live here -->
@@ -1277,10 +1339,14 @@ button,input,select,textarea{font-family:inherit}
           <span class="vm-ocr-msg" id="vm-ocr-msg"></span>
           <progress class="vm-ocr-bar" id="vm-ocr-bar" max="100" aria-label="Reading text" hidden></progress>
         </div>
+        <div class="vm-ocr-actions" id="vm-ocr-actions" hidden>
+          <button type="button" class="btn btn-secondary" id="vm-ocr-use" hidden>Use the machine-read text</button>
+          <button type="button" class="btn btn-quiet" id="vm-ocr-again">Read text again</button>
+        </div>
         <p class="vm-help" id="vm-txt-help">Fix any misread words — the scores use this text.</p>
         <textarea class="brief-input" id="vm-transcript" aria-label="Text the tool read" aria-describedby="vm-txt-help vm-ocr-msg" rows="8" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
         <div class="vm-count" id="vm-txt-count">0 words</div>
-        <div class="vm-note" id="vm-txt-hint"><b>Add the text to start scoring.</b> CCI, PEMAT, Readability and Plain language can't read an image. Type or paste every word from the artwork here and their cards will appear.</div>
+        <div class="vm-note" id="vm-txt-hint"><b>Add the text to start scoring.</b> The scores can’t read an image, so type or paste every word from the artwork here.</div>
       </div>
     </div>
 
@@ -1290,7 +1356,7 @@ button,input,select,textarea{font-family:inherit}
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-valt')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-valt')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
-        <p class="vm-help" id="vm-alt-help">A screen reader reads this out in place of the image. Say what the image tells the reader. Don’t start with “image of”.</p>
+        <p class="vm-help" id="vm-alt-help">Read aloud in place of the image. Say what it tells the reader; don’t start with “image of”.</p>
         <textarea class="brief-input" id="vm-alt" aria-label="Alt text" aria-describedby="vm-alt-help" rows="3" placeholder="e.g. Blood pressure log with three steps: sit, measure, record" oninput="onVisualInput()"></textarea>
         <div class="vm-count" id="vm-alt-count">0 characters</div>
         <div class="vm-alt-actions">
@@ -1309,11 +1375,11 @@ button,input,select,textarea{font-family:inherit}
       </div>
       <div class="mod-body">
         <h3 class="vm-sec-lbl">Palette from the artwork</h3>
-        <p class="vm-help">Colours taken from the artwork. Pick two to see how well they stand out from each other.</p>
+        <p class="vm-help">Pick two to check their contrast.</p>
         <div class="vm-palette" id="vm-palette" role="group" aria-label="Colours in the artwork"></div>
         <div class="vm-pair" id="vm-pair"></div>
         <h3 class="vm-sec-lbl vm-sec-gap">Colour-blind simulation</h3>
-        <p class="vm-help">About 1 in 12 men see some colours differently. Red-green is the most common kind. If two parts of a chart turn the same colour here, add labels or patterns.</p>
+        <p class="vm-help">If two parts turn the same colour here, add labels or patterns.</p>
         <div class="seg seg-grid" id="seg-cvd" role="group" aria-label="Colour-blind simulation">
           <button type="button" class="on" data-v="none" aria-pressed="true" onclick="setCvd('none',this)">Normal</button>
           <button type="button" data-v="deuter" aria-pressed="false" onclick="setCvd('deuter',this)">Deuteranopia</button>
@@ -1351,8 +1417,8 @@ button,input,select,textarea{font-family:inherit}
         <div class="meter-track"><div class="meter-fill" id="grade-fill" style="width:0%;background:var(--n300)"></div></div>
         <div class="meter-bench" id="grade-bench">target <b>≤ grade 6</b></div>
         <div class="stat-row">
-          <div class="stat-cell"><div class="stat-v" id="s-avglen">—</div><div class="stat-k">w / sent</div></div>
-          <div class="stat-cell"><div class="stat-v" id="s-syll">—</div><div class="stat-k">syll / w</div></div>
+          <div class="stat-cell"><div class="stat-v" id="s-avglen">—</div><div class="stat-k">words per sentence</div></div>
+          <div class="stat-cell"><div class="stat-v" id="s-syll">—</div><div class="stat-k">syllables per word</div></div>
           <div class="stat-cell"><div class="stat-v" id="s-passive">—</div><div class="stat-k">passive</div></div>
         </div>
         <div class="find" id="wordbudget-row" style="display:none;margin-top:6px;border-top:1px solid var(--n100);border-bottom:none;padding-top:7px">
@@ -1365,7 +1431,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: CCI ── -->
     <div class="mod mod-cci" id="mod-cci">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. <b>A score of 90 or more passes.</b><br><br>AUTO items are scored from your text. Tick the rest yourself.">CCI</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. <b>A score of 90 or more passes.</b><br><br>Auto-scored items come from your text. Rate the rest yourself.">CCI</span>
         <span class="pill pill-empty" id="cci-pill">—</span>
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
@@ -1451,9 +1517,9 @@ button,input,select,textarea{font-family:inherit}
   </div>
   </div><!-- /rail-scroll -->
 
-</div><!-- /stage -->
+</main><!-- /stage -->
 
-<div id="tip"></div>
+<div id="tip" role="status" aria-live="polite"></div>
 
 <dialog class="about" id="about" aria-labelledby="about-title">
   <div class="about-hdr">
@@ -1607,8 +1673,11 @@ function syllables(word){
   const m = word.match(/[aeiouy]{1,2}/g);
   return m ? m.length : 1;
 }
+// One word count and one sentence split for every module (footer, Readability, Plain language,
+// the text card, file history and versions), so their numbers always agree.
+function countWords(text){ return (String(text || '').match(/\b\w+\b/g) || []).length; }
 function computeFK(text){
-  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentences = splitSentences(text);
   const words = text.match(/\b\w+\b/g) || [];
   if(!sentences.length || !words.length) return null;
   const totalSyll = words.reduce((s,w) => s + syllables(w), 0);
@@ -1624,8 +1693,19 @@ function computeFK(text){
 }
 // FK can dip below zero for very short, simple text; show that as "below 1" rather than a negative grade
 const gradeText = g => g < 1 ? 'below 1' : String(g);
+// A line break always ends a sentence (each heading, list item and paragraph is its own block);
+// inside a line, a full stop, ! or ? followed by a capital does.
 function splitSentences(text){
-  return text.split(/(?<=[.!?])\s+(?=[A-Z"'])/).map(s => s.trim()).filter(s => s.length > 8);
+  return String(text || '').split(/\n+|(?<=[.!?])\s+(?=[A-Z"'“‘])/).map(s => s.trim()).filter(s => /\w/.test(s));
+}
+// The editor's text with one line per block (heading, paragraph, list item, table cell), so blocks never
+// run together ("…at HomeThe most…"). Every module reads the material through this.
+const TEXT_BLOCKS = 'p,h1,h2,h3,h4,h5,h6,li,div,blockquote,pre,td,th,dt,dd,figcaption,caption,tr';
+function editorText(){
+  const clone = editor.cloneNode(true);
+  clone.querySelectorAll('br').forEach(b => b.replaceWith('\n'));
+  clone.querySelectorAll(TEXT_BLOCKS).forEach(el => { el.append('\n'); });
+  return (clone.textContent || '').replace(/[ \t ]*\n[ \t ]*/g, '\n').replace(/\n{2,}/g, '\n').trim();
 }
 
 // ── Structure signals from the live editor ──
@@ -1636,9 +1716,9 @@ function readStructure(){
     // so "1. Sit still" isn't split at "1." and a headline doesn't run into the next line
     const raw = $('vm-transcript').value || '';
     const text = raw.split('\n').map(l => l.trim().replace(/^([-*•]|\d+[.)])\s+/, '')).filter(Boolean)
-      .map(l => /[.!?:]$/.test(l) ? l : l + '.').join(' ');
+      .map(l => /[.!?:]$/.test(l) ? l : l + '.').join('\n');
     const passive = (text.match(/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/gi) || []).length;
-    const sents = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    const sents = splitSentences(text);
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     return {
       text,
@@ -1654,9 +1734,9 @@ function readStructure(){
       passiveRate: sents.length ? passive/sents.length : 0,
     };
   }
-  const text = editor.textContent || '';
+  const text = editorText();
   const passive = (text.match(/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/gi) || []).length;
-  const sents = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sents = splitSentences(text);
   return {
     text,
     hasList:    !!editor.querySelector('ul,ol'),
@@ -1940,9 +2020,9 @@ function buildChecklist(items){
     let tag = '';
     if(autoNA)              tag = '<span class="ck-tag" title="Excluded from the score — this content isn\'t in the material">N/A</span>';
     else if(st === 'na')    tag = '<span class="ck-tag" title="You marked this not applicable — excluded from the score">N/A</span>';
-    else if(autoScored)     tag = autoVal ? '<span class="ck-tag ck-pass" title="Detected — standard met">AUTO ✓</span>'
-                                          : '<span class="ck-tag ck-fail" title="Not detected — standard not met">AUTO ✗</span>';
-    else if(gateFail)       tag = '<span class="ck-tag ck-fail" title="A prerequisite for this item was not detected in the text">AUTO ✗</span>';
+    else if(autoScored)     tag = autoVal ? '<span class="ck-tag ck-pass" title="Detected — standard met">Auto ✓</span>'
+                                          : '<span class="ck-tag ck-fail" title="Not detected — standard not met">Auto ✗</span>';
+    else if(gateFail)       tag = '<span class="ck-tag ck-fail" title="A prerequisite for this item was not detected in the text">Auto ✗</span>';
     else if(it.gate && lastFlags[it.gate] === true)
                             tag = '<span class="ck-tag" title="A prerequisite was detected — confirm the item yourself">detected · confirm</span>';
     else if(visualOn && DESIGN_ONLY.has(it.gate || it.auto) && lastFlags[it.gate || it.auto] == null)
@@ -1989,13 +2069,9 @@ function refreshScores(){
   cciPill.className = 'pill ' + (!cciOn ? 'pill-empty'
     : cci.done ? pillClass(cci.pct, CCI_PASS, 70)
     : cci.best < CCI_PASS ? 'pill-fail' : 'pill-count');
+  // The pill and the explanation below already say where the score stands; a status line repeated them
   const cciStatus = $('cci-status');
-  if(cciStatus){
-    if(!cciOn){ cciStatus.textContent = ''; cciStatus.className = 'status-line mod-status'; }
-    else if(cci.done && cci.pct >= CCI_PASS){ cciStatus.textContent = '✓ Passing'; cciStatus.className = 'status-line mod-status pass'; }
-    else if(cci.best < CCI_PASS){ cciStatus.textContent = '✗ '+cci.not+' not met — 90 is out of reach'; cciStatus.className = 'status-line mod-status fail'; }
-    else { cciStatus.textContent = cci.open+' not yet reviewed'; cciStatus.className = 'status-line mod-status'; }
-  }
+  if(cciStatus){ cciStatus.textContent = ''; cciStatus.className = 'status-line mod-status'; }
 
   // PEMAT — each scale shows a percentage only once all its applicable items are rated
   const pu = scoreItems(PEMAT_U), pa = scoreItems(PEMAT_A);
@@ -2018,13 +2094,8 @@ function refreshScores(){
     : (pu.open + pa.open)+' to rate';
   pPill.className = 'pill ' + (!hasContent() ? 'pill-empty' : !done ? 'pill-count'
     : onTarget ? 'pill-pass' : (u>50||a>50) ? 'pill-warn' : 'pill-fail');
-  const pStatus = $('pemat-status');
-  if(pStatus){
-    if(!hasContent()){ pStatus.textContent = ''; pStatus.className = 'status-line mod-status'; }
-    else if(!done){ pStatus.textContent = (pu.open + pa.open)+' not yet rated'; pStatus.className = 'status-line mod-status'; }
-    else if(onTarget){ pStatus.textContent = '✓ On working target'; pStatus.className = 'status-line mod-status pass'; }
-    else { pStatus.textContent = '✗ Below working target'; pStatus.className = 'status-line mod-status fail'; }
-  }
+  const pStatus = $('pemat-status');   // same as CCI: the pill and explanation carry this
+  if(pStatus){ pStatus.textContent = ''; pStatus.className = 'status-line mod-status'; }
 }
 
 function hasContent(){
@@ -2124,14 +2195,21 @@ function explainScores(stats, empty){
   // ── Readability ──
   if(stats){
     const over = Math.round((stats.grade - t.grade) * 10) / 10;
-    if(stats.grade <= t.grade){
+    // until an audience is picked the goal is a default, not something the user set
+    const goal = brief.audience ? 'your goal of grade '+t.grade : 'the default goal for patients (grade '+t.grade+')';
+    if(visualOn){
+      // grade formulas need running sentences; poster lines are too short to trust them either way
+      why('read-why','',
+        (stats.grade < 1 ? 'Reads <b>below grade 1</b>' : 'Reads at about <b>grade '+stats.grade+'</b>')+'. Short poster lines make reading-level formulas unreliable.',
+        'Read it aloud instead.');
+    } else if(stats.grade <= t.grade){
       why('read-why','good',
-        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets your goal of grade '+t.grade+'.',
+        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets '+goal+'.',
         'Keep your sentences this short as you edit.');
     } else {
       const yrs = over >= 1 ? Math.round(over) + ' year' + (Math.round(over)===1?'':'s') : 'under a year';
       why('read-why', over > 2 ? 'bad' : 'mid',
-        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That is about '+yrs+' above your goal of grade '+t.grade+'. It suits '+GRADE_AUDIENCE(stats.grade)+'.',
+        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That is about '+yrs+' above '+goal+'. It suits '+GRADE_AUDIENCE(stats.grade)+'.',
         stats.avgSentLen > t.sentLen
           ? 'Sentences have '+stats.avgSentLen+' words on average. Split them at “and”, “but” or “so” to get under '+t.sentLen+'.'
           : 'Your sentences are short enough. Swap long medical words for everyday ones.');
@@ -2140,26 +2218,20 @@ function explainScores(stats, empty){
 
   // ── CCI ──
   const cci = scoreItems(CCI_ITEMS);
-  const cciAuto = CCI_ITEMS.filter(i => {
-    const st = itemState(i);
-    return st !== 'na' && ((i.auto && typeof lastFlags[i.auto] === 'boolean') || (i.gate && lastFlags[i.gate] === false));
-  }).length;
   const cciNA = CCI_ITEMS.length - cci.applicable;
   if(cci.pct !== null){
-    const counts = '<b>'+cci.met+' met</b>, '+cci.not+' not met, '+cci.open+' not yet reviewed'+
+    const counts = '<b>'+cci.met+' met</b>, '+cci.not+' not met, '+cci.open+' to review'+
       (cciNA ? ' ('+cciNA+' don’t apply)' : '')+'.';
-    const scored = cciAuto ? cciAuto+' item'+(cciAuto===1?' is':'s are')+' scored from your text. ' : '';
     if(cci.done)
       why('cci-why', cci.pct>=CCI_PASS ? 'good' : cci.pct>=70 ? 'mid' : 'bad',
-        'Score: <b>'+cci.pct+'</b>. You met '+cci.met+' of '+cci.applicable+' items'+
-        (cciNA ? ' ('+cciNA+' don’t apply)' : '')+'. CDC says 90 or more passes.',
-        cci.pct >= CCI_PASS ? 'Passing. Check again after you edit.' : 'Fix the items marked not met.');
+        'Score <b>'+cci.pct+'</b>: '+cci.met+' of '+cci.applicable+' met. CDC passes 90 or more.',
+        cci.pct >= CCI_PASS ? 'Check again after you edit.' : 'Fix the items marked not met.');
     else if(cci.best < CCI_PASS)
-      why('cci-why','bad', counts+' Even if every open item is met, the score can reach only '+cci.best+'. CDC says 90 or more passes.',
+      why('cci-why','bad', counts+' Even if every open item is met, the most it can reach is '+cci.best+'. CDC passes 90 or more.',
         'Fix the items marked not met first.');
     else
-      why('cci-why','', counts+' Items you haven’t reviewed don’t count against you. The score is final once you rate them.',
-        scored+'Rate the rest below. No steps, numbers or risks? Mark that part “Doesn’t apply”.');
+      why('cci-why','', counts+' Items you haven’t reviewed don’t count against you.',
+        'Rate the rest. No steps, numbers or risks? Mark that part “Doesn’t apply”.');
   }
 
   // ── PEMAT ──
@@ -2169,12 +2241,12 @@ function explainScores(stats, empty){
   let pemMsg, pemTone, pemDo;
   if(!PU.done || !PA.done){
     pemTone='';
-    pemMsg='So far <b>'+PU.met+' of '+PU.applicable+'</b> understand items and <b>'+PA.met+' of '+PA.applicable+'</b> act items are met. <b>'+(PU.open+PA.open)+'</b> are still to rate. Percentages show once every item is rated, so unrated items never count as fails.';
-    pemDo='Rate the open items below.';
+    pemMsg='<b>'+(PU.open+PA.open)+'</b> items still to rate. Percentages show once all are rated; unrated items never count as fails.';
+    pemDo='';
   } else if(u >= PEMAT_PASS && a >= PEMAT_PASS){
     pemTone='good';
-    pemMsg='<b>Understand: '+u+'%</b> and <b>Act: '+a+'%</b>. Both meet this tool’s 70% working target. AHRQ sets no cutoff: higher is better.';
-    pemDo='On target.';
+    pemMsg='<b>Understand: '+u+'%</b> and <b>Act: '+a+'%</b>. Both meet the 70% working target.';
+    pemDo='';
   } else if(u >= PEMAT_PASS){
     pemTone='mid';
     pemMsg='Patients can <b>understand</b> it ('+u+'%), but may not know what to <b>do</b> ('+a+'%).';
@@ -2211,11 +2283,11 @@ function explainScores(stats, empty){
   const signed = ACC_SIGNOFF.filter(s => manual[s.id]).length;
   if(accFails){
     why('acc-why','bad',
-      '<b>'+accFails+' item'+(accFails===1?'':'s')+'</b> a health reviewer would send back. Often it’s a number with no source, no review date, or a claim that is too strong.',
+      '<b>'+accFails+' item'+(accFails===1?'':'s')+'</b> a health reviewer would send back.',
       'Fix these before sign-off.');
   } else if(signed < ACC_SIGNOFF.length){
     why('acc-why','mid',
-      'Nothing fails, but only <b>'+signed+' of '+ACC_SIGNOFF.length+'</b> checks are signed off. Software can spot a missing source. It can’t tell if the facts are right.',
+      'Nothing fails, but only <b>'+signed+' of '+ACC_SIGNOFF.length+'</b> checks are signed off. Software can’t tell if the facts are right.',
       'Ask a named reviewer to check the rest.');
   } else {
     why('acc-why','good','All checks pass and all four are signed off.',
@@ -2240,9 +2312,13 @@ function analyze(){
   lastFlags = autoFlags(stats, empty ? null : struct);
 
   // footer
-  $('f-words').textContent = stats ? stats.words.toLocaleString() : 0;
-  $('f-sents').textContent = stats ? stats.sentences : 0;
-  $('f-avg').textContent   = stats ? stats.avgSentLen : 0;
+  // footer: the same counts as Readability and the text card (countWords / splitSentences)
+  const nWords = countWords(text), nSents = splitSentences(text).length;
+  $('f-words').textContent = nWords.toLocaleString();
+  $('f-words-lbl').textContent = nWords === 1 ? 'word' : 'words';
+  $('f-sents').textContent = nSents;
+  $('f-sents-lbl').textContent = nSents === 1 ? 'sentence' : 'sentences';
+  $('f-avg').textContent   = nSents ? Math.round(nWords / nSents * 10) / 10 : 0;
 
   // READ module — targets come from the brief's audience
   const t = targets();
@@ -2252,12 +2328,14 @@ function analyze(){
   $('ease-bench').innerHTML = 'target <b>'+t.ease+'+</b> · higher = easier';
   $('grade-bench').innerHTML = 'target <b>≤ grade '+t.grade+'</b> · '+ (t.label||'') ;
   if(stats){
+    // Flesch ease is a 0–100 scale; very short or very long words push the formula past either end
     const e = Math.max(0, Math.min(100, stats.ease));
-    const eCol = stats.ease >= t.ease ? 'var(--teal)' : stats.ease >= t.ease-10 ? 'var(--orange)' : 'var(--red)';
-    $('ease-num').innerHTML = stats.ease;
+    // On artwork, short poster lines make the formulas unreliable: neutral fills, never a pass tone
+    const eCol = visualOn ? 'var(--n400)' : stats.ease >= t.ease ? 'var(--teal)' : stats.ease >= t.ease-10 ? 'var(--orange)' : 'var(--red)';
+    $('ease-num').textContent = e;
     $('ease-fill').style.width = e+'%';
     $('ease-fill').style.background = eCol;
-    const gCol = stats.grade <= t.grade ? 'var(--teal)' : stats.grade <= t.grade+2 ? 'var(--orange)' : 'var(--red)';
+    const gCol = visualOn ? 'var(--n400)' : stats.grade <= t.grade ? 'var(--teal)' : stats.grade <= t.grade+2 ? 'var(--orange)' : 'var(--red)';
     $('grade-num').innerHTML = stats.grade < 1 ? 'Gr <1' : 'Gr '+stats.grade;
     $('grade-fill').style.width = Math.max(4, Math.min(100, stats.grade/16*100))+'%';
     $('grade-fill').style.background = gCol;
@@ -2396,7 +2474,7 @@ function runA11y(empty){
   const imgs     = [...editor.querySelectorAll('img')];
   const headings = [...editor.querySelectorAll('h1,h2,h3,h4,h5,h6')];
   const links    = [...editor.querySelectorAll('a')];
-  const text     = editor.textContent || '';
+  const text     = editorText();
   const digital  = brief.format === 'digital';
 
   // 1. Alt text on every image
@@ -2500,7 +2578,7 @@ function runAccuracy(empty){
     pill.textContent = '—'; pill.className = 'pill pill-empty';
     return;
   }
-  const text = visualOn ? ($('vm-transcript').value || '') : (editor.textContent || '');
+  const text = visualOn ? ($('vm-transcript').value || '') : editorText();
   const findings = [];
 
   // Statistics present without any citation marker
@@ -2610,6 +2688,7 @@ function openVisual(entry){
   }
   onVisualInput();
   updateApplicability();                     // the artwork cards appear in the score area
+  const rail = $('rail-scroll'); if(rail) rail.scrollTop = 0;   // so "Text the tool read" and its reading status are in view
   pushNav();
 }
 
@@ -2809,23 +2888,41 @@ async function openPdf(entry){
       for(let i=1;i<=Math.min(doc.numPages, 20);i++){
         const pg = await doc.getPage(i);
         const tc = await pg.getTextContent();
-        all += tc.items.map(t => t.str).join(' ') + '\n\n';
+        all += pdfPageText(tc.items) + '\n\n';
       }
       if(entry.id !== activeFileId || !visualOn) return;
       if(all.trim().length > 20){
         $('vm-transcript').value = all.trim();
         entry.transcript = all.trim();
+        entry.textLayer = true;                // real text, so "Read text again" isn't offered
         setOcrState('pdf', 0, entry);
         flashHint('Text extracted from the PDF automatically');
       } else {
         ocrPdf(entry, doc);
       }
     }
+    syncOcrActions();                        // the PDF is drawn now, so a no-text-layer PDF can be read again
     renderFileHistory();
     onVisualInput();
   } catch(err){
     warnBanner('Could not open <b>'+escapeHtml(entry.name)+'</b> as a PDF. Try exporting it again, or paste the copy in as text.');
   }
+}
+// A PDF page's text layer with its line breaks kept: a new line at each end-of-line mark or
+// wherever the baseline moves, so a heading doesn't run into the first sentence
+function pdfPageText(items){
+  let out = '', lastY = null;
+  (items || []).forEach(it => {
+    if(!it || typeof it.str !== 'string') return;
+    const y = it.transform ? it.transform[5] : null;
+    const newLine = lastY !== null && y !== null && Math.abs(y - lastY) > Math.max(2, (it.height || 0) * 0.5);
+    if(newLine && out && !out.endsWith('\n')) out += '\n';
+    else if(out && !/\s$/.test(out) && it.str && !/^\s/.test(it.str)) out += ' ';
+    out += it.str;
+    if(it.hasEOL) out += '\n';
+    if(y !== null && it.str.trim()) lastY = y;
+  });
+  return out.split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n');
 }
 // resample: true for a new file or page (fresh palette, picks reset); false when only the
 // colour-blind view changed, so the palette and the two colours you picked stay put
@@ -2917,9 +3014,11 @@ function vmApplyZoom(keepCentre){
 }
 function vmZoomStep(dir){
   const cur = vmScale();
+  // From Fit (an in-between scale) the first step must be a visible jump: at least 1.25× either way
+  const k = vmZoom == null ? 1.25 : 1.001;
   const next = dir > 0
-    ? (VM_STEPS.find(z => z > cur + 0.001) || VM_STEPS[VM_STEPS.length - 1])
-    : (VM_STEPS.slice().reverse().find(z => z < cur - 0.001) || VM_STEPS[0]);
+    ? (VM_STEPS.find(z => z >= cur * k) || VM_STEPS[VM_STEPS.length - 1])
+    : (VM_STEPS.slice().reverse().find(z => z <= cur / k) || VM_STEPS[0]);
   vmZoom = next;
   vmApplyZoom(true);
 }
@@ -3103,19 +3202,25 @@ async function runOcr(entry, images, what){
     entry.ocr = true;
     entry.ocrWords = words;
     const box = $('vm-transcript');
+    const replaceOk = entry.ocrReplace !== undefined && box.value === entry.ocrReplace;   // "Read text again", confirmed, nothing typed since
+    entry.ocrReplace = undefined;
     if((text.match(/[A-Za-z0-9]/g) || []).length < 3){
-      setOcrState('fail', 0, entry, what);
-    } else if(box.value.trim()){
-      setOcrState('kept', 0, entry);          // you had started typing: don't overwrite it
+      // an image with no words is a calm "none found"; a PDF page says so in its own words
+      if(what === 'pdf') setOcrState('fail', 0, entry, what); else setOcrState('none', 0, entry);
+    } else if(box.value.trim() && !replaceOk){
+      entry.ocrPending = text;                // you had typed: don't overwrite it, but keep it to insert on request
+      setOcrState('kept', 0, entry);
     } else {
       box.value = text;
       entry.transcript = text;
+      entry.ocrPending = null;
       setOcrState('done', 0, entry);
     }
     renderFileHistory();
     onVisualInput();
   } catch(err){
     if(!live()) return;
+    entry.ocrReplace = undefined;
     setOcrState('fail', 0, entry, what);
   } finally {
     if(job === ocrJob) ocrOnProgress = null;
@@ -3160,6 +3265,7 @@ const OCR_MSG = {
   running:  'Reading text…',
   done:     'Machine-read. Click a line to find it on the artwork.',
   fail:     'Couldn’t read text from this image. Type the words you see.',
+  none:     'No words found. If the artwork has text, type it here.',
   failpdf:  'No text found in this PDF. Type the words you see in the artwork.',
   kept:     'You’d started typing, so the machine-read text wasn’t added.',
   supplied: 'Text supplied with the sample.',
@@ -3180,21 +3286,62 @@ function setOcrState(state, pct, entry, what){
   if(key === 'running'){ if(pct > 0) bar.value = pct; else bar.removeAttribute('value'); }   // no value = busy, not 0%
   if(state === 'running') ocrWarm();
   $('vm-transcript').setAttribute('aria-busy', String(key === 'running'));
+  syncOcrActions(key);
   if(visualOn) syncVisualHint();
 }
+
+// "Read text again" for images and PDFs with no text layer (never while a reading runs);
+// "Use the machine-read text" only while a reading is waiting because you had typed
+function syncOcrActions(key){
+  const wrap = $('vm-ocr-actions'); if(!wrap) return;
+  if(key === undefined) key = ($('vm-ocr').className.match(/is-(\w+)/) || [])[1] || 'idle';
+  const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
+  const canRead = !!entry && (entry.kind === 'image' || (entry.kind === 'pdf' && !entry.textLayer && !!pdfDoc));
+  const running = key === 'running';
+  $('vm-ocr-again').hidden = !canRead || running;
+  $('vm-ocr-use').hidden = !entry || running || !entry.ocrPending;
+  wrap.hidden = $('vm-ocr-again').hidden && $('vm-ocr-use').hidden;
+}
+function ocrReadAgain(){
+  const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
+  if(!entry) return;
+  const box = $('vm-transcript');
+  if(box.value.trim() && !confirm('Read the artwork again and replace the text in this card?\n\nAnything you typed here will be replaced.')) return;
+  entry.ocrPending = null;
+  entry.ocrReplace = box.value;              // replaced only if nothing is typed while it reads
+  if(entry.kind === 'pdf'){ if(pdfDoc) ocrPdf(entry, pdfDoc); }
+  else ocrImage(entry);
+}
+function ocrUsePending(){
+  const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
+  if(!entry || !entry.ocrPending) return;
+  const box = $('vm-transcript');
+  if(box.value.trim() && !confirm('Replace the text you typed with the machine-read text?')) return;
+  box.value = entry.ocrPending;
+  entry.transcript = entry.ocrPending;
+  entry.ocrPending = null;
+  setOcrState('done', 0, entry);
+  onVisualInput();
+  box.focus();
+}
+(function(){
+  const again = $('vm-ocr-again'), use = $('vm-ocr-use');
+  if(again) again.addEventListener('click', ocrReadAgain);
+  if(use) use.addEventListener('click', ocrUsePending);
+})();
 
 function syncVisualHint(){
   const txt = $('vm-transcript').value.trim();
   const state = ($('vm-ocr').className.match(/is-(\w+)/) || [])[1] || 'idle';
   // the "add the text" nudge only when nothing else is already saying what to do
-  $('vm-txt-hint').style.display = (txt.length > 20 || state === 'running' || state === 'fail') ? 'none' : 'block';
+  $('vm-txt-hint').style.display = (txt.length > 20 || state === 'running' || state === 'fail' || state === 'none') ? 'none' : 'block';
 }
 
 // visual-mode edits feed the same analysis pipeline
 function onVisualInput(){
   const alt = $('vm-alt').value.trim();
   const txt = $('vm-transcript').value.trim();
-  const words = (txt.match(/\b\w+\b/g)||[]).length;
+  const words = countWords(readStructure().text);   // the same count as the footer and Readability
   $('vm-alt-count').textContent = alt.length + ' characters' + (alt.length > 150 ? ' — over 150, trim it' : '');
   $('vm-txt-count').textContent = words + (words === 1 ? ' word' : ' words');
   const pill = $('vtext-pill');
@@ -3698,13 +3845,14 @@ function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt
 // ── Canvas title: the file name stays visible for every material type ──
 function setCanvasTitle(name, kind){
   const wrap = $('canvas-file');
-  if(!name){ wrap.style.display = 'none'; $('f-file').textContent = 'unsaved draft'; return; }
+  if(!name){ wrap.style.display = 'none'; $('f-file').textContent = 'unsaved draft'; $('f-file').removeAttribute('title'); return; }
   wrap.style.display = 'flex';
   $('canvas-file-kind').textContent = KIND_LABEL[kind] || 'FILE';
   const el = $('canvas-file-name');
   el.textContent = name;
   el.title = name;
   $('f-file').textContent = name;
+  $('f-file').title = name;                  // the footer shortens long names with an ellipsis
 }
 function toggleFileHistory(){
   const p = $('file-history');
@@ -3722,6 +3870,7 @@ function removeFile(id){
 function reopenFile(id){
   const f = fileHistory.find(x => x.id === id);
   if(!f) return;
+  intakeTok++;
   // stash current work before switching away
   stashActive();
   activeFileId = id;
@@ -3766,7 +3915,7 @@ function toggleTrack(){
     flashHint('Every pause in typing is now recorded');
   }
 }
-function currentWords(){ return ((editor.textContent||'').match(/\b\w+\b/g) || []).length; }
+function currentWords(){ return countWords(readStructure().text); }
 
 function saveVersion(label){
   const words = currentWords();
@@ -3788,6 +3937,7 @@ function saveVersion(label){
   });
   if(versions.length > 60) versions.pop();
   $('f-vers').textContent = versions.length;
+  $('f-vers-lbl').textContent = versions.length === 1 ? 'version' : 'versions';
   renderVersions();
 }
 function renderVersions(){
@@ -3840,6 +3990,7 @@ editor.addEventListener('paste', () => setTimeout(scheduleAnalysis, 30));
 
 function focusEditor(){ editor.focus(); $('canvas-empty').style.display = 'none'; }
 function clearEditor(){
+  intakeTok++;                               // a file still loading must not reappear after Clear
   exitVisual();
   editor.innerHTML = '';
   resetLiveOverrides();
@@ -3883,8 +4034,13 @@ async function pasteFromClipboard(){
 }
 
 // ── Central file intake: routes to visual mode or the text editor ──
+// The last material chosen wins: a file still being read when you pick a sample, another file or
+// Clear is dropped when it finishes (every way of opening material bumps this).
+let intakeTok = 0;
 async function intakeFile(file){
   if(!file) return;
+  const tok = ++intakeTok;
+  const stale = () => tok !== intakeTok;
   resetLiveOverrides();
   stashActive();
   $('doc-warn').style.display = 'none';
@@ -3895,6 +4051,7 @@ async function intakeFile(file){
     const dataUrl = await new Promise(res => {
       const r = new FileReader(); r.onload = ev => res(ev.target.result); r.readAsDataURL(file);
     });
+    if(stale()) return;
     const entry = addToHistory({ name:file.name, kind:'image', dataUrl, alt:'', transcript:'', vtype:'poster' });
     openVisual(entry);
     flashHint('Reading the words in the artwork. Check them in the Text the tool read card.');
@@ -3904,6 +4061,7 @@ async function intakeFile(file){
   // PDFs → visual mode with a rendered page + real text layer when there is one
   if(ext === 'pdf'){
     const buf = await file.arrayBuffer();
+    if(stale()) return;
     const entry = addToHistory({ name:file.name, kind:'pdf', pdfData:buf, alt:'', transcript:'', vtype:'poster' });
     openVisual(entry);
     return;
@@ -3952,9 +4110,10 @@ async function intakeFile(file){
     const t = await file.text();
     html = '<p>' + t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>') + '</p>';
   }
+  if(stale()) return;
   exitVisual();
   editor.innerHTML = html;
-  addToHistory({ name:file.name, kind:'doc', html, words:((editor.textContent||'').match(/\b\w+\b/g)||[]).length });
+  addToHistory({ name:file.name, kind:'doc', html, words:countWords(editorText()) });
   setCanvasTitle(file.name, 'doc');
   analyze();
   saveVersion('Opened ' + file.name);
@@ -4062,6 +4221,7 @@ document.addEventListener('paste', async e => {
     flashHint('Image added — give it alt text in the Accessibility module');
     scheduleAnalysis();
   } else {
+    intakeTok++;                             // the pasted image wins over a file still loading
     stashActive();
     const name = 'Pasted image ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
     const entry = addToHistory({ name, kind:'image', dataUrl, alt:'', transcript:'', vtype:'poster' });
@@ -4095,6 +4255,7 @@ function mdToHtml(md){
 
 // ── Sample handout ──
 function loadSample(){
+  intakeTok++;                               // a file still loading must not take over
   resetLiveOverrides();
   exitVisual();
   editor.innerHTML =
@@ -4109,8 +4270,7 @@ function loadSample(){
     '<h2>When to call us</h2>'+
     '<p>Call your care team at (555) 123-4567 if your top number is above 180.</p>';
   setCanvasTitle('sample-handout.docx', 'doc');
-  addToHistory({ name:'sample-handout.docx', kind:'doc', html:editor.innerHTML,
-                 words:((editor.textContent||'').match(/\b\w+\b/g)||[]).length });
+  addToHistory({ name:'sample-handout.docx', kind:'doc', html:editor.innerHTML, words:countWords(editorText()) });
   analyze();
   saveVersion('Loaded sample handout');
 }
@@ -4118,6 +4278,7 @@ function loadSample(){
 // ── Sample poster: drawn on a canvas so it needs no image file; opens in visual mode ──
 // It keeps a few real problems for the checks to find: no alt text, a low-contrast footer, a bare percentage and a number range.
 function loadSamplePoster(){
+  intakeTok++;                               // a file still loading must not take over
   const W = 900, H = 1200;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d');
@@ -4275,10 +4436,10 @@ function fwIdxByNo(key){
 function fwTextUnits(){
   const struct = readStructure();
   const text = struct.text || '';
-  const headers = visualOn
-    ? text.split('\n').map(l => l.trim()).filter(l => l && l.length < 60 && !/[.!]$/.test(l))
+  // A transcript can't show which lines are headers, so visual mode finds none (the user judges those items)
+  const headers = visualOn ? []
     : [...editor.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h => h.textContent.trim()).filter(Boolean);
-  const sentences = text.split(/[.!?]+|\n+/).map(s => s.trim()).filter(s => /\w/.test(s));
+  const sentences = splitSentences(text);
   return { struct, text, headers, sentences };
 }
 const PASSIVE_RE = /\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/i;
@@ -4321,7 +4482,7 @@ function autoCdcIdd(){
   if(!visualOn && !editor.querySelector('img'))
     out[ix[5]] = { v:'n', why:'No visuals in the material — CDC: if the product has no visuals, answer no.' };
   // 8 — 10 or fewer words; "almost all" read here as 90%
-  const units = u.sentences.concat(u.headers);
+  const units = u.sentences.concat(u.headers.filter(h => !u.sentences.includes(h)));   // headings are already their own lines
   if(units.length){
     const ok = units.filter(short).length, share = ok / units.length;
     out[ix[8]] = { v: share >= 0.9 ? 'y' : 'n',
@@ -4533,19 +4694,51 @@ function FW_SCALED(key){ return key==='discern' || key==='option' || key==='sam'
 function linkifyEsc(str){
   return escapeHtml(str).replace(/(https?:\/\/[^\s)]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
+// At most one short line of guidance per checklist: what the number buttons mean where they
+// don't explain themselves, otherwise the one sentence that helps you rate. Long notes and
+// scale reminders that the buttons already show were dropped (the Full compass keeps them).
+const FW_GUIDE = {
+  sam:       '0 = not suitable, 1 = adequate, 2 = superior. 70% or more overall is superior.',
+  discern:   '1 = no or poor, 5 = yes or excellent. No pass mark: use it to compare versions.',
+  eqip:      'No pass mark, so use it to compare versions.',
+  cdcidd:    'Answer Yes only if every instance meets the item.',
+  ipdas:     'A decision aid must meet all 6 of the first items.',
+  ahrq:      'It is not a score for one page.',
+  ottawa:    'This is a guide for design, not a score.',
+  share:     'The last two steps can’t be checked from a page.',
+  teachback: 'Can a reader answer all three Ask Me 3 questions?',
+  comb:      'First find the gap, then check if the page helps close it.',
+  hbm:       'Check all 6 parts.',
+  ttm:       'Check the stage the page aims at.',
+  eppm:      'Never raise fear without showing that the step works and that readers can do it.',
+  whorisks:  'Use it for outbreak or crisis material.',
+  picker:    'Use these as checks when you design written material.',
+  seips:     'It gives ideas to fix the system, not a score.',
+  planetree: 'Use the 10 parts as ideas. Many won’t apply to one handout.',
+};
+function fwGuideLine(key){
+  return key in FW_GUIDE ? FW_GUIDE[key] : '';
+}
+// Sources stay one click away, collapsed
+function fwSourcesHtml(key){
+  const r = FW_REG[key];
+  return '<details class="fwo-src-wrap"><summary>Sources</summary>'
+    + (r.src && r.src.length ? '<ul class="fwo-src">' + r.src.map(x => '<li>' + linkifyEsc(x) + '</li>').join('') + '</ul>' : '')
+    + '<div class="fwo-src-link"><a href="' + fwSourceUrl(key) + '" target="_blank" rel="noopener">Open original source ↗</a></div>'
+    + '</details>';
+}
 function renderFwItem(key){
   const r = FW_REG[key], level = FW_LEVEL[key];
   const open = !!fwOpen[key];
   let body = '';
-  const typeLine = (FW_TYPE_LABEL[r.t] || r.t) + (r.th ? ' · Pass: ' + r.th : '');
-  body += '<div class="fwo-meta">' + escapeHtml(typeLine) + '</div>';
+  const guide = fwGuideLine(key);
   if(level === 'OFFDOC'){
     body += '<div class="fwo-meta"><b>Not scored here.</b> ' + escapeHtml(FW_OFF_WHY[key] || 'Its real score needs patients, observers or a live process.') + '</div>';
     body += '<div class="fwo-dom">What it looks at</div><ul class="fwo-list">' + r.cr.map(c => '<li>' + escapeHtml(c[1]) + '</li>').join('') + '</ul>';
   } else if(FW_AUTO[key]){
     body += fwSuggestedBody(key);
   } else {
-    body += '<div class="fwo-meta">' + escapeHtml(fwScaleHint(key)) + '</div>';
+    if(guide) body += '<div class="fwo-meta">' + escapeHtml(guide) + '</div>';
     const opts = fwScaleOptions(key);
     const rt = fwRatings[key] || {};
     let lastDom = null;
@@ -4560,11 +4753,7 @@ function renderFwItem(key){
       }
     });
   }
-  let about = '';
-  if(r.note) about += '<div>' + escapeHtml(r.note) + '</div>';
-  if(r.src && r.src.length) about += '<div style="margin-top:6px"><b>Sources</b></div><ul class="fwo-src">' + r.src.map(x => '<li>' + linkifyEsc(x) + '</li>').join('') + '</ul>';
-  about += '<div style="margin-top:6px"><a href="' + fwSourceUrl(key) + '" target="_blank" rel="noopener">Open original source ↗</a></div>';
-  body += '<div class="fwo-about">' + about + '</div>';
+  body += fwSourcesHtml(key);
 
   return '<div class="fwo-item' + (open ? ' open' : '') + '" id="fwo-item-' + key + '">'
     + '<div class="fwo-hdr" role="button" tabindex="0" aria-expanded="' + open + '" onclick="toggleFwOpen(\'' + key + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFwOpen(\'' + key + '\')}">'
@@ -4578,20 +4767,21 @@ const FW_CHECK_LABEL = { layout:'needs the layout', visual:'needs the visuals', 
 // Checklist body for frameworks that take text-derived suggestions (PEMAT-A/V, CDC IDD/ELL, CDC Inclusive Comms)
 function fwSuggestedBody(key){
   const r = FW_REG[key], eff = fwEffective(key), sc = fwScore(key);
-  let h = '<div class="fwo-meta">' + escapeHtml(fwScaleHint(key)) + '</div>';
+  const guide = fwGuideLine(key);
+  let h = guide ? '<div class="fwo-meta">' + escapeHtml(guide) + '</div>' : '';
   if(key === 'pematav'){
     const f = x => x === null ? '—' : x + '%';
     const g = (p, open) => open ? '<span style="font-weight:400;color:var(--n500)">' + open + ' to rate</span>' : f(p);
     h += '<div class="fwo-score">Understandability ' + g(sc.u, sc.uOpen) + ' · Actionability ' + g(sc.a, sc.aOpen) + '</div>'
-       + '<div class="fwo-sub">Separate scores, never combined. AHRQ sets no pass mark: higher is better.'
-       + (sc.unrated ? ' Each score appears once all its items are rated — AHRQ asks you not to skip any.' : '') + '</div>';
+       + '<div class="fwo-sub">Two separate scores; AHRQ sets no pass mark.'
+       + (sc.unrated ? ' Each shows once all its items are rated.' : '') + '</div>';
   } else if(key === 'cdcidd'){
     h += '<div class="fwo-score">' + (sc.unrated ? sc.yes + ' yes so far · ' + sc.unrated + ' to answer' : 'Total score ' + (sc.pct === null ? '—' : sc.pct)) + ' · ' + sc.possible + ' possible</div>'
-       + '<div class="fwo-sub">CDC: 90 or above is excellent; 89 or below — revise the items that scored 0 and score again.'
-       + (sc.unrated ? (sc.best < 90 ? ' Even if every open item is yes, the most it can reach is ' + sc.best + '.' : ' The total appears once every item is answered; unanswered items don’t count against you.') : '') + '</div>';
+       + '<div class="fwo-sub">CDC: 90 or above is excellent.'
+       + (sc.unrated ? (sc.best < 90 ? ' The most it can still reach is ' + sc.best + '.' : ' Unanswered items don’t count against you.') : '') + '</div>';
   } else if(key === 'cdceq'){
     h += '<div class="fwo-score">' + sc.flag + ' flagged · ' + sc.ok + ' pass</div>'
-       + '<div class="fwo-sub">No score — CDC calls these principles a starting point, not a mandate. The term lists are not complete, so no hits does not mean a principle is met.</div>';
+       + '<div class="fwo-sub">No score. Flagged terms are prompts, not verdicts, and no hits doesn’t mean a principle is met.</div>';
   }
   let lastDom = null;
   r.cr.forEach((c,i) => {
@@ -4599,7 +4789,7 @@ function fwSuggestedBody(key){
     if(c[0] !== lastDom){ h += '<div class="fwo-dom">' + escapeHtml(c[0]) + '</div>'; lastDom = c[0]; }
     const label = (m.no !== undefined ? '<span class="fwo-no">' + m.no + '.</span>' : '') + escapeHtml(c[1])
       + (FW_CHECK_LABEL[m.ck] ? ' <span class="ck-tag" title="Can\'t be judged from the text alone">' + FW_CHECK_LABEL[m.ck] + '</span>' : '')
-      + (e.src === 'auto' ? ' <span class="ck-tag ' + (e.v === 'n' || e.v === '0' || e.v === 'flag' ? 'ck-fail' : 'ck-pass') + '">AUTO ' + FW_VAL_LABEL[e.v] + '</span>' : '')
+      + (e.src === 'auto' ? ' <span class="ck-tag ' + (e.v === 'n' || e.v === '0' || e.v === 'flag' ? 'ck-fail' : 'ck-pass') + '">Auto ' + FW_VAL_LABEL[e.v] + '</span>' : '')
       + (e.src === 'rule' ? ' <span class="ck-tag">set by score sheet</span>' : '');
     let sub = '';
     if(e.why) sub += '<div class="fwo-sub why">' + escapeHtml(e.why) + '</div>';
@@ -4642,11 +4832,9 @@ function renderFwOut(){
   const names = joinNames(live.map(k => FW_LIVE_NAME[k]));
   let html = '';
   if(needText){
-    const what = visualOn
-      ? 'A poster image or scanned page has no text the tool can read. Type or paste the words from the artwork into “Text the tool read”'
-      : 'Paste or type your material into the workspace';
+    const what = visualOn ? 'Add the artwork’s words to “Text the tool read”.' : 'Paste or type your material into the workspace.';
     html += '<div class="fwo-need"><b>' + escapeHtml(names) + (live.length === 1 ? ' needs' : ' need') + ' text to score.</b> '
-          + escapeHtml(what) + ' and ' + (live.length === 1 ? 'its card' : 'their cards') + ' will appear below.'
+          + escapeHtml(what)
           + '<div><button type="button" class="btn btn-secondary" style="margin-top:var(--sp-2)" onclick="focusArtworkText()">' + (visualOn ? 'Add the poster\'s text' : 'Go to the workspace') + '</button></div></div>';
   }
   if(part.length) html += fwGroupHdr('PARTIAL', part.length) + part.map(renderFwItem).join('');
@@ -4842,10 +5030,10 @@ function renderFwTopBar(){
   const selected = selectedFrameworks();
   const chips = $('fw-top-chips'), count = $('fw-top-count');
   if(selected.length){
-    // chip colour = output type, same as the Score / Partial score / Qualitative tags on the cards
+    // one neutral tag style: a colour code here only meant something in a tooltip
     chips.innerHTML = selected.map(f => {
       const b = FW_BADGE[FW_LEVEL[f]], out = fwOutType(f);
-      return '<span class="fw-tag fw-out-tag '+out+'" title="'+escapeHtml(FW_FULL[f]+' · '+OUT_LABEL[out]+' · '+b.label)+'">'+FW_LABEL[f]+'</span>';
+      return '<span class="fw-tag fw-out-tag" title="'+escapeHtml(FW_FULL[f]+' · '+OUT_LABEL[out]+' · '+b.label)+'">'+FW_LABEL[f]+'</span>';
     }).join('');
     count.textContent = selected.length + ' of ' + FW_AVAILABLE.length;
     fitChips(chips);
@@ -4861,13 +5049,16 @@ function renderFwTopBar(){
 }
 // Brief and Frameworks dropdowns: one open at a time; click outside or press Escape to close
 const TOP_PANELS = {
-  brief: { bar:'brief-topbar', panel:'brief-top-panel', toggle:'brief-top-toggle', open:'Close ▾', closed:() => 'Edit brief ▸' },
-  fw:    { bar:'fw-topbar',    panel:'fw-top-panel',    toggle:'fw-top-toggle',    open:'Close ▾', closed:() => 'Show all ' + FW_AVAILABLE.length + ' ▸' },
+  brief: { bar:'brief-topbar', btn:'brief-top-btn', panel:'brief-top-panel', toggle:'brief-top-toggle', open:'Close ▾', closed:() => 'Edit brief ▸' },
+  fw:    { bar:'fw-topbar',    btn:'fw-top-btn',    panel:'fw-top-panel',    toggle:'fw-top-toggle',    open:'Close ▾', closed:() => 'Show all ' + FW_AVAILABLE.length + ' ▸' },
 };
+// A closed panel is inert: its ~70 controls leave the Tab order and the accessibility tree
 function setTopPanel(key, open){
-  const p = TOP_PANELS[key];
-  $(p.panel).classList.toggle('open', open);
+  const p = TOP_PANELS[key], panel = $(p.panel);
+  panel.classList.toggle('open', open);
+  panel.inert = !open;
   $(p.bar).classList.toggle('open', open);
+  $(p.btn).setAttribute('aria-expanded', String(open));
   $(p.toggle).textContent = open ? p.open : p.closed();
 }
 function toggleTopPanel(key){
@@ -4881,7 +5072,18 @@ function toggleBriefTop(){ toggleTopPanel('brief'); }
 document.addEventListener('click', e => {
   if(!e.target.closest('.top-bar-col') && !e.target.closest('#tip')) closeTopPanels();
 }, true);
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeTopPanels(); });
+// Escape closes an open panel; if focus was in it (or on its toggle) it goes back to the toggle
+document.addEventListener('keydown', e => {
+  if(e.key !== 'Escape') return;
+  Object.keys(TOP_PANELS).forEach(k => {
+    const p = TOP_PANELS[k], panel = $(p.panel);
+    if(!panel.classList.contains('open')) return;
+    const col = panel.closest('.top-bar-col');
+    const hadFocus = col && col.contains(document.activeElement);
+    setTopPanel(k, false);
+    if(hadFocus) $(p.btn).focus();
+  });
+});
 renderFwTopBar();
 
 // ── Module dock / rails (fixed columns — drag only reorders) ──
@@ -4972,6 +5174,7 @@ function applyLayout(key, silent){
   // the artwork cards are in every workspace (they hide themselves in text mode), always first
   const right = $('rail-right');
   VIS_MODS.slice().reverse().forEach(id => { const m = $(id); if(!m) return; m.classList.remove('hidden'); right.insertBefore(m, right.firstChild); });
+  syncFoldButtons();
   updateApplicability();
   $('layout-sel').value = key;
   lsSet(LS_LAST, key);
@@ -5006,6 +5209,7 @@ function addModule(id){
   const m = $(id);
   if(!m) return;
   m.classList.remove('hidden','collapsed');
+  syncFoldButtons();
   updateApplicability();
   $('rail-right').appendChild(m);
   if(m.scrollIntoView) m.scrollIntoView({ behavior:'smooth', block:'nearest' });
@@ -5064,7 +5268,25 @@ function clearInputs(){
 
 function toggleCollapse(id){
   $(id).classList.toggle('collapsed');
+  syncFoldButtons();
   touchLayout();
+}
+// Card header buttons say which card they act on, and the fold button says whether the card is open
+function syncFoldButtons(){
+  MODS.forEach(id => {
+    const m = $(id); if(!m) return;
+    const name = MOD_NAMES[id] || id, open = !m.classList.contains('collapsed');
+    const body = m.querySelector('.mod-body'); if(body && !body.id) body.id = id + '-body';
+    const fold = m.querySelector('.mod-fold');
+    if(fold){
+      fold.setAttribute('aria-label', name + ' card');
+      fold.setAttribute('aria-expanded', String(open));
+      if(body) fold.setAttribute('aria-controls', body.id);
+      fold.title = open ? 'Collapse' : 'Expand';
+    }
+    const hide = m.querySelector('.mod-hide');
+    if(hide){ hide.setAttribute('aria-label', 'Remove ' + name); hide.title = 'Remove ' + name; }
+  });
 }
 // Any manual tweak marks the workspace as edited (Save… captures it)
 function touchLayout(){
@@ -5209,13 +5431,20 @@ window.addEventListener('popstate', e => {
 const tipEl = $('tip');
 let tipOwner = null;
 
+// Help triggers are named for what they explain ("About Readability") and say whether it is showing
+document.querySelectorAll('[data-tip][role="button"]').forEach(el => {
+  if(!el.hasAttribute('aria-label')) el.setAttribute('aria-label', 'About ' + el.textContent.trim());
+  el.setAttribute('aria-expanded', 'false');
+  el.setAttribute('aria-controls', 'tip');
+});
 function showTip(el){
   const txt = el.dataset.tip;
   if(!txt) return;
   hideTip();
-  tipEl.innerHTML = txt;
+  tipEl.innerHTML = txt;   // tip text is authored in this file (never user input)
   tipEl.classList.add('on');
   el.classList.add('tip-open');
+  if(el.hasAttribute('aria-expanded')) el.setAttribute('aria-expanded', 'true');
   tipOwner = el;
 
   const r = el.getBoundingClientRect();
@@ -5230,7 +5459,7 @@ function showTip(el){
 
 function hideTip(){
   tipEl.classList.remove('on');
-  if(tipOwner) tipOwner.classList.remove('tip-open');
+  if(tipOwner){ tipOwner.classList.remove('tip-open'); if(tipOwner.hasAttribute('aria-expanded')) tipOwner.setAttribute('aria-expanded', 'false'); }
   tipOwner = null;
 }
 
