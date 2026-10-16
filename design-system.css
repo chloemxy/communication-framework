@@ -36,6 +36,7 @@
   --shadow-1: 0 1px 2px rgba(28,25,23,.05);
   --shadow-2: 0 1px 2px rgba(28,25,23,.04), 0 4px 14px rgba(28,25,23,.06);
   --shadow-3: 0 12px 36px rgba(28,25,23,.14);
+  --focus: 0 0 0 3px rgba(47,74,192,.35);
 
   /* Framework zones */
   --zone-clarity: #1e5f96; --zone-process: #5b3aa8; --zone-behavior: #a2470a; --zone-outcomes: #15803d;
@@ -65,21 +66,33 @@ h1 { font-size: var(--fs-2xl); font-weight: 600; line-height: 1.25; }
 h2, h3 { font-size: var(--fs-lg); font-weight: 600; line-height: 1.35; }
 h4, h5, h6 { font-size: var(--fs-sm); font-weight: 600; }
 
-/* ── Buttons: one component, three variants ── */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
-  min-height: 32px; padding: 0 var(--sp-3); border-radius: var(--radius-sm);
-  font-size: var(--fs-xs); font-weight: 600; line-height: 1; white-space: nowrap;
-  text-decoration: none; cursor: pointer; border: 1px solid transparent;
-  transition: background .12s, border-color .12s, color .12s;
+/* ── Button: one component, three variants ──
+   Primary   the single most important action in a region (at most one per region)
+   Secondary normal actions
+   Quiet     low-emphasis, utility and reversible actions; no border or fill until hover
+   All share height, padding, radius, Caption strong type and the focus ring.
+   .btn-icon is the square size for glyph-only buttons (always with an aria-label or title). */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  min-height:32px;min-width:32px;padding:0 var(--sp-3);
+  border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;
+  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1.2;color:var(--n700);
+  white-space:nowrap;text-decoration:none;cursor:pointer;user-select:none;flex-shrink:0;
+  transition:background-color .12s,border-color .12s,color .12s;
 }
-.btn-primary   { background: var(--dark); color: var(--white); }
-.btn-primary:hover { background: var(--n800); color: var(--white); }
-.btn-secondary { background: var(--white); color: var(--n800); border-color: var(--n300); box-shadow: var(--shadow-1); }
-.btn-secondary:hover { border-color: var(--n500); color: var(--n900); }
-.btn-quiet     { background: transparent; color: var(--n600); }
-.btn-quiet:hover { background: var(--n100); color: var(--n900); }
-.btn:disabled  { cursor: default; opacity: 1; background: var(--n50); color: var(--n400); border-color: var(--n200); box-shadow: none; }
+.btn[hidden]{display:none}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus)}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-hov);border-color:var(--blue-hov);color:var(--white)}
+.btn-secondary{background:var(--white);border-color:var(--n300);color:var(--n800)}
+.btn-secondary:hover{background:var(--n50);border-color:var(--n400);color:var(--n900)}
+.btn-quiet{color:var(--n600)}
+.btn-quiet:hover{background:var(--n100);color:var(--n900)}
+.btn-icon{width:32px;padding:0}
+.btn.on, .btn[aria-pressed="true"]{background:var(--blue-lt);border-color:transparent;color:var(--blue)}
+.btn:disabled, .btn[aria-disabled="true"]{cursor:not-allowed;background:var(--n50);border-color:var(--n200);color:var(--n400)}
+.btn-quiet:disabled{background:transparent;border-color:transparent}
+.btn b{font-weight:600;color:inherit}
 
 /* ── Surfaces ── */
 .surface { background: var(--white); border: 1px solid var(--n200); border-radius: var(--radius-lg); box-shadow: var(--shadow-2); }

@@ -4,6 +4,28 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Studio and Compass share one framework list and one design system
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Same frameworks everywhere.** The studio now builds its framework list (names,
+  descriptions, areas, source links) from `frameworks.js`, the list the Framework Compass
+  uses. Both show the same 23.
+  - Added to the studio: UPL (64 items) and PCORI (6).
+  - Removed from the studio: SEIPS and Planetree, plus the hidden reference-only entries.
+- **`FW_REG` regenerated** from the engine. It picks up the updated Picker principles,
+  UPL, PCORI and the moved source links.
+  - `scripts/build-fw-reg.js` now takes its framework map from `frameworks.js`.
+  - `--check` also reports frameworks added or removed, instead of crashing.
+  - It prints "checked 23 existing keys" with no differences.
+- **One design system.** The studio loads `design-system.css`, the stylesheet the Compass
+  uses, and drops its own copies of the tokens and button component. The design team's
+  button (primary / secondary / quiet / icon) is now the shared definition. Measured: the
+  studio and the Compass use the identical type treatments, nothing is under 13px, and no
+  text is below 4.5:1 contrast.
+- The top-bar link now reads "Framework Compass ↗". It used to say "Full compass (26)",
+  a count that had drifted.
+
 ## 2026-10-16 — Studio refinement: calmer buttons, artwork review, honest artwork scores
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

@@ -3,10 +3,8 @@
 const fs = require('fs'), path = require('path');
 const dir = path.resolve(__dirname, '..'), check = process.argv.includes('--check');
 const R = require(path.join(dir, 'analysis-engine.js')).FRAMEWORK_REGISTRY;
-const MAP = { cci:'CCI', pemat:'PEMAT', pematav:'PEMAT_AV', cdcidd:'CDC_IDD', sam:'SAM', discern:'DISCERN', eqip:'EQIP',
-  readability:'READABILITY', plainlang:'PLAIN_LANGUAGE', cdceq:'CDC_EQUITY', pinkbook:'NCI_PINK_BOOK', teachback:'TEACH_BACK',
-  option:'OPTION', ipdas:'IPDAS', ahrq:'AHRQ_TOOLKIT', ottawa:'OTTAWA_DMSF', share:'SHARE', comb:'COM_B', hbm:'HBM', ttm:'TTM',
-  eppm:'EPPM', whorisks:'WHO_RISK_COMMS', pam:'PAM', cahps:'CAHPS', nps:'NPS', picker:'PICKER', ebcd:'EBCD', seips:'SEIPS', planetree:'PLANETREE' };
+// studio key -> engine id, from the shared list (frameworks.js) the studio and the Compass both use
+const MAP = Object.fromEntries(require(path.join(dir, 'frameworks.js')).FRAMEWORKS.map(f => [f.key, f.id]));
 const LIVE = ['cci','pemat','readability','plainlang'];
 const file = path.join(dir, 'index.html');
 const html = fs.readFileSync(file, 'utf8');
@@ -32,10 +30,12 @@ for (const [k, id] of Object.entries(MAP)) {
   out[k] = e;
 }
 if (check) {
-  for (const k of Object.keys(old)) {
+  for (const k of Object.keys(old).filter(k => k in out)) {
     const a = JSON.stringify(old[k]), b = JSON.stringify(out[k]);
     if (a !== b) process.exitCode = 1, console.log('DIFF', k, '\n old:', a.slice(0, 300), '\n new:', b.slice(0, 300));
   }
+  const added = Object.keys(out).filter(k => !(k in old)), removed = Object.keys(old).filter(k => !(k in out));
+  if (added.length || removed.length) { process.exitCode = 1; console.log('ADDED', added.join(' ') || '-', '| REMOVED', removed.join(' ') || '-'); }
   console.log('checked', Object.keys(old).length, 'existing keys');
 } else {
   const json = JSON.stringify(out).replace(/</g, '\u003c');
