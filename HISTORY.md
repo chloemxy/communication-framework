@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-16 — Half-width document panel, one checklist control, seven type treatments
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview
 
 - **Material panel at half the screen, adjustable.**
   - On desktop the document and the score cards start 50/50, with a divider between them.
@@ -38,7 +38,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Top nav: Full compass and About
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview
 
 - **Full compass (26) ↗** moved from inside the Frameworks panel to a new top nav on the
   right of the top bar.
@@ -53,7 +53,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Remove the mode-switch hints
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview
 
 - Switching modes no longer flashes a hint, so both buttons behave the same. Removed:
   - "Plan from an idea": "Planning mode — set Brief and Frameworks first. Add scoring
@@ -63,7 +63,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Design refresh: tokens, 13px type floor, smaller canvas
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview
 
 - **Layout.** The studio is a grid now, not absolutely positioned panels.
   - The document column is capped at 560px. It used to fill everything left of a
@@ -92,7 +92,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Close open tasks: honest scoring, single-source notes, verified wording
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview
 
 - **No passes without evidence in visual mode.** A transcript can't show headers, emphasis,
   visuals or tables, so those signals are now "can't tell" (null) instead of guessed.
