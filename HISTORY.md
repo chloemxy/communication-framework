@@ -4,13 +4,15 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
-## 2026-10-16 — Remove the planning-mode hint
+## 2026-10-16 — Remove the mode-switch hints
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
-- Switching to "Plan from an idea" no longer flashes "Planning mode — set Brief and
-  Frameworks first. Add scoring modules (CCI, PEMAT…) once you have a draft…".
-  The "Evaluate mode" hint for the other button is unchanged.
+- Switching modes no longer flashes a hint, so both buttons behave the same. Removed:
+  - "Plan from an idea": "Planning mode — set Brief and Frameworks first. Add scoring
+    modules (CCI, PEMAT…) once you have a draft…"
+  - "Evaluate a draft": "Evaluate mode — upload or paste a draft and it scores against
+    your Brief and the frameworks."
 
 ## 2026-10-16 — Design refresh: tokens, 13px type floor, smaller canvas
 
