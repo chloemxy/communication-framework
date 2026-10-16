@@ -511,6 +511,9 @@ body{font-family:var(--sans);background:#f0ece7;color:var(--n900);display:flex;f
 .ck-item{display:flex;align-items:flex-start;gap:7px;padding:3px 0;font-size:12px;color:var(--n700);line-height:1.4}
 .ck-item input{flex-shrink:0;margin-top:2px;accent-color:var(--blue)}
 .ck-item.auto label{color:var(--n500)}
+.ck-sel{flex-shrink:0;width:96px;font-size:11px;padding:1px 2px;border:1px solid var(--n300);border-radius:5px;background:#fff;color:var(--n700);font-family:var(--sans)}
+.ck-rate.met .ck-sel{border-color:#14713e;color:#14713e;font-weight:700}
+.ck-rate.not .ck-sel{border-color:#b91c1c;color:#b91c1c;font-weight:700}
 .ck-tag{font-size:9px;font-weight:700;padding:0 5px;border-radius:8px;background:#e0edff;color:#1e4db7;margin-left:3px;white-space:nowrap}
 .ck-tag.ck-pass{background:#d4f5e2;color:#14713e}
 .ck-tag.ck-fail{background:#fde8e8;color:#b91c1c}
@@ -1252,11 +1255,13 @@ function readStructure(){
     const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
     return {
       text,
-      // a transcript can't carry markup, so infer structure from how it's laid out
+      // A transcript can't show headers, emphasis or how visuals are used, so those stay
+      // null (not assessable) and the designer rates them from the artwork. Only list
+      // markers typed into the transcript count as evidence.
       hasList:    lines.filter(l => /^([-*•]|\d+[.)])\s/.test(l)).length >= 2,
-      hasHeaders: lines.length > 1 && lines.some(l => l.length < 60 && !/[.!?]$/.test(l)),
-      hasImages:  true,                                   // the material is the image
-      hasBold:    lines.length > 1,
+      hasHeaders: null,
+      hasImages:  null,
+      hasBold:    null,
       hasContact: /(?:\(?\d{3}\)?[\s\-.]\d{3}[\s\-.]\d{4}|\b[\w.+-]+@[\w-]+\.[a-z]{2,}\b|contact us|call us|email us|phone:|tel:)/i.test(text),
       passiveRate: sents.length ? passive/sents.length : 0,
     };
@@ -1289,7 +1294,9 @@ function autoFlags(stats, struct){
     noJargon:   jargonFlag,
     hasList:    struct ? struct.hasList : null,
     hasHeaders: struct ? struct.hasHeaders : null,
-    hasStructure: struct ? (struct.hasHeaders || struct.hasList) : null,
+    hasStructure: !struct ? null
+      : (struct.hasHeaders || struct.hasList) ? true
+      : (struct.hasHeaders === null || struct.hasList === null) ? null : false,
     hasImages:  struct ? struct.hasImages : null,
     hasBold:    struct ? struct.hasBold : null,
     hasContact: struct ? struct.hasContact : null,
@@ -1478,9 +1485,13 @@ function messageUpFront(text){
 // ── State ──
 const manual = {};   // manual checkbox state for CCI + PEMAT
 let lastFlags = {};
+let lastStats = null;
 
 // ── Render checklists ──
 function pillClass(pct, pass, warn){ return pct >= pass ? 'pill-pass' : pct >= warn ? 'pill-warn' : 'pill-fail'; }
+
+// Signals only the artwork can show — never inferred from a visual-mode transcript
+const DESIGN_ONLY = new Set(['hasImages','hasBold','hasHeaders','hasStructure']);
 
 function buildChecklist(items, mount, group){
   const el = $(mount);
@@ -1489,15 +1500,26 @@ function buildChecklist(items, mount, group){
     const autoVal = it.auto ? lastFlags[it.auto] : undefined;
     // An AUTO item with no verdict yet (nothing to measure) falls back to a manual tick
     const scored = it.auto && (autoVal === true || autoVal === false);
-    const val = scored ? autoVal : manual[it.id];
-    const checked = val === true;
     const tag = !it.auto ? ''
       : autoVal === true  ? '<span class="ck-tag ck-pass" title="Detected — standard met">AUTO ✓</span>'
       : autoVal === false ? '<span class="ck-tag ck-fail" title="Not detected — standard not met">AUTO ✗</span>'
-      : '<span class="ck-tag" title="Nothing to measure yet — tick manually or fill in the brief">AUTO</span>';
-    return '<div class="ck-item'+(scored?' auto':'')+'">'+
-      '<input type="checkbox" id="'+it.id+'" '+(checked?'checked':'')+' '+(scored?'disabled':'')+
-        ' onchange="manual[\''+it.id+'\']=this.checked;refreshScores()">'+
+      : visualOn && DESIGN_ONLY.has(it.auto) ? '<span class="ck-tag" title="A transcript can\'t show this — look at the design and rate it yourself">CHECK DESIGN</span>'
+      : '<span class="ck-tag" title="Nothing to measure yet — rate it yourself or fill in the brief">AUTO</span>';
+    if(scored){
+      return '<div class="ck-item auto">'+
+        '<input type="checkbox" id="'+it.id+'" '+(autoVal?'checked':'')+' disabled>'+
+        '<label for="'+it.id+'">'+it.text+tag+'</label>'+
+      '</div>';
+    }
+    // Rated by the designer: not reviewed / met / not met. Not reviewed never counts as a fail.
+    const m = manual[it.id];
+    const st = m === true ? 'met' : m === false ? 'not' : '';
+    return '<div class="ck-item ck-rate'+(st ? ' '+st : '')+'">'+
+      '<select id="'+it.id+'" class="ck-sel" onchange="setManual(\''+it.id+'\',this.value)">'+
+        '<option value=""'+(st===''?' selected':'')+'>Not reviewed</option>'+
+        '<option value="met"'+(st==='met'?' selected':'')+'>Met</option>'+
+        '<option value="not"'+(st==='not'?' selected':'')+'>Not met</option>'+
+      '</select>'+
       '<label for="'+it.id+'">'+it.text+tag+'</label>'+
     '</div>';
   }).join('');
@@ -1513,45 +1535,74 @@ function renderPemat(){
     '<div class="ck-group">Actionability · 7</div>' + buildChecklist(PEMAT_A);
 }
 
-function itemVal(it){
+// 'met' | 'not' | 'open'. An AUTO verdict wins; otherwise the designer's rating; otherwise open.
+function itemState(it){
   if(it.auto){
     const v = lastFlags[it.auto];
-    if(v === true || v === false) return v;
+    if(v === true) return 'met';
+    if(v === false) return 'not';
   }
-  return manual[it.id] === true;
+  return manual[it.id] === true ? 'met' : manual[it.id] === false ? 'not' : 'open';
+}
+function itemVal(it){ return itemState(it) === 'met'; }
+function tally(items){
+  const t = { met:0, not:0, open:0 };
+  items.forEach(it => t[itemState(it)]++);
+  return t;
+}
+function setManual(id, v){
+  if(v === 'met') manual[id] = true;
+  else if(v === 'not') manual[id] = false;
+  else delete manual[id];
+  const row = $(id) && $(id).closest('.ck-item');
+  if(row){ row.classList.toggle('met', v === 'met'); row.classList.toggle('not', v === 'not'); }
+  refreshScores();
+  explainScores(lastStats, !hasContent());
+}
+// PEMAT scale: a percentage only once every item is rated — never from a partial set
+function pematScale(items){
+  const t = tally(items);
+  return { ...t, n: items.length, done: t.open === 0, pct: Math.round(t.met / items.length * 100) };
 }
 
 function refreshScores(){
-  // CCI
-  const cciCount = CCI_ITEMS.filter(itemVal).length;
-  const cciPct = cciCount/20*100;
+  // CCI — CDC pass mark is 18 of 20. Unreviewed items are shown as open, never as fails.
+  const c = tally(CCI_ITEMS);
   const cciPill = $('cci-pill');
-  cciPill.textContent = hasContent() ? cciCount+'/20' : '—/20';
-  cciPill.className = 'pill ' + (hasContent() ? pillClass(cciPct,90,70) : 'pill-empty');
+  cciPill.textContent = hasContent() ? c.met+'/20 met' : '—/20';
+  cciPill.className = 'pill ' + (!hasContent() ? 'pill-empty'
+    : c.met >= 18 ? 'pill-pass' : c.not > 2 ? 'pill-fail' : 'pill-empty');
   const cciStatus = $('cci-status');
   if(cciStatus){
     if(!hasContent()){ cciStatus.textContent = ''; cciStatus.className = 'status-line mod-status'; }
-    else if(cciCount >= 18){ cciStatus.textContent = '✓ Passing'; cciStatus.className = 'status-line mod-status pass'; }
-    else { cciStatus.textContent = '✗ '+(18-cciCount)+' more to pass'; cciStatus.className = 'status-line mod-status fail'; }
+    else if(c.met >= 18){ cciStatus.textContent = '✓ Passing'; cciStatus.className = 'status-line mod-status pass'; }
+    else if(c.not > 2){ cciStatus.textContent = '✗ '+c.not+' not met — can\'t reach 18'; cciStatus.className = 'status-line mod-status fail'; }
+    else { cciStatus.textContent = c.open+' not yet reviewed'; cciStatus.className = 'status-line mod-status'; }
   }
 
   // PEMAT
-  const u = Math.round(PEMAT_U.filter(itemVal).length / PEMAT_U.length * 100);
-  const a = Math.round(PEMAT_A.filter(itemVal).length / PEMAT_A.length * 100);
-  $('pemat-u-num').innerHTML = u+'<small>%</small>';
-  $('pemat-a-num').innerHTML = a+'<small>%</small>';
-  const uf = $('pemat-u-fill'), af = $('pemat-a-fill');
-  uf.style.width = u+'%'; af.style.width = a+'%';
-  uf.style.background = u>70 ? 'var(--teal)' : u>50 ? 'var(--orange)' : 'var(--red)';
-  af.style.background = a>70 ? 'var(--teal)' : a>50 ? 'var(--orange)' : 'var(--red)';
+  const U = pematScale(PEMAT_U), A = pematScale(PEMAT_A);
+  const num = s => s.done ? s.pct+'<small>%</small>' : s.met+'<small> of '+s.n+' met · '+s.open+' to rate</small>';
+  $('pemat-u-num').innerHTML = num(U);
+  $('pemat-a-num').innerHTML = num(A);
+  const fill = (el, s) => {
+    el.style.width = s.pct+'%';
+    el.style.background = !s.done ? 'var(--n300)' : s.pct>70 ? 'var(--teal)' : s.pct>50 ? 'var(--orange)' : 'var(--red)';
+  };
+  fill($('pemat-u-fill'), U); fill($('pemat-a-fill'), A);
+  const done = U.done && A.done, onTarget = U.pct > 70 && A.pct > 70;
   const pPill = $('pemat-pill');
-  pPill.textContent = hasContent() ? 'U '+u+'% · A '+a+'%' : 'U — · A —';
-  pPill.className = 'pill ' + (hasContent() ? ((u>70&&a>70)?'pill-pass':(u>50||a>50)?'pill-warn':'pill-fail') : 'pill-empty');
+  pPill.textContent = !hasContent() ? 'U — · A —'
+    : done ? 'U '+U.pct+'% · A '+A.pct+'%'
+    : 'U — · A — · '+(U.open + A.open)+' to rate';
+  pPill.className = 'pill ' + (!hasContent() || !done ? 'pill-empty'
+    : onTarget ? 'pill-pass' : (U.pct>50||A.pct>50) ? 'pill-warn' : 'pill-fail');
   const pStatus = $('pemat-status');
   if(pStatus){
     if(!hasContent()){ pStatus.textContent = ''; pStatus.className = 'status-line mod-status'; }
-    else if(u>70 && a>70){ pStatus.textContent = '✓ On target'; pStatus.className = 'status-line mod-status pass'; }
-    else { pStatus.textContent = '✗ Below target'; pStatus.className = 'status-line mod-status fail'; }
+    else if(!done){ pStatus.textContent = (U.open + A.open)+' not yet rated'; pStatus.className = 'status-line mod-status'; }
+    else if(onTarget){ pStatus.textContent = '✓ On working target'; pStatus.className = 'status-line mod-status pass'; }
+    else { pStatus.textContent = '✗ Below working target'; pStatus.className = 'status-line mod-status fail'; }
   }
 }
 
@@ -1637,22 +1688,30 @@ function explainScores(stats, empty){
   }
 
   // ── CCI ──
-  const cciCount = CCI_ITEMS.filter(itemVal).length;
+  const c = tally(CCI_ITEMS);
   const cciAuto  = CCI_ITEMS.filter(i => i.auto && (lastFlags[i.auto]===true||lastFlags[i.auto]===false)).length;
-  why('cci-why', cciCount>=18 ? 'good' : cciCount>=14 ? 'mid' : 'bad',
-    '<b>'+cciCount+' of 20</b> items met. CDC treats 18 (90%) as the pass mark for public health material — below that, readers typically miss the main point or the action.',
-    cciCount >= 18
-      ? 'Passing. Re-check after any rewrite.'
-      : cciAuto+' items are scored automatically from your text; the rest need your judgement — work down the unticked list below.');
+  const counts = '<b>'+c.met+' met</b>, '+c.not+' not met, '+c.open+' not yet reviewed.';
+  if(c.met >= 18)
+    why('cci-why','good', counts+' That reaches CDC\'s pass mark of 18 of 20.', 'Passing. Re-check after any rewrite.');
+  else if(c.not > 2)
+    why('cci-why','bad', counts+' With '+c.not+' items not met, the most this can reach is '+(20-c.not)+' of 20 — below CDC\'s pass mark of 18.',
+      'Fix the items marked not met first.');
+  else
+    why('cci-why','', counts+' Items you haven\'t reviewed don\'t count against you — the score stays open until you rate them. CDC\'s pass mark is 18 of 20.',
+      cciAuto+' items are scored from your text; rate the rest in the list below.');
 
   // ── PEMAT ──
-  const u = Math.round(PEMAT_U.filter(itemVal).length / PEMAT_U.length * 100);
-  const a = Math.round(PEMAT_A.filter(itemVal).length / PEMAT_A.length * 100);
+  const U = pematScale(PEMAT_U), A = pematScale(PEMAT_A);
+  const u = U.pct, a = A.pct;
   let pemMsg, pemTone, pemDo;
-  if(u > 70 && a > 70){
+  if(!U.done || !A.done){
+    pemTone='';
+    pemMsg='So far <b>'+U.met+' of '+U.n+'</b> understandability and <b>'+A.met+' of '+A.n+'</b> actionability items are met, with <b>'+(U.open+A.open)+' still to rate</b>. Percentages appear once every item in a scale is rated, so unrated items never count as failures.';
+    pemDo='Rate the open items in the list below.';
+  } else if(u > 70 && a > 70){
     pemTone='good';
-    pemMsg='<b>Understandability '+u+'%</b> and <b>Actionability '+a+'%</b> — both above the 70% mark, so a patient should both follow this and know what to do.';
-    pemDo='On target for AHRQ benchmarking.';
+    pemMsg='<b>Understandability '+u+'%</b> and <b>Actionability '+a+'%</b> — both above this tool\'s 70% working target (AHRQ sets no cutoff; higher is better).';
+    pemDo='Re-check after any rewrite.';
   } else if(u > 70){
     pemTone='mid';
     pemMsg='Patients can <b>understand</b> this ('+u+'%) but not necessarily <b>act</b> on it ('+a+'%). Actionability is the more common failure — clear writing that never says what to do.';
@@ -1663,7 +1722,7 @@ function explainScores(stats, empty){
     pemDo='Shorten sentences, define medical terms, and add a summary of key points.';
   } else {
     pemTone='bad';
-    pemMsg='<b>Understandability '+u+'%</b>, <b>Actionability '+a+'%</b> — both below the 70% target, so this is likely to be misread and not acted on.';
+    pemMsg='<b>Understandability '+u+'%</b>, <b>Actionability '+a+'%</b> — both below this tool\'s 70% working target.';
     pemDo='Start with the single action you want, then explain it in everyday words.';
   }
   why('pemat-why', pemTone, pemMsg, pemDo);
@@ -1717,6 +1776,7 @@ function analyze(){
     (visualOn || text.trim() || editor.querySelector('img')) ? 'none' : 'flex';
 
   const stats = empty ? null : computeFK(text);
+  lastStats = stats;
   lastFlags = autoFlags(stats, empty ? null : struct);
 
   // footer
@@ -3063,8 +3123,9 @@ function autoCdcIdd(){
   out[ix[9]] = passive.length
     ? { v:'n', why: passive.length + ' sentence' + (passive.length > 1 ? 's look' : ' looks') + ' passive, e.g. “' + passive[0].slice(0,60) + '”.' }
     : { v:'y', why:'No passive patterns found (pattern check — confirm by reading).' };
-  // 10 — no headers = N/A; question headers = no; otherwise the user judges "informative"
-  if(!u.headers.length) out[ix[10]] = { v:'na', why:'No headers or titles found.' };
+  // 10 — no headers = N/A; question headers = no; otherwise the user judges "informative".
+  // A transcript can't show which lines are headers, so visual mode leaves "none found" to the user.
+  if(!u.headers.length){ if(!visualOn) out[ix[10]] = { v:'na', why:'No headers or titles found.' }; }
   else { const q = u.headers.find(h => /\?\s*$/.test(h));
     if(q) out[ix[10]] = { v:'n', why:'Header phrased as a question: “' + q.slice(0,60) + '”.' }; }
   // 14 — different words for what may be one concept

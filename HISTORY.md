@@ -4,6 +4,29 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Scoring: no passes without evidence, unreviewed ≠ failed
+
+Branch: `fix-scoring-evidence` · Vercel: Preview
+
+Fixes the two blockers from the reader-advocate baseline audit.
+
+- **Visual mode no longer passes items without evidence.** A transcript can't show
+  headers, emphasis or how visuals are used, so "At least one visual", "Key info
+  highlighted", "Headers structure the content", "Key information stands out",
+  "Headers / bullets group information" and "Visuals support the text" are now left for
+  the designer to rate, tagged **CHECK DESIGN**. Previously they passed automatically.
+  The CDC IDD/ELL header item (10) is no longer marked N/A from a transcript either.
+- **Unreviewed items no longer count as failures.** CCI and PEMAT items the tool can't
+  score now have a three-way rating: Not reviewed / Met / Not met (was a single checkbox).
+  - CCI shows "N/20 met" with met, not met and not yet reviewed counts; it shows a fail
+    only when more than 2 items are not met (18 of 20 can no longer be reached).
+  - PEMAT shows a percentage only once every item in a scale is rated, otherwise
+    "x of n met · y to rate".
+  - Removed the predictions about readers ("readers typically miss the main point",
+    "likely to be misread and not acted on"). PEMAT's 70% is called a working target.
+- `.claude/launch.json` added: local preview at http://localhost:5173
+  (`python -m http.server`).
+
 ## 2026-10-16 — Release to Production
 
 Branch: `master` · Vercel: Production
