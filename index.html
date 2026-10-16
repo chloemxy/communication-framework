@@ -3912,7 +3912,6 @@ function setMode(m, btn){
   btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
   if(m === 'plan'){
     applyLayout('frameworks', true);
-    flashHint('Planning mode — set Brief and Frameworks first. Add scoring modules (CCI, PEMAT…) once you have a draft to check them against.');
   } else {
     applyLayout('everything', true);
     flashHint('Evaluate mode — upload or paste a draft and it scores against your Brief and the frameworks.');

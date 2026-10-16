@@ -4,9 +4,17 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Remove the planning-mode hint
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Switching to "Plan from an idea" no longer flashes "Planning mode — set Brief and
+  Frameworks first. Add scoring modules (CCI, PEMAT…) once you have a draft…".
+  The "Evaluate mode" hint for the other button is unchanged.
+
 ## 2026-10-16 — Design refresh: tokens, 13px type floor, smaller canvas
 
-Branch: `refresh-and-fixes` · Vercel: Preview
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 - **Layout.** The studio is a grid now, not absolutely positioned panels.
   - The document column is capped at 560px. It used to fill everything left of a
@@ -35,7 +43,7 @@ Branch: `refresh-and-fixes` · Vercel: Preview
 
 ## 2026-10-16 — Close open tasks: honest scoring, single-source notes, verified wording
 
-Branch: `refresh-and-fixes` · Vercel: Preview
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 - **No passes without evidence in visual mode.** A transcript can't show headers, emphasis,
   visuals or tables, so those signals are now "can't tell" (null) instead of guessed.
