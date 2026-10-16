@@ -15,7 +15,7 @@ const old = JSON.parse(m[1]);
 const out = {};
 for (const [k, id] of Object.entries(MAP)) {
   const f = R[id]; if (!f) throw new Error('missing ' + id);
-  const e = { n: f.name, t: f.scoringType, th: f.passThreshold && f.passThreshold.label || null, sc: f.itemScale || null, note: f.notes || null, src: f.sources };
+  const e = { n: f.name, t: f.scoringType, th: f.passThreshold && (f.passThreshold.uiLabel || f.passThreshold.label) || null, sc: f.itemScale || null, note: f.uiNote || f.notes || null, src: f.sources };
   if (!LIVE.includes(k)) e.cr = f.criteria.map(c => {
     const row = [c.domain, c.text, c.notAssessableFromDoc ? 1 : 0];
     const meta = {};
@@ -34,7 +34,7 @@ for (const [k, id] of Object.entries(MAP)) {
 if (check) {
   for (const k of Object.keys(old)) {
     const a = JSON.stringify(old[k]), b = JSON.stringify(out[k]);
-    if (a !== b) console.log('DIFF', k, '\n old:', a.slice(0, 300), '\n new:', b.slice(0, 300));
+    if (a !== b) process.exitCode = 1, console.log('DIFF', k, '\n old:', a.slice(0, 300), '\n new:', b.slice(0, 300));
   }
   console.log('checked', Object.keys(old).length, 'existing keys');
 } else {

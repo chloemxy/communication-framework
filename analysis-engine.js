@@ -76,7 +76,7 @@ const FRAMEWORK_REGISTRY = {
     zone: 'clarity',
     scoringType: 'scored',
     formula: '(points earned / applicable items) × 100',
-    passThreshold: { pass: 90, unit: 'score', label: '90 or higher' },
+    passThreshold: { pass: 90, unit: 'score', label: '90 or higher', uiLabel: "90 or higher (points ÷ applicable items × 100)" },
     criteria: [
       // Part A: Core (items 1–11) — applies to all materials
       { id: 'CCI-1', domain: 'Core', part: 'A', text: 'The material contains one main message statement.' },
@@ -107,6 +107,7 @@ const FRAMEWORK_REGISTRY = {
       'Centers for Disease Control and Prevention. (2019). CDC Clear Communication Index: A Tool for Developing and Assessing CDC Public Communication Products. U.S. Department of Health and Human Services. https://www.cdc.gov/ccindex/',
       'Baur C, Prue C. (2014). The CDC Clear Communication Index is a new evidence-based tool to prepare and review health information. Health Promotion Practice, 15(5), 629–637. https://doi.org/10.1177/1524839914538969',
     ],
+    uiNote: "20 items in 4 parts: Core (1–11), Behavioral Recommendations (12–14), Numbers (15–17), Risk (18–20). Parts B–D are scored only when the material contains that content; items 19–20 can be N/A. Score = points ÷ applicable items × 100. Every item counts equally; below 90, revise.",  // plain-language note shown in the studio
     notes: 'Source: CDC Clear Communication Index score sheet (rev. July 2014). Parts B–D are scored only when the material contains that content; items 19–20 can be N/A. Score a point only when every instance of an item meets the criterion. Item 17 is asked as "Does the audience have to conduct mathematical calculations?" — a no earns the point. Every item counts equally; below 90, revise.',
   },
 
@@ -119,7 +120,7 @@ const FRAMEWORK_REGISTRY = {
     formula: 'Understandability % = (Σ agrees on U items / # applicable U items) × 100 | Actionability % = (Σ agrees on A items / # applicable A items) × 100',
     // AHRQ sets no cutoff ("The higher the score, the more understandable or actionable the
     // material" — User's Guide, Step 7). 70% is kept as this tool's working target only.
-    passThreshold: { pass: 70, unit: '%', official: false, label: 'No AHRQ cutoff (higher is better) — 70% used here as a working target' },
+    passThreshold: { pass: 70, unit: '%', official: false, label: 'No AHRQ cutoff (higher is better) — 70% used here as a working target', uiLabel: "No AHRQ pass mark (higher is better); 70% or higher on both is this tool’s working target" },
     criteria: [
       // Understandability — PEMAT-P items 1–12, 15–19 (17 items; 13–14 are audiovisual-only)
       { id: 'PEMAT-1', domain: 'Understandability / Content', text: 'The material makes its purpose completely evident.' },
@@ -134,7 +135,7 @@ const FRAMEWORK_REGISTRY = {
       { id: 'PEMAT-10', domain: 'Understandability / Organization', text: 'The material presents information in a logical sequence.' },
       { id: 'PEMAT-11', domain: 'Understandability / Organization', text: 'The material provides a summary.', naAllowed: true },
       { id: 'PEMAT-12', domain: 'Understandability / Layout & Design', text: 'The material uses visual cues (e.g., arrows, boxes, bullets, bold, larger font, highlighting) to draw attention to key points.' },
-      { id: 'PEMAT-15', domain: 'Understandability / Use of Visual Aids', text: 'The material uses visual aids whenever they could make content more easily understood.' },
+      { id: 'PEMAT-15', domain: 'Understandability / Use of Visual Aids', text: 'The material uses visual aids whenever they could make content more easily understood (e.g., illustration of healthy portion size).' },
       { id: 'PEMAT-16', domain: 'Understandability / Use of Visual Aids', text: 'The material\'s visual aids reinforce rather than distract from the content.', naAllowed: true },
       { id: 'PEMAT-17', domain: 'Understandability / Use of Visual Aids', text: 'The material\'s visual aids have clear titles or captions.', naAllowed: true },
       { id: 'PEMAT-18', domain: 'Understandability / Use of Visual Aids', text: 'The material uses illustrations and photographs that are clear and uncluttered.', naAllowed: true },
@@ -152,6 +153,7 @@ const FRAMEWORK_REGISTRY = {
       'Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. Patient Education and Counseling, 96(3), 395–403. https://doi.org/10.1016/j.pec.2014.05.027',
       'Agency for Healthcare Research and Quality. PEMAT and User\'s Guide. https://www.ahrq.gov/health-literacy/patient-education/pemat.html',
     ],
+    uiNote: "PEMAT-P: 17 understandability items (1–12, 15–19) and 7 actionability items (20–26). Two separate scores, never combined. N/A items are left out. AHRQ sets no pass mark: higher is better. This tool uses 70% on each score as a working target. Video and animation use PEMAT-A/V.",  // plain-language note shown in the studio
     notes: 'PEMAT-P is for printable materials. It produces two separate scores — Understandability and Actionability — never combined. N/A items are excluded from the denominator. AHRQ publishes no pass mark; this tool treats 70% on each score as a working target, not an official threshold. Audiovisual materials use PEMAT_AV instead.',
   },
 
@@ -297,6 +299,7 @@ const FRAMEWORK_REGISTRY = {
       'Doak CC, Doak LG, Root JH. (1996). Teaching Patients with Low Literacy Skills (2nd ed.). J.B. Lippincott. (SAM instrument: pp. 41–59)',
       'Winslow EH. (2001). Patient education materials: Can patients read them, or are they ending up in the trash? American Journal of Nursing, 101(10), 33–38. https://doi.org/10.1097/00000446-200110000-00020',
     ],
+    uiNote: "Rate each factor 0, 1 or 2. A total of 70% or more is superior. 40–69% is adequate. Under 40% is not suitable.",  // plain-language note shown in the studio
     notes: 'A score of 0 (Not Suitable) on any Content factor (SAM-C1 through SAM-C6) should be treated as a blocker regardless of total score. SAM is the most granular content auditing tool in the library.',
   },
 
@@ -334,6 +337,7 @@ const FRAMEWORK_REGISTRY = {
       'Charnock D, Shepperd S, Needham G, Gann R. (1999). DISCERN: An instrument for judging the quality of written consumer health information on treatment choices. Journal of Epidemiology and Community Health, 53(2), 105–111. https://doi.org/10.1136/jech.53.2.105',
       'DISCERN Online. University of Oxford & British Library. http://www.discern.org.uk',
     ],
+    uiNote: "16 questions, rated 1 to 5. There is no pass mark, so use it to compare versions. Question 16 is an overall rating.",  // plain-language note shown in the studio
     notes: 'No absolute pass/fail threshold. DISCERN scores are comparative — used against published benchmarks (peer-reviewed health leaflets average ~3.5–4/5 per question). Q16 is kept separate from Part 1 and Part 2 totals.',
   },
 
@@ -366,6 +370,7 @@ const FRAMEWORK_REGISTRY = {
     sources: [
       'Moult B, Franck LS, Brady H. (2004). Ensuring quality information for patients: Development and preliminary validation of a new instrument to improve the quality of written health care information. Health Expectations, 7(2), 165–175. https://doi.org/10.1111/j.1369-7625.2004.00273.x',
     ],
+    uiNote: "The first EQIP had 20 items. A 36-item version came later. There is no pass mark, so use it to compare versions.",  // plain-language note shown in the studio
     notes: 'EQIP uses 36 items across 8 sections in the full instrument. Separate section scores are useful for diagnostic targeting. No universal pass threshold — used normatively across document versions.',
   },
 
@@ -587,6 +592,7 @@ const FRAMEWORK_REGISTRY = {
       'Schillinger D, Piette J, Grumbach K, et al. (2003). Closing the loop: Physician communication with diabetic patients who have low health literacy. Archives of Internal Medicine, 163(1), 83–90. https://doi.org/10.1001/archinte.163.1.83',
       'Pfizer. (n.d.). Ask Me 3: Good Questions for Your Good Health. National Patient Safety Foundation. https://www.npsf.org/page/askme3',
     ],
+    uiNote: "Teach-back happens face to face. A page can help by making the main points easy to say back. Can a reader answer all three Ask Me 3 questions?",  // plain-language note shown in the studio
     notes: 'Teach-Back is a live clinical interaction method. TB-1 through TB-3 can be partially assessed from written materials (are they written to support teach-back?). Ask Me 3 (AM3-1 to AM3-3) can be fully assessed from document content. If a patient cannot answer all three Ask Me 3 questions from the document alone, the material needs revision regardless of readability scores.',
   },
 
@@ -659,6 +665,7 @@ const FRAMEWORK_REGISTRY = {
       'Stacey D, Légaré F, Pouliot S, Kryworuchko J, Dunn S. (2010). Shared decision making models to inform an interprofessional perspective on decision support for people facing health decisions. Patient Education and Counseling, 80(2), 164–172. https://doi.org/10.1016/j.pec.2009.10.015',
       'IPDAS Collaboration. Patient Decision Aids. Ottawa Hospital Research Institute. https://ipdas.ohri.ca/',
     ],
+    uiNote: "A decision aid must meet all 6 of the first items. The rest are for full sign-off. Items about how it was made can’t be checked from the page.",  // plain-language note shown in the studio
     notes: 'Qualifying criteria are a gate — failing any one disqualifies the material as a patient decision aid. Certifying criteria are aspirational standards for formal certification. Development and process criteria (C12–C15) are typically NOT_ASSESSABLE from document content alone.',
   },
 
@@ -685,6 +692,7 @@ const FRAMEWORK_REGISTRY = {
       'Agency for Healthcare Research and Quality. (2015). Health Literacy Universal Precautions Toolkit (2nd ed.). AHRQ Publication No. 15-0023-EF. https://www.ahrq.gov/health-literacy/improve/precautions/index.html',
       'DeWalt DA, Callahan LF, Hawk VH, et al. (2010). Health literacy universal precautions toolkit. AHRQ Publication No. 10-0046-EF. Agency for Healthcare Research and Quality.',
     ],
+    uiNote: "This toolkit helps a practice improve. It is not a score for one page. Items about talking or office systems can’t be checked from text.",  // plain-language note shown in the studio
     notes: 'The Toolkit is a practice improvement framework, not a document scoring tool. Spoken communication and system criteria (AHRQ-1, AHRQ-2, AHRQ-8, AHRQ-9) are typically NOT_ASSESSABLE from written materials alone.',
   },
 
@@ -715,6 +723,7 @@ const FRAMEWORK_REGISTRY = {
       'O\'Connor AM, Tugwell P, Wells GA, et al. (1998). A decision aid for women considering hormone therapy after menopause. Patient Education and Counseling, 33(3), 267–279. https://doi.org/10.1016/S0738-3991(98)00026-3',
       'Ottawa Hospital Research Institute. Decision Support & Decision Aids. https://decisionaid.ohri.ca/',
     ],
+    uiNote: "This is a guide for design, not a score. The score comes from a patient survey (the Decisional Conflict Scale).",  // plain-language note shown in the studio
     notes: 'The DMSF is a design framework (not scored). The Decisional Conflict Scale (DCS) is the measurement instrument and requires a patient survey — criteria marked notAssessableFromDoc cannot be evaluated from document content alone.',
   },
 
@@ -737,6 +746,7 @@ const FRAMEWORK_REGISTRY = {
       'Agency for Healthcare Research and Quality. (2014). The SHARE Approach — A Model for Shared Decision Making: A Resource for Clinicians. AHRQ Publication No. 14-0058-1-EF. https://www.ahrq.gov/health-literacy/professional-training/shared-decision/index.html',
       'Elwyn G, Frosch D, Thomson R, et al. (2012). Shared decision making: A model for clinical practice. Journal of General Internal Medicine, 27(10), 1361–1367. https://doi.org/10.1007/s11606-012-2077-6',
     ],
+    uiNote: "Five steps for how clinicians talk with patients. The last two steps can’t be checked from a page.",  // plain-language note shown in the studio
     notes: 'SHARE is a clinician conversation model used for training and workflow design. Steps R and E (reaching a decision together, follow-up) are typically NOT_ASSESSABLE from written materials alone.',
   },
 
@@ -763,6 +773,7 @@ const FRAMEWORK_REGISTRY = {
       'Michie S, van Stralen MM, West R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6(1), 42. https://doi.org/10.1186/1748-5908-6-42',
       'Michie S, Atkins L, West R. (2014). The Behaviour Change Wheel: A Guide to Designing Interventions. Silverback Publishing. ISBN 978-1-909567-00-4.',
     ],
+    uiNote: "COM-B finds what blocks a habit. First find the gap, then check if the page helps close it. It gives no score.",  // plain-language note shown in the studio
     notes: 'COM-B is a diagnostic framework — outputs are gap diagnoses and intervention maps, not scores. Assessment requires knowing which COM-B sub-component is the barrier before evaluating whether the document addresses it. COMB-BCW requires evaluator judgment about intervention match.',
   },
 
@@ -787,6 +798,7 @@ const FRAMEWORK_REGISTRY = {
       'Janz NK, Becker MH. (1984). The health belief model: A decade later. Health Education Quarterly, 11(1), 1–47. https://doi.org/10.1177/109019818401100101',
       'Champion VL, Skinner CS. (2008). The health belief model. In K Glanz, BK Rimer, K Viswanath (Eds.), Health Behavior and Health Education: Theory, Research, and Practice (4th ed., pp. 45–65). Jossey-Bass.',
     ],
+    uiNote: "Check all 6 parts. Talking about risk without what stops people, or how to act, can leave readers scared but stuck.",  // plain-language note shown in the studio
     notes: 'The most common HBM design error: addressing Susceptibility (HBM-1) and Severity (HBM-2) while neglecting Barriers (HBM-4) and Self-Efficacy (HBM-6) — fear without actionable path. All 6 constructs should be present for complete HBM compliance.',
   },
 
@@ -811,6 +823,7 @@ const FRAMEWORK_REGISTRY = {
       'Prochaska JO, DiClemente CC. (1983). Stages and processes of self-change of smoking: Toward an integrative model of change. Journal of Consulting and Clinical Psychology, 51(3), 390–395. https://doi.org/10.1037/0022-006X.51.3.390',
       'Prochaska JO, Velicer WF. (1997). The transtheoretical model of health behavior change. American Journal of Health Promotion, 12(1), 38–48. https://doi.org/10.4278/0890-1171-12.1.38',
     ],
+    uiNote: "You need to know what stage your readers are at. One page rarely fits every stage, so check the stage it aims at.",  // plain-language note shown in the studio
     notes: 'TTM stage assessment requires knowing the audience\'s current stage — this may be NOT_ASSESSABLE from document content alone without that context. A document cannot meet criteria for all 5 stages simultaneously; the assessment should focus on which stage(s) it targets.',
   },
 
@@ -833,6 +846,7 @@ const FRAMEWORK_REGISTRY = {
       'Witte K. (1992). Putting the fear back into fear appeals: The Extended Parallel Process Model. Communication Monographs, 59(4), 329–349. https://doi.org/10.1080/03637759209376276',
       'Witte K, Allen M. (2000). A meta-analysis of fear appeals: Implications for effective public health campaigns. Health Education & Behavior, 27(5), 591–615. https://doi.org/10.1177/109019810002700506',
     ],
+    uiNote: "Never raise fear without showing that the step works and that readers can do it.",  // plain-language note shown in the studio
     notes: 'Critical design rule: never raise perceived threat (EPPM-1, EPPM-2) without simultaneously and convincingly raising efficacy (EPPM-3, EPPM-4). Every fear appeal must pair the risk with what works and how to do it. EPPM-BALANCE requires evaluator judgment.',
   },
 
@@ -856,6 +870,7 @@ const FRAMEWORK_REGISTRY = {
       'World Health Organization. (2017). Communicating Risk in Public Health Emergencies: A WHO Guideline for Emergency Risk Communication (ERC) Policy and Practice. WHO. https://www.who.int/publications/i/item/9789241550208',
       'Covello VT, Peters RG, Wojtecki JG, Hyde RC. (2001). Risk communication, the West Nile Virus epidemic, and bioterrorism: Responding to the communication challenges posed by the intentional or unintentional release of a pathogen in an urban setting. Journal of Urban Health, 78(2), 382–391. https://doi.org/10.1093/jurban/78.2.382',
     ],
+    uiNote: "Made for health emergencies. Use it for outbreak or crisis material. Planning items can’t be checked from a page.",  // plain-language note shown in the studio
     notes: 'WHO Risk Communication Framework is designed for public health emergency communication. Apply to materials in crisis or outbreak contexts. Planning and coordination criteria (channel selection, spokesperson training) are typically NOT_ASSESSABLE from document content alone.',
   },
 
@@ -972,6 +987,7 @@ const FRAMEWORK_REGISTRY = {
       'Picker Institute. About Picker. https://www.picker.org/',
       'Jenkinson C, Coulter A, Bruster S. (2002). The Picker Patient Experience Questionnaire: Development and validation using data from in-patient surveys in five countries. International Journal for Quality in Health Care, 14(5), 353–358. https://doi.org/10.1093/intqhc/14.5.353',
     ],
+    uiNote: "Eight rules for person-centred care. Use them as checks when you design written material.",  // plain-language note shown in the studio
     notes: 'Picker Principles are an organizational and design standard. Separate Picker survey instruments measure how well each principle is being met by a care organization — those scores require patient surveys. The 8 principles can be assessed from written materials as design criteria.',
   },
 
@@ -1044,6 +1060,7 @@ const FRAMEWORK_REGISTRY = {
       'Carayon P, Schoofs Hundt A, Karsh BT, et al. (2006). Work system design for patient safety: The SEIPS model. Quality and Safety in Health Care, 15(Suppl 1), i50–i58. https://doi.org/10.1136/qshc.2005.015842',
       'Holden RJ, Carayon P, Gurses AP, et al. (2013). SEIPS 2.0: A human factors framework for studying and improving the work of healthcare professionals and patients. Ergonomics, 56(11), 1669–1686. https://doi.org/10.1080/00140139.2013.838643',
     ],
+    uiNote: "A way to look at the whole system around care. It gives ideas to fix it, not a score.",  // plain-language note shown in the studio
     notes: 'SEIPS is a systems analysis model for clinical workflow design. Use for evaluating clinical process documentation, care pathway materials, or patient safety tools. SEIPS assessment produces work system analyses and redesign recommendations, not numerical scores.',
   },
 
@@ -1072,6 +1089,7 @@ const FRAMEWORK_REGISTRY = {
       'Frampton SB, Gilpin L, Charmel PA (Eds.). (2003). Putting Patients First: Designing and Practicing Patient-Centered Care. Jossey-Bass. ISBN 978-0787964542.',
       'Stone S. (2008). A retrospective evaluation of the impact of the Planetree patient-centered model of care on inpatient quality outcomes. HERD: Health Environments Research & Design Journal, 1(4), 55–69. https://doi.org/10.1177/193758670800100406',
     ],
+    uiNote: "A plan for a whole site. Use the 10 parts as ideas. Many won’t apply to one handout.",  // plain-language note shown in the studio
     notes: 'Planetree is a whole-organization philosophy. Designation requires on-site review, patient/staff survey data, and evidence of culture change — not a numerical score. For written materials, apply the 10 components as design principles. PT-3 through PT-10 will often be NOT_APPLICABLE for clinical educational documents.',
   },
 

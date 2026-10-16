@@ -4,6 +4,37 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Close open tasks: honest scoring, single-source notes, verified wording
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **No passes without evidence in visual mode.** A transcript can't show headers, emphasis,
+  visuals or tables, so those signals are now "can't tell" (null) instead of guessed.
+  - The CCI and PEMAT-P items that depend on them are left for the designer, tagged
+    **check design**.
+  - "No tables" no longer marks PEMAT item 19 N/A from a transcript.
+  - CDC IDD/ELL item 10 is no longer N/A from a transcript.
+- **Unreviewed items are not failures.** This applies to all four instruments:
+  - **CCI and PEMAT-P:** manual items are rated Not reviewed / Met / Not met (was a
+    checkbox, where unticked meant failed).
+  - **CCI:** shows "N met · N open" until every item is rated. It shows a fail only once
+    90 is out of reach.
+  - **PEMAT-P and PEMAT-A/V:** show a percentage only once all of a scale's items are rated.
+  - **CDC IDD/ELL:** shows a total only once every item is answered.
+  - Removed the predictions about readers ("readers may get it wrong and not act").
+    PEMAT's 70% is called a working target.
+- **Engine is the single source for `FW_REG` again.** PR #2's plain-language notes moved
+  into `analysis-engine.js` as `uiNote` and `passThreshold.uiLabel` (20 fields).
+  `build-fw-reg.js` uses them, and `--check` now exits with an error on drift.
+- **Item wording checked against the sources** on 2026-10-16:
+  - PEMAT-A/V: 17 of 17 match AHRQ.
+  - PEMAT-P: 24 of 24 match AHRQ, after fixing item 15, which was missing AHRQ's example.
+  - CDC IDD/ELL: 27 of 27 match CDC's PDF.
+  - CDC Inclusive Comms: 12 of 12 match CDC's archived pages and Calanan et al. 2023.
+- **Handoff pack** (`handoff/`) restored and updated with these results and the remaining
+  decisions. Those are confirming the IDD tool with Nati, whether a Brief choice should
+  switch Inclusive Comms on, Everyday Words, and the public framework count.
+
 ## 2026-10-16 — Release PR #2 to Production
 
 Branch: `master` · Vercel: Production

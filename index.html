@@ -1199,7 +1199,7 @@ const PEMAT_U = [
   { id:'pu10', n:10, text:'The material presents information in a logical sequence.' },
   { id:'pu11', n:11, text:'The material provides a summary.', na:true },
   { id:'pu12', n:12, text:'The material uses visual cues (e.g., arrows, boxes, bullets, bold, larger font, highlighting) to draw attention to key points.', auto:'hasCues' },
-  { id:'pu15', n:15, text:'The material uses visual aids whenever they could make content more easily understood.' },
+  { id:'pu15', n:15, text:'The material uses visual aids whenever they could make content more easily understood (e.g., illustration of healthy portion size).' },
   { id:'pu16', n:16, text:'The material\'s visual aids reinforce rather than distract from the content.', na:true, naIf:'noVisuals' },
   { id:'pu17', n:17, text:'The material\'s visual aids have clear titles or captions.', na:true, naIf:'noVisuals' },
   { id:'pu18', n:18, text:'The material uses illustrations and photographs that are clear and uncluttered.', na:true, naIf:'noVisuals' },
@@ -1214,7 +1214,7 @@ const PEMAT_A = [
   { id:'pa25', n:25, text:'The material explains how to use the charts, graphs, tables, or diagrams to take actions.', na:true, naIf:'noVisualsOrTables' },
   { id:'pa26', n:26, text:'The material uses visual aids whenever they could make it easier to act on the instructions.' },
 ];
-const CCI_PASS = 90, PEMAT_PASS = 70;   // CDC: 90+ passes · AHRQ developers' cut-off: 70%
+const CCI_PASS = 90, PEMAT_PASS = 70;   // CDC: 90+ passes · PEMAT: AHRQ sets no cutoff; 70% is this tool's working target
 
 // ── Jargon / vague dictionaries (same as Classic) ──
 const JARGON = {
@@ -1282,13 +1282,15 @@ function readStructure(){
     const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     return {
       text,
-      // a transcript can't carry markup, so infer structure from how it's laid out
+      // A transcript can't show headers, emphasis, visuals or tables, so those stay null
+      // (not assessable) and the designer rates them from the artwork. Only list markers
+      // typed into the transcript count as evidence.
       hasList:    lines.filter(l => /^([-*•]|\d+[.)])\s/.test(l)).length >= 2,
-      hasHeaders: lines.length > 1 && lines.some(l => l.length < 60 && !/[.!?]$/.test(l)),
-      hasImages:  true,                                   // the material is the image
-      hasBold:    lines.length > 1,
+      hasHeaders: null,
+      hasImages:  null,
+      hasBold:    null,
       hasContact: /(?:\(?\d{3}\)?[\s\-.]\d{3}[\s\-.]\d{4}|\b[\w.+-]+@[\w-]+\.[a-z]{2,}\b|contact us|call us|email us|phone:|tel:)/i.test(text),
-      hasTable:   false,
+      hasTable:   null,
       passiveRate: sents.length ? passive/sents.length : 0,
     };
   }
@@ -1306,6 +1308,11 @@ function readStructure(){
     passiveRate: sents.length ? passive/sents.length : 0,
   };
 }
+// Three-valued logic: null means "can't tell from what we have", and never becomes a verdict
+const not   = v => v === null || v === undefined ? null : !v;
+const anyOf = (...v) => v.some(x => x === true) ? true : v.some(x => x === null || x === undefined) ? null : false;
+const allOf = (...v) => v.some(x => x === false) ? false : v.some(x => x === null || x === undefined) ? null : true;
+
 function autoFlags(stats, struct){
   const jargonHit = struct ? JARGON_KEYS.some(j => struct.text.toLowerCase().includes(j)) : false;
   const t = targets();
@@ -1320,16 +1327,16 @@ function autoFlags(stats, struct){
     noJargon:   jargonFlag,
     hasList:    struct ? struct.hasList : null,
     hasHeaders: struct ? struct.hasHeaders : null,
-    hasStructure: struct ? (struct.hasHeaders || struct.hasList) : null,
+    hasStructure: struct ? anyOf(struct.hasHeaders, struct.hasList) : null,
     hasImages:  struct ? struct.hasImages : null,
     hasBold:    struct ? struct.hasBold : null,
     hasContact: struct ? struct.hasContact : null,
-    hasCues:    struct ? (struct.hasBold || struct.hasList) : null,
+    hasCues:    struct ? anyOf(struct.hasBold, struct.hasList) : null,
     hasYou:     struct ? /\byou(r|rs|rself|'ll|'re)?\b/i.test(struct.text) : null,
     noNumbers:  struct ? !/\d/.test(struct.text) : null,
-    noVisuals:  struct ? !struct.hasImages : null,
-    noTables:   struct ? !struct.hasTable : null,
-    noVisualsOrTables: struct ? (!struct.hasImages && !struct.hasTable) : null,
+    noVisuals:  struct ? not(struct.hasImages) : null,
+    noTables:   struct ? not(struct.hasTable) : null,
+    noVisualsOrTables: struct ? allOf(not(struct.hasImages), not(struct.hasTable)) : null,
   };
 }
 
@@ -1500,7 +1507,8 @@ function cciPartIsNA(part){
 }
 function setCciPart(part, na){ cciPartNA[part] = na; renderCci(); refreshScores(); explainScores(computeFK(readStructure().text), !hasContent()); }
 
-// true = met · false = not met · 'na' = excluded from the denominator
+// true = met · false = not met · 'na' = excluded from the denominator · 'open' = not reviewed yet.
+// An item nobody has rated is open, never a fail.
 function itemState(it){
   if(it.part && cciPartIsNA(it.part)) return 'na';
   if(it.naIf && lastFlags[it.naIf] === true) return 'na';
@@ -1510,20 +1518,31 @@ function itemState(it){
     if(v === true || v === false) return v;
   }
   if(it.gate && lastFlags[it.gate] === false) return false;
-  return manual[it.id] === true;
+  if(manual[it.id] === true || manual[it.id] === false) return manual[it.id];
+  return 'open';
 }
 function itemVal(it){ return itemState(it) === true; }
 
-// Score over applicable items only, as both instruments specify
+// Score over applicable items only, as both instruments specify. The percentage is only
+// final once nothing is open; best is the most the score can still reach.
 function scoreItems(items){
   const states = items.map(itemState);
   const applicable = states.filter(v => v !== 'na').length;
-  const met = states.filter(v => v === true).length;
-  return { met, applicable, pct: applicable ? Math.round(met / applicable * 100) : null };
+  const met  = states.filter(v => v === true).length;
+  const notMet = states.filter(v => v === false).length;
+  const open = states.filter(v => v === 'open').length;
+  const pct  = applicable ? Math.round(met / applicable * 100) : null;
+  const best = applicable ? Math.round((met + open) / applicable * 100) : null;
+  return { met, not: notMet, open, applicable, done: open === 0, pct, best };
 }
 
-function setItem(id, on){
-  manual[id] = on;
+// v: 'met' | 'not' | '' (not reviewed)
+function setItem(id, v){
+  if(v === 'met') manual[id] = true;
+  else if(v === 'not') manual[id] = false;
+  else delete manual[id];
+  const row = $(id) && $(id).closest('.ck-item');
+  if(row){ row.classList.toggle('met', v === 'met'); row.classList.toggle('not', v === 'not'); }
   refreshScores();
   explainScores(computeFK(readStructure().text), !hasContent());
 }
@@ -1532,6 +1551,9 @@ function toggleNA(id){
   renderCci(); renderPemat(); refreshScores();
   explainScores(computeFK(readStructure().text), !hasContent());
 }
+
+// Signals only the artwork can show — never inferred from a visual-mode transcript
+const DESIGN_ONLY = new Set(['hasImages','hasBold','hasHeaders','hasStructure','hasCues']);
 
 function buildChecklist(items){
   return items.map(it => {
@@ -1549,13 +1571,25 @@ function buildChecklist(items){
     else if(gateFail)       tag = '<span class="ck-tag ck-fail" title="A prerequisite for this item was not detected in the text">AUTO ✗</span>';
     else if(it.gate && lastFlags[it.gate] === true)
                             tag = '<span class="ck-tag" title="A prerequisite was detected — confirm the item yourself">detected · confirm</span>';
+    else if(visualOn && DESIGN_ONLY.has(it.gate || it.auto) && lastFlags[it.gate || it.auto] == null)
+                            tag = '<span class="ck-tag" title="A transcript can\'t show this — look at the design and rate it yourself">check design</span>';
     const naBtn = it.na && !autoNA
       ? ' <button class="ck-na'+(st==='na'?' on':'')+'" onclick="toggleNA(\''+it.id+'\')" title="Mark not applicable — excluded from the score">N/A</button>'
       : '';
-    return '<div class="ck-item'+(locked?' auto':'')+(st==='na'?' na':'')+'">'+
-      '<input type="checkbox" id="'+it.id+'" '+(st===true?'checked':'')+' '+(locked?'disabled':'')+
-        ' onchange="setItem(\''+it.id+'\',this.checked)">'+
-      '<label for="'+it.id+'"><span class="ck-n">'+it.n+'.</span> '+it.text+tag+'</label>'+naBtn+
+    const label = '<label for="'+it.id+'"><span class="ck-n">'+it.n+'.</span> '+it.text+tag+'</label>';
+    if(locked){
+      return '<div class="ck-item auto'+(st==='na'?' na':'')+'">'+
+        '<input type="checkbox" id="'+it.id+'" '+(st===true?'checked':'')+' disabled>'+label+naBtn+
+      '</div>';
+    }
+    // Rated by the designer: not reviewed / met / not met
+    const v = st === true ? 'met' : st === false ? 'not' : '';
+    return '<div class="ck-item ck-rate'+(v ? ' '+v : '')+'">'+
+      '<select id="'+it.id+'" class="ck-sel" onchange="setItem(\''+it.id+'\',this.value)">'+
+        '<option value=""'+(v===''?' selected':'')+'>Not reviewed</option>'+
+        '<option value="met"'+(v==='met'?' selected':'')+'>Met</option>'+
+        '<option value="not"'+(v==='not'?' selected':'')+'>Not met</option>'+
+      '</select>'+label+naBtn+
     '</div>';
   }).join('');
 }
@@ -1580,36 +1614,51 @@ function renderPemat(){
 
 function refreshScores(){
   // CCI
+  // CCI — a final score only once every applicable item is rated; a fail only once 90 is out of reach
   const cci = scoreItems(CCI_ITEMS);
   const cciPill = $('cci-pill');
   const cciOn = hasContent() && cci.pct !== null;
-  cciPill.textContent = cciOn ? cci.pct+' · '+cci.met+'/'+cci.applicable : '—';
-  cciPill.className = 'pill ' + (cciOn ? pillClass(cci.pct, CCI_PASS, 70) : 'pill-empty');
+  cciPill.textContent = !cciOn ? '—'
+    : cci.done ? cci.pct+' · '+cci.met+'/'+cci.applicable
+    : cci.met+' met · '+cci.open+' open';
+  cciPill.className = 'pill ' + (!cciOn ? 'pill-empty'
+    : cci.done ? pillClass(cci.pct, CCI_PASS, 70)
+    : cci.best < CCI_PASS ? 'pill-fail' : 'pill-count');
   const cciStatus = $('cci-status');
   if(cciStatus){
-    const need = Math.ceil(cci.applicable * CCI_PASS / 100) - cci.met;
     if(!cciOn){ cciStatus.textContent = ''; cciStatus.className = 'status-line mod-status'; }
-    else if(cci.pct >= CCI_PASS){ cciStatus.textContent = '✓ Passing'; cciStatus.className = 'status-line mod-status pass'; }
-    else { cciStatus.textContent = '✗ '+need+' more to pass'; cciStatus.className = 'status-line mod-status fail'; }
+    else if(cci.done && cci.pct >= CCI_PASS){ cciStatus.textContent = '✓ Passing'; cciStatus.className = 'status-line mod-status pass'; }
+    else if(cci.best < CCI_PASS){ cciStatus.textContent = '✗ '+cci.not+' not met — 90 is out of reach'; cciStatus.className = 'status-line mod-status fail'; }
+    else { cciStatus.textContent = cci.open+' not yet reviewed'; cciStatus.className = 'status-line mod-status'; }
   }
 
-  // PEMAT
+  // PEMAT — each scale shows a percentage only once all its applicable items are rated
   const pu = scoreItems(PEMAT_U), pa = scoreItems(PEMAT_A);
-  const u = pu.pct === null ? 0 : pu.pct, a = pa.pct === null ? 0 : pa.pct;
-  $('pemat-u-num').innerHTML = (pu.pct === null ? '—' : u+'<small>%</small>');
-  $('pemat-a-num').innerHTML = (pa.pct === null ? '—' : a+'<small>%</small>');
-  const uf = $('pemat-u-fill'), af = $('pemat-a-fill');
-  uf.style.width = u+'%'; af.style.width = a+'%';
-  uf.style.background = u>=PEMAT_PASS ? 'var(--teal)' : u>50 ? 'var(--orange)' : 'var(--red)';
-  af.style.background = a>=PEMAT_PASS ? 'var(--teal)' : a>50 ? 'var(--orange)' : 'var(--red)';
+  const num = s => s.pct === null ? '—'
+    : s.done ? s.pct+'<small>%</small>'
+    : s.met+'<small> of '+s.applicable+' met · '+s.open+' to rate</small>';
+  $('pemat-u-num').innerHTML = num(pu);
+  $('pemat-a-num').innerHTML = num(pa);
+  const fill = (el, s) => {
+    const p = s.pct || 0;
+    el.style.width = p+'%';
+    el.style.background = !s.done ? 'var(--n300)' : p>=PEMAT_PASS ? 'var(--teal)' : p>50 ? 'var(--orange)' : 'var(--red)';
+  };
+  fill($('pemat-u-fill'), pu); fill($('pemat-a-fill'), pa);
+  const done = pu.done && pa.done, u = pu.pct || 0, a = pa.pct || 0;
+  const onTarget = u >= PEMAT_PASS && a >= PEMAT_PASS;
   const pPill = $('pemat-pill');
-  pPill.textContent = hasContent() ? 'U '+u+'% · A '+a+'%' : 'U — · A —';
-  pPill.className = 'pill ' + (hasContent() ? ((u>=PEMAT_PASS&&a>=PEMAT_PASS)?'pill-pass':(u>50||a>50)?'pill-warn':'pill-fail') : 'pill-empty');
+  pPill.textContent = !hasContent() ? 'U — · A —'
+    : done ? 'U '+u+'% · A '+a+'%'
+    : (pu.open + pa.open)+' to rate';
+  pPill.className = 'pill ' + (!hasContent() ? 'pill-empty' : !done ? 'pill-count'
+    : onTarget ? 'pill-pass' : (u>50||a>50) ? 'pill-warn' : 'pill-fail');
   const pStatus = $('pemat-status');
   if(pStatus){
     if(!hasContent()){ pStatus.textContent = ''; pStatus.className = 'status-line mod-status'; }
-    else if(u>=PEMAT_PASS && a>=PEMAT_PASS){ pStatus.textContent = '✓ On target'; pStatus.className = 'status-line mod-status pass'; }
-    else { pStatus.textContent = '✗ Below target'; pStatus.className = 'status-line mod-status fail'; }
+    else if(!done){ pStatus.textContent = (pu.open + pa.open)+' not yet rated'; pStatus.className = 'status-line mod-status'; }
+    else if(onTarget){ pStatus.textContent = '✓ On working target'; pStatus.className = 'status-line mod-status pass'; }
+    else { pStatus.textContent = '✗ Below working target'; pStatus.className = 'status-line mod-status fail'; }
   }
 }
 
@@ -1702,21 +1751,34 @@ function explainScores(stats, empty){
   }).length;
   const cciNA = CCI_ITEMS.length - cci.applicable;
   if(cci.pct !== null){
-    why('cci-why', cci.pct>=CCI_PASS ? 'good' : cci.pct>=70 ? 'mid' : 'bad',
-      'Score: <b>'+cci.pct+'</b>. You met '+cci.met+' of '+cci.applicable+' items'+
-      (cciNA ? ' ('+cciNA+' don’t apply)' : '')+'. CDC says 90 or more passes. Below that, readers may miss the main point or what to do.',
-      cci.pct >= CCI_PASS
-        ? 'Passing. Check again after you edit.'
-        : (cciAuto ? cciAuto+' item'+(cciAuto===1?' is':'s are')+' scored from your text. ' : '')+'Tick the rest below. No steps, numbers or risks? Mark that part “Doesn’t apply”.');
+    const counts = '<b>'+cci.met+' met</b>, '+cci.not+' not met, '+cci.open+' not yet reviewed'+
+      (cciNA ? ' ('+cciNA+' don’t apply)' : '')+'.';
+    const scored = cciAuto ? cciAuto+' item'+(cciAuto===1?' is':'s are')+' scored from your text. ' : '';
+    if(cci.done)
+      why('cci-why', cci.pct>=CCI_PASS ? 'good' : cci.pct>=70 ? 'mid' : 'bad',
+        'Score: <b>'+cci.pct+'</b>. You met '+cci.met+' of '+cci.applicable+' items'+
+        (cciNA ? ' ('+cciNA+' don’t apply)' : '')+'. CDC says 90 or more passes.',
+        cci.pct >= CCI_PASS ? 'Passing. Check again after you edit.' : 'Fix the items marked not met.');
+    else if(cci.best < CCI_PASS)
+      why('cci-why','bad', counts+' Even if every open item is met, the score can reach only '+cci.best+'. CDC says 90 or more passes.',
+        'Fix the items marked not met first.');
+    else
+      why('cci-why','', counts+' Items you haven’t reviewed don’t count against you. The score is final once you rate them.',
+        scored+'Rate the rest below. No steps, numbers or risks? Mark that part “Doesn’t apply”.');
   }
 
   // ── PEMAT ──
-  const u = scoreItems(PEMAT_U).pct || 0;
-  const a = scoreItems(PEMAT_A).pct || 0;
+  const PU = scoreItems(PEMAT_U), PA = scoreItems(PEMAT_A);
+  const u = PU.pct || 0;
+  const a = PA.pct || 0;
   let pemMsg, pemTone, pemDo;
-  if(u >= PEMAT_PASS && a >= PEMAT_PASS){
+  if(!PU.done || !PA.done){
+    pemTone='';
+    pemMsg='So far <b>'+PU.met+' of '+PU.applicable+'</b> understand items and <b>'+PA.met+' of '+PA.applicable+'</b> act items are met. <b>'+(PU.open+PA.open)+'</b> are still to rate. Percentages show once every item is rated, so unrated items never count as fails.';
+    pemDo='Rate the open items below.';
+  } else if(u >= PEMAT_PASS && a >= PEMAT_PASS){
     pemTone='good';
-    pemMsg='<b>Understand: '+u+'%</b> and <b>Act: '+a+'%</b>. Both meet the 70% goal. A patient should follow it and know what to do.';
+    pemMsg='<b>Understand: '+u+'%</b> and <b>Act: '+a+'%</b>. Both meet this tool’s 70% working target. AHRQ sets no cutoff: higher is better.';
     pemDo='On target.';
   } else if(u >= PEMAT_PASS){
     pemTone='mid';
@@ -1728,7 +1790,7 @@ function explainScores(stats, empty){
     pemDo='Use plain words. Explain medical words. Split the text under clear headings. Add a summary.';
   } else {
     pemTone='bad';
-    pemMsg='<b>Understand: '+u+'%</b>, <b>Act: '+a+'%</b>. Both are under the 70% goal. Readers may get it wrong and not act.';
+    pemMsg='<b>Understand: '+u+'%</b>, <b>Act: '+a+'%</b>. Both are under this tool’s 70% working target.';
     pemDo='Start with the one thing you want them to do. Then explain it in plain words.';
   }
   why('pemat-why', pemTone, pemMsg, pemDo);
@@ -3138,7 +3200,8 @@ function autoCdcIdd(){
     ? { v:'n', why: passive.length + ' sentence' + (passive.length > 1 ? 's look' : ' looks') + ' passive, e.g. “' + passive[0].slice(0,60) + '”.' }
     : { v:'y', why:'No passive patterns found (pattern check — confirm by reading).' };
   // 10 — no headers = N/A; question headers = no; otherwise the user judges "informative"
-  if(!u.headers.length) out[ix[10]] = { v:'na', why:'No headers or titles found.' };
+  // A transcript can't show which lines are headers, so visual mode leaves "none found" to the user
+  if(!u.headers.length){ if(!visualOn) out[ix[10]] = { v:'na', why:'No headers or titles found.' }; }
   else { const q = u.headers.find(h => /\?\s*$/.test(h));
     if(q) out[ix[10]] = { v:'n', why:'Header phrased as a question: “' + q.slice(0,60) + '”.' }; }
   // 14 — different words for what may be one concept
@@ -3216,17 +3279,22 @@ function fwEffective(key){
 function fwScore(key){
   const r = FW_REG[key], eff = fwEffective(key);
   if(key === 'pematav'){
-    const s = { U:{ag:0,dis:0}, A:{ag:0,dis:0} }; let unrated = 0;
+    // A scale's percentage is shown only once all its items are rated — never from a partial set
+    const s = { U:{ag:0,dis:0,open:0}, A:{ag:0,dis:0,open:0} }; let unrated = 0;
     r.cr.forEach((c,i) => { const v = eff[i].v, sc = s[c[3].s];
-      if(v === '1') sc.ag++; else if(v === '0') sc.dis++; else if(v !== 'na') unrated++; });
-    const pct = x => (x.ag + x.dis) ? Math.round(x.ag / (x.ag + x.dis) * 100) : null;
-    return { u: pct(s.U), a: pct(s.A), uN: s.U.ag + s.U.dis, aN: s.A.ag + s.A.dis, unrated };
+      if(v === '1') sc.ag++; else if(v === '0') sc.dis++; else if(v !== 'na'){ sc.open++; unrated++; } });
+    const pct = x => (x.ag + x.dis) && !x.open ? Math.round(x.ag / (x.ag + x.dis) * 100) : null;
+    return { u: pct(s.U), a: pct(s.A), uN: s.U.ag + s.U.dis, aN: s.A.ag + s.A.dis,
+             uOpen: s.U.open, aOpen: s.A.open, unrated };
   }
   if(key === 'cdcidd'){
     let yes = 0, na = 0, unrated = 0;
     eff.forEach(e => { if(e.v === 'y') yes++; else if(e.v === 'na') na++; else if(e.v !== 'n') unrated++; });
     const possible = r.cr.length - na;
-    return { yes, na, unrated, possible, pct: possible ? Math.round(yes / possible * 100) : null };
+    // Final only once every item is answered; best = the most it can still reach
+    return { yes, na, unrated, possible,
+             pct:  possible && !unrated ? Math.round(yes / possible * 100) : null,
+             best: possible ? Math.round((yes + unrated) / possible * 100) : null };
   }
   if(key === 'cdceq'){
     let flag = 0, ok = 0, open = 0;
@@ -3306,7 +3374,8 @@ function fwStat(key){
     return 'U ' + f(sc.u) + ' · A ' + f(sc.a) + (sc.unrated ? ' · ' + sc.unrated + ' to rate' : '');
   }
   if(key === 'cdcidd')
-    return (sc.pct === null ? '—' : sc.pct + '%') + (sc.unrated ? ' · ' + sc.unrated + ' to answer' : sc.pct >= 90 ? ' · ≥90 ✓' : ' · below 90');
+    return sc.unrated ? sc.yes + ' yes · ' + sc.unrated + ' to answer' + (sc.best < 90 ? ' · 90 out of reach' : '')
+      : (sc.pct === null ? '—' : sc.pct + '%') + (sc.pct >= 90 ? ' · ≥90 ✓' : ' · below 90');
   if(key === 'cdceq')
     return sc.flag + ' flagged · ' + sc.ok + ' pass' + (sc.open ? ' · ' + sc.open + ' open' : '');
   const rt = fwRatings[key] || {};
@@ -3389,14 +3458,14 @@ function fwSuggestedBody(key){
   let h = '<div class="fwo-meta">' + escapeHtml(fwScaleHint(key)) + '</div>';
   if(key === 'pematav'){
     const f = x => x === null ? '—' : x + '%';
-    const on = n => n ? ' <span style="font-weight:400;color:var(--n500)">(' + n + ' item' + (n > 1 ? 's' : '') + ')</span>' : '';
-    h += '<div class="fwo-score">Understandability ' + f(sc.u) + on(sc.uN) + ' · Actionability ' + f(sc.a) + on(sc.aN) + '</div>'
+    const g = (p, open) => open ? '<span style="font-weight:400;color:var(--n500)">' + open + ' to rate</span>' : f(p);
+    h += '<div class="fwo-score">Understandability ' + g(sc.u, sc.uOpen) + ' · Actionability ' + g(sc.a, sc.aOpen) + '</div>'
        + '<div class="fwo-sub">Separate scores, never combined. AHRQ sets no pass mark: higher is better.'
-       + (sc.unrated ? ' ' + sc.unrated + ' item' + (sc.unrated > 1 ? 's' : '') + ' not rated yet — AHRQ asks you not to skip any.' : '') + '</div>';
+       + (sc.unrated ? ' Each score appears once all its items are rated — AHRQ asks you not to skip any.' : '') + '</div>';
   } else if(key === 'cdcidd'){
-    h += '<div class="fwo-score">Total score ' + (sc.pct === null ? '—' : sc.pct) + ' · ' + sc.yes + ' yes of ' + sc.possible + ' possible</div>'
+    h += '<div class="fwo-score">' + (sc.unrated ? sc.yes + ' yes so far · ' + sc.unrated + ' to answer' : 'Total score ' + (sc.pct === null ? '—' : sc.pct)) + ' · ' + sc.possible + ' possible</div>'
        + '<div class="fwo-sub">CDC: 90 or above is excellent; 89 or below — revise the items that scored 0 and score again.'
-       + (sc.unrated ? ' ' + sc.unrated + ' unanswered item' + (sc.unrated > 1 ? 's count' : ' counts') + ' as 0 until you answer.' : '') + '</div>';
+       + (sc.unrated ? (sc.best < 90 ? ' Even if every open item is yes, the most it can reach is ' + sc.best + '.' : ' The total appears once every item is answered; unanswered items don’t count against you.') : '') + '</div>';
   } else if(key === 'cdceq'){
     h += '<div class="fwo-score">' + sc.flag + ' flagged · ' + sc.ok + ' pass</div>'
        + '<div class="fwo-sub">No score — CDC calls these principles a starting point, not a mandate. The term lists are not complete, so no hits does not mean a principle is met.</div>';
