@@ -4,6 +4,25 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Cards show only what you picked; fewer notes
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **CCI and PEMAT cards** show only when CCI or PEMAT is picked in Frameworks (or switched
+  on by the Brief). Before, they always showed once there was text.
+- **Framework checklists card** shows only when a picked framework has no card of its own
+  (SAM, PEMAT-A/V, CDC IDD/ELL and so on). It also shows when a picked scoring card is
+  waiting for text, so the "needs text to score" prompt still appears.
+- **Accessibility and Accuracy** are off by default. They're still in the other workspace
+  presets, which are hidden for now.
+- With text and nothing picked, the studio shows Readability and Plain language.
+- **Notes removed:**
+  - the "N of 20 items scored from your text · you tick the rest", "Worked out from your
+    text" and "Flags problems for you · no official score" lines under each card title
+  - the "has its own card below… cards you didn't pick are faded" note in the checklists card
+- Fix: the list of cards (`MODS`) is now defined before the Frameworks bar first renders
+  during load.
+
 ## 2026-10-16 — Half-width document panel, one checklist control, seven type treatments
 
 Branch: `refresh-and-fixes` · Vercel: Preview

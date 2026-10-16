@@ -736,7 +736,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-out-tag.qual{background:var(--n100);color:var(--n600)}
 .seg.fw-out-filter{margin-left:auto;flex:0 0 auto}
 .seg.fw-out-filter button{flex:0 0 auto;padding:3px 9px;font-size:var(--fs-xs);font-weight:400}
-.fw-badge-row{padding:6px 12px 8px;font-size:var(--fs-xs);font-weight:400;color:var(--n500);display:flex;align-items:flex-start;gap:6px;line-height:1.35}
 .fwo-group{font-size:var(--fs-xs);font-weight:600;color:var(--n500);margin:14px 0 6px;display:flex;align-items:center;gap:6px}
 .fwo-note + .fwo-group{margin-top:4px}
 .fwo-list{margin:4px 0 0;padding-left:16px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--n700)}
@@ -857,7 +856,6 @@ button, select, input, textarea{font-family:var(--sans)}
 .mod-body{padding:var(--sp-3) var(--sp-4) var(--sp-4);max-height:640px}
 .mod-min{width:28px;height:28px;border-radius:var(--radius-sm);color:var(--n500)}
 .mod.fw-on{border-color:var(--n300)}
-.fw-badge-row{padding:0 var(--sp-4) var(--sp-2);color:var(--n500)}
 
 /* Pills, tags, status */
 .pill{font-size:var(--fs-xs);font-weight:400;padding:2px 10px;border-radius:999px}
@@ -1238,7 +1236,6 @@ button,input,select,textarea{font-family:inherit}
         
         <button class="mod-min mod-fold" onclick="toggleCollapse('mod-read')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
       </div>
-      <div class="fw-badge-row" id="badge-readability"></div>
       <div class="mod-body" id="read-body">
         <div class="score-why" id="read-why"></div>
         <div class="meter-lbl"><span class="meter-name">Flesch ease</span><span class="meter-num" id="ease-num">—</span></div>
@@ -1267,7 +1264,6 @@ button,input,select,textarea{font-family:inherit}
         
         <button class="mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
       </div>
-      <div class="fw-badge-row" id="badge-cci"></div>
       <div class="mod-body">
         <div class="status-line mod-status" id="cci-status"></div>
         <div class="score-why" id="cci-why"></div>
@@ -1284,7 +1280,6 @@ button,input,select,textarea{font-family:inherit}
         
         <button class="mod-min mod-fold" onclick="toggleCollapse('mod-pemat')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
       </div>
-      <div class="fw-badge-row" id="badge-pemat"></div>
       <div class="mod-body">
         <div class="status-line mod-status" id="pemat-status"></div>
         <div class="score-why" id="pemat-why"></div>
@@ -1306,7 +1301,6 @@ button,input,select,textarea{font-family:inherit}
         
         <button class="mod-min mod-fold" onclick="toggleCollapse('mod-scan')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
       </div>
-      <div class="fw-badge-row" id="badge-plainlang"></div>
       <div class="mod-body">
         <div class="scan-summary">
           <div class="scan-count sc-err" id="scan-err">0<small>fix</small></div>
@@ -1938,13 +1932,20 @@ function hasArtwork(){
   return visualOn || !!editor.querySelector('img');
 }
 
+// Every score card, in default order (defined up here: the Frameworks bar renders during load)
+const MODS = ['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc'];
 // Each rule answers: can this module say anything useful right now?
 const APPLIES = {
   'mod-goal':  () => true,                       // choosing a framework needs no content
   'mod-a11y':  () => true,                       // guidance is useful before you write
   'mod-read':  () => hasContent(),
-  'mod-cci':   () => hasContent(),
-  'mod-pemat': () => hasContent(),
+  // CCI and PEMAT show only when picked in Frameworks (or implied by the Brief)
+  'mod-cci':   () => hasContent() && fwChosen('cci'),
+  'mod-pemat': () => hasContent() && fwChosen('pemat'),
+  // the checklists card shows only when a picked framework has no card of its own,
+  // or a picked scoring card is waiting for text
+  'mod-fwout': () => { const sel = selectedFrameworks();
+    return sel.some(k => !FW_LIVE[k]) || (!hasContent() && sel.some(k => FW_LIVE[k])); },
   'mod-scan':  () => hasContent(),
   'mod-acc':   () => hasContent(),
 };
@@ -3589,17 +3590,6 @@ function syncFwNeedText(){
     if(need !== fwNeedState) renderFwOut();
   } catch(e){}
 }
-function renderLiveBadges(){
-  Object.keys(FW_LIVE).forEach(k => {
-    const el = $('badge-' + k);
-    if(!el) return;
-    const c = fwAutoCount(k);
-    const txt = k === 'readability' ? 'Worked out from your text'
-              : k === 'plainlang'   ? 'Flags problems for you · no official score'
-              : c.auto + ' of ' + c.total + ' items scored from your text · you tick the rest';
-    el.textContent = txt;
-  });
-}
 function fwGroupHdr(level, n){
   const b = FW_BADGE[level];
   return '<div class="fwo-group">' + escapeHtml(b.label) + ' · ' + n + '</div>';
@@ -3790,11 +3780,6 @@ function renderFwOut(){
     html += '<div class="fwo-need"><b>' + escapeHtml(names) + (live.length === 1 ? ' needs' : ' need') + ' text to score.</b> '
           + escapeHtml(what) + ' and ' + (live.length === 1 ? 'its card' : 'their cards') + ' will appear below.'
           + '<div><button class="fwo-link" style="margin-top:6px" onclick="focusArtworkText()">' + (visualOn ? 'Add the poster\'s text' : 'Go to the workspace') + '</button></div></div>';
-  } else {
-    let note = '';
-    if(live.length) note += names + (live.length === 1 ? ' has its own card' : ' have their own cards') + ' below. ';
-    note += 'Cards for frameworks you didn’t pick are faded. They still work.';
-    html += '<div class="fwo-note">' + escapeHtml(note) + '</div>';
   }
   if(part.length) html += fwGroupHdr('PARTIAL', part.length) + part.map(renderFwItem).join('');
   if(self.length) html += fwGroupHdr('SELF', self.length) + self.map(renderFwItem).join('');
@@ -3857,6 +3842,8 @@ const fwManual = {};   // f -> true (forced on) | false (forced off) | undefined
 // fwManual: true = ticked, false = unticked by the user (wins over auto), undefined = follow the module
 // New material starts fresh: forget "unticked" choices for the scoring modules
 function resetLiveOverrides(){ Object.keys(FW_LIVE).forEach(k => { if(fwManual[k] === false) delete fwManual[k]; }); }
+// Picked on purpose: ticked in Frameworks, or switched on by the Brief (an untick wins)
+function fwChosen(f){ return fwManual[f] === true || (fwManual[f] !== false && briefFrameworks().includes(f)); }
 function fwLiveInUse(f){
   const m = FW_LIVE[f] && $(FW_LIVE[f]);
   return !!m && !m.classList.contains('hidden') && !m.classList.contains('na-hidden') && hasContent();
@@ -3939,7 +3926,7 @@ function renderFwTopBar(){
   renderFwTopGrid();
   renderFwOut();
   applyFwToModules();
-  renderLiveBadges();
+  updateApplicability();
 }
 // Brief and Frameworks dropdowns: one open at a time; click outside or press Escape to close
 const TOP_PANELS = {
@@ -3967,14 +3954,13 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape') closeTopPanel
 renderFwTopBar();
 
 // ── Module dock / rails (fixed columns — drag only reorders) ──
-const MODS = ['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc'];
 
 // ════════════════════════════════════════
 // WORKSPACE PRESETS — a starting set of modules per scenario
 // ════════════════════════════════════════
 const LAYOUTS = {
-  'everything': { name:'Everything', note:'All modules.',
-    right:['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc'] },
+  'everything': { name:'Everything', note:'Every module except Accessibility and Accuracy, which are off by default.',
+    right:['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan'] },
 
   'drafting': { name:'Drafting a new piece', note:'Readability and the plain-language scan — what you need while writing.',
     right:['mod-fwout','mod-read','mod-scan'] },
