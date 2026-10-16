@@ -4,6 +4,16 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Release PR #2 to Production
+
+Branch: `master` · Vercel: Production
+
+- Merged PR #2 (merge commit `19f5989`). It ships these changes to the live site:
+  - the evidence validation report (`docs/evidence-validation-report.md`)
+  - CCI, PEMAT and DCS aligned with the published instruments
+  - the simplified Studio UI
+  - the T1–T3 frameworks added to that UI (see the entry below)
+
 ## 2026-10-16 — Resolve conflicts: merge `master` into PR #2
 
 Branch: `claude/inspiring-faraday-au7zm5` · Vercel: Preview (PR #2)
