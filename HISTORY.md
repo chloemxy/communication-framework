@@ -4,6 +4,40 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Studio refinement: calmer buttons, artwork review, honest artwork scores
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Buttons:** one button style in three strengths (primary, secondary, quiet). The coloured
+  dots on Upload, Files, Clear and the samples are gone, because the colours meant nothing.
+  Framework tags and the Plain language count tiles are neutral too.
+- **Less on screen:** removed the "live" dot next to Material, the clear-formatting and link
+  buttons, and the long empty-state paragraph. Track changes and Save version moved into the
+  version drawer (Ctrl/⌘+S still saves). Files shows only once two files are open. Upload
+  appears once per area, and the guide no longer repeats it. Framework sources sit in a
+  collapsed "Sources" section, and repeated notes on the cards are cut. The honesty messages
+  stay, shorter.
+- **Images and PDFs:** the Material panel shows only the artwork, with zoom out / Fit / zoom
+  in, Shift+= / Shift+− / Shift+0 while you're in the panel, and drag to pan. Alt text, Colour
+  and contrast, and Text the tool read are cards on the right. Visual type is gone.
+- **Text the tool read:** the tool reads the words in an image automatically (Tesseract.js,
+  loaded only when artwork opens), and you can fix them. Click a line or a Plain language
+  issue to see where it is on the artwork. PDFs with a text layer use that text and keep
+  their line breaks.
+- **Alt text:** "Download image with alt text" saves a copy of the JPEG or PNG with the alt
+  text in its accessibility metadata (IPTC Alt Text). The original file isn't changed. Copy
+  works for every file type.
+- **Guide:** "How to check your material" sits on the page background instead of a card.
+- **Frameworks filter:** the four-button filter is now a compact Filter menu.
+- **Fixes from the review:**
+  - Brief and Frameworks open from the keyboard, and closed panels no longer take focus.
+  - Cards have real headings.
+  - The plain-language scan no longer reads a Word document as one long sentence; all counts
+    agree.
+  - Wrapped artwork lines join into sentences, and poster reading levels never auto-pass.
+  - A .doc file that can't be opened shows a message instead of being scored.
+  - The Material footer fits on a phone.
+
 ## 2026-10-16 — Scoring rules folded into the Framework Compass
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

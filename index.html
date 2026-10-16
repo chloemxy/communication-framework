@@ -464,6 +464,11 @@ body.resizing{cursor:col-resize;user-select:none}
 .ck-n{color:var(--n400);font-variant-numeric:tabular-nums;font-size:var(--fs-xs);font-weight:400}
 .ck-item.na label{color:var(--n400);text-decoration:line-through;text-decoration-color:var(--n300)}
 
+/* "Can't find these words on the artwork." */
+.hl-miss{font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--n600)}
+.hl-miss:empty{display:none}
+.issue + .hl-miss{padding:0 0 var(--sp-1) 23px}
+
 /* scan issues */
 .issue{display:flex;gap:7px;align-items:flex-start;padding:6px 0;border-bottom:1px solid var(--n100);cursor:pointer}
 .issue:last-child{border-bottom:none}
@@ -478,11 +483,9 @@ body.resizing{cursor:col-resize;user-select:none}
 .issue-msg{font-size:var(--fs-xs);font-weight:400;color:var(--n600);line-height:1.4}
 .issue-snip{font-size:var(--fs-xs);font-weight:400;color:var(--n400);display:block;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px;transition:color .13s}
 .scan-summary{display:flex;gap:5px;margin-bottom:8px}
-.scan-count{flex:1;border-radius:6px;padding:5px 0;text-align:center;font-size:var(--fs-sm);font-weight:600;font-variant-numeric:tabular-nums}
-.scan-count small{display:block;font-size:var(--fs-xs);font-weight:600;opacity:.75}
-.sc-err{background:var(--red-bg);color:#b91c1c}
-.sc-warn{background:var(--orange-bg);color:#7a5a00}
-.sc-ok{background:var(--teal-bg);color:#14713e}
+/* neutral tiles: the counts carry the meaning, not red/amber/green */
+.scan-count{flex:1;border-radius:6px;padding:5px 0;text-align:center;font-size:var(--fs-sm);font-weight:600;font-variant-numeric:tabular-nums;background:var(--n50);border:1px solid var(--n100);color:var(--n900)}
+.scan-count small{display:block;font-size:var(--fs-xs);font-weight:400;color:var(--n700)}
 
 /* tune controls */
 .tune-lbl{font-size:var(--fs-xs);font-weight:600;color:var(--n500);margin:10px 0 5px}
@@ -582,8 +585,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-top-card.match .fwc-box{background:var(--zc);border-color:var(--zc);box-shadow:inset 0 0 0 2px #fff}
 .fw-top-card .name{font-size:var(--fs-xs);font-weight:600;color:var(--n900)}
 .fw-top-card.match .name{color:var(--zc)}
-.fwc-src{margin-left:auto;font-size:var(--fs-xs);font-weight:400;color:var(--n400);text-decoration:none;white-space:nowrap}
-.fwc-src:hover{color:var(--n700)}
 .fw-top-card .full{font-size:var(--fs-xs);font-weight:400;color:var(--n600);line-height:1.4}
 .fwc-meta{display:flex;align-items:center;gap:6px;margin-top:auto}
 .fwc-how{font-size:var(--fs-xs);font-weight:400;color:var(--n500)}
@@ -679,6 +680,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 /* Focus is always visible for keyboard users */
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 #editor:focus-visible{outline:none}
+/* the writing panel shows the same focus ring as every other control while the text has focus */
+.canvas-body:has(#editor:focus){outline:2px solid var(--blue);outline-offset:-2px}
 button, select, input, textarea{font-family:var(--sans)}
 
 /* Top bar */
@@ -938,6 +941,7 @@ button,input,select,textarea{font-family:inherit}
 .vm-art{flex:1 1 auto;min-width:0;min-height:0;display:flex;flex-direction:column}
 .vm-art-bar{display:flex;align-items:center;flex-wrap:wrap;gap:2px;padding:var(--sp-1) var(--sp-2);border-bottom:1px solid var(--n200);background:var(--white)}
 .vm-zoom-pct{min-width:48px;padding:0 var(--sp-1);text-align:center;font-size:var(--fs-xs);font-weight:600;color:var(--n600);font-variant-numeric:tabular-nums}
+.vm-status{margin-left:auto;padding:0 var(--sp-1);font-size:var(--fs-xs);font-weight:400;line-height:1.4;color:var(--n600);min-width:0}
 .vm-pager{display:flex;align-items:center;gap:2px;margin-left:var(--sp-1);padding-left:var(--sp-2);border-left:1px solid var(--n200)}
 .vm-pageno{font-size:var(--fs-xs);font-weight:600;color:var(--n600);font-variant-numeric:tabular-nums;padding:0 var(--sp-1)}
 .vm-preview{flex:1;min-height:0;overflow:auto;display:flex;padding:var(--sp-4);background:var(--n100);position:relative}
@@ -1032,6 +1036,14 @@ button,input,select,textarea{font-family:inherit}
 .fw-top-panel.open{visibility:visible;transition:max-height .18s ease,opacity .15s ease,visibility 0s}
 .fw-top-empty{white-space:normal}
 
+/* Section titles are real h2s for screen-reader navigation but keep their own look:
+   the global h2 (Heading 17/600) never applies to them, so no new type treatment appears */
+.mod-title, .bar-title{margin:0;font:inherit;color:inherit;line-height:inherit}
+.mod-title{margin-right:auto;display:flex;align-items:center;flex-shrink:0}
+.mod-title .mod-name{margin-right:0}
+.bar-title{flex:1 1 auto;min-width:0;align-self:stretch;display:flex}
+h2.canvas-title{margin:0;line-height:inherit}
+
 /* Help triggers (card titles and field labels that open an explanation): same focus ring as .btn */
 .mod-name[data-tip]:focus-visible, .lbl-info:focus-visible{outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus);border-radius:2px}
 
@@ -1100,11 +1112,11 @@ button,input,select,textarea{font-family:inherit}
 
     <div class="top-bar-col">
       <div class="fw-topbar" id="brief-topbar">
-        <button type="button" class="fw-top-btn" id="brief-top-btn" aria-expanded="false" aria-controls="brief-top-panel" onclick="toggleBriefTop()" title="Your brief sets the targets every other card scores against.">
+        <h2 class="bar-title"><button type="button" class="fw-top-btn" id="brief-top-btn" aria-expanded="false" aria-controls="brief-top-panel" onclick="toggleBriefTop()" title="Your brief sets the targets every other card scores against.">
           <span class="fw-top-name">Brief</span>
           <span class="fw-top-chips" id="brief-top-summary"></span>
           <span class="fw-top-toggle" id="brief-top-toggle">Edit brief ▸</span>
-        </button>
+        </button></h2>
       </div>
       <div class="fw-top-panel" id="brief-top-panel" inert>
         <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
@@ -1147,12 +1159,12 @@ button,input,select,textarea{font-family:inherit}
 
     <div class="top-bar-col">
       <div class="fw-topbar" id="fw-topbar">
-        <button type="button" class="fw-top-btn" id="fw-top-btn" aria-expanded="false" aria-controls="fw-top-panel" onclick="toggleFwTop()" title="Tick the frameworks to apply. Ones the tool scores get their own cards; the rest become checklists.">
+        <h2 class="bar-title"><button type="button" class="fw-top-btn" id="fw-top-btn" aria-expanded="false" aria-controls="fw-top-panel" onclick="toggleFwTop()" title="Tick the frameworks to apply. Ones the tool scores get their own cards; the rest become checklists.">
           <span class="fw-top-name">Frameworks</span>
           <span class="fw-top-count" id="fw-top-count"></span>
           <span class="fw-top-chips" id="fw-top-chips"></span>
           <span class="fw-top-toggle" id="fw-top-toggle">Show all 23 ▸</span>
-        </button>
+        </button></h2>
         <button type="button" class="btn btn-quiet" id="fw-top-clear" style="display:none" onclick="clearFrameworks()" title="Untick every framework">Clear</button>
       </div>
       <div class="fw-top-panel" id="fw-top-panel" inert>
@@ -1184,7 +1196,7 @@ button,input,select,textarea{font-family:inherit}
   <!-- ── CANVAS ── -->
   <div class="canvas is-empty" id="canvas">
     <div class="canvas-hdr">
-      <span class="canvas-title">Material</span>
+      <h2 class="canvas-title">Material</h2>
       <span class="canvas-file" id="canvas-file" style="display:none">
         <span class="cf-kind" id="canvas-file-kind">DOC</span>
         <span class="cf-name" id="canvas-file-name"></span>
@@ -1228,7 +1240,7 @@ button,input,select,textarea{font-family:inherit}
 
     <div class="canvas-body" id="canvas-body">
       <!-- TEXT MODE -->
-      <div id="editor" contenteditable="true" spellcheck="false"></div>
+      <div id="editor" contenteditable="true" spellcheck="false" role="textbox" aria-multiline="true" aria-label="Material text"></div>
 
       <!-- VISUAL MODE (image / poster / data-vis / PDF) -->
       <div id="visual-mode" style="display:none">
@@ -1245,6 +1257,7 @@ button,input,select,textarea{font-family:inherit}
                 <span class="vm-pageno" id="vm-pageno" aria-live="polite">1 / 1</span>
                 <button type="button" class="btn btn-quiet btn-icon" onclick="pdfPage(1)" aria-label="Next page" title="Next page">›</button>
               </div>
+              <span class="vm-status" id="vm-status" aria-live="polite"></span>
             </div>
             <div class="vm-preview" id="vm-preview" tabindex="0" role="region" aria-label="Artwork. Arrow keys scroll when zoomed. Shift plus and Shift minus zoom, Shift 0 fits.">
               <canvas id="vm-canvas"></canvas>
@@ -1330,7 +1343,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── ARTWORK CARDS: shown only while an image or PDF is open (APPLIES → visualOn) ── -->
     <div class="mod mod-vtext" id="mod-vtext">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="The words the computer read from the artwork. This is the text the tool scores, so correct anything it got wrong and add anything it missed. Click a line to find it on the artwork.">Text the tool read</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="The words the computer read from the artwork. This is the text the tool scores, so correct anything it got wrong and add anything it missed. Click a line to find it on the artwork.">Text the tool read</span></h2>
         <span class="pill pill-empty" id="vtext-pill">—</span>
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vtext')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vtext')" title="Remove from this workspace">✕</button>
       </div>
@@ -1345,6 +1358,7 @@ button,input,select,textarea{font-family:inherit}
         </div>
         <p class="vm-help" id="vm-txt-help">Fix any misread words — the scores use this text.</p>
         <textarea class="brief-input" id="vm-transcript" aria-label="Text the tool read" aria-describedby="vm-txt-help vm-ocr-msg" rows="8" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
+        <div class="hl-miss" id="vm-txt-miss" role="status"></div>
         <div class="vm-count" id="vm-txt-count">0 words</div>
         <div class="vm-note" id="vm-txt-hint"><b>Add the text to start scoring.</b> The scores can’t read an image, so type or paste every word from the artwork here.</div>
       </div>
@@ -1352,13 +1366,14 @@ button,input,select,textarea{font-family:inherit}
 
     <div class="mod mod-valt" id="mod-valt">
       <div class="mod-hdr">
-        <span class="mod-name">Alt text</span>
+        <h2 class="mod-title"><span class="mod-name">Alt text</span></h2>
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-valt')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-valt')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <p class="vm-help" id="vm-alt-help">Read aloud in place of the image. Say what it tells the reader; don’t start with “image of”.</p>
         <textarea class="brief-input" id="vm-alt" aria-label="Alt text" aria-describedby="vm-alt-help" rows="3" placeholder="e.g. Blood pressure log with three steps: sit, measure, record" oninput="onVisualInput()"></textarea>
         <div class="vm-count" id="vm-alt-count">0 characters</div>
+        <p class="vm-help" id="vm-alt-empty">Write alt text to download or copy it.</p>
         <div class="vm-alt-actions">
           <button type="button" class="btn btn-secondary" id="vm-alt-dl" disabled>Download image with alt text</button>
           <button type="button" class="btn btn-quiet" id="vm-alt-copy" disabled>Copy</button>
@@ -1370,7 +1385,7 @@ button,input,select,textarea{font-family:inherit}
 
     <div class="mod mod-vcolour" id="mod-vcolour">
       <div class="mod-hdr">
-        <span class="mod-name">Colour and contrast</span>
+        <h2 class="mod-title"><span class="mod-name">Colour and contrast</span></h2>
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vcolour')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vcolour')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
@@ -1393,7 +1408,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: FRAMEWORK OUTPUTS (reflects whatever is selected in the Frameworks bar) ── -->
     <div class="mod mod-fwout" id="mod-fwout">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you pick that the tool can’t score show up here as lists. You rate each item yourself. CCI, PEMAT, Readability and Plain language have their own cards.">Framework checklists</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you pick that the tool can’t score show up here as lists. You rate each item yourself. CCI, PEMAT, Readability and Plain language have their own cards.">Framework checklists</span></h2>
         <span class="pill pill-empty" id="fwout-pill">—</span>
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-fwout')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
       </div>
@@ -1403,7 +1418,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: READABILITY ── -->
     <div class="mod mod-read" id="mod-read">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid). Your audience sets the goal.">Readability</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid). Your audience sets the goal.">Readability</span></h2>
         
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-read')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
@@ -1431,7 +1446,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: CCI ── -->
     <div class="mod mod-cci" id="mod-cci">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. <b>A score of 90 or more passes.</b><br><br>Auto-scored items come from your text. Rate the rest yourself.">CCI</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. <b>A score of 90 or more passes.</b><br><br>Auto-scored items come from your text. Rate the rest yourself.">CCI</span></h2>
         <span class="pill pill-empty" id="cci-pill">—</span>
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
@@ -1447,7 +1462,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: PEMAT ── -->
     <div class="mod mod-pemat" id="mod-pemat">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="PEMAT, from AHRQ, gives two scores. Can a patient <b>understand</b> it (17 items)? Can they <b>act</b> on it (7 items)? Items that don’t apply are left out.<br><br>AHRQ sets no pass mark — higher is better. This card uses <b>70% or more on both</b> as a working target.<br><br>Videos and animation use <b>PEMAT-A/V</b> instead (set Format to Video / animation).">PEMAT</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="PEMAT, from AHRQ, gives two scores. Can a patient <b>understand</b> it (17 items)? Can they <b>act</b> on it (7 items)? Items that don’t apply are left out.<br><br>AHRQ sets no pass mark — higher is better. This card uses <b>70% or more on both</b> as a working target.<br><br>Videos and animation use <b>PEMAT-A/V</b> instead (set Format to Video / animation).">PEMAT</span></h2>
         <span class="pill pill-empty" id="pemat-pill">U — · A —</span>
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-pemat')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
@@ -1468,16 +1483,16 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: SCAN ── -->
     <div class="mod mod-scan" id="mod-scan">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Checks each sentence for long sentences, medical words, passive voice, vague words, bare percents and short forms.<br><br>Click an issue to jump to it.">Plain language</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="Checks each sentence for long sentences, medical words, passive voice, vague words, bare percents and short forms.<br><br>Click an issue to jump to it.">Plain language</span></h2>
         
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-scan')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="scan-summary">
-          <div class="scan-count sc-err" id="scan-err">0<small>fix</small></div>
-          <div class="scan-count sc-warn" id="scan-warn">0<small>review</small></div>
-          <div class="scan-count sc-ok" id="scan-ok">0<small>clean</small></div>
+          <div class="scan-count" id="scan-err">0<small>to fix</small></div>
+          <div class="scan-count" id="scan-warn">0<small>to review</small></div>
+          <div class="scan-count" id="scan-ok">0<small>sentences fine</small></div>
         </div>
         <div id="scan-list"><div class="mod-note">Issues appear here as you write.</div></div>
       </div>
@@ -1486,7 +1501,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: ACCESSIBILITY ── -->
     <div class="mod mod-a11y" id="mod-a11y">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks to run <b>before</b> the Adobe test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fix them here and you fix less in InDesign.">Accessibility</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks to run <b>before</b> the Adobe test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fix them here and you fix less in InDesign.">Accessibility</span></h2>
         <span class="pill pill-empty" id="a11y-pill">—</span>
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-a11y')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
@@ -1501,7 +1516,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── MODULE: CONTENT ACCURACY ── -->
     <div class="mod mod-acc" id="mod-acc">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer find a source for each health claim? This flags numbers with no source, old dates, no review date, and words like “always” or “100% safe”.">Accuracy</span>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer find a source for each health claim? This flags numbers with no source, old dates, no review date, and words like “always” or “100% safe”.">Accuracy</span></h2>
         <span class="pill pill-empty" id="acc-pill">—</span>
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-acc')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
@@ -1708,24 +1723,51 @@ function editorText(){
   return (clone.textContent || '').replace(/[ \t ]*\n[ \t ]*/g, '\n').replace(/\n{2,}/g, '\n').trim();
 }
 
+// Artwork / PDF text arrives one printed line at a time. Rebuild it into units: a line that
+// doesn't end in . ! ? : runs on into the next when the next starts lowercase, or when the line
+// is long (wrapped prose). Short standalone lines (headlines, list items) stay their own unit.
+// prose = the text is mostly running sentences (median unit of 7+ words), not short poster lines.
+const ARTWORK_WRAP_CHARS = 45, ARTWORK_PROSE_WORDS = 7;
+function artworkUnits(raw){
+  const lines = String(raw || '').split('\n').map(l => l.trim().replace(/^([-*•]|\d+[.)])\s+/, ''));
+  const units = [];
+  let cur = '';
+  lines.forEach((l, i) => {
+    if(!l){ if(cur){ units.push(cur); cur = ''; } return; }      // a blank line ends a paragraph
+    cur = cur ? cur + ' ' + l : l;
+    const next = (lines[i + 1] || '');
+    const open = !/[.!?:]["”'’)]?$/.test(l);
+    const runsOn = open && next && (/^[a-z(“"‘']/.test(next) || (l.length > ARTWORK_WRAP_CHARS && /[\p{Ll},;\-–]$/u.test(l)));
+    if(!runsOn){ units.push(cur); cur = ''; }
+  });
+  if(cur) units.push(cur);
+  const counts = units.map(countWords).sort((a, b) => a - b);
+  const median = counts.length ? counts[Math.floor((counts.length - 1) / 2)] : 0;
+  return { units, prose: median >= ARTWORK_PROSE_WORDS, median };
+}
+
 // ── Structure signals from the live editor ──
 function readStructure(){
   // In visual mode the transcript IS the material's text
   if(visualOn){
-    // Each line of artwork text is its own phrase: drop list numbers/bullets and end unpunctuated lines,
-    // so "1. Sit still" isn't split at "1." and a headline doesn't run into the next line
     const raw = $('vm-transcript').value || '';
-    const text = raw.split('\n').map(l => l.trim().replace(/^([-*•]|\d+[.)])\s+/, '')).filter(Boolean)
-      .map(l => /[.!?:]$/.test(l) ? l : l + '.').join('\n');
+    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+    const { units, prose } = artworkUnits(raw);
+    // One unit per line: headlines and list items stay whole, wrapped prose is one sentence again.
+    // No punctuation is added, so quoted findings show the artwork's own words.
+    const text = units.join('\n');
     const passive = (text.match(/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/gi) || []).length;
     const sents = splitSentences(text);
-    const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
     return {
       text,
+      visual: true,
+      // true only when the text reads as running sentences; short poster lines make
+      // reading-level and sentence-length formulas meaningless, so those stay for the person to judge
+      prose,
       // A transcript can't show headers, emphasis, visuals or tables, so those stay null
       // (not assessable) and the designer rates them from the artwork. Only list markers
-      // typed into the transcript count as evidence.
-      hasList:    lines.filter(l => /^([-*•]|\d+[.)])\s/.test(l)).length >= 2,
+      // typed into the transcript count as evidence; their absence in read text proves nothing (null).
+      hasList:    lines.filter(l => /^([-*•]|\d+[.)])\s/.test(l)).length >= 2 ? true : null,
       hasHeaders: null,
       hasImages:  null,
       hasBold:    null,
@@ -1759,10 +1801,12 @@ function autoFlags(stats, struct){
   // Clinical audiences are allowed technical vocabulary — jargon is only a fail for lay readers
   const jargonFlag = struct && struct.text.trim()
     ? (brief.audience === 'hcp' ? true : !jargonHit) : null;
+  // Artwork text that isn't running prose can't be judged by sentence length or grade: left for the person
+  const fk = stats && !(struct && struct.visual && !struct.prose) ? stats : null;
   return {
-    sentLen:    stats ? stats.avgSentLen <= t.sentLen : null,
-    sentLen20:  stats ? stats.avgSentLen <= t.sentLen + 5 : null,
-    grade:      stats ? stats.grade <= t.grade : null,
+    sentLen:    fk ? fk.avgSentLen <= t.sentLen : null,
+    sentLen20:  fk ? fk.avgSentLen <= t.sentLen + 5 : null,
+    grade:      fk ? fk.grade <= t.grade : null,
     activeVoice:struct ? struct.passiveRate < 0.25 : null,
     noJargon:   jargonFlag,
     hasList:    struct ? struct.hasList : null,
@@ -1792,11 +1836,17 @@ function scanIssues(text){
       issues.push({sev:'warn',lbl:'Longish sentence',msg:words.length+' words. Aim for 15 or less.',snip,src:sentence});
     const found = JARGON_KEYS.filter(j => sentence.toLowerCase().includes(j));
     if(found.length)
-      issues.push({sev:'error',lbl:'Jargon',msg:found.slice(0,3).map(j=>'"'+j+'" → '+JARGON[j]).join(' · '),snip,src:sentence});
+      issues.push({sev:'error',lbl:'Jargon',msg:found.slice(0,3).map(j=>'"'+j+'" → '+JARGON[j]).join(' · '),snip,src:sentence,term:found[0]});
     if(/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/i.test(sentence))
       issues.push({sev:'warn',lbl:'Passive voice',msg:'Say who does it: “Your doctor will…”, not “…will be done”.',snip,src:sentence});
-    if(/\d+\s*%/.test(sentence))
-      issues.push({sev:'warn',lbl:'Bare percentage',msg:'Say “1 in 10”, not “10%”. It is easier to grasp.',snip,src:sentence});
+    const pm = sentence.match(/(\d+(?:\.\d+)?)\s*%/);
+    if(pm){
+      // a simple fraction gets its own "1 in N"; anything else keeps the general advice
+      const n = parseFloat(pm[1]), oneIn = { 50:2, 33:3, 25:4, 20:5, 10:10, 5:20, 1:100 }[n];
+      issues.push({sev:'warn',lbl:'Bare percentage',
+        msg: oneIn ? 'Say “1 in '+oneIn+'”, not “'+pm[1]+'%”. It is easier to grasp.' : 'Say “1 in 10”, not “10%”. It is easier to grasp.',
+        snip,src:sentence});
+    }
     const vague = VAGUE.find(v => new RegExp('\\b'+v+'\\b','i').test(sentence));
     if(vague)
       issues.push({sev:'warn',lbl:'Vague: "'+vague+'"',msg:'Use an exact number or time.',snip,src:sentence});
@@ -2197,14 +2247,14 @@ function explainScores(stats, empty){
     const over = Math.round((stats.grade - t.grade) * 10) / 10;
     // until an audience is picked the goal is a default, not something the user set
     const goal = brief.audience ? 'your goal of grade '+t.grade : 'the default goal for patients (grade '+t.grade+')';
-    if(visualOn){
+    if(visualOn && !readStructure().prose){
       // grade formulas need running sentences; poster lines are too short to trust them either way
       why('read-why','',
         (stats.grade < 1 ? 'Reads <b>below grade 1</b>' : 'Reads at about <b>grade '+stats.grade+'</b>')+'. Short poster lines make reading-level formulas unreliable.',
         'Read it aloud instead.');
     } else if(stats.grade <= t.grade){
       why('read-why','good',
-        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets '+goal+'.',
+        (stats.grade < 1 ? 'Reads <b>below grade 1</b>' : 'Reads at <b>grade '+stats.grade+'</b>')+'. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets '+goal+'.',
         'Keep your sentences this short as you edit.');
     } else {
       const yrs = over >= 1 ? Math.round(over) + ' year' + (Math.round(over)===1?'':'s') : 'under a year';
@@ -2331,11 +2381,12 @@ function analyze(){
     // Flesch ease is a 0–100 scale; very short or very long words push the formula past either end
     const e = Math.max(0, Math.min(100, stats.ease));
     // On artwork, short poster lines make the formulas unreliable: neutral fills, never a pass tone
-    const eCol = visualOn ? 'var(--n400)' : stats.ease >= t.ease ? 'var(--teal)' : stats.ease >= t.ease-10 ? 'var(--orange)' : 'var(--red)';
+    const shortLines = visualOn && !struct.prose;
+    const eCol = shortLines ? 'var(--n400)' : stats.ease >= t.ease ? 'var(--teal)' : stats.ease >= t.ease-10 ? 'var(--orange)' : 'var(--red)';
     $('ease-num').textContent = e;
     $('ease-fill').style.width = e+'%';
     $('ease-fill').style.background = eCol;
-    const gCol = visualOn ? 'var(--n400)' : stats.grade <= t.grade ? 'var(--teal)' : stats.grade <= t.grade+2 ? 'var(--orange)' : 'var(--red)';
+    const gCol = shortLines ? 'var(--n400)' : stats.grade <= t.grade ? 'var(--teal)' : stats.grade <= t.grade+2 ? 'var(--orange)' : 'var(--red)';
     $('grade-num').innerHTML = stats.grade < 1 ? 'Gr <1' : 'Gr '+stats.grade;
     $('grade-fill').style.width = Math.max(4, Math.min(100, stats.grade/16*100))+'%';
     $('grade-fill').style.background = gCol;
@@ -2370,9 +2421,9 @@ function analyze(){
   const errs = issues.filter(i => i.sev === 'error').length;
   const warns = issues.filter(i => i.sev === 'warn').length;
   const cleanSents = empty ? 0 : Math.max(0, splitSentences(text).length - new Set(issues.map(i => i.src)).size);
-  $('scan-err').innerHTML = errs+'<small>fix</small>';
-  $('scan-warn').innerHTML = warns+'<small>review</small>';
-  $('scan-ok').innerHTML = cleanSents+'<small>clean</small>';
+  $('scan-err').innerHTML = errs+'<small>to fix</small>';
+  $('scan-warn').innerHTML = warns+'<small>to review</small>';
+  $('scan-ok').innerHTML = cleanSents+'<small>'+(cleanSents === 1 ? 'sentence fine' : 'sentences fine')+'</small>';
   const list = $('scan-list');
   if(!issues.length){
     list.innerHTML = '<div class="mod-note">'+(empty
@@ -2383,8 +2434,8 @@ function analyze(){
     issues.sort((x,y) => order[x.sev]-order[y.sev]);
     list.innerHTML = issues.slice(0,30).map((i,idx) =>
       '<div class="issue" role="button" tabindex="0" onclick="jumpTo('+idx+')">'+
-        '<div class="issue-ico '+i.sev+'">'+(i.sev==='error'?'!':'~')+'</div>'+
-        '<div style="min-width:0"><span class="issue-lbl">'+i.lbl+'</span>'+
+        '<div class="issue-ico '+i.sev+'" aria-hidden="true">'+(i.sev==='error'?'!':'~')+'</div>'+
+        '<div style="min-width:0"><span class="issue-lbl"><span class="sr-only">'+(i.sev==='error'?'Fix: ':'Review: ')+'</span>'+i.lbl+'</span>'+
         '<div class="issue-msg">'+i.msg+'</div>'+
         '<span class="issue-snip">“'+i.snip+'”</span></div>'+
       '</div>').join('');
@@ -2883,18 +2934,24 @@ async function openPdf(entry){
     pdfPageNo = 1;
     renderPdfPage(true);
     // pull the real text layer if this is a text-based PDF; if there is none, read the rendered pages
-    if(!entry.transcript && !entry.ocr){
+    // (word boxes too, so a line or issue can be found on the page, the same way as OCR'd art)
+    const needText = !entry.transcript && !entry.ocr;
+    if(needText || (entry.textLayer && !entry.ocrWords)){
       let all = '';
+      const words = [];
       for(let i=1;i<=Math.min(doc.numPages, 20);i++){
         const pg = await doc.getPage(i);
         const tc = await pg.getTextContent();
         all += pdfPageText(tc.items) + '\n\n';
+        try { words.push(...pdfWordBoxes(tc.items, pg.getViewport({ scale:1 }), i)); } catch(e){}
       }
       if(entry.id !== activeFileId || !visualOn) return;
-      if(all.trim().length > 20){
+      if(!needText){ entry.ocrWords = words; }
+      else if(all.trim().length > 20){
         $('vm-transcript').value = all.trim();
         entry.transcript = all.trim();
         entry.textLayer = true;                // real text, so "Read text again" isn't offered
+        entry.ocrWords = words;
         setOcrState('pdf', 0, entry);
         flashHint('Text extracted from the PDF automatically');
       } else {
@@ -2924,6 +2981,34 @@ function pdfPageText(items){
   });
   return out.split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean).join('\n');
 }
+// Word boxes from a PDF text layer, in the same shape as ocrWordBoxes (fractions of the page),
+// so the one highlight path serves both. Lines break where pdfPageText breaks them.
+// A text item has one width; its words share it by character count (close enough to box a phrase).
+function pdfWordBoxes(items, vp, page){
+  const out = [];
+  let line = 0, lastY = null;
+  (items || []).forEach(it => {
+    if(!it || typeof it.str !== 'string' || !it.transform) return;
+    const y0 = it.transform[5];
+    if(lastY !== null && Math.abs(y0 - lastY) > Math.max(2, (it.height || 0) * 0.5)) line++;
+    if(it.str.trim()) lastY = y0;
+    const tx = pdfjsLib.Util.transform(vp.transform, it.transform);
+    const fh = Math.hypot(tx[2], tx[3]) || it.height || 10;
+    const width = (it.width || 0) * vp.scale, len = it.str.length || 1;
+    const top = tx[5] - fh * 0.9, h = fh * 1.15;
+    const re = /\S+/g;
+    let m;
+    while((m = re.exec(it.str))){
+      const t = ocrNorm(m[0]);
+      if(!t) continue;
+      const x = tx[4] + width * (m.index / len), w = width * (m[0].length / len);
+      out.push({ t, x:x / vp.width, y:top / vp.height, w:w / vp.width, h:h / vp.height, p:page, l:page * 100000 + line });
+    }
+    if(it.hasEOL) line++;
+  });
+  return out;
+}
+
 // resample: true for a new file or page (fresh palette, picks reset); false when only the
 // colour-blind view changed, so the palette and the two colours you picked stay put
 let pdfRenderSeq = 0, pdfNeedSample = false;
@@ -2971,7 +3056,7 @@ function pdfPage(delta){
 
 function warnBanner(html){
   const w = $('doc-warn');
-  w.innerHTML = html + ' <button onclick="this.parentElement.style.display=\'none\'" style="background:none;border:none;cursor:pointer;color:#7a5a00;font-weight:600;padding:0 2px">✕</button>';
+  w.innerHTML = html + ' <button type="button" aria-label="Dismiss this message" onclick="this.parentElement.style.display=\'none\'" style="background:none;border:none;cursor:pointer;color:#7a5a00;font-weight:600;padding:0 2px">✕</button>';
   w.style.display = 'block';
 }
 
@@ -3263,7 +3348,7 @@ async function ocrPdf(entry, doc){
 // One calm line above the text box. The text box stays editable in every state.
 const OCR_MSG = {
   running:  'Reading text…',
-  done:     'Machine-read. Click a line to find it on the artwork.',
+  done:     'Read by the tool. Click a line to find it on the artwork.',
   fail:     'Couldn’t read text from this image. Type the words you see.',
   none:     'No words found. If the artwork has text, type it here.',
   failpdf:  'No text found in this PDF. Type the words you see in the artwork.',
@@ -3354,8 +3439,8 @@ function onVisualInput(){
 }
 
 // ── Find a line of text on the artwork ──
-// Uses the word boxes the OCR returned (entry.ocrWords). No boxes (PDF text layer, the sample poster's
-// supplied text) or words that no longer match (retyped) → no highlight, quietly.
+// Uses word boxes (entry.ocrWords) from OCR, a PDF's text layer, or the sample poster's own drawing.
+// Words that can't be located (retyped, or no boxes) → "Can't find these words on the artwork."
 var vmHl = null;              // { rects:[{x,y,w,h,p}], from:'text'|'issue', scroll:bool, page:bool }
 
 function ocrTokens(s){ return String(s || '').split(/\s+/).map(ocrNorm).filter(Boolean); }
@@ -3405,7 +3490,10 @@ function vmHlRects(hits){
 function vmShowText(query, opts){
   opts = opts || {};
   const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
-  const hits = entry ? vmFindWords(entry.ocrWords, query) : [];
+  let hits = entry ? vmFindWords(entry.ocrWords, query) : [];
+  // a Jargon issue: just the term, inside the sentence it was found in
+  if(hits.length && opts.term){ const t = vmFindWords(hits, opts.term); if(t.length) hits = t; }
+  vmMiss(null);
   if(!hits.length){ vmClearHl(); return false; }
   vmHl = { rects:vmHlRects(hits), from:opts.from || 'text', scroll:true, page:!!opts.page };
   // a scanned PDF: turn to the page the words are on (the redraw places the boxes)
@@ -3413,6 +3501,24 @@ function vmShowText(query, opts){
   if(p && pdfDoc && !vmHl.rects.some(r => r.p === pdfPageNo)){ pdfPageNo = p; renderPdfPage(true); pushNav(); return true; }
   vmPlaceHl();
   return true;
+}
+// Said next to what was clicked when its words can't be located on the artwork (instead of silence)
+let vmMissSeq = 0;
+function vmMiss(anchor){
+  const seq = ++vmMissSeq;
+  document.querySelectorAll('.hl-miss.is-temp').forEach(n => n.remove());
+  const fixed = $('vm-txt-miss');
+  if(fixed) fixed.textContent = '';
+  if(!anchor) return;
+  let d = anchor;
+  if(anchor !== fixed){
+    d = document.createElement('div');
+    d.className = 'hl-miss is-temp';
+    d.setAttribute('role', 'status');
+    anchor.after(d);
+  }
+  // set after the region exists so screen readers announce it
+  setTimeout(() => { if(seq === vmMissSeq) d.textContent = 'Can’t find these words on the artwork.'; }, 60);
 }
 function vmClearHl(){
   vmHl = null;
@@ -3463,7 +3569,7 @@ function vmPlaceHl(){
 }
 
 // The sentence (within its line) under the caret in "Text the tool read", or the selected text
-function vmHlFromCaret(){
+function vmHlFromCaret(e){
   const ta = $('vm-transcript');
   if(!ta || !visualOn) return;
   const v = ta.value, a = ta.selectionStart, b = ta.selectionEnd;
@@ -3482,8 +3588,9 @@ function vmHlFromCaret(){
       off = i + part.length;
     }
   }
-  if(!q.trim()){ vmClearHl(); return; }
-  vmShowText(q, { from:'text' });
+  if(!q.trim()){ vmClearHl(); vmMiss(null); return; }
+  // say so only when someone clicked or selected, not on every keystroke
+  if(!vmShowText(q, { from:'text' }) && e && (e.type === 'click' || e.type === 'select')) vmMiss($('vm-txt-miss'));
 }
 
 (function(){
@@ -3649,6 +3756,7 @@ function vmAltSupport(entry){
   return /^image\/(jpe?g|pjpeg|png)$/i.test(mime) ? 'save' : 'other';
 }
 const ALT_WHY = {
+  save:  'Adobe apps and many asset libraries read this. For web pages and Word, paste it in too.',
   pdf:   'PDF alt text is set per image in your layout app; copy it from here.',
   other: 'Only JPEG and PNG files can carry alt text from here, so copy it instead.',
 };
@@ -3660,6 +3768,7 @@ function vmAltSync(){
   dl.hidden = sup !== 'save';
   dl.disabled = empty;
   cp.disabled = empty;
+  $('vm-alt-empty').hidden = !empty;
   why.hidden = !ALT_WHY[sup];
   why.textContent = ALT_WHY[sup] || '';
 }
@@ -3688,7 +3797,7 @@ function downloadAltImage(){
   a.href = url; a.download = name;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 30000);
-  vmAltStatus('Saved ' + name + ' with the alt text. Your original file is unchanged.');
+  vmAltStatus('Downloaded ' + name + '. Your original file is unchanged.');
 }
 async function copyAltText(){
   const ta = $('vm-alt'), alt = ta.value.trim();
@@ -3734,7 +3843,13 @@ function readAloudFindings(text){
 function jumpTo(idx){
   const issue = (window._issues||[])[idx];
   if(!issue) return;
-  if(visualOn){ vmShowText(issue.src, { from:'issue', page:true }); return; }   // find it on the artwork instead
+  if(visualOn){                                   // find it on the artwork instead
+    if(!vmShowText(issue.src, { from:'issue', page:true, term:issue.term })){
+      const el = $('scan-list').querySelectorAll('.issue')[idx];
+      vmMiss(el || null);
+    }
+    return;
+  }
   const needle = issue.src.slice(0, 40);
   const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
   let node;
@@ -3782,8 +3897,11 @@ function syncToolbar(){
   } catch(e){ /* queryCommandState unsupported */ }
 }
 let hintT = null;
+// Status lines: the editor toolbar in text mode; in visual mode that toolbar is hidden, so the
+// artwork toolbar beside the zoom controls carries them (and they sit next to the artwork on a phone)
 function flashHint(msg){
-  const el = $('etb-hint');
+  const el = visualOn ? $('vm-status') : $('etb-hint');
+  $(visualOn ? 'etb-hint' : 'vm-status').textContent = '';
   el.textContent = msg;
   clearTimeout(hintT);
   hintT = setTimeout(() => { el.textContent = ''; }, 3200);
@@ -4041,7 +4159,6 @@ async function intakeFile(file){
   if(!file) return;
   const tok = ++intakeTok;
   const stale = () => tok !== intakeTok;
-  resetLiveOverrides();
   stashActive();
   $('doc-warn').style.display = 'none';
   const ext = file.name.split('.').pop().toLowerCase();
@@ -4052,6 +4169,7 @@ async function intakeFile(file){
       const r = new FileReader(); r.onload = ev => res(ev.target.result); r.readAsDataURL(file);
     });
     if(stale()) return;
+    resetLiveOverrides();
     const entry = addToHistory({ name:file.name, kind:'image', dataUrl, alt:'', transcript:'', vtype:'poster' });
     openVisual(entry);
     flashHint('Reading the words in the artwork. Check them in the Text the tool read card.');
@@ -4062,6 +4180,7 @@ async function intakeFile(file){
   if(ext === 'pdf'){
     const buf = await file.arrayBuffer();
     if(stale()) return;
+    resetLiveOverrides();
     const entry = addToHistory({ name:file.name, kind:'pdf', pdfData:buf, alt:'', transcript:'', vtype:'poster' });
     openVisual(entry);
     return;
@@ -4101,16 +4220,24 @@ async function intakeFile(file){
         includeDefaultStyleMap: true,
       });
       html = res.value || '<p><em>Empty document.</em></p>';
-    } catch(err){ html = '<p><em>Could not parse — try .txt or .html.</em></p>'; }
-  } else if(ext === 'html' || ext === 'htm'){
-    html = await file.text();
-  } else if(ext === 'md'){
-    html = mdToHtml(await file.text());
+    } catch(err){
+      // Nothing changes: the open material, its scores and versions stay as they were
+      if(stale()) return;
+      warnBanner(ext === 'doc'
+        ? 'This is an older Word file (.doc). Open it in Word, save it as .docx, then upload it again.'
+        : 'Couldn’t open this file. Try saving it as .docx, .txt or PDF.');
+      return;
+    }
   } else {
-    const t = await file.text();
-    html = '<p>' + t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>') + '</p>';
+    let t;
+    try { t = await file.text(); }
+    catch(err){ if(!stale()) warnBanner('Couldn’t open this file. Try saving it as .docx, .txt or PDF.'); return; }
+    if(ext === 'html' || ext === 'htm') html = t;
+    else if(ext === 'md') html = mdToHtml(t);
+    else html = '<p>' + t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>') + '</p>';
   }
   if(stale()) return;
+  resetLiveOverrides();
   exitVisual();
   editor.innerHTML = html;
   addToHistory({ name:file.name, kind:'doc', html, words:countWords(editorText()) });
@@ -4283,22 +4410,40 @@ function loadSamplePoster(){
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d');
   const font = (w, px) => w + ' ' + px + 'px Inter, -apple-system, Helvetica, Arial, sans-serif';
+  // Every line drawn also records its word boxes (the same shape OCR gives), so a line or issue
+  // in the cards can be found on this artwork
+  const words = [];
+  let lineNo = 0;
+  const text = (t, px, py, size, maxW, sameLine) => {
+    if(maxW) x.fillText(t, px, py, maxW); else x.fillText(t, px, py);
+    if(!sameLine) lineNo++;
+    const full = x.measureText(t).width, k = maxW && full > maxW ? maxW / full : 1;
+    const left = x.textAlign === 'center' ? px - full * k / 2 : px;
+    const re = /\S+/g;
+    let m;
+    while((m = re.exec(t))){
+      const tt = ocrNorm(m[0]);
+      if(!tt) continue;
+      const before = x.measureText(t.slice(0, m.index)).width * k, w = x.measureText(m[0]).width * k;
+      words.push({ t:tt, x:(left + before) / W, y:(py - size * 0.8) / H, w:w / W, h:size * 1.05 / H, p:0, l:lineNo });
+    }
+  };
   x.fillStyle = '#f6f1e8'; x.fillRect(0, 0, W, H);
   x.fillStyle = '#b3261e'; x.fillRect(0, 0, W, 330);                       // red header band
-  x.fillStyle = '#ffffff'; x.font = font('800', 92); x.fillText('Know Your', 70, 150); x.fillText('Numbers', 70, 250);
-  x.fillStyle = '#ffe3df'; x.font = font('500', 34); x.fillText('Check your blood pressure at home', 70, 305);
-  x.fillStyle = '#2c2420'; x.font = font('700', 44); x.fillText('Check it 2 times a day', 70, 430);
+  x.fillStyle = '#ffffff'; x.font = font('800', 92); text('Know Your', 70, 150, 92); text('Numbers', 70, 250, 92);
+  x.fillStyle = '#ffe3df'; x.font = font('500', 34); text('Check your blood pressure at home', 70, 305, 34);
+  x.fillStyle = '#2c2420'; x.font = font('700', 44); text('Check it 2 times a day', 70, 430, 44);
   const steps = ['Sit still for 5 minutes', 'Rest your arm on a table', 'Write down the numbers'];
   steps.forEach((t, i) => {
     const y = 520 + i * 130;
     x.fillStyle = '#1d6fa8'; x.beginPath(); x.arc(110, y, 38, 0, Math.PI * 2); x.fill();
-    x.fillStyle = '#ffffff'; x.font = font('800', 40); x.textAlign = 'center'; x.fillText(String(i + 1), 110, y + 14);
-    x.textAlign = 'left'; x.fillStyle = '#2c2420'; x.font = font('500', 38); x.fillText(t, 175, y + 13);
+    x.fillStyle = '#ffffff'; x.font = font('800', 40); x.textAlign = 'center'; text(String(i + 1), 110, y + 14, 40);
+    x.textAlign = 'left'; x.fillStyle = '#2c2420'; x.font = font('500', 38); text(t, 175, y + 13, 38, undefined, true);
   });
-  x.fillStyle = '#2c2420'; x.font = font('500', 30); x.fillText('About 25% of readings are wrong if you talk.', 70, 950);
+  x.fillStyle = '#2c2420'; x.font = font('500', 30); text('About 25% of readings are wrong if you talk.', 70, 950, 30);
   x.fillStyle = '#1d6fa8'; x.fillRect(70, 990, W - 140, 110);              // call-to-action box
-  x.fillStyle = '#ffffff'; x.font = font('700', 32); x.fillText('Top number over 180? Call 555-123-4567', 100, 1057, W - 200);
-  x.fillStyle = '#c9c2b8'; x.font = font('400', 22); x.fillText('Recheck in 2-3 days · Your Care Team', 70, 1160);   // low contrast on purpose
+  x.fillStyle = '#ffffff'; x.font = font('700', 32); text('Top number over 180? Call 555-123-4567', 100, 1057, 32, W - 200);
+  x.fillStyle = '#c9c2b8'; x.font = font('400', 22); text('Recheck in 2-3 days · Your Care Team', 70, 1160, 22);   // low contrast on purpose
   const transcript = [
     'Know Your Numbers',
     'Check your blood pressure at home',
@@ -4312,7 +4457,7 @@ function loadSamplePoster(){
   ].join('\n');
   stashActive();
   resetLiveOverrides();
-  const entry = addToHistory({ name:'sample-poster.png', kind:'image', dataUrl:c.toDataURL('image/png'), alt:'', transcript, vtype:'poster', ocrState:'supplied' });
+  const entry = addToHistory({ name:'sample-poster.png', kind:'image', dataUrl:c.toDataURL('image/png'), alt:'', transcript, vtype:'poster', ocrState:'supplied', ocrWords:words });
   openVisual(entry);
   flashHint('Sample poster loaded. Pick two colours to test contrast, and add alt text.');
 }
@@ -4483,7 +4628,8 @@ function autoCdcIdd(){
     out[ix[5]] = { v:'n', why:'No visuals in the material — CDC: if the product has no visuals, answer no.' };
   // 8 — 10 or fewer words; "almost all" read here as 90%
   const units = u.sentences.concat(u.headers.filter(h => !u.sentences.includes(h)));   // headings are already their own lines
-  if(units.length){
+  // artwork text that isn't running prose: line breaks don't show where sentences end, so the person rates it
+  if(units.length && !(u.struct.visual && !u.struct.prose)){
     const ok = units.filter(short).length, share = ok / units.length;
     out[ix[8]] = { v: share >= 0.9 ? 'y' : 'n',
       why: ok + ' of ' + units.length + ' sentences and headers have 10 or fewer words' + (share >= 0.9 ? '.' : ' — this tool reads "almost all" as 90%.') };
@@ -4949,6 +5095,15 @@ function syncOutFilterUi(){
       const need = menu.getBoundingClientRect().bottom - inner.getBoundingClientRect().top + 16;
       if(need > inner.offsetHeight) inner.style.minHeight = Math.ceil(need) + 'px';
     }
+    // the panel scrolls (and on a phone it's short): bring the button and the whole menu into its view
+    const panel = menu.closest('.fw-top-panel');
+    if(panel){
+      const pr = panel.getBoundingClientRect(), br = btn.getBoundingClientRect(), mr = menu.getBoundingClientRect();
+      if(br.top < pr.top + 8) panel.scrollTop -= pr.top + 8 - br.top;
+      else if(mr.bottom > pr.bottom - 8) panel.scrollTop += Math.min(mr.bottom - pr.bottom + 8, br.top - pr.top - 8);
+      const r = menu.getBoundingClientRect();     // and the page, when the panel itself runs off screen
+      if(r.bottom > window.innerHeight || r.top < 0) menu.scrollIntoView({ block:'nearest' });
+    }
     const its = items();
     const i = idx != null ? idx : Math.max(0, its.findIndex(b => b.getAttribute('aria-checked') === 'true'));
     its[i].focus();
@@ -4999,7 +5154,7 @@ function renderFwTopGrid(){
     return '<div class="fw-top-card' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '"'
            + ' onclick="toggleFwManual(\'' + f + '\')" onkeydown="if(event.key===\' \'||event.key===\'Enter\'){event.preventDefault();toggleFwManual(\'' + f + '\')}">'
       + '<div class="fwc-top"><span class="fwc-box" aria-hidden="true"></span><span class="name">' + FW_LABEL[f] + '</span>'
-      + '<a class="fwc-src" href="' + fwSourceUrl(f) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Open the original source">source ↗</a></div>'
+      + '</div>'
       + '<div class="full">' + FW_FULL[f] + '</div>'
       + '<div class="fwc-meta"><span class="fw-out-tag ' + out + '">' + OUT_LABEL[out] + '</span>'
       + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></div>'
