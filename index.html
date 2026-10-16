@@ -629,8 +629,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-out-tag.scored{background:#d4f5e2;color:#14713e}
 .fw-out-tag.partial{background:#fff3cd;color:#7a5a00}
 .fw-out-tag.qual{background:var(--n100);color:var(--n600)}
-.seg.fw-out-filter{margin-left:auto;flex:0 0 auto}
-.seg.fw-out-filter button{flex:0 0 auto;padding:3px 9px;font-size:var(--fs-xs);font-weight:400}
 .fwo-group{font-size:var(--fs-xs);font-weight:600;color:var(--n500);margin:14px 0 6px;display:flex;align-items:center;gap:6px}
 .fwo-note + .fwo-group{margin-top:4px}
 .fwo-list{margin:4px 0 0;padding-left:16px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--n700)}
@@ -975,6 +973,30 @@ button,input,select,textarea{font-family:inherit}
 .vm-sw{width:28px;height:28px;padding:0;font-size:var(--fs-xs);border-radius:var(--radius-sm);cursor:pointer;border:1px solid rgba(28,25,23,.14);transition:box-shadow .1s}
 .vm-sw:hover{box-shadow:0 0 0 2px var(--n300)}
 .vm-sw.sel, .vm-sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--dark)}
+/* Where a line of text sits on the artwork: an overlay the size of the drawn canvas, so its
+   percentage-placed boxes follow zoom and pan. One accent style, never a severity colour. */
+.vm-hl-layer{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none}
+.vm-hl{position:absolute;border:2px solid var(--blue);border-radius:3px;background:var(--blue-lt);box-shadow:0 0 0 1px var(--white)}
+/* Alt text: save into the image, or copy it */
+.vm-alt-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-2)}
+.vm-alt-why{margin:var(--sp-2) 0 0}
+.vm-alt-status{display:block;min-height:0;font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--n700)}
+.vm-alt-status:not(:empty){margin-top:var(--sp-1)}
+/* Plain-language issues are buttons (they find the sentence in the editor or on the artwork) */
+.issue:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:var(--radius-sm)}
+/* Frameworks output filter: one quiet button with a small menu, plus a chip while a filter is on */
+.fw-filter{position:relative;display:flex;align-items:center;gap:var(--sp-1);margin-left:auto}
+.fw-filter-ico{flex-shrink:0}
+.fw-filter-menu{position:absolute;top:calc(100% + var(--sp-1));right:0;z-index:30;min-width:180px;display:flex;flex-direction:column;
+  padding:var(--sp-1);background:var(--white);border:1px solid var(--n200);border-radius:var(--radius-sm);box-shadow:var(--shadow-3)}
+.fw-filter-menu[hidden]{display:none}
+.fw-filter-menu .btn{justify-content:flex-start;width:100%;font-weight:400;color:var(--n800)}
+.fw-filter-menu .btn::before{content:"";flex:0 0 16px;text-align:center}
+.fw-filter-menu .btn[aria-checked="true"]{font-weight:600;color:var(--n900)}
+.fw-filter-menu .btn[aria-checked="true"]::before{content:"✓"}
+.fw-filter-menu .btn:focus-visible{outline-offset:-2px}
+.fw-filter-chip[hidden]{display:none}
+.fw-top-grid-hdr .fw-filter .btn{margin-left:0}
 
 @media (max-width: 1000px){
   /* stacked: the canvas sits above the cards; give the artwork most of the screen height */
@@ -1075,11 +1097,18 @@ button,input,select,textarea{font-family:inherit}
         <div class="fw-top-panel-inner" onclick="event.stopPropagation()">
           <div class="fw-top-grid-hdr">
             <span class="lbl" id="fw-grid-lbl">23 frameworks</span>
-            <div class="seg fw-out-filter" id="seg-outtype" title="Show only frameworks that produce this kind of output">
-              <button data-v="all" class="on" onclick="setOutFilter('all')">All</button>
-              <button data-v="scored" onclick="setOutFilter('scored')">Score</button>
-              <button data-v="partial" onclick="setOutFilter('partial')">Partial score</button>
-              <button data-v="qual" onclick="setOutFilter('qual')">Qualitative</button>
+            <div class="fw-filter" id="fw-filter">
+              <button type="button" class="btn btn-quiet" id="fw-filter-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="seg-outtype" title="Show only frameworks that produce this kind of output">
+                <svg class="fw-filter-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M2 3.5h12M4.5 8h7M7 12.5h2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                Filter
+              </button>
+              <div class="fw-filter-menu" id="seg-outtype" role="menu" aria-label="Show frameworks by output" hidden>
+                <button type="button" class="btn btn-quiet" role="menuitemradio" aria-checked="true" tabindex="-1" data-v="all">All</button>
+                <button type="button" class="btn btn-quiet" role="menuitemradio" aria-checked="false" tabindex="-1" data-v="scored">Score</button>
+                <button type="button" class="btn btn-quiet" role="menuitemradio" aria-checked="false" tabindex="-1" data-v="partial">Partial score</button>
+                <button type="button" class="btn btn-quiet" role="menuitemradio" aria-checked="false" tabindex="-1" data-v="qual">Qualitative</button>
+              </div>
+              <button type="button" class="btn btn-secondary fw-filter-chip" id="fw-filter-chip" hidden></button>
             </div>
             <button type="button" class="btn btn-quiet" onclick="clearFrameworks()" title="Untick every framework and reset the filter">Clear selection</button>
           </div>
@@ -1157,6 +1186,7 @@ button,input,select,textarea{font-family:inherit}
             </div>
             <div class="vm-preview" id="vm-preview" tabindex="0" role="region" aria-label="Artwork. Arrow keys scroll when zoomed. Shift plus and Shift minus zoom, Shift 0 fits.">
               <canvas id="vm-canvas"></canvas>
+              <div class="vm-hl-layer" id="vm-hl-layer" aria-hidden="true"></div>
             </div>
           </div>
         </div>
@@ -1238,7 +1268,7 @@ button,input,select,textarea{font-family:inherit}
     <!-- ── ARTWORK CARDS: shown only while an image or PDF is open (APPLIES → visualOn) ── -->
     <div class="mod mod-vtext" id="mod-vtext">
       <div class="mod-hdr">
-        <span class="mod-name" role="button" tabindex="0" data-tip="The words in the artwork, read by the computer. This is the text the tool checks, so correct anything it got wrong and add anything it missed.">Text in the artwork</span>
+        <span class="mod-name" role="button" tabindex="0" data-tip="The words the computer read from the artwork. This is the text the tool scores, so correct anything it got wrong and add anything it missed. Click a line to find it on the artwork.">Text the tool read</span>
         <span class="pill pill-empty" id="vtext-pill">—</span>
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vtext')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vtext')" title="Remove from this workspace">✕</button>
       </div>
@@ -1247,7 +1277,8 @@ button,input,select,textarea{font-family:inherit}
           <span class="vm-ocr-msg" id="vm-ocr-msg"></span>
           <progress class="vm-ocr-bar" id="vm-ocr-bar" max="100" aria-label="Reading text" hidden></progress>
         </div>
-        <textarea class="brief-input" id="vm-transcript" aria-label="Text in the artwork" aria-describedby="vm-ocr-msg" rows="8" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
+        <p class="vm-help" id="vm-txt-help">Fix any misread words — the scores use this text.</p>
+        <textarea class="brief-input" id="vm-transcript" aria-label="Text the tool read" aria-describedby="vm-txt-help vm-ocr-msg" rows="8" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
         <div class="vm-count" id="vm-txt-count">0 words</div>
         <div class="vm-note" id="vm-txt-hint"><b>Add the text to start scoring.</b> CCI, PEMAT, Readability and Plain language can't read an image. Type or paste every word from the artwork here and their cards will appear.</div>
       </div>
@@ -1262,6 +1293,12 @@ button,input,select,textarea{font-family:inherit}
         <p class="vm-help" id="vm-alt-help">A screen reader reads this out in place of the image. Say what the image tells the reader. Don’t start with “image of”.</p>
         <textarea class="brief-input" id="vm-alt" aria-label="Alt text" aria-describedby="vm-alt-help" rows="3" placeholder="e.g. Blood pressure log with three steps: sit, measure, record" oninput="onVisualInput()"></textarea>
         <div class="vm-count" id="vm-alt-count">0 characters</div>
+        <div class="vm-alt-actions">
+          <button type="button" class="btn btn-secondary" id="vm-alt-dl" disabled>Download image with alt text</button>
+          <button type="button" class="btn btn-quiet" id="vm-alt-copy" disabled>Copy</button>
+        </div>
+        <p class="vm-help vm-alt-why" id="vm-alt-why" hidden></p>
+        <span class="vm-alt-status" id="vm-alt-status" role="status" aria-live="polite"></span>
       </div>
     </div>
 
@@ -2267,7 +2304,7 @@ function analyze(){
     const order = {error:0, warn:1};
     issues.sort((x,y) => order[x.sev]-order[y.sev]);
     list.innerHTML = issues.slice(0,30).map((i,idx) =>
-      '<div class="issue" onclick="jumpTo('+idx+')">'+
+      '<div class="issue" role="button" tabindex="0" onclick="jumpTo('+idx+')">'+
         '<div class="issue-ico '+i.sev+'">'+(i.sev==='error'?'!':'~')+'</div>'+
         '<div style="min-width:0"><span class="issue-lbl">'+i.lbl+'</span>'+
         '<div class="issue-msg">'+i.msg+'</div>'+
@@ -2545,6 +2582,8 @@ let vmLoadTok = 0;           // a slow image load for a file you've already left
 
 function openVisual(entry){
   ocrCancel();                               // a reading still running for another file is now stale
+  vmClearHl();
+  $('vm-alt-status').textContent = '';
   visualOn = true;
   $('visual-mode').style.display = 'flex';
   $('canvas').classList.add('is-visual');
@@ -2577,6 +2616,7 @@ function openVisual(entry){
 function exitVisual(){
   if(!visualOn) return;
   ocrCancel();
+  vmClearHl();
   visualOn = false;
   pdfDoc = null;
   vmStopPdfRender();
@@ -2873,6 +2913,7 @@ function vmApplyZoom(keepCentre){
     box.scrollLeft = cx * box.scrollWidth  - box.clientWidth  / 2;
     box.scrollTop  = cy * box.scrollHeight - box.clientHeight / 2;
   }
+  vmPlaceHl();                               // the text highlight follows the artwork
 }
 function vmZoomStep(dir){
   const cur = vmScale();
@@ -2953,7 +2994,7 @@ function vmZoomFit(){ vmZoom = null; vmApplyZoom(); }
 // ════════════════════════════════════════
 // READING TEXT OUT OF THE ARTWORK (OCR)
 // Tesseract.js, pinned and integrity-checked, loaded the first time it is needed. One worker is reused.
-// The result is evidence of words only: it fills "Text in the artwork", which the person checks and corrects.
+// The result is evidence of words only: it fills "Text the tool read", which the person checks and corrects.
 // ════════════════════════════════════════
 const OCR_LIB = { src:'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',
                   sri:'sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F' };
@@ -3001,6 +3042,28 @@ function ocrClean(data){
             .join('\n');
 }
 
+// Word boxes as fractions of the image the engine read. The visible canvas is the same picture at
+// another scale (and a PDF page at another viewport scale), so fractions map straight onto it.
+// Same confidence cut as ocrClean, so only words from lines that made it into the card are kept.
+function ocrWordBoxes(data, img, page){
+  const W = img.width || 1, H = img.height || 1, out = [];
+  const add = (w, line) => {
+    const t = ocrNorm(w && w.text), b = w && w.bbox;
+    if(!t || !b) return;
+    out.push({ t, x:b.x0 / W, y:b.y0 / H, w:(b.x1 - b.x0) / W, h:(b.y1 - b.y0) / H, p:page, l:page * 100000 + line });
+  };
+  if(data.lines && data.lines.length){
+    data.lines.forEach((ln, li) => { if(ln.confidence >= 40) (ln.words || []).forEach(w => add(w, li)); });
+  } else {
+    (data.words || []).forEach((w, wi) => add(w, wi));      // no line grouping: one box per word
+  }
+  return out;
+}
+// Tolerant word form for matching: case, accents and punctuation don't count
+function ocrNorm(s){
+  return String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^\p{L}\p{N}]+/gu, '');
+}
+
 // Scale a source to a size the engine reads well (small art up, huge art down), off screen
 function ocrPrepare(src){
   const w = src.naturalWidth || src.width, h = src.naturalHeight || src.height;
@@ -3027,15 +3090,18 @@ async function runOcr(entry, images, what){
   };
   try {
     const worker = await getOcrWorker();
-    const parts = [];
-    for(const img of images){
+    const parts = [], words = [];
+    for(let i = 0; i < images.length; i++){
       if(!live()) return;                     // moved on: drop it, it will run again next time this file opens
-      const r = await worker.recognize(img);
+      const r = await worker.recognize(images[i]);
       parts.push(ocrClean(r.data)); done++;
+      // where each word sits, so a line in the card can be found on the artwork (PDF pages count from 1)
+      try { words.push(...ocrWordBoxes(r.data, images[i], what === 'pdf' ? i + 1 : 0)); } catch(e){}
     }
     if(!live()) return;
     const text = parts.filter(Boolean).join('\n\n').trim();
     entry.ocr = true;
+    entry.ocrWords = words;
     const box = $('vm-transcript');
     if((text.match(/[A-Za-z0-9]/g) || []).length < 3){
       setOcrState('fail', 0, entry, what);
@@ -3092,7 +3158,7 @@ async function ocrPdf(entry, doc){
 // One calm line above the text box. The text box stays editable in every state.
 const OCR_MSG = {
   running:  'Reading text…',
-  done:     'Machine-read — check it against the artwork and fix any mistakes.',
+  done:     'Machine-read. Click a line to find it on the artwork.',
   fail:     'Couldn’t read text from this image. Type the words you see.',
   failpdf:  'No text found in this PDF. Type the words you see in the artwork.',
   kept:     'You’d started typing, so the machine-read text wasn’t added.',
@@ -3136,8 +3202,366 @@ function onVisualInput(){
   syncVisualHint();
   const cur = fileHistory.find(f => f.id === activeFileId);
   if(cur){ cur.alt = alt; cur.transcript = txt; cur.vtype = visualType; cur.words = words; }
+  vmAltSync();
   scheduleAnalysis();
 }
+
+// ── Find a line of text on the artwork ──
+// Uses the word boxes the OCR returned (entry.ocrWords). No boxes (PDF text layer, the sample poster's
+// supplied text) or words that no longer match (retyped) → no highlight, quietly.
+var vmHl = null;              // { rects:[{x,y,w,h,p}], from:'text'|'issue', scroll:bool, page:bool }
+
+function ocrTokens(s){ return String(s || '').split(/\s+/).map(ocrNorm).filter(Boolean); }
+
+// The OCR words a piece of text covers, in reading order. First an exact match on the joined
+// characters (so "2-3" read as one word still matches "2 - 3"), word-aligned at both ends;
+// then, for 5+ words, the closest same-length run with at most 1 word in 5 different (a fixed misread).
+function vmFindWords(words, query){
+  const q = ocrTokens(query);
+  if(!q.length || !words || !words.length) return [];
+  const starts = [], owner = [];
+  let stream = '';
+  words.forEach((w, i) => { starts.push(stream.length); for(let k = 0; k < w.t.length; k++) owner.push(i); stream += w.t; });
+  const needle = q.join(''), hits = [];
+  let from = 0, at;
+  while((at = stream.indexOf(needle, from)) !== -1){
+    const a = owner[at], b = owner[at + needle.length - 1];
+    if(starts[a] === at && starts[b] + words[b].t.length === at + needle.length){
+      for(let i = a; i <= b; i++) hits.push(words[i]);
+      from = at + needle.length;
+    } else from = at + 1;
+  }
+  if(hits.length) return hits;
+  const n = q.length, allow = Math.floor(n / 5);
+  if(!allow || words.length < n) return [];
+  let best = -1, bestMiss = allow + 1;
+  for(let i = 0; i + n <= words.length; i++){
+    let miss = 0;
+    for(let j = 0; j < n && miss < bestMiss; j++) if(words[i + j].t !== q[j]) miss++;
+    if(miss < bestMiss){ bestMiss = miss; best = i; }
+  }
+  return best < 0 ? [] : words.slice(best, best + n);
+}
+
+// One box per line the text runs across
+function vmHlRects(hits){
+  const byLine = new Map();
+  hits.forEach(w => {
+    const r = byLine.get(w.l);
+    if(!r) byLine.set(w.l, { x:w.x, y:w.y, x2:w.x + w.w, y2:w.y + w.h, p:w.p });
+    else { r.x = Math.min(r.x, w.x); r.y = Math.min(r.y, w.y); r.x2 = Math.max(r.x2, w.x + w.w); r.y2 = Math.max(r.y2, w.y + w.h); }
+  });
+  return [...byLine.values()].map(r => ({ x:r.x, y:r.y, w:r.x2 - r.x, h:r.y2 - r.y, p:r.p }));
+}
+
+// Returns true when something was highlighted
+function vmShowText(query, opts){
+  opts = opts || {};
+  const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
+  const hits = entry ? vmFindWords(entry.ocrWords, query) : [];
+  if(!hits.length){ vmClearHl(); return false; }
+  vmHl = { rects:vmHlRects(hits), from:opts.from || 'text', scroll:true, page:!!opts.page };
+  // a scanned PDF: turn to the page the words are on (the redraw places the boxes)
+  const p = vmHl.rects[0].p;
+  if(p && pdfDoc && !vmHl.rects.some(r => r.p === pdfPageNo)){ pdfPageNo = p; renderPdfPage(true); pushNav(); return true; }
+  vmPlaceHl();
+  return true;
+}
+function vmClearHl(){
+  vmHl = null;
+  const layer = $('vm-hl-layer');
+  if(layer) layer.replaceChildren();
+}
+
+// Lay the overlay over the drawn canvas; called after every zoom, resize and redraw
+function vmPlaceHl(){
+  const layer = $('vm-hl-layer'), c = $('vm-canvas'), box = $('vm-preview');
+  if(!layer || !c || !box) return;
+  layer.style.left = c.offsetLeft + 'px';
+  layer.style.top = c.offsetTop + 'px';
+  layer.style.width = c.offsetWidth + 'px';
+  layer.style.height = c.offsetHeight + 'px';
+  layer.replaceChildren();
+  if(!vmHl || !visualOn) return;
+  const page = pdfDoc ? pdfPageNo : 0;
+  const shown = vmHl.rects.filter(r => !r.p || r.p === page);
+  shown.forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'vm-hl';
+    d.style.left = 'calc(' + (r.x * 100) + '% - 4px)';
+    d.style.top = 'calc(' + (r.y * 100) + '% - 4px)';
+    d.style.width = 'calc(' + (r.w * 100) + '% + 8px)';
+    d.style.height = 'calc(' + (r.h * 100) + '% + 8px)';
+    layer.appendChild(d);
+  });
+  if(!vmHl.scroll || !shown.length) return;
+  vmHl.scroll = false;
+  // bring the boxes into view inside the artwork panel (only when they aren't already)
+  const cw = c.offsetWidth, ch = c.offsetHeight;
+  const L = c.offsetLeft + Math.min(...shown.map(r => r.x)) * cw, R = c.offsetLeft + Math.max(...shown.map(r => r.x + r.w)) * cw;
+  const T = c.offsetTop + Math.min(...shown.map(r => r.y)) * ch, B = c.offsetTop + Math.max(...shown.map(r => r.y + r.h)) * ch;
+  const pad = 24, to = {};
+  // centre it; if it is bigger than the panel, show where it starts
+  const fit = (a, b, size) => (b - a + 2 * pad > size) ? a - pad : (a + b) / 2 - size / 2;
+  if(L - pad < box.scrollLeft || R + pad > box.scrollLeft + box.clientWidth) to.left = fit(L, R, box.clientWidth);
+  if(T - pad < box.scrollTop || B + pad > box.scrollTop + box.clientHeight) to.top = fit(T, B, box.clientHeight);
+  // an instant jump: it lands even while the page isn't painting, and needs no reduced-motion variant
+  if('left' in to) box.scrollLeft = to.left;
+  if('top' in to) box.scrollTop = to.top;
+  // stacked layout: an issue clicked further down the page brings the artwork panel back on screen
+  if(vmHl.page){
+    const br = box.getBoundingClientRect();
+    if(br.bottom < 0 || br.top > window.innerHeight) box.scrollIntoView({ block:'nearest' });
+  }
+}
+
+// The sentence (within its line) under the caret in "Text the tool read", or the selected text
+function vmHlFromCaret(){
+  const ta = $('vm-transcript');
+  if(!ta || !visualOn) return;
+  const v = ta.value, a = ta.selectionStart, b = ta.selectionEnd;
+  let q;
+  if(b > a) q = v.slice(a, b);
+  else {
+    const s = v.lastIndexOf('\n', a - 1) + 1;
+    let e = v.indexOf('\n', a); if(e < 0) e = v.length;
+    const line = v.slice(s, e), at = a - s;
+    // split only after a word or closing mark, so "1. Sit still" stays whole
+    const parts = line.split(/(?<=[\p{L}\)\]"”'’%][.!?])\s+/u);
+    let off = 0; q = line;
+    for(const part of parts){
+      const i = line.indexOf(part, off);
+      if(at >= i && at <= i + part.length){ q = part; break; }
+      off = i + part.length;
+    }
+  }
+  if(!q.trim()){ vmClearHl(); return; }
+  vmShowText(q, { from:'text' });
+}
+
+(function(){
+  const ta = $('vm-transcript'), box = $('vm-preview');
+  if(ta){
+    ta.addEventListener('click', vmHlFromCaret);
+    ta.addEventListener('select', vmHlFromCaret);
+    ta.addEventListener('keyup', e => { if(e.key !== 'Escape' && e.key !== 'Tab') vmHlFromCaret(); });
+    // edited text: follow the caret again, which clears the box once the words stop matching
+    ta.addEventListener('input', () => { if(vmHl && vmHl.from === 'issue') vmClearHl(); else vmHlFromCaret(); });
+  }
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && vmHl) vmClearHl(); });
+  if(box){
+    let down = null;
+    box.addEventListener('pointerdown', e => { down = { x:e.clientX, y:e.clientY }; });
+    // a click on the artwork (not the end of a drag-to-pan) clears the highlight
+    box.addEventListener('click', e => {
+      if(down && Math.abs(e.clientX - down.x) + Math.abs(e.clientY - down.y) > 4) return;
+      vmClearHl();
+    });
+  }
+  const list = $('scan-list');
+  if(list) list.addEventListener('keydown', e => {
+    const it = e.target.closest && e.target.closest('.issue');
+    if(it && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); it.click(); }
+  });
+})();
+
+// ── Alt text that travels with the file ──
+// JPEG and PNG get the alt text written into their XMP metadata (IPTC Alt Text (Accessibility), with
+// dc:description as a fallback) in a downloaded copy. The opened file is never changed.
+const XMP_HDR = 'http://ns.adobe.com/xap/1.0/\0';
+const XMP_EXT_HDR = 'http://ns.adobe.com/xmp/extension/\0';
+const PNG_XMP_KEY = 'XML:com.adobe.xmp';
+
+function xmlEscape(s){
+  return String(s)
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F￾￿]/g, '')     // not allowed in XML at all
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+}
+function altXmpPacket(alt){
+  const t = xmlEscape(alt);
+  const li = '<rdf:Alt><rdf:li xml:lang="x-default">' + t + '</rdf:li></rdf:Alt>';
+  return '<?xpacket begin="﻿" id="W5M0MpCehiHzreSzNTczkc9d"?>\n'
+    + '<x:xmpmeta xmlns:x="adobe:ns:meta/">\n'
+    + ' <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">\n'
+    + '  <rdf:Description rdf:about=""\n'
+    + '    xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/"\n'
+    + '    xmlns:dc="http://purl.org/dc/elements/1.1/">\n'
+    + '   <Iptc4xmpCore:AltTextAccessibility>' + li + '</Iptc4xmpCore:AltTextAccessibility>\n'
+    + '   <dc:description>' + li + '</dc:description>\n'
+    + '  </rdf:Description>\n'
+    + ' </rdf:RDF>\n'
+    + '</x:xmpmeta>\n'
+    + '<?xpacket end="w"?>';
+}
+
+const CRC_TABLE = (() => {
+  const t = new Uint32Array(256);
+  for(let n = 0; n < 256; n++){ let c = n; for(let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+  return t;
+})();
+function crc32(bytes){
+  let c = 0xFFFFFFFF;
+  for(let i = 0; i < bytes.length; i++) c = CRC_TABLE[(c ^ bytes[i]) & 0xFF] ^ (c >>> 8);
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+function bytesConcat(parts){
+  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
+  let o = 0; parts.forEach(p => { out.set(p, o); o += p.length; });
+  return out;
+}
+function bytesStartWith(bytes, off, ascii){
+  if(off + ascii.length > bytes.length) return false;
+  for(let i = 0; i < ascii.length; i++) if(bytes[off + i] !== ascii.charCodeAt(i)) return false;
+  return true;
+}
+function dataUrlBytes(url){
+  const comma = url.indexOf(','), meta = url.slice(5, comma), body = url.slice(comma + 1);
+  const mime = meta.split(';')[0].toLowerCase();
+  if(!/;base64/i.test(meta)) return { mime, bytes:new TextEncoder().encode(decodeURIComponent(body)) };
+  const bin = atob(body), bytes = new Uint8Array(bin.length);
+  for(let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return { mime, bytes };
+}
+function imageFormat(bytes){
+  if(bytes[0] === 0xFF && bytes[1] === 0xD8) return 'jpeg';
+  if(bytes.length > 8 && bytesStartWith(bytes, 0, '\x89PNG\r\n\x1a\n')) return 'png';
+  return null;
+}
+
+// JPEG: a new XMP APP1 segment after the leading JFIF/EXIF segments; any old XMP (and extended XMP)
+// APP1 is dropped so there is only one; EXIF and everything else is copied as it was.
+function jpegWithXmp(bytes, xmp){
+  const payload = new TextEncoder().encode(XMP_HDR + xmp);
+  if(payload.length > 65533) throw new RangeError('too long');
+  const app1 = new Uint8Array(4 + payload.length);
+  app1[0] = 0xFF; app1[1] = 0xE1; app1[2] = (payload.length + 2) >> 8; app1[3] = (payload.length + 2) & 0xFF;
+  app1.set(payload, 4);
+  const segs = [];
+  let p = 2;
+  while(p < bytes.length){
+    if(bytes[p] !== 0xFF) throw new Error('bad JPEG marker');
+    const m = bytes[p + 1];
+    if(m === 0xFF){ p++; continue; }                              // fill byte
+    if(m === 0xDA || m === 0xD9) break;                           // scan data from here on is copied untouched
+    if(m === 0x01 || (m >= 0xD0 && m <= 0xD7)){ segs.push({ m, b:bytes.subarray(p, p + 2) }); p += 2; continue; }
+    const end = p + 2 + ((bytes[p + 2] << 8) | bytes[p + 3]);
+    if(end > bytes.length) throw new Error('truncated JPEG');
+    const isXmp = m === 0xE1 && (bytesStartWith(bytes, p + 4, XMP_HDR) || bytesStartWith(bytes, p + 4, XMP_EXT_HDR));
+    if(!isXmp) segs.push({ m, b:bytes.subarray(p, end), exif: m === 0xE1 && bytesStartWith(bytes, p + 4, 'Exif\0') });
+    p = end;
+  }
+  let at = 0;
+  while(at < segs.length && (segs[at].m === 0xE0 || segs[at].exif)) at++;
+  const parts = [bytes.subarray(0, 2)];
+  segs.forEach((s, i) => { if(i === at) parts.push(app1); parts.push(s.b); });
+  if(at >= segs.length) parts.push(app1);
+  parts.push(bytes.subarray(p));
+  return bytesConcat(parts);
+}
+
+// PNG: an uncompressed iTXt chunk "XML:com.adobe.xmp" just before IEND; any old one is removed first
+function pngChunk(type, data){
+  const out = new Uint8Array(12 + data.length), dv = new DataView(out.buffer);
+  dv.setUint32(0, data.length);
+  for(let i = 0; i < 4; i++) out[4 + i] = type.charCodeAt(i);
+  out.set(data, 8);
+  dv.setUint32(8 + data.length, crc32(out.subarray(4, 8 + data.length)));
+  return out;
+}
+function pngWithXmp(bytes, xmp){
+  const enc = new TextEncoder();
+  // keyword, NUL, compression flag 0, method 0, empty language tag NUL, empty translated keyword NUL, UTF-8 text
+  const data = bytesConcat([enc.encode(PNG_XMP_KEY), new Uint8Array([0, 0, 0, 0, 0]), enc.encode(xmp)]);
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const parts = [bytes.subarray(0, 8)];
+  let p = 8;
+  while(p + 12 <= bytes.length){
+    const len = dv.getUint32(p), end = p + 12 + len;
+    if(end > bytes.length) throw new Error('truncated PNG');
+    const type = String.fromCharCode(bytes[p + 4], bytes[p + 5], bytes[p + 6], bytes[p + 7]);
+    if(type === 'IEND'){ parts.push(pngChunk('iTXt', data), bytes.subarray(p)); return bytesConcat(parts); }
+    if(!(type === 'iTXt' && bytesStartWith(bytes, p + 8, PNG_XMP_KEY + '\0'))) parts.push(bytes.subarray(p, end));
+    p = end;
+  }
+  throw new Error('PNG has no IEND');
+}
+
+// The original bytes with the alt text written in → { bytes, ext, mime }
+function buildAltImage(bytes, alt){
+  const xmp = altXmpPacket(alt), fmt = imageFormat(bytes);
+  if(fmt === 'jpeg') return { bytes:jpegWithXmp(bytes, xmp), ext:'jpg', mime:'image/jpeg' };
+  if(fmt === 'png')  return { bytes:pngWithXmp(bytes, xmp),  ext:'png', mime:'image/png' };
+  throw new Error('unsupported');
+}
+
+// What the alt text card can do for the open file
+function vmAltSupport(entry){
+  if(!entry) return 'none';
+  if(entry.kind === 'pdf') return 'pdf';
+  const mime = ((entry.dataUrl || '').match(/^data:([^;,]+)/) || [])[1] || '';
+  return /^image\/(jpe?g|pjpeg|png)$/i.test(mime) ? 'save' : 'other';
+}
+const ALT_WHY = {
+  pdf:   'PDF alt text is set per image in your layout app; copy it from here.',
+  other: 'Only JPEG and PNG files can carry alt text from here, so copy it instead.',
+};
+function vmAltSync(){
+  const dl = $('vm-alt-dl'), cp = $('vm-alt-copy'), why = $('vm-alt-why');
+  if(!dl) return;
+  const entry = fileHistory.find(f => f.id === activeFileId);
+  const sup = vmAltSupport(entry), empty = !$('vm-alt').value.trim();
+  dl.hidden = sup !== 'save';
+  dl.disabled = empty;
+  cp.disabled = empty;
+  why.hidden = !ALT_WHY[sup];
+  why.textContent = ALT_WHY[sup] || '';
+}
+let altStatusT = 0;
+function vmAltStatus(msg){
+  const s = $('vm-alt-status');
+  if(!s) return;
+  s.textContent = msg;
+  clearTimeout(altStatusT);
+  altStatusT = setTimeout(() => { s.textContent = ''; }, 6000);
+}
+function downloadAltImage(){
+  const entry = fileHistory.find(f => f.id === activeFileId);
+  const alt = $('vm-alt').value.trim();
+  if(!entry || !alt || vmAltSupport(entry) !== 'save') return;
+  let out;
+  try { out = buildAltImage(dataUrlBytes(entry.dataUrl).bytes, alt); }
+  catch(err){
+    vmAltStatus(err instanceof RangeError ? 'This alt text is too long to save in a JPEG. Shorten it.' : 'Couldn’t write into this file. Copy the alt text instead.');
+    return;
+  }
+  const base = (entry.name.replace(/\.[^.]+$/, '') || 'image').replace(/[\\/:*?"<>|]+/g, '-');
+  const name = base + '-alt.' + out.ext;
+  const url = URL.createObjectURL(new Blob([out.bytes], { type:out.mime }));
+  const a = document.createElement('a');
+  a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+  vmAltStatus('Saved ' + name + ' with the alt text. Your original file is unchanged.');
+}
+async function copyAltText(){
+  const ta = $('vm-alt'), alt = ta.value.trim();
+  if(!alt) return;
+  try {
+    await navigator.clipboard.writeText(alt);
+    vmAltStatus('Alt text copied.');
+  } catch(err){
+    // no clipboard permission: copy the selected text the older way, or leave it selected for Ctrl+C
+    ta.focus(); ta.select();
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch(e){}
+    vmAltStatus(ok ? 'Alt text copied.' : 'Couldn’t copy. The text is selected, so press Ctrl+C or ⌘C.');
+  }
+}
+(function(){
+  const dl = $('vm-alt-dl'), cp = $('vm-alt-copy');
+  if(dl) dl.addEventListener('click', downloadAltImage);
+  if(cp) cp.addEventListener('click', copyAltText);
+})();
 
 // ── Read-aloud clarity: how this sounds when a screen reader speaks it ──
 function readAloudFindings(text){
@@ -3163,6 +3587,7 @@ function readAloudFindings(text){
 function jumpTo(idx){
   const issue = (window._issues||[])[idx];
   if(!issue) return;
+  if(visualOn){ vmShowText(issue.src, { from:'issue', page:true }); return; }   // find it on the artwork instead
   const needle = issue.src.slice(0, 40);
   const walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT);
   let node;
@@ -3472,7 +3897,7 @@ async function intakeFile(file){
     });
     const entry = addToHistory({ name:file.name, kind:'image', dataUrl, alt:'', transcript:'', vtype:'poster' });
     openVisual(entry);
-    flashHint('Reading the words in the artwork. Check them in the Text in the artwork card.');
+    flashHint('Reading the words in the artwork. Check them in the Text the tool read card.');
     return;
   }
 
@@ -4218,7 +4643,7 @@ function renderFwOut(){
   let html = '';
   if(needText){
     const what = visualOn
-      ? 'A poster image or scanned page has no text the tool can read. Type or paste the words from the artwork into “Text in the artwork”'
+      ? 'A poster image or scanned page has no text the tool can read. Type or paste the words from the artwork into “Text the tool read”'
       : 'Paste or type your material into the workspace';
     html += '<div class="fwo-need"><b>' + escapeHtml(names) + (live.length === 1 ? ' needs' : ' need') + ' text to score.</b> '
           + escapeHtml(what) + ' and ' + (live.length === 1 ? 'its card' : 'their cards') + ' will appear below.'
@@ -4276,7 +4701,7 @@ function clearFrameworks(){
   // Clear means none: keep in-use scoring modules off until they're used or ticked again
   Object.keys(FW_LIVE).forEach(k => { if(fwLiveInUse(k)) fwManual[k] = false; });
   fwOutFilter = 'all';
-  document.querySelectorAll('#seg-outtype button').forEach(b => b.classList.toggle('on', b.dataset.v === 'all'));
+  syncOutFilterUi();
   renderFwTopBar();
 }
 // ── TOP FRAMEWORK BAR (prototype) — same data, new home ──
@@ -4305,10 +4730,73 @@ const OUT_LABEL = { scored:'Score', partial:'Partial score', qual:'Qualitative' 
 let fwOutFilter = 'all';
 function fwOutType(f){ return OUT_TYPE[(FW_REG[f] || {}).t] || 'qual'; }
 function setOutFilter(v){
-  fwOutFilter = v;
-  document.querySelectorAll('#seg-outtype button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  fwOutFilter = OUT_LABEL[v] ? v : 'all';
+  syncOutFilterUi();
   renderFwTopGrid();
 }
+// The Filter menu's ticks, plus a chip naming the active filter (pressing it goes back to All)
+function syncOutFilterUi(){
+  document.querySelectorAll('#seg-outtype [role="menuitemradio"]').forEach(b => b.setAttribute('aria-checked', String(b.dataset.v === fwOutFilter)));
+  const chip = $('fw-filter-chip');
+  if(!chip) return;
+  chip.hidden = fwOutFilter === 'all';
+  if(fwOutFilter === 'all') return;
+  const x = document.createElement('span');
+  x.setAttribute('aria-hidden', 'true'); x.textContent = '✕';
+  chip.replaceChildren(document.createTextNode(OUT_LABEL[fwOutFilter]), x);
+  chip.setAttribute('aria-label', 'Remove filter: ' + OUT_LABEL[fwOutFilter]);
+  chip.title = 'Show all frameworks again';
+}
+// Filter menu: Arrow keys move, Enter or Space picks, Escape closes and returns to the button, a click outside closes
+(function(){
+  const btn = $('fw-filter-btn'), menu = $('seg-outtype'), chip = $('fw-filter-chip');
+  if(!btn || !menu) return;
+  const items = () => [...menu.querySelectorAll('[role="menuitemradio"]')];
+  function open(idx){
+    menu.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    // a short (filtered) list would clip the menu inside the scrolling panel: make room while it's open
+    const inner = menu.closest('.fw-top-panel-inner');
+    if(inner){
+      const need = menu.getBoundingClientRect().bottom - inner.getBoundingClientRect().top + 16;
+      if(need > inner.offsetHeight) inner.style.minHeight = Math.ceil(need) + 'px';
+    }
+    const its = items();
+    const i = idx != null ? idx : Math.max(0, its.findIndex(b => b.getAttribute('aria-checked') === 'true'));
+    its[i].focus();
+  }
+  function close(refocus){
+    if(menu.hidden) return;
+    menu.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    const inner = menu.closest('.fw-top-panel-inner');
+    if(inner) inner.style.minHeight = '';
+    if(refocus) btn.focus();
+  }
+  btn.addEventListener('click', () => { if(menu.hidden) open(); else close(false); });
+  btn.addEventListener('keydown', e => {
+    if(e.key === 'ArrowDown' || e.key === 'ArrowUp'){ e.preventDefault(); open(e.key === 'ArrowUp' ? items().length - 1 : null); }
+  });
+  menu.addEventListener('click', e => {
+    const it = e.target.closest('[role="menuitemradio"]');
+    if(!it) return;
+    setOutFilter(it.dataset.v);
+    close(true);
+  });
+  menu.addEventListener('keydown', e => {
+    const its = items(), i = its.indexOf(document.activeElement);
+    let next = null;
+    if(e.key === 'ArrowDown') next = (i + 1) % its.length;
+    else if(e.key === 'ArrowUp') next = (i - 1 + its.length) % its.length;
+    else if(e.key === 'Home') next = 0;
+    else if(e.key === 'End') next = its.length - 1;
+    else if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); close(true); return; }   // only the menu, not the panel
+    else if(e.key === 'Tab'){ close(false); return; }
+    if(next !== null){ e.preventDefault(); its[next].focus(); }
+  });
+  document.addEventListener('click', e => { if(!menu.hidden && !e.target.closest('#fw-filter')) close(false); }, true);
+  if(chip) chip.addEventListener('click', () => { setOutFilter('all'); btn.focus(); });
+})();
 function renderFwTopGrid(){
   const selected = selectedFrameworks();
   const grid = $('fw-top-grid');
@@ -4494,7 +4982,7 @@ function applyLayout(key, silent){
 const MOD_NAMES = {
   'mod-fwout':'Framework checklists', 'mod-read':'Readability', 'mod-cci':'CCI',
   'mod-pemat':'PEMAT', 'mod-scan':'Plain language', 'mod-a11y':'Accessibility',
-  'mod-acc':'Accuracy', 'mod-vtext':'Text in the artwork', 'mod-valt':'Alt text', 'mod-vcolour':'Colour and contrast',
+  'mod-acc':'Accuracy', 'mod-vtext':'Text the tool read', 'mod-valt':'Alt text', 'mod-vcolour':'Colour and contrast',
 };
 
 // The "add module" menu only lists what isn't already on screen
