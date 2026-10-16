@@ -4,6 +4,13 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Remove the Classic page
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Deleted `classic.html`, the old "Classic" analyzer view. Nothing linked to it any more;
+  the studio (`index.html`) replaces it. It stays in git history if it's ever needed.
+
 ## 2026-10-16 — Framework Compass rebuilt; UPL and PCORI added; shared design system
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
