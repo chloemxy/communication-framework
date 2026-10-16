@@ -4,6 +4,45 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Framework Compass rebuilt; UPL and PCORI added; shared design system
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **One list of frameworks.** New `frameworks.js` holds the 23 frameworks the studio uses: a
+  one-line description, output type and the framework's own primary source for each.
+  The Compass is built from it plus the engine registry, so it shows exactly what the
+  studio uses. The studio switches to the same list once the design pass lands.
+- **Framework Compass rebuilt** (`framework-compass.html`):
+  - Removed the 3-step "Find your framework" wizard, the emoji filter chips, the
+    metric/benchmark columns and the stacks.
+  - Each framework is one row: name, one-line description, Score/Partial/Checklist tag and
+    a link to its primary source. The full references sit in a collapsed "All references".
+  - Search and an area filter. 23 frameworks in 4 areas.
+- **Removed from the Compass** (not used in the studio's checks, or not relevant to patient
+  materials): NCI Pink Book, OPTION, PAM, CAHPS, NPS, EBCD and Beryl PX were reference-only;
+  SEIPS (patient-safety systems) and Planetree (organisation certification) aren't about
+  patient materials. SEIPS and Planetree also leave the studio list in the next step.
+- **Added: UPL — Universal Patient Language** (Bristol Myers Squibb).
+  - 64 items, verbatim from the UPL Guidance Document (© 2026, 9 best practices). That's
+    the current source the upl.org deep links lead to.
+  - Each item cites its detailed-guidance page and, where one exists, the matching rule
+    in the older UPL Rules (2017).
+- **Added: PCORI Foundational Expectations for Partnerships in Research** (updated March 2026).
+  - The 6 expectations, verbatim, with PCORI's "Questions to ask" for each.
+  - It rates the project's partnerships, not the material, so you answer from what you
+    know about the project.
+- **Sources checked 2026-10-16** and updated where they had moved:
+  - DISCERN → University of Oxford (NDPH)
+  - Plain Language → digital.gov
+  - SHARE → AHRQ `/sdm/share-approach/`
+  - IPDAS → decisionaid.ohri.ca/ipdas.html
+  - Picker → the current Picker Principles page
+- **Picker updated** to its current eight principles (names verbatim from picker.org). Each
+  one says what to look for in a document. The old items paraphrased the 1993 version.
+- **Shared design system.** New `design-system.css` holds the tokens, the 7 type
+  treatments, the button component, the site bar and the disclosure style for every page.
+  The Compass uses it, with the same site bar as the studio.
+
 ## 2026-10-16 — Getting-started steps in the empty card area
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
