@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Framework Compass · Patient Education & Experience Frameworks</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
@@ -38,7 +39,7 @@
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    font-size: 14px;
+    font-size:14px;font-weight:400;
     line-height: 1.5;
     min-height: 100vh;
   }
@@ -49,9 +50,7 @@
     border-bottom: 1px solid var(--border);
   }
   .eyebrow {
-    font-size: 13px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size:13px;font-weight:400;
     color: var(--teal);
     margin-bottom: 10px;
     display: flex;
@@ -67,9 +66,8 @@
     background: var(--teal);
   }
   h1 {
-    font-size: 36px;
-    font-weight: 300;
-    letter-spacing: -.5px;
+    font-size:24px;
+    font-weight:600;
     color: var(--text);
     line-height: 1.15;
   }
@@ -78,7 +76,7 @@
     margin-top: 10px;
     color: var(--muted);
     max-width: 520px;
-    font-size: 13.5px;
+    font-size:13px;font-weight:400;
   }
 
   /* ── FILTER BAR ── */
@@ -98,11 +96,9 @@
     padding: 9px 0;
   }
   .filter-label {
-    font-size: 13px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+    font-size:13px;
     color: var(--muted);
-    font-weight: 600;
+    font-weight:600;
     flex-shrink: 0;
     margin-right: 2px;
   }
@@ -114,8 +110,8 @@
     align-items: center;
     padding: 3px 10px;
     border-radius: 20px;
-    font-size: 13px;
-    font-weight: 500;
+    font-size:13px;
+    font-weight:400;
     cursor: pointer;
     border: 1px solid var(--border);
     background: transparent;
@@ -139,7 +135,7 @@
     border-radius: 20px;
     color: var(--text);
     font-family: inherit;
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     padding: 3px 12px;
     outline: none;
     width: 150px;
@@ -149,12 +145,12 @@
   .filter-search:focus { border-color: var(--teal); }
   .filter-search::placeholder { color: var(--muted); }
 
-  .filter-count { font-size: 13px; color: var(--muted); flex-shrink: 0; min-width: 56px; }
+  .filter-count { font-size:13px;font-weight:400; color: var(--muted); flex-shrink: 0; min-width: 56px; }
   .filter-clear {
     background: none;
     border: none;
     color: var(--muted);
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     cursor: pointer;
     font-family: inherit;
     padding: 3px 7px;
@@ -182,16 +178,12 @@
     border-bottom: 2px solid;
   }
   .section-num {
-    font-size: 13px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    font-weight: 600;
+    font-size:13px;
+    font-weight:600;
   }
   .section-title {
-    font-size: 13px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    font-weight: 600;
+    font-size:13px;
+    font-weight:600;
   }
   .section.clarity .section-header  { border-color: var(--clarity); }
   .section.process .section-header  { border-color: var(--process); }
@@ -208,14 +200,12 @@
     border-collapse: collapse;
   }
   .fw-table thead th {
-    font-size: 13px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+    font-size:13px;
     color: var(--muted);
     padding: 6px 12px;
     text-align: left;
     border-bottom: 1px solid var(--border);
-    font-weight: 500;
+    font-weight:400;
   }
   .fw-table thead th:first-child { padding-left: 0; }
 
@@ -227,18 +217,18 @@
   .fw-row td {
     padding: 13px 12px;
     vertical-align: top;
-    font-size: 13px;
+    font-size:13px;font-weight:400;
   }
   .fw-row td:first-child { padding-left: 0; }
 
   .fw-name {
-    font-weight: 600;
+    font-weight:600;
     color: var(--text);
-    font-size: 13.5px;
+    font-size:13px;
   }
   .fw-fullname {
     color: var(--muted);
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     margin-top: 2px;
   }
 
@@ -246,8 +236,8 @@
     display: inline-block;
     padding: 2px 8px;
     border-radius: 4px;
-    font-size: 13px;
-    font-weight: 600;
+    font-size:13px;
+    font-weight:600;
     white-space: nowrap;
   }
   .badge.clarity  { background: var(--clarity-bg); color: var(--clarity); }
@@ -255,20 +245,18 @@
   .badge.behavior { background: var(--behavior-bg); color: var(--behavior); }
   .badge.outcomes { background: var(--outcomes-bg); color: var(--outcomes); }
 
-  .score-yes     { color: var(--scored); font-weight: 600; }
-  .score-partial { color: var(--partial); font-weight: 600; }
-  .score-no      { color: var(--noscore); font-weight: 600; }
+  .score-yes     { color: var(--scored); font-weight:600; }
+  .score-partial { color: var(--partial); font-weight:600; }
+  .score-no      { color: var(--noscore); font-weight:600; }
 
   .metric { color: var(--text); }
-  .benchmark { color: var(--partial); font-size: 13px; }
-  .bestfor { color: var(--muted); font-size: 13px; }
+  .benchmark { color: var(--partial); font-size:13px;font-weight:400; }
+  .bestfor { color: var(--muted); font-size:13px;font-weight:400; }
 
   /* ── STACKS ── */
   #stacks { margin-top: 48px; }
   .stacks-title {
-    font-size: 13px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size:13px;font-weight:400;
     color: var(--muted);
     margin-bottom: 18px;
     display: flex;
@@ -298,8 +286,8 @@
   .stack-card:nth-child(3) { background: rgba(251,146,60,0.07); }
   .stack-card:nth-child(4) { background: rgba(74,222,128,0.07); }
   .stack-name {
-    font-size: 13px;
-    font-weight: 700;
+    font-size:13px;
+    font-weight:600;
     margin-bottom: 10px;
     color: var(--text);
   }
@@ -308,14 +296,14 @@
     display: inline-block;
     padding: 3px 9px;
     border-radius: 4px;
-    font-size: 13px;
-    font-weight: 700;
+    font-size:13px;
+    font-weight:600;
     background: rgba(30,20,10,0.06);
     color: var(--text);
     border: 1px solid rgba(30,20,10,0.12);
   }
   .stack-desc {
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     color: var(--muted);
     line-height: 1.55;
   }
@@ -336,17 +324,15 @@
     margin-bottom: 14px;
   }
   .wizard-eyebrow {
-    font-size: 13px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size:13px;
     color: var(--teal);
-    font-weight: 600;
+    font-weight:600;
   }
   .wizard-skip {
     background: none;
     border: none;
     color: var(--muted);
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     cursor: pointer;
     padding: 4px 8px;
     border-radius: 4px;
@@ -376,23 +362,21 @@
   }
   .wizard-arrow {
     color: var(--border);
-    font-size: 22px;
+    font-size:24px;font-weight:600;
     padding: 0 12px;
     margin-top: 22px;
     flex-shrink: 0;
     user-select: none;
   }
   .step-num {
-    font-size: 13px;
-    letter-spacing: .1em;
-    text-transform: uppercase;
+    font-size:13px;
     color: var(--muted);
     margin-bottom: 5px;
-    font-weight: 600;
+    font-weight:600;
   }
   .step-q {
-    font-size: 13px;
-    font-weight: 600;
+    font-size:13px;
+    font-weight:600;
     color: var(--text);
     margin-bottom: 9px;
   }
@@ -417,8 +401,8 @@
   }
   .wopt:hover { border-color: var(--teal); background: rgba(13,122,109,0.06); }
   .wopt.selected { border-color: var(--teal); background: var(--teal-dim); }
-  .wopt-label { font-size: 13px; font-weight: 600; }
-  .wopt-sub { font-size: 13px; color: var(--muted); }
+  .wopt-label { font-size:13px; font-weight:600; }
+  .wopt-sub { font-size:13px;font-weight:400; color: var(--muted); }
 
   /* Result panel */
   .wizard-result {
@@ -431,19 +415,17 @@
   }
   .wizard-result.visible { display: block; }
   .result-label {
-    font-size: 13px;
-    letter-spacing: .12em;
-    text-transform: uppercase;
+    font-size:13px;
     color: var(--teal);
-    font-weight: 600;
+    font-weight:600;
     margin-bottom: 9px;
   }
   .result-fws { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
   .result-fw-tag {
     padding: 4px 12px;
     border-radius: 4px;
-    font-size: 13px;
-    font-weight: 700;
+    font-size:13px;
+    font-weight:600;
     text-decoration: none;
     transition: opacity .15s;
   }
@@ -457,7 +439,7 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     color: var(--teal);
     text-decoration: none;
     border: 1px solid var(--teal-dim);
@@ -468,7 +450,7 @@
   }
   .result-stack-link:hover { background: var(--teal-dim); }
   .result-note {
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     color: var(--muted);
     line-height: 1.55;
     margin-bottom: 9px;
@@ -477,7 +459,7 @@
     background: none;
     border: none;
     color: var(--muted);
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     cursor: pointer;
     padding: 0;
     text-decoration: underline;
@@ -491,6 +473,25 @@
     box-shadow: inset 3px 0 0 var(--teal);
   }
   .fw-row.wz-dim { opacity: 0.28; }
+
+/* ── Type system: seven treatments, used everywhere on the site ──
+   1 Display        24/600 sans   page titles, big metrics
+   2 Heading        17/600 sans   card, dialog and section titles
+   3 Body           14/400 sans   interface text
+   4 Body strong    14/600 sans   buttons, labels, emphasis in body text
+   5 Caption        13/400 sans   meta, hints, footnotes
+   6 Caption strong 13/600 sans   tags, pills, counts, small labels
+   7 Reading        15/400 serif  the document being evaluated (studio only)
+   Rules: Inter for the interface; weights 400 and 600 only; no italics, uppercase or
+   letter-spacing. Bold and italic the author put in their own document stay as written. */
+b,strong{font-weight:600}
+em,i,cite,address,dfn{font-style:normal}
+small{font-size:inherit}
+h1{font-size:24px;font-weight:600}
+h2,h3{font-size:17px;font-weight:600}
+h4,h5,h6{font-size:14px;font-weight:600}
+button,input,select,textarea{font-family:inherit}
+body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif}
 </style>
 </head>
 <body>

@@ -4,6 +4,38 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Half-width document panel, one checklist control, seven type treatments
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Material panel at half the screen, adjustable.**
+  - On desktop the document and the score cards start 50/50, with a divider between them.
+  - The divider responds to dragging, the arrow keys (Shift for bigger steps), Home and
+    End, and double-click to reset. The width is remembered per browser.
+  - The Brief bar lines up with the document column.
+  - Below 1000px the panel starts at half the screen height and can be dragged taller or shorter.
+- **One checklist control.** The CCI, PEMAT and every framework checklist (PEMAT-A/V, CDC
+  IDD/ELL, Inclusive Comms, SAM, DISCERN, EQIP and the rest) now use the same row of
+  rating buttons. This replaces the mix of checkboxes and dropdowns.
+  - Pressing the selected button again clears the rating.
+  - Auto-scored and score-sheet-locked items show their value on the same buttons, locked.
+  - Tool suggestions show as dashed buttons until you confirm them.
+  - CCI's "Doesn't apply" is the same button style.
+  - In a card narrower than 400px, the buttons move under the item text.
+- **Seven type treatments, site-wide.** An audit of all four pages found 41 distinct text
+  styles: 34 in the interface and 7 in the document preview. They used 6 weights,
+  13.5px half sizes, italics, uppercase and a monospace font. Now:
+  - Display 24/600 · Heading 17/600 · Body 14/400 · Body strong 14/600 · Caption 13/400 ·
+    Caption strong 13/600 (all Inter).
+  - Reading, serif 15/400, for the document being evaluated.
+  - Rules: weights 400 and 600 only; no italics, uppercase or letter-spacing; Inter on
+    every page (the compass and scoring-logic pages used the system font).
+  - The document preview's headings use Display and Heading. Bold and italic the author
+    wrote in their own draft are kept as written.
+  - The Italic toolbar button shows a math-italic glyph instead of italic type.
+  - The re-audit found exactly these 7 on `index.html`, `classic.html`,
+    `framework-compass.html` and `framework-scoring-logic.html`.
+
 ## 2026-10-16 — Top nav: Full compass and About
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

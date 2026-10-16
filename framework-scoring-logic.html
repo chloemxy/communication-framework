@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Framework Scoring Logic · Detailed Rules & Rubrics</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light;
@@ -32,7 +33,7 @@
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    font-size: 14px;
+    font-size:14px;font-weight:400;
     line-height: 1.6;
     min-height: 100vh;
   }
@@ -40,7 +41,7 @@
   /* HEADER */
   .header { padding: 40px 40px 32px; border-bottom: 1px solid var(--border); }
   .eyebrow {
-    font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+    font-size:13px;font-weight:400;
     color: var(--teal); margin-bottom: 10px;
     display: flex; align-items: center; gap: 8px;
   }
@@ -48,9 +49,9 @@
     content: ''; display: inline-block; width: 8px; height: 8px;
     border-radius: 50%; background: var(--teal);
   }
-  h1 { font-size: 32px; font-weight: 300; letter-spacing: -.5px; line-height: 1.2; }
+  h1 { font-size:24px; font-weight:600; line-height: 1.2; }
   h1 span { color: var(--teal); }
-  .subtitle { margin-top: 8px; color: var(--muted); max-width: 580px; font-size: 13.5px; }
+  .subtitle { margin-top: 8px; color: var(--muted); max-width: 580px; font-size:13px;font-weight:400; }
 
   /* NAV */
   .nav-bar {
@@ -59,7 +60,7 @@
   }
   .nav-inner { display: flex; gap: 4px; padding: 8px 0; flex-wrap: wrap; }
   .nav-chip {
-    padding: 4px 12px; border-radius: 20px; font-size: 13px; font-weight: 600;
+    padding: 4px 12px; border-radius: 20px; font-size:13px; font-weight:600;
     cursor: pointer; border: none; font-family: inherit; text-decoration: none;
     display: inline-block; transition: opacity .15s;
   }
@@ -82,8 +83,8 @@
   .zone.process .zone-header  { border-color: var(--process); }
   .zone.behavior .zone-header { border-color: var(--behavior); }
   .zone.outcomes .zone-header { border-color: var(--outcomes); }
-  .zone-num { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
-  .zone-title { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; }
+  .zone-num { font-size:13px; font-weight:600; }
+  .zone-title { font-size:13px; font-weight:600; }
   .zone.clarity .zone-num, .zone.clarity .zone-title  { color: var(--clarity); }
   .zone.process .zone-num, .zone.process .zone-title  { color: var(--process); }
   .zone.behavior .zone-num, .zone.behavior .zone-title { color: var(--behavior); }
@@ -106,12 +107,12 @@
     gap: 16px;
   }
   .fw-card-title { }
-  .fw-abbr { font-size: 18px; font-weight: 700; color: var(--text); }
-  .fw-long  { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .fw-abbr { font-size:17px; font-weight:600; color: var(--text); }
+  .fw-long  { font-size:13px;font-weight:400; color: var(--muted); margin-top: 2px; }
   .fw-pills { display: flex; gap: 6px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
   .pill {
     display: inline-block; padding: 2px 9px; border-radius: 4px;
-    font-size: 13px; font-weight: 600; white-space: nowrap;
+    font-size:13px; font-weight:600; white-space: nowrap;
   }
   .pill.clarity  { background: var(--clarity-bg);  color: var(--clarity); }
   .pill.process  { background: var(--process-bg);  color: var(--process); }
@@ -127,10 +128,10 @@
   .block { margin-bottom: 20px; }
   .block:last-child { margin-bottom: 0; }
   .block-label {
-    font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
-    color: var(--muted); font-weight: 700; margin-bottom: 7px;
+    font-size:13px;
+    color: var(--muted); font-weight:600; margin-bottom: 7px;
   }
-  .block-content { font-size: 13px; line-height: 1.65; }
+  .block-content { font-size:13px;font-weight:400; line-height: 1.65; }
 
   /* Score box */
   .score-box {
@@ -138,11 +139,11 @@
     border: 1px solid var(--border);
     border-radius: 6px;
     padding: 14px 16px;
-    font-size: 13px;
+    font-size:13px;font-weight:400;
   }
   .score-formula {
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-    font-size: 13px;
+
+    font-size:13px;font-weight:400;
     color: var(--teal);
     background: rgba(13,122,109,0.07);
     border-radius: 4px;
@@ -152,11 +153,11 @@
   }
 
   /* Items table */
-  .items-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .items-table { width: 100%; border-collapse: collapse; font-size:13px;font-weight:400; }
   .items-table th {
     text-align: left; padding: 5px 10px;
-    font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
-    color: var(--muted); font-weight: 600;
+    font-size:13px;
+    color: var(--muted); font-weight:600;
     border-bottom: 1px solid var(--border);
   }
   .items-table td { padding: 6px 10px; border-bottom: 1px solid rgba(0,0,0,.04); vertical-align: top; }
@@ -169,14 +170,14 @@
     background: var(--surface2); border: 1px solid var(--border);
     border-radius: 6px; padding: 8px 13px; min-width: 100px;
   }
-  .threshold-val { font-size: 15px; font-weight: 700; color: var(--text); }
-  .threshold-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .threshold-val { font-size:14px; font-weight:600; color: var(--text); }
+  .threshold-label { font-size:13px;font-weight:400; color: var(--muted); margin-top: 2px; }
   .threshold.green .threshold-val { color: var(--scored); }
   .threshold.amber .threshold-val { color: var(--partial); }
   .threshold.red   .threshold-val { color: var(--noscore); }
 
   ul.item-list { padding-left: 18px; }
-  ul.item-list li { margin-bottom: 4px; font-size: 13px; }
+  ul.item-list li { margin-bottom: 4px; font-size:13px;font-weight:400; }
 
   /* Scroll offset */
   .anchor { scroll-margin-top: 80px; }
@@ -188,14 +189,14 @@
     border: 1px solid rgba(13,122,109,.2);
     border-radius: 6px;
     padding: 10px 14px;
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     color: var(--text);
     margin-top: 10px;
   }
   .citation-block { border-top: 1px solid var(--border); margin-top: 18px; padding-top: 14px; }
   .citation-block .block-label { color: var(--teal); }
   .cite {
-    font-size: 13px;
+    font-size:13px;font-weight:400;
     color: var(--muted);
     line-height: 1.65;
     margin-bottom: 5px;
@@ -205,7 +206,26 @@
   .cite::before { content: '›'; position: absolute; left: 0; color: var(--teal); }
   .cite a { color: var(--teal); text-decoration: none; }
   .cite a:hover { text-decoration: underline; }
-  .cite em { font-style: italic; }
+  .cite em { }
+
+/* ── Type system: seven treatments, used everywhere on the site ──
+   1 Display        24/600 sans   page titles, big metrics
+   2 Heading        17/600 sans   card, dialog and section titles
+   3 Body           14/400 sans   interface text
+   4 Body strong    14/600 sans   buttons, labels, emphasis in body text
+   5 Caption        13/400 sans   meta, hints, footnotes
+   6 Caption strong 13/600 sans   tags, pills, counts, small labels
+   7 Reading        15/400 serif  the document being evaluated (studio only)
+   Rules: Inter for the interface; weights 400 and 600 only; no italics, uppercase or
+   letter-spacing. Bold and italic the author put in their own document stay as written. */
+b,strong{font-weight:600}
+em,i,cite,address,dfn{font-style:normal}
+small{font-size:inherit}
+h1{font-size:24px;font-weight:600}
+h2,h3{font-size:17px;font-weight:600}
+h4,h5,h6{font-size:14px;font-weight:600}
+button,input,select,textarea{font-family:inherit}
+body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif}
 </style>
 </head>
 <body>
@@ -453,7 +473,7 @@
           <div class="score-formula">Part 1 score: sum of Q1–8 (range 8–40)</div>
           <div class="score-formula">Part 2 score: sum of Q9–15 (range 7–35)</div>
           <div class="score-formula">Q16: standalone overall rating (1–5)</div>
-          <div style="margin-top:8px;font-size:13px;color:var(--muted)">No absolute threshold — use comparatively. Published benchmarks: peer-reviewed health leaflets average ~3.5–4/5 per question.</div>
+          <div style="margin-top:8px;font-size:13px;font-weight:400;color:var(--muted)">No absolute threshold — use comparatively. Published benchmarks: peer-reviewed health leaflets average ~3.5–4/5 per question.</div>
         </div>
       </div>
       <div class="block">
@@ -510,7 +530,7 @@
         <div class="block-label">Scoring formula</div>
         <div class="score-box">
           <div class="score-formula">Score % = (# Yes items / # applicable items) × 100</div>
-          <div style="margin-top:6px;font-size:13px;color:var(--muted)">Separate scores can be computed per section for diagnostic use.</div>
+          <div style="margin-top:6px;font-size:13px;font-weight:400;color:var(--muted)">Separate scores can be computed per section for diagnostic use.</div>
         </div>
       </div>
       <div class="block">
@@ -553,7 +573,7 @@
         <div class="block-label">Flesch Reading Ease</div>
         <div class="score-box">
           <div class="score-formula">FRE = 206.835 − (1.015 × ASL) − (84.6 × ASW)</div>
-          <div style="margin-top:6px;font-size:13px;color:var(--muted)">ASL = Average Sentence Length (words/sentence) · ASW = Average Syllables per Word</div>
+          <div style="margin-top:6px;font-size:13px;font-weight:400;color:var(--muted)">ASL = Average Sentence Length (words/sentence) · ASW = Average Syllables per Word</div>
           <div class="threshold-row">
             <div class="threshold green"><span class="threshold-val">60–70</span><span class="threshold-label">Standard / Plain</span></div>
             <div class="threshold amber"><span class="threshold-val">50–59</span><span class="threshold-label">Fairly Difficult</span></div>
@@ -576,7 +596,7 @@
         <div class="block-label">SMOG (Simple Measure of Gobbledygook)</div>
         <div class="score-box">
           <div class="score-formula">SMOG Grade = √(Polysyllabic word count × [30 / # sentences]) + 3</div>
-          <div style="margin-top:6px;font-size:13px;color:var(--muted)">Count polysyllabic words (3+ syllables) in 30 sentences (10 from start, 10 from middle, 10 from end). Most accurate when ≥30 sentences available.</div>
+          <div style="margin-top:6px;font-size:13px;font-weight:400;color:var(--muted)">Count polysyllabic words (3+ syllables) in 30 sentences (10 from start, 10 from middle, 10 from end). Most accurate when ≥30 sentences available.</div>
           <div class="threshold-row">
             <div class="threshold green"><span class="threshold-val">≤8</span><span class="threshold-label">Suitable (6th–8th grade)</span></div>
             <div class="threshold amber"><span class="threshold-val">9–10</span><span class="threshold-label">Review</span></div>
@@ -706,7 +726,7 @@
         <div class="score-box">
           <div class="score-formula">Raw total = Σ of 12 items (0–48 range)</div>
           <div class="score-formula">Rescaled: (Raw total / 48) × 100 → 0–100</div>
-          <div style="margin-top:6px;font-size:13px;color:var(--muted)">0 = behavior not observed; 1 = minimal attempt; 2 = notable effort; 3 = consistent behavior; 4 = fully applied, exemplary</div>
+          <div style="margin-top:6px;font-size:13px;font-weight:400;color:var(--muted)">0 = behavior not observed; 1 = minimal attempt; 2 = notable effort; 3 = consistent behavior; 4 = fully applied, exemplary</div>
         </div>
       </div>
       <div class="block">
@@ -857,7 +877,7 @@
       <div class="block">
         <div class="block-label">Decisional Conflict Scale (DCS) — the scoring companion</div>
         <div class="score-box">
-          <div style="margin-bottom:6px;font-size:13px;">16 items, each on a 5-point scale coded 0 (strongly agree) to 4 (strongly disagree). Item scores are summed, divided by 16 and multiplied by 25. A 10-item low-literacy version uses a different response format; see the OHRI user manual.</div>
+          <div style="margin-bottom:6px;font-size:13px;font-weight:400;">16 items, each on a 5-point scale coded 0 (strongly agree) to 4 (strongly disagree). Item scores are summed, divided by 16 and multiplied by 25. A 10-item low-literacy version uses a different response format; see the OHRI user manual.</div>
           <div class="score-formula">DCS Score = (sum of 16 items / 16) × 25 → range 0–100</div>
           <div class="threshold-row">
             <div class="threshold green"><span class="threshold-val">&lt;25</span><span class="threshold-label">Low conflict — decision supported</span></div>
@@ -1295,7 +1315,7 @@
         <div class="block-label">Scoring method</div>
         <div class="score-box">
           <div class="score-formula">Top-Box % = (# "Always" or "9–10" responses / total responses) × 100</div>
-          <div style="margin-top:6px;font-size:13px;color:var(--muted)">Publicly reported scores are case-mix adjusted to account for patient characteristics (age, health status, education, service line).</div>
+          <div style="margin-top:6px;font-size:13px;font-weight:400;color:var(--muted)">Publicly reported scores are case-mix adjusted to account for patient characteristics (age, health status, education, service line).</div>
         </div>
       </div>
       <div class="block">
@@ -1356,7 +1376,7 @@
             <div class="threshold amber"><span class="threshold-val">0–49</span><span class="threshold-label">Average to Good</span></div>
             <div class="threshold red"><span class="threshold-val">&lt;0</span><span class="threshold-label">Needs improvement</span></div>
           </div>
-          <div style="margin-top:8px;font-size:13px;color:var(--muted)">Healthcare sector benchmarks typically run 20–50. Compare within your own sector, not against general consumer benchmarks.</div>
+          <div style="margin-top:8px;font-size:13px;font-weight:400;color:var(--muted)">Healthcare sector benchmarks typically run 20–50. Compare within your own sector, not against general consumer benchmarks.</div>
         </div>
       </div>
       <div class="note-box">NPS is a directional indicator, not a diagnostic tool. A low NPS tells you there's a problem; it doesn't tell you where. Pair with open-ended "Why?" questions to make it actionable.</div>
