@@ -4,6 +4,28 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Resolve conflicts: merge `master` into PR #2
+
+Branch: `claude/inspiring-faraday-au7zm5` · Vercel: Preview (PR #2)
+
+PR #2 ("Align CCI/PEMAT/DCS with published instruments; simplify Studio UI") was branched
+before T1–T3, so it conflicted with `master` in `analysis-engine.js` and `index.html`.
+Resolved by keeping the PR's new UI and adding the T1–T3 frameworks to it:
+
+- **PEMAT pass mark:** kept `master`'s wording. AHRQ's User's Guide (Step 7) says "the higher
+  the score, the more understandable or actionable", and its Introduction and How-To pages
+  set no 70% cutoff (checked 2026-10-16). The card now says 70% or more is this tool's
+  *working target*. The PR's ≥70% comparison is kept.
+- **Frameworks list:** PEMAT-A/V, CDC IDD/ELL and CDC Inclusive Comms added to the PR's
+  in-app list, which goes from 20 to 23. Short descriptions were written in the PR's plain style.
+- **Brief:** the PR's simplified chips are kept. "Video / animation" and the IDD audience
+  still switch their frameworks on. The PR's "scoring modules in use count as selected"
+  rule is kept alongside.
+- **`FW_REG`:** kept the PR's hand-written plain-language notes and added the three new
+  entries. Note: `scripts/build-fw-reg.js --check` now reports 18 differences (the PR's
+  rewrites exist only in `index.html`, not the engine). Don't run the script without
+  `--check` until the engine notes are brought in line, or the rewrites will be lost.
+
 ## 2026-10-16 — Release to Production
 
 Branch: `master` · Vercel: Production

@@ -251,32 +251,51 @@
     <div class="fw-card-body">
       <div class="block">
         <div class="block-label">How it works</div>
-        <div class="block-content">20 binary (Yes/No) items across 5 domains. Each "Yes" = 1 point. Final score is a percentage of Yes answers. A score ≥90% (18+ items passing) is required to pass.</div>
+        <div class="block-content">20 items in 4 parts, each scored 0 or 1. Part A (Core, items 1–11) applies to every material. Parts B (Behavioral recommendations, 12–14), C (Numbers, 15–17) and D (Risk, 18–20) are scored only when the material contains that kind of content, and some items can be marked not applicable. Score a point only when every instance of an item in the material meets the criterion. The points are converted to a score out of 100; 100 is ideal and 90 or higher passes.</div>
       </div>
       <div class="block">
         <div class="block-label">Scoring formula</div>
         <div class="score-box">
-          <div class="score-formula">Score = (# of Yes items / 20) × 100</div>
+          <div class="score-formula">Score = (points earned / applicable items) × 100</div>
           <div class="threshold-row">
-            <div class="threshold green"><span class="threshold-val">≥90%</span><span class="threshold-label">Pass (18–20 items)</span></div>
-            <div class="threshold red"><span class="threshold-val">&lt;90%</span><span class="threshold-label">Fail — revise</span></div>
+            <div class="threshold green"><span class="threshold-val">≥90</span><span class="threshold-label">Pass</span></div>
+            <div class="threshold red"><span class="threshold-val">&lt;90</span><span class="threshold-label">Revise</span></div>
           </div>
         </div>
       </div>
       <div class="block">
-        <div class="block-label">The 5 domains &amp; items</div>
+        <div class="block-label">The 4 parts &amp; 20 items</div>
         <table class="items-table">
-          <thead><tr><th>Domain</th><th># Items</th><th>What it checks</th></tr></thead>
+          <thead><tr><th>#</th><th>Question (CDC score sheet, rev. July 2014)</th></tr></thead>
           <tbody>
-            <tr><td><strong>Main Message</strong></td><td>7</td><td>Is the main message stated, actionable, specific, and at the front? Is a call to action present?</td></tr>
-            <tr><td><strong>Language</strong></td><td>4</td><td>Active voice, everyday words, personal pronouns (you/your), short sentences (≤20 words avg)</td></tr>
-            <tr><td><strong>Information</strong></td><td>3</td><td>Behavioral recommendations have a reason; numbers presented in context; only essential info included</td></tr>
-            <tr><td><strong>Numbers</strong></td><td>3</td><td>Numbers meaningful to audience; fractions/percentages explained; numbers not overused</td></tr>
-            <tr><td><strong>Risk</strong></td><td>3</td><td>Both sides of risk shown; absolute vs. relative risk explained; baseline risk provided</td></tr>
+            <tr><td colspan="2"><strong>Part A · Core (applies to all materials)</strong></td></tr>
+            <tr><td>1</td><td>Does the material contain one main message statement?</td></tr>
+            <tr><td>2</td><td>Is the main message at the top, beginning, or front of the material?</td></tr>
+            <tr><td>3</td><td>Is the main message emphasized with visual cues?</td></tr>
+            <tr><td>4</td><td>Does the material contain at least one visual that conveys or supports the main message?</td></tr>
+            <tr><td>5</td><td>Does the material include one or more calls to action for the primary audience?</td></tr>
+            <tr><td>6</td><td>Do both the main message and the call to action use the active voice?</td></tr>
+            <tr><td>7</td><td>Does the material always use words the primary audience uses?</td></tr>
+            <tr><td>8</td><td>Does the material use bulleted or numbered lists?</td></tr>
+            <tr><td>9</td><td>Is the material organized in chunks with headings?</td></tr>
+            <tr><td>10</td><td>Is the most important information the primary audience needs summarized in the first paragraph or section?</td></tr>
+            <tr><td>11</td><td>Does the material explain what authoritative sources, such as subject matter experts and agency spokespersons, know and don't know about the topic?</td></tr>
+            <tr><td colspan="2"><strong>Part B · Behavioral recommendations</strong></td></tr>
+            <tr><td>12</td><td>Does the material include one or more behavioral recommendations for the primary audience?</td></tr>
+            <tr><td>13</td><td>Does the material explain why the behavioral recommendation(s) is important to the primary audience?</td></tr>
+            <tr><td>14</td><td>Does the behavioral recommendation(s) include specific directions about how to perform the behavior?</td></tr>
+            <tr><td colspan="2"><strong>Part C · Numbers</strong></td></tr>
+            <tr><td>15</td><td>Does the material always present numbers the primary audience uses?</td></tr>
+            <tr><td>16</td><td>Does the material always explain what the numbers mean?</td></tr>
+            <tr><td>17</td><td>Does the audience have to conduct mathematical calculations? <em>(a "no" earns the point)</em></td></tr>
+            <tr><td colspan="2"><strong>Part D · Risk</strong></td></tr>
+            <tr><td>18</td><td>Does the material explain the nature of the risk?</td></tr>
+            <tr><td>19</td><td>Does the material address both the risks and benefits of the recommended behaviors?</td></tr>
+            <tr><td>20</td><td>If the material uses numeric probability to describe risk, is the probability also explained with words or a visual?</td></tr>
           </tbody>
         </table>
       </div>
-      <div class="note-box">Items 1–7 (main message) carry the most weight in practice — if those fail, the piece rarely passes. CCI does not distinguish severity of failure; every item counts equally.</div>
+      <div class="note-box">Every item counts equally. A modified 13-item score sheet exists for short-form and oral materials; it uses different item numbering.</div>
       <div class="block citation-block">
         <div class="block-label">Sources</div>
         <p class="cite">Centers for Disease Control and Prevention. (2019). <em>CDC Clear Communication Index: A Tool for Developing and Assessing CDC Public Communication Products</em>. U.S. Department of Health and Human Services. <a href="https://www.cdc.gov/ccindex/" target="_blank">cdc.gov/ccindex</a></p>
@@ -300,7 +319,7 @@
     <div class="fw-card-body">
       <div class="block">
         <div class="block-label">How it works</div>
-        <div class="block-content">PEMAT produces <strong>two separate scores</strong> — Understandability and Actionability — never combined. Two versions exist: PEMAT-P (print) and PEMAT-A/V (audiovisual). Items rated Agree (1), Disagree (0), or N/A (excluded from denominator).</div>
+        <div class="block-content">PEMAT produces <strong>two separate scores</strong> — Understandability and Actionability — never combined. Two versions exist: PEMAT-P for printable materials (17 understandability + 7 actionability items) and PEMAT-A/V for audiovisual materials (13 + 4). Items are rated Agree (1) or Disagree (0); some items allow N/A, which is excluded from the denominator. Item numbers are shared across both versions, which is why PEMAT-P skips 13–14 (audiovisual only).</div>
       </div>
       <div class="block">
         <div class="block-label">Scoring formula</div>
@@ -308,35 +327,49 @@
           <div class="score-formula">Understandability % = (Σ agrees on U items / # applicable U items) × 100</div>
           <div class="score-formula">Actionability % = (Σ agrees on A items / # applicable A items) × 100</div>
           <div class="threshold-row">
-            <div class="threshold green"><span class="threshold-val">&gt;70%</span><span class="threshold-label">Both scores must exceed this</span></div>
+            <div class="threshold green"><span class="threshold-val">≥70%</span><span class="threshold-label">Developers' cut-off, applied to each score separately</span></div>
           </div>
         </div>
       </div>
       <div class="block">
         <div class="block-label">Understandability items (PEMAT-P — 17 items)</div>
         <table class="items-table">
-          <thead><tr><th>Category</th><th># Items</th><th>Checks</th></tr></thead>
+          <thead><tr><th>#</th><th>Topic</th><th>Item</th></tr></thead>
           <tbody>
-            <tr><td>Content</td><td>4</td><td>Main message clear; not overloaded; accurate; required reading level (≤8th grade)</td></tr>
-            <tr><td>Word Choice &amp; Language</td><td>2</td><td>Common everyday words; acronyms defined</td></tr>
-            <tr><td>Use of Numbers</td><td>4</td><td>Numbers communicated clearly; fractions/percentages explained; visual representations used</td></tr>
-            <tr><td>Organization</td><td>2</td><td>Logical flow; summary or conclusion present</td></tr>
-            <tr><td>Layout &amp; Design</td><td>3</td><td>Visual supports comprehension; tables clear; no distracting clutter</td></tr>
-            <tr><td>Use of Visuals</td><td>2</td><td>Images/charts reinforce rather than conflict with text</td></tr>
+            <tr><td>1</td><td>Content</td><td>The material makes its purpose completely evident.</td></tr>
+            <tr><td>2</td><td>Content</td><td>The material does not include information or content that distracts from its purpose.</td></tr>
+            <tr><td>3</td><td>Word choice &amp; style</td><td>The material uses common, everyday language.</td></tr>
+            <tr><td>4</td><td>Word choice &amp; style</td><td>Medical terms are used only to familiarize audience with the terms. When used, medical terms are defined.</td></tr>
+            <tr><td>5</td><td>Word choice &amp; style</td><td>The material uses the active voice.</td></tr>
+            <tr><td>6</td><td>Use of numbers</td><td>Numbers appearing in the material are clear and easy to understand. <em>(N/A if no numbers)</em></td></tr>
+            <tr><td>7</td><td>Use of numbers</td><td>The material does not expect the user to perform calculations.</td></tr>
+            <tr><td>8</td><td>Organization</td><td>The material breaks or "chunks" information into short sections. <em>(N/A for very short material)</em></td></tr>
+            <tr><td>9</td><td>Organization</td><td>The material's sections have informative headers. <em>(N/A for very short material)</em></td></tr>
+            <tr><td>10</td><td>Organization</td><td>The material presents information in a logical sequence.</td></tr>
+            <tr><td>11</td><td>Organization</td><td>The material provides a summary. <em>(N/A for very short material)</em></td></tr>
+            <tr><td>12</td><td>Layout &amp; design</td><td>The material uses visual cues (e.g., arrows, boxes, bullets, bold, larger font, highlighting) to draw attention to key points.</td></tr>
+            <tr><td>15</td><td>Use of visual aids</td><td>The material uses visual aids whenever they could make content more easily understood.</td></tr>
+            <tr><td>16</td><td>Use of visual aids</td><td>The material's visual aids reinforce rather than distract from the content. <em>(N/A if no visual aids)</em></td></tr>
+            <tr><td>17</td><td>Use of visual aids</td><td>The material's visual aids have clear titles or captions. <em>(N/A if no visual aids)</em></td></tr>
+            <tr><td>18</td><td>Use of visual aids</td><td>The material uses illustrations and photographs that are clear and uncluttered. <em>(N/A if no visual aids)</em></td></tr>
+            <tr><td>19</td><td>Use of visual aids</td><td>The material uses simple tables with short and clear row and column headings. <em>(N/A if no tables)</em></td></tr>
           </tbody>
         </table>
       </div>
       <div class="block">
         <div class="block-label">Actionability items (PEMAT-P — 7 items)</div>
-        <ul class="item-list">
-          <li>Explicit statement of what the reader should do</li>
-          <li>Action steps are doable (not vague)</li>
-          <li>Tools or aids provided to help take action (e.g., tracking sheet, checklist)</li>
-          <li>Patient can identify next step from the material</li>
-          <li>Contact information or referral path provided</li>
-          <li>Visual representation of steps (where applicable)</li>
-          <li>Timing for action specified</li>
-        </ul>
+        <table class="items-table">
+          <thead><tr><th>#</th><th>Item</th></tr></thead>
+          <tbody>
+            <tr><td>20</td><td>The material clearly identifies at least one action the user can take.</td></tr>
+            <tr><td>21</td><td>The material addresses the user directly when describing actions.</td></tr>
+            <tr><td>22</td><td>The material breaks down any action into manageable, explicit steps.</td></tr>
+            <tr><td>23</td><td>The material provides a tangible tool (e.g., menu planners, checklists) whenever it could help the user take action.</td></tr>
+            <tr><td>24</td><td>The material provides simple instructions or examples of how to perform calculations. <em>(N/A if no calculations)</em></td></tr>
+            <tr><td>25</td><td>The material explains how to use the charts, graphs, tables, or diagrams to take actions. <em>(N/A if none)</em></td></tr>
+            <tr><td>26</td><td>The material uses visual aids whenever they could make it easier to act on the instructions.</td></tr>
+          </tbody>
+        </table>
       </div>
       <div class="block citation-block">
         <div class="block-label">Sources</div>
@@ -824,8 +857,8 @@
       <div class="block">
         <div class="block-label">Decisional Conflict Scale (DCS) — the scoring companion</div>
         <div class="score-box">
-          <div style="margin-bottom:6px;font-size:13px;">16 items (or 10-item low-literacy version), 5-point Likert (0 = strongly agree, 4 = strongly disagree). Items reversed and summed.</div>
-          <div class="score-formula">DCS Score = (sum / 64) × 25 → range 0–100</div>
+          <div style="margin-bottom:6px;font-size:13px;">16 items, each on a 5-point scale coded 0 (strongly agree) to 4 (strongly disagree). Item scores are summed, divided by 16 and multiplied by 25. A 10-item low-literacy version uses a different response format; see the OHRI user manual.</div>
+          <div class="score-formula">DCS Score = (sum of 16 items / 16) × 25 → range 0–100</div>
           <div class="threshold-row">
             <div class="threshold green"><span class="threshold-val">&lt;25</span><span class="threshold-label">Low conflict — decision supported</span></div>
             <div class="threshold amber"><span class="threshold-val">25–37.4</span><span class="threshold-label">Moderate conflict</span></div>

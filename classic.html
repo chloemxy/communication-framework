@@ -1643,6 +1643,13 @@ body.left-collapsed .left-edge-tab svg { transform: rotate(0deg); } /* points ri
 .az-pass-status.fail { color:#b91c1c; }
 .az-check-tag.auto-pass { background:#d4f5e2;color:#14713e; }
 .az-check-tag.auto-fail { background:#fde8e8;color:#b91c1c; }
+.az-part-hdr { display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--n500);margin:12px 0 6px;padding-bottom:3px;border-bottom:1px solid var(--n200); }
+.az-part-hdr:first-child { margin-top:2px; }
+.az-part-na { margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;letter-spacing:0;text-transform:none;cursor:pointer; }
+.az-item-n { color:var(--n400);font-variant-numeric:tabular-nums; }
+.az-check-item.az-na label { color:var(--n400);text-decoration:line-through;text-decoration-color:var(--n300); }
+.az-na-btn { flex-shrink:0;margin-left:auto;border:1px solid var(--n300);background:#fff;border-radius:4px;font-size:10px;font-weight:700;color:var(--n500);padding:0 6px;cursor:pointer;line-height:18px; }
+.az-na-btn.on { background:var(--n200);color:var(--n700); }
 .az-fix-tips { margin-top:10px;border-top:1px solid var(--n200);padding-top:8px; }
 .az-fix-tips-hdr { font-size:12px;font-weight:700;color:var(--n700);margin-bottom:6px; }
 .az-fix-tips ul { margin:0 0 0 16px;padding:0; }
@@ -2173,11 +2180,11 @@ body.left-collapsed .left-edge-tab svg { transform: rotate(0deg); } /* points ri
       <div class="scoring-col az-section" id="az-section-cci">
         <div class="scoring-col-hdr">
           <span class="scoring-col-title">CDC Clear Communication Index</span>
-          <div id="cci-score-pill" class="az-score-pill az-score-empty">—/20</div>
+          <div id="cci-score-pill" class="az-score-pill az-score-empty">—</div>
         </div>
         <div id="cci-body" style="overflow-y:auto;flex:1">
           <div class="az-pass-banner">
-            <span>Pass mark: <strong>18/20 (90%)</strong>. <span class="az-check-tag">AUTO</span> items are checked from the document automatically — review the rest yourself.</span>
+            <span>Pass mark: <strong>90 or higher</strong> (points ÷ applicable items × 100). Parts B–D count only when the material has recommendations, numbers or risk. <span class="az-check-tag">AUTO</span> items are checked from the document — review the rest yourself.</span>
             <span id="cci-pass-status" class="az-pass-status"></span>
           </div>
           <div id="cci-checklist" class="az-checklist"></div>
@@ -2192,10 +2199,10 @@ body.left-collapsed .left-edge-tab svg { transform: rotate(0deg); } /* points ri
         </div>
         <div id="pemat-body" style="overflow-y:auto;flex:1">
           <div class="az-pass-banner">
-            <span>Target: <strong>&gt;70%</strong> on both Understandability and Actionability.</span>
+            <span>Target: <strong>70% or higher</strong> on both Understandability and Actionability. N/A items are left out of the score.</span>
             <span id="pemat-pass-status" class="az-pass-status"></span>
           </div>
-          <div style="font-size:12px;font-weight:600;color:var(--n600);margin:8px 0 4px">Understandability (13 items)</div>
+          <div style="font-size:12px;font-weight:600;color:var(--n600);margin:8px 0 4px">Understandability (17 items)</div>
           <div id="pemat-u-checklist" class="az-checklist"></div>
           <div style="font-size:12px;font-weight:600;color:var(--n600);margin:10px 0 4px">Actionability (7 items)</div>
           <div id="pemat-a-checklist" class="az-checklist"></div>
@@ -2833,7 +2840,8 @@ function removeDoc(e, id){
 
 // ── Clear all framework scores + highlights (called when no document is open) ──
 function clearAnalysis(){
-  cciState = {}; pematUState = {}; pematAState = {};
+  cciState = {}; pematUState = {}; pematAState = {}; checklistNA = {};
+  Object.keys(cciPartNA).forEach(k => cciPartNA[k] = null);
   if(typeof lastReadabilityStats !== 'undefined') lastReadabilityStats = null;
   const rd = document.getElementById('az-readability');
   if(rd) rd.innerHTML = '<div class="az-note">Upload a text-based document to see readability scores.</div>';
@@ -2842,7 +2850,7 @@ function clearAnalysis(){
   const cl = document.getElementById('cci-checklist');
   if(cl) cl.innerHTML = '';
   const cp = document.getElementById('cci-score-pill');
-  if(cp){ cp.textContent = '—/20'; cp.className = 'az-score-pill az-score-empty'; }
+  if(cp){ cp.textContent = '—'; cp.className = 'az-score-pill az-score-empty'; }
   const cs = document.getElementById('cci-pass-status');
   if(cs) cs.textContent = '';
   ['pemat-u-checklist','pemat-a-checklist'].forEach(id => {
@@ -3049,146 +3057,134 @@ document.addEventListener('click', e => {
 
 // ══ FRAMEWORK ANALYSIS ENGINE ══
 
-// ── CCI: 20 items, marking which are auto-detectable ──
+// ── CCI: CDC Clear Communication Index score sheet (rev. July 2014) — 20 items in 4 parts ──
+// Parts B–D are scored only when the material has that content. Score = points ÷ applicable items × 100; 90+ passes.
+// auto  → decided from the document when detectable · gate → auto-fails when a prerequisite is missing,
+// otherwise the reviewer decides · na → reviewer can mark not applicable · naIf → N/A when the flag is true
+const CCI_PARTS = {
+  A:{ label:'Part A · Core questions', optional:false },
+  B:{ label:'Part B · Behavioral recommendations', optional:true, hint:'Only if the material includes one or more behavioral recommendations.' },
+  C:{ label:'Part C · Numbers', optional:true, hint:'Only if the material includes numbers.' },
+  D:{ label:'Part D · Risk', optional:true, hint:'Only if the material includes information about risk.' },
+};
 const CCI_ITEMS = [
-  { id:'c1',  text:'The main message is stated in the first paragraph or first 10% of the document.', auto:false,
-    why:'Primacy effect: readers retain the first idea encountered most reliably. CDC CCI Item 1.' },
-  { id:'c2',  text:'The main message is limited to one recommendation or behaviour.', auto:false,
-    why:'Cognitive load research (Sweller, 1988): multiple simultaneous messages reduce recall of each one.' },
-  { id:'c3',  text:'Numbers are expressed in plain language (e.g. "1 in 10" not "10%").', auto:false,
-    why:'Schwartz et al. (1997): natural frequencies (1-in-10) improve risk comprehension vs. percentages, especially for lower-numeracy readers.' },
-  { id:'c4',  text:'The document uses active voice.', auto:true, autoKey:'activeVoice',
-    why:'Auto-detected by scanning for passive constructions (is/was/were/been + past participle). Active voice reduces sentence processing time and is consistently associated with higher comprehension scores (Redish, 2012).' },
-  { id:'c5',  text:'Sentences average ≤15 words.', auto:true, autoKey:'sentLen',
-    why:'Auto-detected from FK formula. Klare (1974–1976) meta-analysis: sentence length is the single strongest predictor of readability across all formulas.' },
-  { id:'c6',  text:'Common words are used (no jargon or technical terms without definition).', auto:false,
-    why:'Davis et al. (2002): patients misunderstand ~50% of medical terms even after verbal explanation from a clinician.' },
-  { id:'c7',  text:'Abbreviations and acronyms are defined on first use.', auto:false,
-    why:'Wolf et al. (2007): undefined abbreviations are a top driver of medication errors in patient-facing materials.' },
-  { id:'c8',  text:'The reading level is ≤6th grade (lay) or ≤8th grade (general public).', auto:true, autoKey:'grade',
-    why:'Auto-detected via FK Grade Level. NCI Pink Book (2002) and Doak et al. (1996) recommend grade 5–6 for lay audiences; AMA/AHA guidance sets ≤6th grade for most patient materials.' },
-  { id:'c9',  text:'At least one visual is included.', auto:true, autoKey:'hasImages',
-    why:'Auto-detected from &lt;img&gt; tags. Houts et al. (2006) systematic review: visuals paired with text improve recall by 89% vs. text alone for low-literacy populations.' },
-  { id:'c10', text:'The visual directly supports the text message.', auto:false,
-    why:'Mayer\'s multimedia learning principle (2001): redundant visuals that do not map to the message increase extraneous cognitive load.' },
-  { id:'c11', text:'The visual has a short caption or title.', auto:false,
-    why:'Captions anchor interpretation — without them, patients with low health literacy often misread clinical images (Katz et al., 2006).' },
-  { id:'c12', text:'The document avoids overwhelming the reader (≤3 key points per page).', auto:false,
-    why:'Miller\'s Law (1956): working memory holds 7±2 items; health communication literature narrows this to ≤3 for anxious or low-literacy readers.' },
-  { id:'c13', text:'Key information is highlighted (bold, colour, or call-out box).', auto:true, autoKey:'hasBold',
-    why:'Auto-detected from &lt;strong&gt;/&lt;b&gt; tags. Ley (1988) compliance model: salience of key information is independently associated with patient recall and adherence.' },
-  { id:'c14', text:'A list or table is used to organise multi-item information.', auto:true, autoKey:'hasList',
-    why:'Auto-detected from &lt;ul&gt;/&lt;ol&gt; elements. Klare (1976): chunked lists improve recall 40% vs. prose for equivalent content.' },
-  { id:'c15', text:'The document uses headers or sections to organise content.', auto:true, autoKey:'hasHeaders',
-    why:'Auto-detected from heading tags. Meyer &amp; Rice (1989): hierarchical text structure significantly improves comprehension, especially for older and low-literacy readers.' },
-  { id:'c16', text:'White space is used to reduce clutter.', auto:false,
-    why:'Tinker (1963) legibility research: adequate line spacing and margins reduce visual fatigue and increase reading speed by up to 20%.' },
-  { id:'c17', text:'The document states a specific behaviour the audience should perform.', auto:false,
-    why:'Without a clear call to action, readers default to inaction — Cialdini\'s principle of commitment requires a concrete first step be identified.' },
-  { id:'c18', text:'Instructions tell the reader exactly what to do (action steps).', auto:false,
-    why:'Vague instructions ("eat well", "exercise") are ineffective; implementation intentions with specific actions significantly increase follow-through (Gollwitzer, 1999).' },
-  { id:'c19', text:'The document identifies who should perform the action.', auto:false,
-    why:'Diffusion of responsibility (Darley &amp; Latané, 1968): without a named actor, readers assume someone else will act. Health communications must specify the agent.' },
-  { id:'c20', text:'Risk or benefit information is presented in a balanced way.', auto:false,
-    why:'One-sided framing is a documented driver of distrust and non-adherence (O\'Keefe, 1999). IPDAS requires balanced presentation for decision aids.' },
+  { id:'c1',  n:1,  part:'A', text:'The material contains one main message statement.',
+    why:'If there are several messages and no obvious main one, answer no.' },
+  { id:'c2',  n:2,  part:'A', text:'The main message is at the top, beginning, or front of the material.',
+    why:'For a single printed page, the main message should be in the top fourth.' },
+  { id:'c3',  n:3,  part:'A', text:'The main message is emphasized with visual cues.', gate:'hasBold',
+    why:'Bold, larger type, colour, a box or similar. Auto-fails if no emphasis markup is found.' },
+  { id:'c4',  n:4,  part:'A', text:'The material contains at least one visual that conveys or supports the main message.', gate:'hasImages',
+    why:'Auto-fails if the document has no images; otherwise judge whether the visual supports the main message.' },
+  { id:'c5',  n:5,  part:'A', text:'The material includes one or more calls to action for the primary audience.',
+    why:'A behavioral recommendation, a prompt to get more information, a request to share information, or a call for program or policy change all count.' },
+  { id:'c6',  n:6,  part:'A', text:'Both the main message and the call to action use the active voice.' },
+  { id:'c7',  n:7,  part:'A', text:'The material always uses words the primary audience uses.', gate:'noJargon',
+    why:'Unfamiliar terms must be explained and acronyms spelled out. Auto-fails if common medical jargon is found.' },
+  { id:'c8',  n:8,  part:'A', text:'The material uses bulleted or numbered lists.', auto:true, autoKey:'hasList',
+    why:'Lists of more than seven items should be broken into sub-lists.' },
+  { id:'c9',  n:9,  part:'A', text:'The material is organized in chunks with headings.', gate:'hasHeaders',
+    why:'Answer no if a chunk holds more than one idea or headings don\'t match their content.' },
+  { id:'c10', n:10, part:'A', text:'The most important information the primary audience needs is summarized in the first paragraph or section.',
+    why:'The summary must include the main message.' },
+  { id:'c11', n:11, part:'A', text:'The material explains what authoritative sources, such as subject matter experts and agency spokespersons, know and don\'t know about the topic.' },
+  { id:'c12', n:12, part:'B', text:'The material includes one or more behavioral recommendations for the primary audience.' },
+  { id:'c13', n:13, part:'B', text:'The material explains why the behavioral recommendation(s) is important to the primary audience.',
+    why:'Numbers alone, with no other relevant information for the audience, do not count.' },
+  { id:'c14', n:14, part:'B', text:'The behavioral recommendation(s) includes specific directions about how to perform the behavior.',
+    why:'Step-by-step directions or a simple description; be specific about how often or how long.' },
+  { id:'c15', n:15, part:'C', text:'The material always presents numbers the primary audience uses.' },
+  { id:'c16', n:16, part:'C', text:'The material always explains what the numbers mean.' },
+  { id:'c17', n:17, part:'C', text:'The audience does not have to conduct mathematical calculations.',
+    why:'The score sheet asks "Does the audience have to conduct mathematical calculations?" — a "no" earns the point.' },
+  { id:'c18', n:18, part:'D', text:'The material explains the nature of the risk.' },
+  { id:'c19', n:19, part:'D', text:'The material addresses both the risks and benefits of the recommended behaviors.', na:true },
+  { id:'c20', n:20, part:'D', text:'If the material uses numeric probability to describe risk, the probability is also explained with words or a visual.', na:true },
 ];
 
-// ── PEMAT Understandability (13) + Actionability (7) ──
+// ── PEMAT-P (AHRQ, v1.0): Understandability items 1–12 and 15–19 (17), Actionability items 20–26 (7) ──
+// Items 13–14 belong to the audiovisual version only. N/A items are excluded; the developers' cut-off is 70%.
 const PEMAT_U_ITEMS = [
-  { id:'pu1',  text:'The material uses common, everyday language.',
-    why:'Everyday language is the single strongest predictor of patient comprehension across literacy levels (Shoemaker et al., 2014).' },
-  { id:'pu2',  text:'Medical terms are used only when needed and are defined.',
-    why:'Davis et al. (2002): patients misunderstand ~50% of medical terms even after verbal explanation.' },
-  { id:'pu3',  text:'Sentences are short (≤20 words on average).', auto:true, autoKey:'sentLen20',
-    why:'Auto-detected from average sentence length. Klare (1974): sentence length is the strongest mechanical predictor of text difficulty across all validated readability formulas.' },
-  { id:'pu4',  text:'The material does not include unnecessary information.',
-    why:'Mayer (2001) coherence principle: extraneous content actively disrupts learning by consuming working-memory capacity.' },
-  { id:'pu5',  text:'Numbers appearing in the material are easy to understand.',
-    why:'Reyna et al. (2009): low numeracy affects 50%+ of US adults; numeric presentation format directly influences health decisions.' },
-  { id:'pu6',  text:'When large numbers are used, they are put into context.',
-    why:'Schwartz et al. (1997): contextualised frequencies ("1 in 1,000") improve comprehension vs. bare statistics for low-numeracy readers.' },
-  { id:'pu7',  text:'The material does not expect the reader to perform calculations.',
-    why:'Patient calculation errors are common even in educated populations; calculations should be pre-solved or visually presented (Apter et al., 2006).' },
-  { id:'pu8',  text:'The material is well-organised with an obvious topic or purpose.',
-    why:'Schema theory (Bartlett, 1932): readers comprehend and retain material better when it matches expected organisational structures.' },
-  { id:'pu9',  text:'The material uses headers, bullets, or numbered lists to group similar information.', auto:true, autoKey:'hasStructure',
-    why:'Auto-detected from heading and list tags. Meyer &amp; Rice (1989): hierarchical structure improves comprehension across all literacy levels; effect is largest for low-literacy readers.' },
-  { id:'pu10', text:'The most important information stands out (bold, boxes, call-outs).', auto:true, autoKey:'hasBold',
-    why:'Auto-detected from &lt;strong&gt;/&lt;b&gt; tags. Ley (1988) compliance model: salience of key information independently predicts patient recall and adherence at 6-month follow-up.' },
-  { id:'pu11', text:'The material includes a summary of key points.',
-    why:'Primacy and recency effects: readers best recall items presented first and last; a summary exploits both effects simultaneously.' },
-  { id:'pu12', text:'Visuals support the written content (when used).', auto:true, autoKey:'hasImages',
-    why:'Auto-detected from &lt;img&gt; tags. Houts et al. (2006) meta-analysis: visuals paired with text improve recall by 89% vs. text alone for patients with low literacy.' },
-  { id:'pu13', text:'The material avoids using medical images or diagrams without explanation.',
-    why:'Katz et al. (2006): unexplained clinical images are frequently misinterpreted; captions are required for accurate comprehension.' },
+  { id:'pu1',  n:1,  text:'The material makes its purpose completely evident.' },
+  { id:'pu2',  n:2,  text:'The material does not include information or content that distracts from its purpose.' },
+  { id:'pu3',  n:3,  text:'The material uses common, everyday language.' },
+  { id:'pu4',  n:4,  text:'Medical terms are used only to familiarize audience with the terms. When used, medical terms are defined.', gate:'noJargon',
+    why:'Auto-fails if common medical jargon is found; otherwise check that any medical terms are defined.' },
+  { id:'pu5',  n:5,  text:'The material uses the active voice.', auto:true, autoKey:'activeVoice',
+    why:'Auto-detected: passes when fewer than 1 in 4 sentences contain a passive construction.' },
+  { id:'pu6',  n:6,  text:'Numbers appearing in the material are clear and easy to understand.', na:true, naIf:'noNumbers' },
+  { id:'pu7',  n:7,  text:'The material does not expect the user to perform calculations.' },
+  { id:'pu8',  n:8,  text:'The material breaks or "chunks" information into short sections.', na:true, gate:'hasStructure',
+    why:'N/A for very short material.' },
+  { id:'pu9',  n:9,  text:'The material\'s sections have informative headers.', na:true, gate:'hasHeaders',
+    why:'N/A for very short material.' },
+  { id:'pu10', n:10, text:'The material presents information in a logical sequence.' },
+  { id:'pu11', n:11, text:'The material provides a summary.', na:true,
+    why:'N/A for very short material.' },
+  { id:'pu12', n:12, text:'The material uses visual cues (e.g., arrows, boxes, bullets, bold, larger font, highlighting) to draw attention to key points.', auto:true, autoKey:'hasCues' },
+  { id:'pu15', n:15, text:'The material uses visual aids whenever they could make content more easily understood.' },
+  { id:'pu16', n:16, text:'The material\'s visual aids reinforce rather than distract from the content.', na:true, naIf:'noVisuals' },
+  { id:'pu17', n:17, text:'The material\'s visual aids have clear titles or captions.', na:true, naIf:'noVisuals' },
+  { id:'pu18', n:18, text:'The material uses illustrations and photographs that are clear and uncluttered.', na:true, naIf:'noVisuals' },
+  { id:'pu19', n:19, text:'The material uses simple tables with short and clear row and column headings.', na:true, naIf:'noTables' },
 ];
 const PEMAT_A_ITEMS = [
-  { id:'pa1', text:'The material clearly identifies at least one action the reader should take.',
-    why:'Without a concrete call to action, readers default to inaction regardless of comprehension (Gollwitzer, 1999).' },
-  { id:'pa2', text:'Action steps are presented in a numbered or bulleted list.', auto:true, autoKey:'hasList',
-    why:'Auto-detected from &lt;ul&gt;/&lt;ol&gt; tags. Sequential numbered lists signal procedural intent and reduce errors in multi-step health tasks (Morrow et al., 1998).' },
-  { id:'pa3', text:'The material addresses barriers the reader may face in taking action.',
-    why:'COM-B model (Michie et al., 2011): perceived opportunity and capability barriers, if unaddressed, block behaviour change even with high motivation.' },
-  { id:'pa4', text:'The material provides tools (e.g. checklists, tracking sheets) to help the reader take action.',
-    why:'Implementation intentions with concrete planning tools increase action uptake by 28% (Gollwitzer &amp; Sheeran, 2006 meta-analysis).' },
-  { id:'pa5', text:'The material tells the reader what to do if a problem or exception occurs.',
-    why:'If-then planning (coping intentions) doubles the effect of implementation intentions alone on health behaviour follow-through (Sniehotta et al., 2005).' },
-  { id:'pa6', text:'The material tells the reader who to contact with questions or for help.', auto:true, autoKey:'hasContact',
-    why:'Auto-detected by scanning for phone numbers, email addresses, or contact keywords. Perceived social support and clear escalation paths are independent predictors of adherence to health recommendations (DiMatteo, 2004).' },
-  { id:'pa7', text:'The material provides enough information to help the reader take the next step.',
-    why:'Information sufficiency — providing just enough to act without overwhelming — is the threshold distinguishing actionable from inert patient education (Shoemaker et al., 2014).' },
+  { id:'pa20', n:20, text:'The material clearly identifies at least one action the user can take.' },
+  { id:'pa21', n:21, text:'The material addresses the user directly when describing actions.', gate:'hasYou',
+    why:'Auto-fails if the reader is never addressed as "you".' },
+  { id:'pa22', n:22, text:'The material breaks down any action into manageable, explicit steps.' },
+  { id:'pa23', n:23, text:'The material provides a tangible tool (e.g., menu planners, checklists) whenever it could help the user take action.' },
+  { id:'pa24', n:24, text:'The material provides simple instructions or examples of how to perform calculations.', na:true },
+  { id:'pa25', n:25, text:'The material explains how to use the charts, graphs, tables, or diagrams to take actions.', na:true, naIf:'noVisualsOrTables' },
+  { id:'pa26', n:26, text:'The material uses visual aids whenever they could make it easier to act on the instructions.' },
+];
+const CCI_PASS = 90, PEMAT_PASS = 70;
+
+// ── Cross-framework convergence themes ──
+// Themes where CCI and PEMAT items ask about the same thing; a theme fires when both have a failing item.
+const CONVERGENCE_THEMES = [
+  { theme: 'Everyday language',
+    checks: [
+      { source: 'CCI',   ids: ['c7'] },
+      { source: 'PEMAT', ids: ['pu3','pu4'] },
+    ]
+  },
+  { theme: 'Visual support',
+    checks: [
+      { source: 'CCI',   ids: ['c4'] },
+      { source: 'PEMAT', ids: ['pu15','pu16'] },
+    ]
+  },
+  { theme: 'Call to action',
+    checks: [
+      { source: 'CCI',   ids: ['c5','c14'] },
+      { source: 'PEMAT', ids: ['pa20','pa22'] },
+    ]
+  },
+  { theme: 'Structure & organisation',
+    checks: [
+      { source: 'CCI',   ids: ['c8','c9'] },
+      { source: 'PEMAT', ids: ['pu8','pu9'] },
+    ]
+  },
+  { theme: 'Key info highlighted',
+    checks: [
+      { source: 'CCI',   ids: ['c3'] },
+      { source: 'PEMAT', ids: ['pu12'] },
+    ]
+  },
+  { theme: 'Numbers',
+    checks: [
+      { source: 'CCI',   ids: ['c15','c17'] },
+      { source: 'PEMAT', ids: ['pu6','pu7'] },
+    ]
+  },
 ];
 
 // ── Stack health state ──
 let currentStackKey = null;
 let lastReadabilityStats = null;
 
-// ── Cross-framework convergence themes ──
-// A theme fires when ≥2 sources each have at least one failing item.
-const CONVERGENCE_THEMES = [
-  { theme: 'Plain language & reading level',
-    checks: [
-      { source: 'CCI',   ids: ['c6','c8'] },
-      { source: 'PEMAT', ids: ['pu1','pu2','pu3'] },
-    ]
-  },
-  { theme: 'Visual support',
-    checks: [
-      { source: 'CCI',   ids: ['c9','c10','c11'] },
-      { source: 'PEMAT', ids: ['pu12','pu13'] },
-    ]
-  },
-  { theme: 'Call to action',
-    checks: [
-      { source: 'CCI',   ids: ['c17','c18'] },
-      { source: 'PEMAT', ids: ['pa1','pa2'] },
-    ]
-  },
-  { theme: 'Structure & organisation',
-    checks: [
-      { source: 'CCI',   ids: ['c14','c15'] },
-      { source: 'PEMAT', ids: ['pu9'] },
-    ]
-  },
-  { theme: 'Key info highlighted',
-    checks: [
-      { source: 'CCI',   ids: ['c13'] },
-      { source: 'PEMAT', ids: ['pu10'] },
-    ]
-  },
-  { theme: 'Information density',
-    checks: [
-      { source: 'CCI',   ids: ['c12'] },
-      { source: 'PEMAT', ids: ['pu4'] },
-    ]
-  },
-  { theme: 'Numbers & risk',
-    checks: [
-      { source: 'CCI',   ids: ['c3'] },
-      { source: 'PEMAT', ids: ['pu5','pu6'] },
-    ]
-  },
-];
 
 // Which frameworks are scoreable in the Analyze pane, per stack
 const STACK_SCORE_CONFIG = {
@@ -3223,7 +3219,7 @@ const AZ_STACKS = {
   audit: {
     label: 'Content Audit / QA',
     tools: ['PEMAT', 'SAM', 'CCI', 'Readability (FK)'],
-    bench: 'PEMAT >70% both · FK grade ≤6 · CCI ≥90%',
+    bench: 'PEMAT ≥70% both · FK grade ≤6 · CCI 90+',
     why: 'Run before publication to catch comprehension and communication failures before patients see the material.',
     evidence: [
       { tool:'PEMAT', note:'Shoemaker, Wolf & Brach, Patient Ed. & Counseling 96(3), 2014. Validated against 116 materials. Separates understandability from actionability.' },
@@ -3431,6 +3427,7 @@ function extractDocStructure(){
     hasHeaders: tmp.querySelectorAll('h1,h2,h3,h4,h5,h6').length > 0,
     hasImages:  tmp.querySelectorAll('img').length > 0,
     hasBold:    tmp.querySelectorAll('strong,b').length > 0,
+    hasTable:   tmp.querySelectorAll('table').length > 0,
     hasContact: hasContact,
     rawText:    text,
   };
@@ -3457,115 +3454,144 @@ function getAutoFlags(stats, struct){
     hasImages:   struct ? struct.hasImages : null,
     hasBold:     struct ? struct.hasBold : null,
     hasContact:  struct ? struct.hasContact : null,
+    hasCues:     struct ? (struct.hasBold || struct.hasList) : null,
+    hasYou:      struct && struct.rawText ? /\byou(r|rs|rself|'ll|'re)?\b/i.test(struct.rawText) : null,
+    noJargon:    struct && struct.rawText ? !HL_JARGON.some(j => struct.rawText.toLowerCase().includes(j)) : null,
+    noNumbers:   struct && struct.rawText ? !/\d/.test(struct.rawText) : null,
+    noVisuals:   struct ? !struct.hasImages : null,
+    noTables:    struct ? !struct.hasTable : null,
+    noVisualsOrTables: struct ? (!struct.hasImages && !struct.hasTable) : null,
   };
 }
 
-// ── Build + render CCI checklist ──
+// ── Checklist state: true = met · false = not met · 'na' = excluded from the denominator ──
 let cciState = {};
+let pematUState = {}, pematAState = {};
+let checklistNA = {};                           // items the reviewer marked N/A
+const cciPartNA = { B:null, C:null, D:null };   // null = default (Part C is N/A when there are no numbers)
+let lastChecklistFlags = {};
+
+function cciPartIsNA(part){
+  if(part === 'A') return false;
+  if(cciPartNA[part] !== null) return cciPartNA[part];
+  return part === 'C' ? lastChecklistFlags.noNumbers === true : false;
+}
+// Decide an item's state from the document flags; null means the reviewer decides
+function autoItemState(item){
+  const f = lastChecklistFlags;
+  if(item.part && cciPartIsNA(item.part)) return 'na';
+  if(item.naIf && f[item.naIf] === true) return 'na';
+  if(checklistNA[item.id]) return 'na';
+  if(item.auto && (f[item.autoKey] === true || f[item.autoKey] === false)) return f[item.autoKey];
+  if(item.gate && f[item.gate] === false) return false;
+  return null;
+}
+function scoreState(items, state){
+  const applicable = items.filter(i => state[i.id] !== 'na').length;
+  const met = items.filter(i => state[i.id] === true).length;
+  return { met, applicable, pct: applicable ? Math.round(met / applicable * 100) : null };
+}
+
+function checklistItemHTML(item, state, updateFn){
+  const f = lastChecklistFlags;
+  const auto = autoItemState(item);
+  const st = auto !== null ? auto : (state[item.id] === true);
+  state[item.id] = st;
+  const autoNA = (item.part && cciPartIsNA(item.part)) || (item.naIf && f[item.naIf] === true);
+  let tag = '';
+  if(st === 'na')            tag = '<span class="az-check-tag" title="Excluded from the score">N/A</span>';
+  else if(auto === true)     tag = '<span class="az-check-tag auto-pass" title="Detected in document — standard met">AUTO ✓</span>';
+  else if(auto === false)    tag = '<span class="az-check-tag auto-fail" title="Not detected in document — standard not met">AUTO ✗</span>';
+  else if(item.gate && f[item.gate] === true)
+                             tag = '<span class="az-check-tag" title="A prerequisite was detected — confirm the item yourself">detected · confirm</span>';
+  const naBtn = item.na && !autoNA
+    ? '<button class="az-na-btn' + (checklistNA[item.id] ? ' on' : '') + '" onclick="toggleChecklistNA(\'' + item.id + '\')" title="Mark not applicable — excluded from the score">N/A</button>'
+    : '';
+  return '<div style="margin-bottom:6px">' +
+    '<div class="az-check-item' + (auto !== null ? ' auto-checked' : '') + (st === 'na' ? ' az-na' : '') + '">' +
+      '<input type="checkbox" id="' + item.id + '" ' + (st === true ? 'checked' : '') + ' ' + (auto !== null ? 'disabled' : '') + ' onchange="' + updateFn + '()">' +
+      '<label for="' + item.id + '"><span class="az-item-n">' + item.n + '.</span> ' + item.text + tag + '</label>' + naBtn +
+    '</div>' +
+    (item.why ? '<div class="az-item-why">' + item.why + '</div>' : '') +
+  '</div>';
+}
+
+function toggleChecklistNA(id){
+  checklistNA[id] = !checklistNA[id];
+  rerenderChecklists();
+}
+function setCciPartNA(part, na){
+  cciPartNA[part] = na;
+  rerenderChecklists();
+}
+function rerenderChecklists(){
+  initCciChecklist(lastChecklistFlags);
+  initPematChecklist(lastChecklistFlags);
+}
+
+// ── Build + render CCI checklist ──
 function initCciChecklist(autoFlags){
+  lastChecklistFlags = autoFlags || {};
   const el = document.getElementById('cci-checklist');
-  el.innerHTML = '';
-  CCI_ITEMS.forEach(item => {
-    const autoVal = item.auto ? autoFlags[item.autoKey] : null;
-    const checked = autoVal !== null ? autoVal : (cciState[item.id] || false);
-    const wrap = document.createElement('div');
-    wrap.style.marginBottom = '6px';
-    const div = document.createElement('div');
-    div.className = 'az-check-item' + (item.auto && autoVal !== null ? ' auto-checked' : '');
-    const tagHtml = item.auto
-      ? (autoVal === null
-          ? '<span class="az-check-tag">AUTO</span>'
-          : (autoVal ? '<span class="az-check-tag auto-pass" title="Detected in document — standard met">AUTO ✓</span>'
-                     : '<span class="az-check-tag auto-fail" title="Not detected in document — standard not met">AUTO ✗</span>'))
+  el.innerHTML = Object.keys(CCI_PARTS).map(p => {
+    const def = CCI_PARTS[p];
+    const items = CCI_ITEMS.filter(i => i.part === p);
+    const toggle = def.optional
+      ? '<label class="az-part-na" title="' + def.hint + '"><input type="checkbox" ' + (cciPartIsNA(p) ? 'checked' : '') +
+        ' onchange="setCciPartNA(\'' + p + '\',this.checked)"> Doesn\'t apply</label>'
       : '';
-    div.innerHTML = `
-      <input type="checkbox" id="${item.id}" ${checked ? 'checked' : ''} ${item.auto && autoVal !== null ? 'disabled' : ''} onchange="updateCciScore()">
-      <label for="${item.id}">${item.text}${tagHtml}</label>
-    `;
-    wrap.appendChild(div);
-    if(item.why){
-      const why = document.createElement('div');
-      why.className = 'az-item-why';
-      why.innerHTML = item.why;
-      wrap.appendChild(why);
-    }
-    el.appendChild(wrap);
-    if(item.auto && autoVal !== null) cciState[item.id] = autoVal;
-  });
+    return '<div class="az-part-hdr">' + def.label + ' (' + items.length + ')' + toggle + '</div>' +
+      items.map(it => checklistItemHTML(it, cciState, 'updateCciScore')).join('');
+  }).join('');
   updateCciScore();
 }
 
 function updateCciScore(){
-  let count = 0;
   CCI_ITEMS.forEach(item => {
+    if(cciState[item.id] === 'na') return;
     const cb = document.getElementById(item.id);
-    if(cb && cb.checked){ count++; cciState[item.id] = true; }
-    else if(cb){ cciState[item.id] = false; }
+    if(cb) cciState[item.id] = cb.checked;
   });
+  const sc = scoreState(CCI_ITEMS, cciState);
   const pill = document.getElementById('cci-score-pill');
-  pill.textContent = count + '/20';
-  const pct = count / 20;
-  pill.className = 'az-score-pill ' + (pct >= 0.9 ? 'az-score-pass' : pct >= 0.7 ? 'az-score-warn' : 'az-score-fail');
+  pill.textContent = sc.pct === null ? '—' : sc.pct + ' · ' + sc.met + '/' + sc.applicable;
+  pill.className = 'az-score-pill ' + (sc.pct === null ? 'az-score-empty' : sc.pct >= CCI_PASS ? 'az-score-pass' : sc.pct >= 70 ? 'az-score-warn' : 'az-score-fail');
   const status = document.getElementById('cci-pass-status');
   if(status){
-    if(count >= 18){ status.textContent = '✓ Passing'; status.className = 'az-pass-status pass'; }
-    else { status.textContent = '✗ ' + (18 - count) + ' more to pass'; status.className = 'az-pass-status fail'; }
+    const need = Math.ceil(sc.applicable * CCI_PASS / 100) - sc.met;
+    if(sc.pct !== null && sc.pct >= CCI_PASS){ status.textContent = '✓ Passing'; status.className = 'az-pass-status pass'; }
+    else { status.textContent = '✗ ' + need + ' more to pass'; status.className = 'az-pass-status fail'; }
   }
   updateStackHealth();
 }
 
 // ── Build + render PEMAT checklists ──
-let pematUState = {}, pematAState = {};
 function initPematChecklist(autoFlags){
-  autoFlags = autoFlags || {};
-  function buildList(items, containerId, stateObj, updateFn){
-    const el = document.getElementById(containerId);
-    el.innerHTML = '';
-    items.forEach(item => {
-      const autoVal = item.auto ? (autoFlags[item.autoKey] !== undefined ? autoFlags[item.autoKey] : null) : null;
-      const checked = autoVal !== null ? autoVal : (stateObj[item.id] || false);
-      if(autoVal !== null) stateObj[item.id] = autoVal;
-      const wrap = document.createElement('div');
-      wrap.style.marginBottom = '6px';
-      const div = document.createElement('div');
-      div.className = 'az-check-item' + (item.auto && autoVal !== null ? ' auto-checked' : '');
-      const tagHtml = item.auto
-        ? (autoVal === null
-            ? '<span class="az-check-tag">AUTO</span>'
-            : (autoVal ? '<span class="az-check-tag auto-pass" title="Detected in document — standard met">AUTO ✓</span>'
-                       : '<span class="az-check-tag auto-fail" title="Not detected in document — standard not met">AUTO ✗</span>'))
-        : '';
-      div.innerHTML = '<input type="checkbox" id="' + item.id + '" ' + (checked ? 'checked' : '') + ' ' + (item.auto && autoVal !== null ? 'disabled' : '') + ' onchange="' + updateFn + '()"><label for="' + item.id + '">' + item.text + tagHtml + '</label>';
-      wrap.appendChild(div);
-      if(item.why){
-        const why = document.createElement('div');
-        why.className = 'az-item-why';
-        why.innerHTML = item.why;
-        wrap.appendChild(why);
-      }
-      el.appendChild(wrap);
-    });
-  }
-  buildList(PEMAT_U_ITEMS, 'pemat-u-checklist', pematUState, 'updatePematScore');
-  buildList(PEMAT_A_ITEMS, 'pemat-a-checklist', pematAState, 'updatePematScore');
+  lastChecklistFlags = autoFlags || {};
+  document.getElementById('pemat-u-checklist').innerHTML =
+    PEMAT_U_ITEMS.map(it => checklistItemHTML(it, pematUState, 'updatePematScore')).join('');
+  document.getElementById('pemat-a-checklist').innerHTML =
+    PEMAT_A_ITEMS.map(it => checklistItemHTML(it, pematAState, 'updatePematScore')).join('');
   updatePematScore();
 }
 
+function pematScores(){
+  const u = scoreState(PEMAT_U_ITEMS, pematUState), a = scoreState(PEMAT_A_ITEMS, pematAState);
+  return { uPct: u.pct === null ? 0 : u.pct, aPct: a.pct === null ? 0 : a.pct };
+}
+
 function updatePematScore(){
-  let uCount = 0, aCount = 0;
-  PEMAT_U_ITEMS.forEach(item => {
-    const cb = document.getElementById(item.id);
-    if(cb){ pematUState[item.id] = cb.checked; if(cb.checked) uCount++; }
+  [[PEMAT_U_ITEMS, pematUState], [PEMAT_A_ITEMS, pematAState]].forEach(([items, state]) => {
+    items.forEach(item => {
+      if(state[item.id] === 'na') return;
+      const cb = document.getElementById(item.id);
+      if(cb) state[item.id] = cb.checked;
+    });
   });
-  PEMAT_A_ITEMS.forEach(item => {
-    const cb = document.getElementById(item.id);
-    if(cb){ pematAState[item.id] = cb.checked; if(cb.checked) aCount++; }
-  });
-  const uPct = Math.round(uCount / PEMAT_U_ITEMS.length * 100);
-  const aPct = Math.round(aCount / PEMAT_A_ITEMS.length * 100);
+  const { uPct, aPct } = pematScores();
   const pill = document.getElementById('pemat-score-pill');
   pill.textContent = 'U:' + uPct + '% A:' + aPct + '%';
-  const pass = uPct > 70 && aPct > 70;
+  const pass = uPct >= PEMAT_PASS && aPct >= PEMAT_PASS;
   const warn = (uPct > 50 || aPct > 50) && !pass;
   pill.className = 'az-score-pill ' + (pass ? 'az-score-pass' : warn ? 'az-score-warn' : 'az-score-fail');
   const status = document.getElementById('pemat-pass-status');
@@ -3640,27 +3666,24 @@ function buildStackHealthHTML() {
 
     if (item.type === 'cci') {
       if (cciReady) {
-        const count = CCI_ITEMS.filter(i => cciState[i.id]).length;
-        const pct   = Math.round(count / CCI_ITEMS.length * 100);
-        pillText  = count + '/20 (' + pct + '%)';
-        pillClass = pct >= 90 ? 'az-score-pass' : pct >= 70 ? 'az-score-warn' : 'az-score-fail';
-        statusText = pct >= 90 ? 'Passes' : 'Below 90% threshold';
+        const sc    = scoreState(CCI_ITEMS, cciState);
+        const pct   = sc.pct || 0;
+        pillText  = pct + ' (' + sc.met + '/' + sc.applicable + ')';
+        pillClass = pct >= CCI_PASS ? 'az-score-pass' : pct >= 70 ? 'az-score-warn' : 'az-score-fail';
+        statusText = pct >= CCI_PASS ? 'Passes' : 'Below 90 threshold';
       } else {
         pillText = '—'; pillClass = 'az-score-empty'; statusText = 'complete checklist below';
       }
 
     } else if (item.type === 'pemat') {
       if (pematReady) {
-        const uCount = PEMAT_U_ITEMS.filter(i => pematUState[i.id]).length;
-        const aCount = PEMAT_A_ITEMS.filter(i => pematAState[i.id]).length;
-        const uPct   = Math.round(uCount / PEMAT_U_ITEMS.length * 100);
-        const aPct   = Math.round(aCount / PEMAT_A_ITEMS.length * 100);
-        const pass   = uPct > 70 && aPct > 70;
+        const { uPct, aPct } = pematScores();
+        const pass   = uPct >= PEMAT_PASS && aPct >= PEMAT_PASS;
         const warn   = !pass && (uPct > 50 || aPct > 50);
         pillText  = 'U ' + uPct + '% A ' + aPct + '%';
         pillClass = pass ? 'az-score-pass' : warn ? 'az-score-warn' : 'az-score-fail';
-        statusText = pass ? 'Both pass' : uPct <= 70 && aPct <= 70 ? 'Both failing'
-                   : uPct <= 70 ? 'Understandability failing' : 'Actionability failing';
+        statusText = pass ? 'Both pass' : uPct < PEMAT_PASS && aPct < PEMAT_PASS ? 'Both failing'
+                   : uPct < PEMAT_PASS ? 'Understandability failing' : 'Actionability failing';
       } else {
         pillText = '—'; pillClass = 'az-score-empty'; statusText = 'complete checklist below';
       }
@@ -3704,9 +3727,9 @@ function buildConvergenceHTML() {
     theme.checks.forEach(check => {
       let anyFail = false;
       if (check.source === 'CCI' && cciReady) {
-        anyFail = check.ids.some(id => !cciState[id]);
+        anyFail = check.ids.some(id => cciState[id] === false);
       } else if (check.source === 'PEMAT' && pematReady) {
-        anyFail = check.ids.some(id => !allPematState[id]);
+        anyFail = check.ids.some(id => allPematState[id] === false);
       }
       if (anyFail) failingSources.push(check.source);
     });
@@ -3760,8 +3783,8 @@ function updateFrameworkVisibility() {
 const FW_FOCUS_DESC = {
   all: 'Pick one framework to explore it on its own, or score against all three.',
   readability: 'How easy the text is to read — sentence length + word complexity. Aim for grade 6 for patient materials.',
-  cci: 'CDC Clear Communication Index — a 20-item checklist for clear public health communication. 18 of 20 to pass.',
-  pemat: 'AHRQ tool that scores whether patients can understand the material and act on it. Aim above 70% on both.',
+  cci: 'CDC Clear Communication Index — a 20-item checklist for clear public health communication. 90 or higher (of the items that apply) to pass.',
+  pemat: 'AHRQ tool that scores whether patients can understand the material and act on it. Aim for 70% or higher on both.',
 };
 let fwFocus = 'all';
 function setFwFocus(f){
@@ -3791,13 +3814,14 @@ function toggleAzSection(which){
 function runAnalysis(){
   const doc = docList.find(d => d.id === activeId);
   if(!doc) return;
-  cciState = {}; pematUState = {}; pematAState = {};
+  cciState = {}; pematUState = {}; pematAState = {}; checklistNA = {};
+  Object.keys(cciPartNA).forEach(k => cciPartNA[k] = null);
   if(doc.ext === 'pdf'){
     document.getElementById('az-readability').innerHTML =
       unreadableGuidance('This PDF\'s text can\'t be extracted in the browser, so scores can\'t be computed automatically.');
     const pill = document.getElementById('readability-score-pill');
     if(pill){ pill.textContent = '—'; pill.className = 'az-score-pill az-score-empty'; }
-    initCciChecklist({ sentLen:null, sentLen20:null, grade:null, activeVoice:null, hasList:null, hasHeaders:null, hasStructure:null, hasImages:null, hasBold:null, hasContact:null });
+    initCciChecklist({});
     initPematChecklist({});
     return;
   }
@@ -4570,18 +4594,18 @@ const HP = {
 
 // ── Framework info cards ──
 const FW_INFO = {
-  cci:        { label:'CCI',            zone:'clarity',  full:'Consumer Comprehension Index',
-    measures:'Comprehension of consumer-facing health content via scored recall and recognition tasks.',
-    bestFor:'Pre/post testing readability of patient-facing documents.',
-    scoring:'% correct on free-recall + recognition tasks; no fixed scale. Higher % = better comprehension. Compare pre- vs. post-revision or across audience groups.',
-    rubric:['Free recall of key health facts','Recognition accuracy of claims','Inference and reasoning from text','Alignment with reading level of target audience'],
-    link:'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1478815/' },
+  cci:        { label:'CCI',            zone:'clarity',  full:'CDC Clear Communication Index',
+    measures:'Whether public health communication products are clear: main message, call to action, language, design, behavioral recommendations, numbers and risk.',
+    bestFor:'Developing and assessing public-facing health materials before release.',
+    scoring:'20 items in 4 parts, each scored 0 or 1: Core (11), Behavioral Recommendations (3), Numbers (3), Risk (3). Parts B–D are scored only when the material contains that content. Score = points ÷ applicable items × 100; 90 or higher passes.',
+    rubric:['One main message, placed at the top and emphasized','At least one visual that supports the main message','A call to action, in active voice','Words the primary audience uses; lists; chunks with headings','Behavioral recommendations explain why and how','Numbers the audience uses, explained, with no calculations required','Nature of the risk, and both risks and benefits'],
+    link:'https://www.cdc.gov/ccindex/index.html' },
 
   pemat:      { label:'PEMAT',          zone:'clarity',  full:'Patient Education Materials Assessment Tool',
-    measures:'Understandability (13 items) and Actionability (7 items) of patient education materials.',
+    measures:'Understandability (17 items) and Actionability (7 items) of printable patient education materials (PEMAT-P). The audiovisual version (PEMAT-A/V) uses 13 and 4.',
     bestFor:'Auditing patient handouts and discharge instructions.',
-    scoring:'Each item scored 0 (disagree) or 1 (agree). Separate % scores for Understandability and Actionability. Target: ≥70% on both.',
-    rubric:['Uses common words and short sentences','Defines medical terms when used','Numbers presented in context','Visual aids support the text','Identifies a specific action for the patient','Action steps are clearly stated and achievable','Material avoids unnecessary jargon'],
+    scoring:'Each item scored 0 (disagree) or 1 (agree); some items allow N/A, which is excluded from the denominator. Separate % scores for Understandability and Actionability. The developers\' cut-off is 70% for each.',
+    rubric:['Purpose is evident; no distracting content','Common, everyday language; medical terms defined; active voice','Information chunked into short sections with informative headers, in a logical sequence, with a summary','Visual cues draw attention to key points','Identifies at least one action and addresses the user directly','Breaks actions into manageable, explicit steps','Provides a tangible tool (e.g., checklist) where it would help'],
     link:'https://www.ahrq.gov/health-literacy/patient-education/pemat.html' },
 
   sam:        { label:'SAM',            zone:'clarity',  full:'Suitability Assessment of Materials',
