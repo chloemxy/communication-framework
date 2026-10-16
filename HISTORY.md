@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-16 — Design refresh: tokens, 13px type floor, smaller canvas
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview
 
 - **Layout.** The studio is a grid now, not absolutely positioned panels.
   - The document column is capped at 560px. It used to fill everything left of a
@@ -35,7 +35,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Close open tasks: honest scoring, single-source notes, verified wording
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview
 
 - **No passes without evidence in visual mode.** A transcript can't show headers, emphasis,
   visuals or tables, so those signals are now "can't tell" (null) instead of guessed.
