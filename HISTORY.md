@@ -4,6 +4,19 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Getting-started steps in the empty card area
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- While no score cards are showing, the card area shows "How to check your material":
+  1. Set your Brief (with an Open Brief button)
+  2. Add your material (Upload a file, Try a sample)
+  3. Pick your frameworks (Open Frameworks)
+  4. Review the results
+- Each step turns into a ✓ when it's done. The guide steps aside as soon as a card appears.
+- It uses only the existing type treatments: Display for the title and step numbers,
+  Heading for the step names, Body for the text, Caption for the buttons.
+
 ## 2026-10-16 — Cards show only what you picked; fewer notes
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

@@ -107,6 +107,20 @@ body{font-family:var(--sans);background:var(--page);color:var(--n900);display:fl
 .splitter:focus-visible{outline:none}
 body.resizing{cursor:col-resize;user-select:none}
 
+/* ── Getting started (empty card area) ── */
+.guide{max-width:560px;margin:var(--sp-6) auto;padding:var(--sp-6);background:var(--white);border:1px solid var(--n200);border-radius:var(--radius-lg);box-shadow:var(--shadow-2)}
+.guide[hidden]{display:none}
+.guide-title{font-size:var(--fs-2xl);font-weight:600;color:var(--n900);margin-bottom:var(--sp-5)}
+.guide-steps{list-style:none;display:flex;flex-direction:column;gap:var(--sp-5)}
+.guide-step{display:flex;gap:var(--sp-4);align-items:flex-start}
+.guide-n{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue-lt);color:var(--blue);font-size:var(--fs-2xl);font-weight:600}
+.guide-step.done .guide-n{background:var(--teal-bg);color:#11622f}
+.guide-step.done .guide-h{color:var(--n600)}
+.guide-body{min-width:0;padding-top:2px}
+.guide-h{font-size:var(--fs-lg);font-weight:600;color:var(--n900);margin-bottom:var(--sp-1)}
+.guide-body p{font-size:var(--fs-sm);font-weight:400;color:var(--n600);margin-bottom:var(--sp-2)}
+.guide-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+
 /* ── CANVAS (document workspace) ── */
 .canvas{
   grid-column:1;grid-row:2;position:relative;min-height:0;min-width:0;
@@ -1216,6 +1230,46 @@ button,input,select,textarea{font-family:inherit}
   <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" aria-controls="canvas" aria-label="Resize the document panel" tabindex="0" title="Drag to resize · double-click to reset"></div>
 
   <div class="rail-scroll" id="rail-scroll">
+  <!-- Getting started: fills the card area while no cards are showing -->
+  <section class="guide" id="guide" aria-labelledby="guide-title" hidden>
+    <h2 class="guide-title" id="guide-title">How to check your material</h2>
+    <ol class="guide-steps">
+      <li class="guide-step" id="gs-brief">
+        <span class="guide-n" aria-hidden="true" data-n="1">1</span>
+        <div class="guide-body">
+          <div class="guide-h">Set your Brief</div>
+          <p>Pick who it's for and what it is: a handout, poster, video and so on.</p>
+          <button type="button" class="in-key" onclick="toggleBriefTop()">Open Brief</button>
+        </div>
+      </li>
+      <li class="guide-step" id="gs-text">
+        <span class="guide-n" aria-hidden="true" data-n="2">2</span>
+        <div class="guide-body">
+          <div class="guide-h">Add your material</div>
+          <p>Upload a file, or paste or type your text into the document on the left.</p>
+          <span class="guide-actions">
+            <button type="button" class="in-key" onclick="document.getElementById('file-doc').click()">Upload a file</button>
+            <button type="button" class="in-key" onclick="loadSample()">Try a sample</button>
+          </span>
+        </div>
+      </li>
+      <li class="guide-step" id="gs-fw">
+        <span class="guide-n" aria-hidden="true" data-n="3">3</span>
+        <div class="guide-body">
+          <div class="guide-h">Pick your frameworks</div>
+          <p>Choose the published tools to check against, such as CCI or PEMAT.</p>
+          <button type="button" class="in-key" onclick="toggleFwTop()">Open Frameworks</button>
+        </div>
+      </li>
+      <li class="guide-step" id="gs-review">
+        <span class="guide-n" aria-hidden="true" data-n="4">4</span>
+        <div class="guide-body">
+          <div class="guide-h">Review the results</div>
+          <p>Scores appear here. Rate the items the tool can't check from the text.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
   <div class="mod-rail mod-rail-right" id="rail-right">
 
     <!-- ── MODULE: FRAMEWORK OUTPUTS (reflects whatever is selected in the Frameworks bar) ── -->
@@ -1963,6 +2017,23 @@ function updateApplicability(){
   });
   syncDockKeys();
   syncFwNeedText();
+  syncGuide();
+}
+// Getting-started steps fill the card area while no cards are showing; done steps get a tick
+function syncGuide(){
+  const g = $('guide'); if(!g) return;
+  const anyCard = MODS.some(id => { const m = $(id); return m && !m.classList.contains('hidden') && !m.classList.contains('na-hidden'); });
+  g.hidden = anyCard;
+  if(anyCard) return;
+  const done = {
+    'gs-brief': !!(brief.audience || brief.format),
+    'gs-text':  hasContent(),
+    'gs-fw':    Object.keys(fwManual).some(k => fwManual[k] === true) || briefFrameworks().length > 0,
+  };
+  Object.keys(done).forEach(id => {
+    const el = $(id); el.classList.toggle('done', done[id]);
+    const n = el.querySelector('.guide-n'); n.textContent = done[id] ? '✓' : n.dataset.n;
+  });
 }
 
 // ════════════════════════════════════════
