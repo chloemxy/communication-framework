@@ -107,19 +107,6 @@ body{font-family:var(--sans);background:var(--page);color:var(--n900);display:fl
 .splitter:focus-visible{outline:none}
 body.resizing{cursor:col-resize;user-select:none}
 
-/* ── Getting started (empty card area) ── */
-.guide{max-width:560px;margin:var(--sp-6) auto;padding:var(--sp-6);background:var(--white);border:1px solid var(--n200);border-radius:var(--radius-lg);box-shadow:var(--shadow-2)}
-.guide[hidden]{display:none}
-.guide-title{font-size:var(--fs-2xl);font-weight:600;color:var(--n900);margin-bottom:var(--sp-5)}
-.guide-steps{list-style:none;display:flex;flex-direction:column;gap:var(--sp-5)}
-.guide-step{display:flex;gap:var(--sp-4);align-items:flex-start}
-.guide-n{flex-shrink:0;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue-lt);color:var(--blue);font-size:var(--fs-2xl);font-weight:600}
-.guide-step.done .guide-n{background:var(--teal-bg);color:#11622f}
-.guide-step.done .guide-h{color:var(--n600)}
-.guide-body{min-width:0;padding-top:2px}
-.guide-h{font-size:var(--fs-lg);font-weight:600;color:var(--n900);margin-bottom:var(--sp-1)}
-.guide-body p{font-size:var(--fs-sm);font-weight:400;color:var(--n600);margin-bottom:var(--sp-2)}
-.guide-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
 
 /* ── CANVAS (document workspace) ── */
 .canvas{
@@ -138,7 +125,6 @@ body.resizing{cursor:col-resize;user-select:none}
   display:flex;align-items:center;gap:6px;
   margin-left:auto;flex-shrink:0;flex-grow:0;
 }
-.canvas-actions .in-key{flex-shrink:0;white-space:nowrap}
 .canvas-title{font-size:var(--fs-xs);font-weight:600;color:var(--n500);display:flex;align-items:center;gap:6px;flex-shrink:0}
 .canvas-file{
   display:flex;align-items:center;gap:5px;
@@ -147,37 +133,18 @@ body.resizing{cursor:col-resize;user-select:none}
 }
 .cf-kind{
   flex-shrink:0;padding:1px 5px;border-radius:3px;
-  font-size:var(--fs-xs);font-weight:600;color:#fff;background:var(--n400);
+  font-size:var(--fs-xs);font-weight:600;color:var(--n700);background:var(--n100);   /* neutral: the label says the type, colour added nothing */
 }
 .cf-name{
   font-size:var(--fs-xs);font-weight:600;color:var(--n700);text-transform:none;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;
 }
-.canvas-led{width:6px;height:6px;border-radius:50%;background:var(--n300);transition:background .2s}
-.canvas-led.live{background:var(--teal);box-shadow:0 0 6px rgba(27,196,125,0.6)}
 
-/* chunky input keys — TE style */
-.in-key{
-  display:inline-flex;align-items:center;gap:5px;
-  border:1px solid var(--n300);border-bottom-width:2.5px;border-radius:7px;
-  background:#fff;padding:5px 11px;cursor:pointer;
-  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n700);
-  transition:transform .06s,background .13s,border-color .13s;user-select:none;
-}
-.in-key:hover{background:var(--n50)}
-.in-key:active{transform:translateY(1px);border-bottom-width:1.5px}
-.in-key .k-dot{width:8px;height:8px;border-radius:2.5px;flex-shrink:0}
-.in-key.k-type  .k-dot{background:var(--blue)}
-.in-key.k-paste .k-dot{background:var(--teal)}
-.in-key.k-doc   .k-dot{background:var(--orange)}
-.in-key.k-img   .k-dot{background:var(--red)}
-.in-key.k-clear .k-dot{background:var(--n400)}
 
 .canvas-body{
   flex:1 1 auto;min-height:0;
   overflow-y:auto;scrollbar-gutter:stable;position:relative;
 }
-.in-key.k-hist .k-dot{background:var(--zone-process)}
 
 /* ── editor toolbar ── */
 .etb{
@@ -185,16 +152,6 @@ body.resizing{cursor:col-resize;user-select:none}
   padding:5px 8px;background:#fff;
   border-bottom:1px solid var(--n200);flex-shrink:0;
 }
-.etb-b{
-  border:1px solid transparent;background:transparent;border-radius:5px;
-  padding:3px 7px;min-width:24px;cursor:pointer;
-  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n600);
-  line-height:1.4;transition:background .12s,color .12s,border-color .12s;
-}
-.etb-b:hover{background:var(--n100);color:var(--n900)}
-.etb-b:active{background:var(--n200)}
-.etb-b.on{background:var(--dark);border-color:var(--dark);color:#fff}
-.etb-bold{font-weight:600}
 .etb-sel{
   border:1px solid var(--n300);border-radius:5px;background:#fff;
   font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n600);
@@ -203,7 +160,6 @@ body.resizing{cursor:col-resize;user-select:none}
 .etb-sep{width:1px;height:16px;background:var(--n200);margin:0 3px}
 .etb-flex{flex:1;min-width:8px}
 .etb-hint{font-size:var(--fs-xs);font-weight:400;color:var(--n400);white-space:nowrap}
-.etb-track.on{background:var(--teal);border-color:var(--teal);color:#fff}
 
 /* ── file history + version drawers ── */
 #file-history,#ver-panel{
@@ -216,8 +172,6 @@ body.resizing{cursor:col-resize;user-select:none}
   padding:6px 12px;background:var(--n50);border-bottom:1px solid var(--n200);
   font-size:var(--fs-xs);font-weight:600;color:var(--n500);
 }
-.fh-x{margin-left:auto;border:none;background:none;cursor:pointer;color:var(--n400);font-size:var(--fs-xs);font-weight:400;padding:0 3px}
-.fh-x:hover{color:var(--n900)}
 .fh-item{
   display:flex;align-items:center;gap:8px;padding:6px 12px;
   border-bottom:1px solid var(--n100);cursor:pointer;transition:background .12s;
@@ -227,18 +181,10 @@ body.resizing{cursor:col-resize;user-select:none}
 .fh-ico{
   flex-shrink:0;width:22px;height:22px;border-radius:5px;
   display:flex;align-items:center;justify-content:center;
-  font-size:var(--fs-xs);font-weight:600;color:#fff;
+  font-size:var(--fs-xs);font-weight:600;color:var(--n700);background:var(--n100);
 }
 .fh-name{font-size:var(--fs-xs);font-weight:600;color:var(--n900);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .fh-meta{font-size:var(--fs-xs);font-weight:400;color:var(--n400)}
-.fh-del{margin-left:auto;border:none;background:none;cursor:pointer;color:var(--n400);font-size:var(--fs-xs);font-weight:400;padding:2px 4px;flex-shrink:0}
-.fh-del:hover{color:var(--red)}
-.foot-btn{
-  border:none;background:none;cursor:pointer;font-family:var(--sans);
-  font-size:var(--fs-xs);font-weight:400;color:var(--n500);padding:0;
-}
-.foot-btn:hover{color:var(--n900);text-decoration:underline}
-.foot-btn b{color:var(--n700)}
 .ver-item{padding:6px 12px;border-bottom:1px solid var(--n100);display:flex;align-items:flex-start;gap:8px}
 .ver-when{font-size:var(--fs-xs);font-weight:400;color:var(--n400);white-space:nowrap;flex-shrink:0;padding-top:1px;font-variant-numeric:tabular-nums}
 .ver-what{font-size:var(--fs-xs);font-weight:400;color:var(--n700);line-height:1.4;flex:1;min-width:0}
@@ -246,46 +192,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .ver-delta{font-size:var(--fs-xs);font-weight:600;white-space:nowrap}
 .ver-delta.up{color:#14713e}
 .ver-delta.down{color:#b91c1c}
-.ver-restore{
-  border:1px solid var(--n300);background:#fff;border-radius:5px;
-  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n600);
-  padding:2px 7px;cursor:pointer;flex-shrink:0;
-}
-.ver-restore:hover{border-color:var(--dark);color:var(--dark)}
 
-/* ── visual mode ── */
-#visual-mode{position:absolute;inset:0;display:flex;flex-direction:column;background:#fff}
-.vm-stage{display:flex;flex:1;min-height:0}
-.vm-preview{
-  flex:1;min-width:0;position:relative;overflow:auto;
-  display:flex;align-items:center;justify-content:center;
-  padding:16px;background:
-    linear-gradient(45deg,#f0ece7 25%,transparent 25%,transparent 75%,#f0ece7 75%),
-    linear-gradient(45deg,#f0ece7 25%,transparent 25%,transparent 75%,#f0ece7 75%);
-  background-size:16px 16px;background-position:0 0,8px 8px;background-color:#fff;
-}
-#vm-canvas{max-width:100%;max-height:100%;box-shadow:0 3px 16px rgba(0,0,0,.16);border-radius:3px;display:block}
-.vm-pager{
-  position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:6px;
-  background:var(--dark);border-radius:16px;padding:3px 5px;
-  font-size:var(--fs-xs);font-weight:600;color:#fff;
-}
-.vm-pager button{border:none;background:none;color:#fff;cursor:pointer;font-size:var(--fs-xs);font-weight:400;padding:0 5px;line-height:1}
-.vm-pager button:hover{opacity:.7}
-.vm-side{
-  width:266px;flex-shrink:0;overflow-y:auto;
-  padding:12px;border-left:1px solid var(--n200);background:#fff;
-}
-.vm-sec-lbl{font-size:var(--fs-xs);font-weight:600;color:var(--n500);margin-bottom:4px}
-.vm-count{font-size:var(--fs-xs);font-weight:400;color:var(--n400);margin-top:3px;text-align:right}
-.vm-palette{display:flex;flex-wrap:wrap;gap:4px}
-.vm-sw{
-  width:26px;height:26px;border-radius:5px;cursor:pointer;
-  border:1px solid rgba(0,0,0,.12);transition:transform .1s,box-shadow .1s;
-}
-.vm-sw:hover{transform:scale(1.12)}
-.vm-sw.sel{box-shadow:0 0 0 2px var(--dark);transform:scale(1.12)}
 /* ── contrast result card ── */
 .vm-pair{margin-top:8px}
 .cr-card{border:1px solid var(--n200);border-radius:8px;overflow:hidden;background:#fff}
@@ -365,11 +272,6 @@ body.resizing{cursor:col-resize;user-select:none}
   position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:8px;text-align:center;pointer-events:none;padding:30px;
 }
-.ce-title{font-size:var(--fs-2xl);font-weight:600;color:var(--n900)}
-.ce-sub{font-size:var(--fs-sm);font-weight:400;color:var(--n600);line-height:1.6;max-width:340px}
-.ce-sub b{color:var(--n700);font-weight:600}
-.ce-actions{display:flex;gap:8px;margin-top:8px;pointer-events:auto}
-.ce-sample{pointer-events:auto}
 .canvas-body.drag-over{outline:2px dashed var(--blue);outline-offset:-8px;border-radius:10px}
 
 /* word count strip */
@@ -414,16 +316,11 @@ body.resizing{cursor:col-resize;user-select:none}
 .mod.collapsed .mod-hdr{border-bottom:none}
 .mod-hdr:active{cursor:grabbing}
 .mod-name{font-size:var(--fs-xs);font-weight:600;color:var(--n700);margin-right:auto;white-space:nowrap;flex-shrink:0}
-.mod-min{
-  width:18px;height:18px;border:none;border-radius:4px;background:transparent;
-  color:var(--n400);cursor:pointer;font-size:var(--fs-xs);font-weight:400;line-height:1;display:flex;align-items:center;justify-content:center;
-}
 /* an empty score pill ("—") said nothing and looked like the collapse button, so it stays hidden until there's a score */
 .mod-hdr .pill-empty{display:none}
 .pill-count{background:var(--n100);color:var(--n600)}
 .mod-fold{font-size:var(--fs-xs);font-weight:400;transition:transform .15s}
 .mod.collapsed .mod-fold{transform:rotate(-90deg)}
-.mod-min:hover{background:var(--n200);color:var(--n700)}
 .mod-body{
   padding:10px 12px;overflow-y:auto;scrollbar-gutter:stable;
   min-height:90px;max-height:600px;
@@ -455,15 +352,6 @@ body.resizing{cursor:col-resize;user-select:none}
 .brief-targets .bt-k{display:inline-block;width:58px;font-size:var(--fs-xs);font-weight:600;color:var(--n500)}
 .brief-targets .bt-empty{color:var(--n400);}
 
-/* reveal-on-demand input */
-.add-more{
-  display:block;width:100%;margin-top:5px;
-  border:1px dashed var(--n300);border-radius:6px;background:transparent;
-  padding:5px 8px;cursor:pointer;
-  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n500);
-  text-align:left;transition:border-color .13s,color .13s,background .13s;
-}
-.add-more:hover{border-color:var(--n500);color:var(--n700);background:var(--n50)}
 
 /* ── explain-on-click: the title itself is the trigger ── */
 [data-tip]{cursor:pointer}
@@ -716,11 +604,8 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fwo-body{display:none;padding:4px 10px 10px;border-top:1px solid var(--n100)}
 .fwo-item.open .fwo-body{display:block}
 .fwo-meta{font-size:var(--fs-xs);font-weight:400;color:var(--n500);line-height:1.5;margin:6px 0 2px}
-.fwo-link{border:1px solid var(--n300);background:#fff;border-radius:6px;font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n600);padding:3px 8px;cursor:pointer;white-space:nowrap}
-.fwo-link:hover{border-color:var(--n500)}
 .fwo-need{background:#fff8e6;border:1px solid #f0e2c0;border-radius:8px;padding:9px 11px;font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:#7a5a00;margin-bottom:10px}
 .fwo-need b{color:#5c4300}
-.vm-hint{display:none;margin-top:6px;padding:7px 9px;background:#fff8e6;border:1px solid #f0e2c0;border-radius:7px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:#7a5a00}
 .fwo-dom{font-size:var(--fs-xs);font-weight:600;color:var(--n400);margin:10px 0 3px}
 .fwo-row{display:flex;gap:8px;align-items:flex-start;padding:4px 0;border-bottom:1px solid var(--n100)}
 .fwo-row .t{flex:1;font-size:var(--fs-xs);font-weight:400;line-height:1.4;color:var(--n700)}
@@ -738,10 +623,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fwo-about b{color:var(--n700)}
 .fwo-about a{color:var(--zone-clarity)}
 .fwo-src{margin:4px 0 0;padding-left:14px}
-.fw-clear-btn{border:none;background:none;font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n500);cursor:pointer;padding:0;margin-left:10px;white-space:nowrap}
-.fw-clear-btn:hover{color:var(--n900);text-decoration:underline}
-.fw-top-clear{font-size:var(--fs-xs);font-weight:600;color:var(--n400);cursor:pointer;padding:2px 6px;border-radius:5px;flex-shrink:0}
-.fw-top-clear:hover{background:var(--n100);color:var(--n900)}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .fw-card-badge{font-size:var(--fs-xs);font-weight:400;color:var(--n500);margin-top:2px}
 .fw-out-tag{display:inline-block;font-size:var(--fs-xs);font-weight:600;padding:0 5px;border-radius:3px;margin-right:3px}
@@ -779,12 +660,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
   padding:3px 5px;cursor:pointer;outline:none;
 }
 #layout-sel:hover{border-color:rgba(30,20,10,0.32)}
-.dock-mini{
-  border:1px solid rgba(30,20,10,0.16);background:#fff;border-radius:6px;
-  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;color:var(--n600);
-  padding:4px 8px;cursor:pointer;transition:border-color .13s,color .13s;
-}
-.dock-mini:hover{border-color:var(--dark);color:var(--dark)}
 .dock-add{
   align-self:center;max-width:130px;
   border:1px dashed rgba(30,20,10,0.24);border-radius:6px;background:#fff;
@@ -792,14 +667,7 @@ input[type=range]{width:100%;accent-color:var(--blue)}
   padding:4px 6px;cursor:pointer;outline:none;transition:border-color .13s,color .13s;
 }
 .dock-add:hover:not(:disabled){border-color:var(--dark);color:var(--dark)}
-.mod-hide{font-size:var(--fs-xs);font-weight:400;display:none}   /* removing a module needs the hidden Workspace bar to undo */
-.mod-hide:hover{background:var(--red-bg);color:var(--red)}
-.dock-reset{
-  border:none;background:transparent;color:rgba(30,20,10,0.45);
-  font-size:var(--fs-xs);font-weight:600;
-  cursor:pointer;padding:4px 7px;border-radius:6px;font-family:var(--sans);
-}
-.dock-reset:hover{background:rgba(30,20,10,0.07);color:rgba(30,20,10,0.75)}
+.mod-hide{display:none !important}   /* removing a module needs the hidden Workspace bar to undo */
 
 /* flash-highlight in editor */
 @keyframes flashSel{0%,100%{background:transparent}35%{background:rgba(251,191,36,0.35)}}
@@ -823,16 +691,12 @@ button, select, input, textarea{font-family:var(--sans)}
 .dock{background:var(--n50);border:1px solid var(--n200);border-radius:var(--radius)}
 
 .topnav{display:flex;align-items:center;gap:var(--sp-1);margin-left:auto;flex-shrink:0}
-.topnav-link{border:none;background:none;cursor:pointer;font-size:var(--fs-sm);font-weight:600;color:var(--n600);text-decoration:none;padding:6px 10px;border-radius:var(--radius-sm);white-space:nowrap}
-.topnav-link:hover{background:var(--n100);color:var(--n900)}
 
 /* About dialog */
 .about{width:min(640px, calc(100vw - 32px));max-height:min(80vh, 760px);padding:0;border:1px solid var(--n200);border-radius:var(--radius-lg);box-shadow:var(--shadow-3);color:var(--n900);background:var(--white)}
 .about::backdrop{background:rgba(28,25,23,.35)}
 .about-hdr{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4) var(--sp-5);border-bottom:1px solid var(--n200);position:sticky;top:0;background:var(--white)}
 .about-hdr h2{font-size:var(--fs-lg);font-weight:600;margin-right:auto}
-.about-x{border:none;background:none;cursor:pointer;font-size:var(--fs-lg);font-weight:600;color:var(--n500);width:32px;height:32px;border-radius:var(--radius-sm)}
-.about-x:hover{background:var(--n100);color:var(--n900)}
 .about-body{padding:var(--sp-4) var(--sp-5) var(--sp-6);font-size:var(--fs-sm);font-weight:400;line-height:1.6;color:var(--n700)}
 .about-body h3{font-size:var(--fs-sm);font-weight:600;color:var(--n900);margin:var(--sp-5) 0 var(--sp-2)}
 .about-body h3:first-child{margin-top:0}
@@ -857,9 +721,6 @@ button, select, input, textarea{font-family:var(--sans)}
 .canvas-hdr{background:var(--white);border-bottom:1px solid var(--n200);padding:var(--sp-2) var(--sp-3);gap:var(--sp-2)}
 .canvas-title{font-weight:600;color:var(--n700)}
 .etb{padding:6px var(--sp-3);border-bottom:1px solid var(--n200)}
-.etb-b{border-radius:var(--radius-sm);padding:4px 8px}
-.in-key{border:1px solid var(--n300);border-bottom-width:1px;border-radius:var(--radius-sm);padding:6px 12px;font-size:var(--fs-xs);font-weight:400;box-shadow:var(--shadow-1)}
-.in-key:active{transform:translateY(1px);border-bottom-width:1px}
 #editor{padding:var(--sp-6) var(--sp-6) var(--sp-8);max-width:none}
 .canvas-foot{background:var(--n50);padding:6px var(--sp-3);border-bottom-left-radius:var(--radius-lg);border-bottom-right-radius:var(--radius-lg)}
 
@@ -868,7 +729,6 @@ button, select, input, textarea{font-family:var(--sans)}
 .mod-hdr{background:var(--white);padding:var(--sp-3) var(--sp-3) var(--sp-3) var(--sp-4);border-bottom:1px solid var(--n100);gap:var(--sp-2)}
 .mod-name{font-size:var(--fs-sm);font-weight:600;color:var(--n900);}
 .mod-body{padding:var(--sp-3) var(--sp-4) var(--sp-4);max-height:640px}
-.mod-min{width:28px;height:28px;border-radius:var(--radius-sm);color:var(--n500)}
 .mod.fw-on{border-color:var(--n300)}
 
 /* Pills, tags, status */
@@ -953,8 +813,6 @@ button, select, input, textarea{font-family:var(--sans)}
   .canvas{grid-column:1;grid-row:2;height:50vh;min-height:240px;resize:vertical}
   .rail-scroll{grid-column:1;grid-row:3;overflow:visible;padding:0;min-height:auto}
   .mod-rail{column-width:auto;columns:1;min-height:0}
-  .vm-stage{flex-direction:column}
-  .vm-side{width:auto;border-left:none;border-top:1px solid var(--n200)}
 }
 @media (max-width: 600px){
   .topbar{flex-wrap:wrap;padding:var(--sp-2) var(--sp-4);gap:var(--sp-2);overflow:visible}
@@ -990,6 +848,140 @@ h4,h5,h6{font-size:14px;font-weight:600}
 button,input,select,textarea{font-family:inherit}
 #editor b,#editor strong{font-weight:700}
 #editor em,#editor i{font-style:italic}
+
+/* ════════════════════════════════════════════════════════════════
+   REFINEMENT PASS (2026-10-16): one button component, empty state,
+   getting-started guide and visual mode (artwork in the panel, its cards in the score area).
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Button: one component, three variants ──
+   Primary   the single most important action in a region (at most one per region)
+   Secondary normal actions
+   Quiet     low-emphasis, utility and reversible actions; no border or fill until hover
+   All share height, padding, radius, Caption strong type and the focus ring.
+   .btn-icon is the square size for glyph-only buttons (always with an aria-label or title). */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  min-height:32px;min-width:32px;padding:0 var(--sp-3);
+  border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;
+  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1.2;color:var(--n700);
+  white-space:nowrap;text-decoration:none;cursor:pointer;user-select:none;flex-shrink:0;
+  transition:background-color .12s,border-color .12s,color .12s;
+}
+.btn[hidden]{display:none}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus)}
+.btn-primary{background:var(--blue);border-color:var(--blue);color:var(--white)}
+.btn-primary:hover{background:var(--blue-hov);border-color:var(--blue-hov);color:var(--white)}
+.btn-secondary{background:var(--white);border-color:var(--n300);color:var(--n800)}
+.btn-secondary:hover{background:var(--n50);border-color:var(--n400);color:var(--n900)}
+.btn-quiet{color:var(--n600)}
+.btn-quiet:hover{background:var(--n100);color:var(--n900)}
+.btn-icon{width:32px;padding:0}
+.btn.on, .btn[aria-pressed="true"]{background:var(--blue-lt);border-color:transparent;color:var(--blue)}
+.btn:disabled, .btn[aria-disabled="true"]{cursor:not-allowed;background:var(--n50);border-color:var(--n200);color:var(--n400)}
+.btn-quiet:disabled{background:transparent;border-color:transparent}
+.btn b{font-weight:600;color:inherit}
+
+/* Segmented controls and rating buttons are separate controls in the same family */
+.seg button, .seg.seg-chips button, .rate-b{border-radius:var(--radius-sm)}
+.seg button:focus-visible, .rate-b:focus-visible, .mode-toggle button:focus-visible, .vm-sw:focus-visible{
+  outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus)}
+
+/* Places the button sits */
+.topnav{gap:var(--sp-1)}
+.canvas-actions{gap:var(--sp-2)}
+.canvas.is-empty .hide-when-empty{display:none}
+.etb{gap:2px;padding:var(--sp-1) var(--sp-2)}
+.etb-sel{min-height:32px;border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;
+  font-size:var(--fs-xs);font-weight:600;color:var(--n600);padding:0 var(--sp-2);cursor:pointer}
+.etb-sel:hover{background:var(--n100);color:var(--n900)}
+.etb-sel:focus-visible{outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus)}
+.etb-ital{font-style:normal}
+.canvas-foot{padding:var(--sp-1) var(--sp-3);gap:var(--sp-3)}
+.canvas-foot .btn{margin-left:calc(-1 * var(--sp-2))}
+.fh-hdr{padding:var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3)}
+.fh-hdr .btn{margin-left:auto}
+.fh-item{padding:2px var(--sp-1) 2px 2px;cursor:default}
+.fh-item:hover{background:transparent}
+.fh-open{flex:1;min-width:0;justify-content:flex-start;gap:var(--sp-2);text-align:left;padding:var(--sp-1) var(--sp-2);white-space:normal}
+.fh-txt{min-width:0;flex:1;display:flex;flex-direction:column}
+.fh-txt .fh-name, .fh-txt .fh-meta{display:block}
+.ver-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--n200);background:var(--white)}
+.ver-kbd{font-size:var(--fs-xs);font-weight:400;color:var(--n600)}
+.ver-item{align-items:center}
+.mod-hdr .btn-icon{color:var(--n500)}
+.mod-hdr .btn-icon:hover{color:var(--n900)}
+.fw-top-grid-hdr .btn{margin-left:var(--sp-1)}
+
+/* ── Empty document state ── */
+.ce-title{font-size:var(--fs-2xl);font-weight:600;color:var(--n900)}
+.ce-sub{font-size:var(--fs-sm);font-weight:400;color:var(--n600);max-width:360px}
+.ce-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-2);margin-top:var(--sp-3);pointer-events:auto}
+
+/* ── Getting started: sits on the page background at the top-left of the card area ── */
+.guide{max-width:560px;margin:0;padding:var(--sp-2) var(--sp-2) var(--sp-6);background:none;border:none;box-shadow:none}
+.guide[hidden]{display:none}
+.guide-title{font-size:var(--fs-lg);font-weight:600;color:var(--n900);margin-bottom:var(--sp-4)}
+.guide-steps{list-style:none;display:flex;flex-direction:column;gap:var(--sp-4)}
+.guide-step{display:flex;gap:var(--sp-3);align-items:flex-start}
+.guide-n{flex-shrink:0;width:24px;height:24px;margin-top:-1px;border:1px solid var(--n300);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:var(--fs-xs);font-weight:600;line-height:1;color:var(--n600)}
+.guide-step.done .guide-n{border-color:transparent;color:#11622f}   /* the pass green the pills use; --teal is 4.48:1 on --page */
+.guide-step.done .guide-h{color:var(--n600)}
+.guide-body{min-width:0}
+.guide-h{font-size:var(--fs-sm);font-weight:600;color:var(--n900)}
+.guide-body p{font-size:var(--fs-sm);font-weight:400;color:var(--n600);margin:var(--sp-1) 0 var(--sp-2)}
+.guide-body p:last-child{margin-bottom:0}
+
+/* ── Visual mode: the workspace shows the artwork only, using the whole panel.
+      Its text, alt text and colour checks are cards in the score area (#mod-vtext, #mod-valt, #mod-vcolour). ── */
+#visual-mode{position:absolute;inset:0;flex-direction:column;background:var(--white)}
+.vm-stage{display:flex;flex:1;min-height:0}
+.vm-art{flex:1 1 auto;min-width:0;min-height:0;display:flex;flex-direction:column}
+.vm-art-bar{display:flex;align-items:center;flex-wrap:wrap;gap:2px;padding:var(--sp-1) var(--sp-2);border-bottom:1px solid var(--n200);background:var(--white)}
+.vm-zoom-pct{min-width:48px;padding:0 var(--sp-1);text-align:center;font-size:var(--fs-xs);font-weight:600;color:var(--n600);font-variant-numeric:tabular-nums}
+.vm-pager{display:flex;align-items:center;gap:2px;margin-left:var(--sp-1);padding-left:var(--sp-2);border-left:1px solid var(--n200)}
+.vm-pageno{font-size:var(--fs-xs);font-weight:600;color:var(--n600);font-variant-numeric:tabular-nums;padding:0 var(--sp-1)}
+.vm-preview{flex:1;min-height:0;overflow:auto;display:flex;padding:var(--sp-4);background:var(--n100);position:relative}
+.vm-preview:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.vm-preview.can-pan{cursor:grab}
+.vm-preview.panning{cursor:grabbing;user-select:none}
+#vm-canvas{display:block;margin:auto;flex-shrink:0;background:var(--white);border-radius:2px;box-shadow:var(--shadow-2)}
+/* versions only store editor text, not artwork, so the footer button and its drawer step aside in visual mode */
+.canvas.is-visual #ver-btn, .canvas.is-visual #ver-panel{display:none !important}
+
+/* Artwork cards in the score area */
+.vm-sec-lbl{font-size:var(--fs-xs);font-weight:600;color:var(--n600);margin:0 0 var(--sp-1)}
+.vm-sec-gap{margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--n100)}
+.vm-count{font-size:var(--fs-xs);font-weight:400;color:var(--n600);margin-top:var(--sp-1);text-align:right}
+#vm-transcript, #vm-alt{width:100%;font-size:var(--fs-sm);line-height:1.5;padding:var(--sp-2);resize:vertical}
+#vm-transcript{min-height:160px}
+#vm-transcript:focus, #vm-alt:focus{border-color:var(--blue);box-shadow:var(--focus)}
+.vm-note{display:none;margin-top:var(--sp-2);padding:var(--sp-2) var(--sp-3);background:var(--n50);border-left:3px solid var(--n300);
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--n700)}
+.vm-note b{font-weight:600;color:var(--n900)}
+.vm-help{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--n600);margin:0 0 var(--sp-2)}
+/* machine-reading state: one calm line above the text, with a thin bar while it runs */
+.vm-ocr{display:flex;flex-direction:column;gap:var(--sp-1);margin-bottom:var(--sp-2)}
+.vm-ocr.is-idle{display:none}
+.vm-ocr-msg{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--n700)}
+.vm-ocr.is-fail .vm-ocr-msg{font-weight:600;color:var(--n900)}
+.vm-ocr-bar{display:block;width:100%;height:4px;border:none;border-radius:999px;background:var(--n100);overflow:hidden;appearance:none;-webkit-appearance:none}
+.vm-ocr-bar[hidden]{display:none}
+.vm-ocr-bar::-webkit-progress-bar{background:var(--n100);border-radius:999px}
+.vm-ocr-bar::-webkit-progress-value{background:var(--blue);border-radius:999px}
+.vm-ocr-bar::-moz-progress-bar{background:var(--blue);border-radius:999px}
+.vm-palette{display:flex;flex-wrap:wrap;gap:var(--sp-1)}
+.vm-sw{width:28px;height:28px;padding:0;font-size:var(--fs-xs);border-radius:var(--radius-sm);cursor:pointer;border:1px solid rgba(28,25,23,.14);transition:box-shadow .1s}
+.vm-sw:hover{box-shadow:0 0 0 2px var(--n300)}
+.vm-sw.sel, .vm-sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--dark)}
+
+@media (max-width: 1000px){
+  /* stacked: the canvas sits above the cards; give the artwork most of the screen height */
+  /* about 70% of the screen for the artwork itself, plus the panel header, toolbar and footer */
+  .canvas.is-visual{height:calc(70vh + 168px);height:calc(70svh + 168px);max-height:100svh;min-height:360px}
+  .vm-preview{padding:var(--sp-2)}
+}
 </style>
 </head>
 <body>
@@ -1004,8 +996,8 @@ button,input,select,textarea{font-family:inherit}
   </div>
 
   <nav class="topnav" aria-label="Site">
-    <a href="framework-compass.html" target="_blank" rel="noopener" class="topnav-link" title="All 26 frameworks, including the 6 that need real-world data (Pink Book, OPTION, PAM, CAHPS, NPS, EBCD)">Full compass (26) <span aria-hidden="true">↗</span></a>
-    <button type="button" class="topnav-link" id="about-btn" onclick="openAbout()" aria-haspopup="dialog">About</button>
+    <a href="framework-compass.html" target="_blank" rel="noopener" class="btn btn-quiet" title="All 26 frameworks, including the 6 that need real-world data (Pink Book, OPTION, PAM, CAHPS, NPS, EBCD)">Full compass (26) <span aria-hidden="true">↗</span></a>
+    <button type="button" class="btn btn-quiet" id="about-btn" onclick="openAbout()" aria-haspopup="dialog">About</button>
   </nav>
 
   <!-- Workspace presets, add/save/reset and Clear inputs: hidden until the feature is ready for public use -->
@@ -1015,9 +1007,9 @@ button,input,select,textarea{font-family:inherit}
       <select id="layout-sel" onchange="applyLayout(this.value)" title="Pick a starting set of modules for what you're doing"></select>
     </div>
     <select id="add-mod-sel" class="dock-add" onchange="addModule(this.value)" title="Add a module to this workspace"></select>
-    <button class="dock-mini" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
-    <button class="dock-reset" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
-    <button class="dock-reset" onclick="clearInputs()" title="Clear the Brief (Audience, Format) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
+    <button type="button" class="btn btn-secondary" onclick="saveLayout()" title="Save the current arrangement as your own workspace">Save…</button>
+    <button type="button" class="btn btn-quiet" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
+    <button type="button" class="btn btn-quiet" onclick="clearInputs()" title="Clear the Brief (Audience, Format) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
   </div>
 </div>
 
@@ -1060,7 +1052,7 @@ button,input,select,textarea{font-family:inherit}
           <div id="brief-reqs" hidden>
           <div class="tune-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="Constraints no automated check can see — confirm each one before sign-off.">Requirements &amp; restrictions</span></div>
           <div id="req-list"></div>
-          <button class="add-more" id="notes-add" onclick="showNotes()">＋ Add another constraint</button>
+          <button type="button" class="btn btn-quiet" id="notes-add" onclick="showNotes()">＋ Add another constraint</button>
           <div id="notes-wrap" style="display:none">
             <textarea class="brief-input" id="brief-notes" rows="3" style="resize:vertical"
                       placeholder="Brand rules, legal copy, print specs, translations…"
@@ -1076,7 +1068,7 @@ button,input,select,textarea{font-family:inherit}
         <span class="fw-top-name">Frameworks</span>
         <span class="fw-top-count" id="fw-top-count"></span>
         <div class="fw-top-chips" id="fw-top-chips"></div>
-        <span class="fw-top-clear" id="fw-top-clear" style="display:none" onclick="event.stopPropagation();clearFrameworks()" title="Untick every framework">✕ Clear</span>
+        <button type="button" class="btn btn-quiet" id="fw-top-clear" style="display:none" onclick="event.stopPropagation();clearFrameworks()" title="Untick every framework">Clear</button>
         <span class="fw-top-toggle" id="fw-top-toggle">Show all 23 ▸</span>
       </div>
       <div class="fw-top-panel" id="fw-top-panel">
@@ -1089,7 +1081,7 @@ button,input,select,textarea{font-family:inherit}
               <button data-v="partial" onclick="setOutFilter('partial')">Partial score</button>
               <button data-v="qual" onclick="setOutFilter('qual')">Qualitative</button>
             </div>
-            <button class="fw-clear-btn" onclick="clearFrameworks()" title="Untick every framework and reset the filter">Clear selection</button>
+            <button type="button" class="btn btn-quiet" onclick="clearFrameworks()" title="Untick every framework and reset the filter">Clear selection</button>
           </div>
           <div class="fw-top-grid" id="fw-top-grid"></div>
         </div>
@@ -1099,32 +1091,32 @@ button,input,select,textarea{font-family:inherit}
   </div>
 
   <!-- ── CANVAS ── -->
-  <div class="canvas" id="canvas">
+  <div class="canvas is-empty" id="canvas">
     <div class="canvas-hdr">
-      <span class="canvas-title"><span class="canvas-led" id="led"></span> Material</span>
+      <span class="canvas-title">Material</span>
       <span class="canvas-file" id="canvas-file" style="display:none">
         <span class="cf-kind" id="canvas-file-kind">DOC</span>
         <span class="cf-name" id="canvas-file-name"></span>
       </span>
       <div class="canvas-actions">
-        <button class="in-key k-doc" onclick="document.getElementById('file-doc').click()" title="Upload a document, image or PDF"><span class="k-dot"></span>Upload</button>
-        <button class="in-key k-hist" id="hist-btn" onclick="toggleFileHistory()" title="Files opened this session"><span class="k-dot"></span>Files <span id="hist-count">0</span></button>
-        <button class="in-key k-clear" onclick="clearEditor()" title="Remove the material and reset all scores"><span class="k-dot"></span>Clear</button>
+        <button type="button" class="btn btn-quiet" id="hist-btn" onclick="toggleFileHistory()" title="Files opened this session" aria-controls="file-history" hidden>Files <span id="hist-count">0</span></button>
+        <button type="button" class="btn btn-secondary hide-when-empty" onclick="document.getElementById('file-doc').click()" title="Upload a document, image or PDF">Upload</button>
+        <button type="button" class="btn btn-quiet hide-when-empty" onclick="clearEditor()" title="Remove the material and reset all scores">Clear</button>
       </div>
     </div>
 
     <!-- file history drawer -->
     <div id="file-history" style="display:none">
-      <div class="fh-hdr">Files this session<button class="fh-x" onclick="toggleFileHistory()">✕</button></div>
+      <div class="fh-hdr">Files this session<button type="button" class="btn btn-quiet btn-icon" onclick="toggleFileHistory()" aria-label="Close files" title="Close">✕</button></div>
       <div id="fh-list"></div>
     </div>
 
     <!-- ── EDITOR TOOLBAR ── -->
-    <div class="etb" id="etb">
-      <button class="etb-b" onclick="exec('undo')" title="Undo (Ctrl/⌘+Z)">↶</button>
-      <button class="etb-b" onclick="exec('redo')" title="Redo (Ctrl/⌘+Shift+Z)">↷</button>
+    <div class="etb" id="etb" role="toolbar" aria-label="Formatting">
+      <button type="button" class="btn btn-quiet btn-icon" onclick="exec('undo')" title="Undo (Ctrl/⌘+Z)" aria-label="Undo">↶</button>
+      <button type="button" class="btn btn-quiet btn-icon" onclick="exec('redo')" title="Redo (Ctrl/⌘+Shift+Z)" aria-label="Redo">↷</button>
       <span class="etb-sep"></span>
-      <select class="etb-sel" id="etb-block" onchange="exec('formatBlock', this.value); this.selectedIndex=0" title="Paragraph style">
+      <select class="etb-sel" id="etb-block" onchange="exec('formatBlock', this.value); this.selectedIndex=0" title="Paragraph style" aria-label="Paragraph style">
         <option value="">Style…</option>
         <option value="h1">Title (H1)</option>
         <option value="h2">Heading (H2)</option>
@@ -1132,19 +1124,13 @@ button,input,select,textarea{font-family:inherit}
         <option value="p">Body text</option>
       </select>
       <span class="etb-sep"></span>
-      <button class="etb-b etb-bold" onclick="exec('bold')" title="Bold (Ctrl/⌘+B)">B</button>
-      <button class="etb-b etb-ital" onclick="exec('italic')" title="Italic (Ctrl/⌘+I)" aria-label="Italic">𝘐</button>
+      <button type="button" class="btn btn-quiet btn-icon etb-bold" onclick="exec('bold')" title="Bold (Ctrl/⌘+B)" aria-label="Bold">B</button>
+      <button type="button" class="btn btn-quiet btn-icon etb-ital" onclick="exec('italic')" title="Italic (Ctrl/⌘+I)" aria-label="Italic">𝘐</button>
       <span class="etb-sep"></span>
-      <button class="etb-b" onclick="exec('insertUnorderedList')" title="Bulleted list">• —</button>
-      <button class="etb-b" onclick="exec('insertOrderedList')" title="Numbered list">1. —</button>
-      <span class="etb-sep"></span>
-      <button class="etb-b" onclick="addLink()" title="Add link">🔗</button>
-      <button class="etb-b" onclick="exec('removeFormat')" title="Clear formatting">⌫ fmt</button>
-      <span class="etb-sep"></span>
-      <button class="etb-b etb-track" id="track-btn" onclick="toggleTrack()" title="Record a version each time you stop typing">Track changes: off</button>
-      <button class="etb-b" onclick="saveVersion()" title="Save a named version you can return to">＋ Version</button>
+      <button type="button" class="btn btn-quiet" onclick="exec('insertUnorderedList')" title="Bulleted list" aria-label="Bulleted list">• —</button>
+      <button type="button" class="btn btn-quiet" onclick="exec('insertOrderedList')" title="Numbered list" aria-label="Numbered list">1. —</button>
       <span class="etb-flex"></span>
-      <span class="etb-hint" id="etb-hint"></span>
+      <span class="etb-hint" id="etb-hint" aria-live="polite"></span>
     </div>
 
     <div id="doc-warn" style="display:none;padding:9px 14px;background:#fff8e6;border-bottom:1px solid #f0e2c0;font-size:var(--fs-xs);font-weight:400;color:#7a5a00;line-height:1.55;flex-shrink:0"></div>
@@ -1155,44 +1141,22 @@ button,input,select,textarea{font-family:inherit}
 
       <!-- VISUAL MODE (image / poster / data-vis / PDF) -->
       <div id="visual-mode" style="display:none">
-        <div class="vm-stage">
-          <div class="vm-preview" id="vm-preview">
-            <canvas id="vm-canvas"></canvas>
-            <div class="vm-pager" id="vm-pager" style="display:none">
-              <button onclick="pdfPage(-1)">‹</button>
-              <span id="vm-pageno">1 / 1</span>
-              <button onclick="pdfPage(1)">›</button>
+        <div class="vm-stage" id="vm-stage">
+          <!-- the workspace shows the artwork only; its text, alt text and colour checks are cards in the score area -->
+          <div class="vm-art" id="vm-art">
+            <div class="vm-art-bar" role="toolbar" aria-label="Artwork view">
+              <button type="button" class="btn btn-quiet btn-icon" onclick="vmZoomStep(-1)" aria-label="Zoom out (Shift −)" title="Zoom out (Shift −)">−</button>
+              <button type="button" class="btn btn-quiet" id="vm-fit" onclick="vmZoomFit()" aria-pressed="true" aria-label="Fit the artwork to the panel (Shift 0)" title="Fit the artwork to the panel (Shift 0)">Fit</button>
+              <button type="button" class="btn btn-quiet btn-icon" onclick="vmZoomStep(1)" aria-label="Zoom in (Shift +)" title="Zoom in (Shift +)">+</button>
+              <span class="vm-zoom-pct" id="vm-zoom-pct" aria-live="polite">100%</span>
+              <div class="vm-pager" id="vm-pager" style="display:none">
+                <button type="button" class="btn btn-quiet btn-icon" onclick="pdfPage(-1)" aria-label="Previous page" title="Previous page">‹</button>
+                <span class="vm-pageno" id="vm-pageno" aria-live="polite">1 / 1</span>
+                <button type="button" class="btn btn-quiet btn-icon" onclick="pdfPage(1)" aria-label="Next page" title="Next page">›</button>
+              </div>
             </div>
-          </div>
-          <div class="vm-side">
-            <div class="vm-sec-lbl"><span class="lbl-info" role="button" tabindex="0" data-tip="A screen reader reads this out in place of the image. Say what the image tells the reader. Don’t start with “image of”.">Alt text</span></div>
-            <textarea class="brief-input" id="vm-alt" rows="3" placeholder="e.g. Blood pressure log with three steps: sit, measure, record" oninput="onVisualInput()"></textarea>
-            <div class="vm-count" id="vm-alt-count">0 characters</div>
-
-            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Type every word you see in the artwork. This is the text the tool checks. Without it, a poster can’t be scored.">Text in the artwork</span></div>
-            <textarea class="brief-input" id="vm-transcript" rows="10" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
-            <div class="vm-count" id="vm-txt-count">0 words</div>
-            <div class="vm-hint" id="vm-txt-hint"><b>Add the text to start scoring.</b> CCI, PEMAT, Readability and Plain language can't read an image. Type or paste every word from the artwork here and their cards will appear.</div>
-
-            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Charts get extra checks. They need labels and a key, and must not rely on colour alone.">Visual type</span></div>
-            <div class="seg seg-grid" id="seg-vtype">
-              <button data-v="poster"  onclick="setVisualType('poster',this)">Poster</button>
-              <button data-v="datavis" onclick="setVisualType('datavis',this)">Chart / data</button>
-              <button data-v="diagram" onclick="setVisualType('diagram',this)">Diagram</button>
-              <button data-v="photo"   onclick="setVisualType('photo',this)">Photo</button>
-            </div>
-
-            <div class="vm-sec-lbl" style="margin-top:12px"><span class="lbl-info" role="button" tabindex="0" data-tip="Colours taken from the artwork. Pick two to see how well they stand out from each other.">Palette from artwork</span></div>
-            <div class="vm-palette" id="vm-palette"></div>
-            <div class="vm-pair" id="vm-pair"></div>
-
-            <div class="vm-sec-lbl" style="margin-top:10px"><span class="lbl-info" role="button" tabindex="0" data-tip="About 1 in 12 men see some colours differently. Red-green is the most common kind. If two parts of a chart turn the same colour here, add labels or patterns.">Colour-blind simulation</span></div>
-            <div class="seg seg-grid" id="seg-cvd">
-              <button class="on" data-v="none" onclick="setCvd('none',this)">Normal</button>
-              <button data-v="deuter" onclick="setCvd('deuter',this)">Deuteranopia</button>
-              <button data-v="protan" onclick="setCvd('protan',this)">Protanopia</button>
-              <button data-v="tritan" onclick="setCvd('tritan',this)">Tritanopia</button>
-              <button data-v="gray"   onclick="setCvd('gray',this)">Greyscale / mono print</button>
+            <div class="vm-preview" id="vm-preview" tabindex="0" role="region" aria-label="Artwork. Arrow keys scroll when zoomed. Shift plus and Shift minus zoom, Shift 0 fits.">
+              <canvas id="vm-canvas"></canvas>
             </div>
           </div>
         </div>
@@ -1200,13 +1164,11 @@ button,input,select,textarea{font-family:inherit}
 
       <div class="canvas-empty" id="canvas-empty">
         <div class="ce-title">Drop anything in here</div>
-        <div class="ce-sub"><b>Type</b> straight into the page or <b>paste</b> from anywhere.
-          Drop a <b>.docx / .txt / .md / .html</b> to edit and score it, or a
-          <b>poster, chart, PDF or image</b> to open it in visual mode.</div>
+        <div class="ce-sub">Type or paste here, or upload a document, image or PDF.</div>
         <div class="ce-actions">
-          <button class="in-key k-doc ce-sample" onclick="document.getElementById('file-doc').click()"><span class="k-dot"></span>Upload</button>
-          <button class="in-key k-type ce-sample" onclick="loadSample()" title="A one-page Word handout, opened in the editor"><span class="k-dot" style="background:var(--gold)"></span>Sample Word handout</button>
-          <button class="in-key k-img ce-sample" onclick="loadSamplePoster()" title="A poster image, opened in visual mode with its text typed in"><span class="k-dot"></span>Sample poster</button>
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('file-doc').click()" title="Upload a document, image or PDF">Upload</button>
+          <button type="button" class="btn btn-secondary" onclick="loadSample()" title="A one-page Word handout, opened in the editor">Sample Word handout</button>
+          <button type="button" class="btn btn-secondary" onclick="loadSamplePoster()" title="A poster image, opened in visual mode with its text typed in">Sample poster</button>
         </div>
       </div>
     </div>
@@ -1215,13 +1177,18 @@ button,input,select,textarea{font-family:inherit}
       <span><b id="f-words">0</b> words</span>
       <span><b id="f-sents">0</b> sentences</span>
       <span><b id="f-avg">0</b> w/sentence</span>
-      <button class="foot-btn" id="ver-btn" onclick="toggleVersions()" title="Version history and change log"><b id="f-vers">0</b> versions</button>
+      <button type="button" class="btn btn-quiet" id="ver-btn" onclick="toggleVersions()" aria-controls="ver-panel" title="Version history, Save version and Track changes"><b id="f-vers">0</b> versions</button>
       <span style="margin-left:auto" id="f-file">unsaved draft</span>
     </div>
 
-    <!-- version / change log drawer -->
+    <!-- version / change log drawer: Save version and Track changes live here -->
     <div id="ver-panel" style="display:none">
-      <div class="fh-hdr">Version history &amp; changes<button class="fh-x" onclick="toggleVersions()">✕</button></div>
+      <div class="fh-hdr">Version history &amp; changes<button type="button" class="btn btn-quiet btn-icon" onclick="toggleVersions()" aria-label="Close version history" title="Close">✕</button></div>
+      <div class="ver-actions">
+        <button type="button" class="btn btn-secondary" onclick="saveVersion()" title="Save a named version you can return to">Save version</button>
+        <button type="button" class="btn btn-quiet" id="track-btn" onclick="toggleTrack()" aria-pressed="false" title="Record a version each time you stop typing">Track changes: off</button>
+        <span class="ver-kbd">Ctrl/⌘+S also saves a version</span>
+      </div>
       <div id="ver-list"></div>
     </div>
   </div>
@@ -1239,18 +1206,14 @@ button,input,select,textarea{font-family:inherit}
         <div class="guide-body">
           <div class="guide-h">Set your Brief</div>
           <p>Pick who it's for and what it is: a handout, poster, video and so on.</p>
-          <button type="button" class="in-key" onclick="toggleBriefTop()">Open Brief</button>
+          <button type="button" class="btn btn-secondary" onclick="toggleBriefTop()">Open Brief</button>
         </div>
       </li>
       <li class="guide-step" id="gs-text">
         <span class="guide-n" aria-hidden="true" data-n="2">2</span>
         <div class="guide-body">
           <div class="guide-h">Add your material</div>
-          <p>Upload a file, or paste or type your text into the document on the left.</p>
-          <span class="guide-actions">
-            <button type="button" class="in-key" onclick="document.getElementById('file-doc').click()">Upload a file</button>
-            <button type="button" class="in-key" onclick="loadSample()">Try a sample</button>
-          </span>
+          <p>Upload a file, or paste or type your text in the Material panel.</p>
         </div>
       </li>
       <li class="guide-step" id="gs-fw">
@@ -1258,7 +1221,7 @@ button,input,select,textarea{font-family:inherit}
         <div class="guide-body">
           <div class="guide-h">Pick your frameworks</div>
           <p>Choose the published tools to check against, such as CCI or PEMAT.</p>
-          <button type="button" class="in-key" onclick="toggleFwTop()">Open Frameworks</button>
+          <button type="button" class="btn btn-secondary" onclick="toggleFwTop()">Open Frameworks</button>
         </div>
       </li>
       <li class="guide-step" id="gs-review">
@@ -1272,12 +1235,64 @@ button,input,select,textarea{font-family:inherit}
   </section>
   <div class="mod-rail mod-rail-right" id="rail-right">
 
+    <!-- ── ARTWORK CARDS: shown only while an image or PDF is open (APPLIES → visualOn) ── -->
+    <div class="mod mod-vtext" id="mod-vtext">
+      <div class="mod-hdr">
+        <span class="mod-name" role="button" tabindex="0" data-tip="The words in the artwork, read by the computer. This is the text the tool checks, so correct anything it got wrong and add anything it missed.">Text in the artwork</span>
+        <span class="pill pill-empty" id="vtext-pill">—</span>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vtext')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vtext')" title="Remove from this workspace">✕</button>
+      </div>
+      <div class="mod-body">
+        <div class="vm-ocr" id="vm-ocr" role="status">
+          <span class="vm-ocr-msg" id="vm-ocr-msg"></span>
+          <progress class="vm-ocr-bar" id="vm-ocr-bar" max="100" aria-label="Reading text" hidden></progress>
+        </div>
+        <textarea class="brief-input" id="vm-transcript" aria-label="Text in the artwork" aria-describedby="vm-ocr-msg" rows="8" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
+        <div class="vm-count" id="vm-txt-count">0 words</div>
+        <div class="vm-note" id="vm-txt-hint"><b>Add the text to start scoring.</b> CCI, PEMAT, Readability and Plain language can't read an image. Type or paste every word from the artwork here and their cards will appear.</div>
+      </div>
+    </div>
+
+    <div class="mod mod-valt" id="mod-valt">
+      <div class="mod-hdr">
+        <span class="mod-name">Alt text</span>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-valt')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-valt')" title="Remove from this workspace">✕</button>
+      </div>
+      <div class="mod-body">
+        <p class="vm-help" id="vm-alt-help">A screen reader reads this out in place of the image. Say what the image tells the reader. Don’t start with “image of”.</p>
+        <textarea class="brief-input" id="vm-alt" aria-label="Alt text" aria-describedby="vm-alt-help" rows="3" placeholder="e.g. Blood pressure log with three steps: sit, measure, record" oninput="onVisualInput()"></textarea>
+        <div class="vm-count" id="vm-alt-count">0 characters</div>
+      </div>
+    </div>
+
+    <div class="mod mod-vcolour" id="mod-vcolour">
+      <div class="mod-hdr">
+        <span class="mod-name">Colour and contrast</span>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vcolour')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vcolour')" title="Remove from this workspace">✕</button>
+      </div>
+      <div class="mod-body">
+        <h3 class="vm-sec-lbl">Palette from the artwork</h3>
+        <p class="vm-help">Colours taken from the artwork. Pick two to see how well they stand out from each other.</p>
+        <div class="vm-palette" id="vm-palette" role="group" aria-label="Colours in the artwork"></div>
+        <div class="vm-pair" id="vm-pair"></div>
+        <h3 class="vm-sec-lbl vm-sec-gap">Colour-blind simulation</h3>
+        <p class="vm-help">About 1 in 12 men see some colours differently. Red-green is the most common kind. If two parts of a chart turn the same colour here, add labels or patterns.</p>
+        <div class="seg seg-grid" id="seg-cvd" role="group" aria-label="Colour-blind simulation">
+          <button type="button" class="on" data-v="none" aria-pressed="true" onclick="setCvd('none',this)">Normal</button>
+          <button type="button" data-v="deuter" aria-pressed="false" onclick="setCvd('deuter',this)">Deuteranopia</button>
+          <button type="button" data-v="protan" aria-pressed="false" onclick="setCvd('protan',this)">Protanopia</button>
+          <button type="button" data-v="tritan" aria-pressed="false" onclick="setCvd('tritan',this)">Tritanopia</button>
+          <button type="button" data-v="gray" aria-pressed="false" onclick="setCvd('gray',this)">Greyscale / mono print</button>
+        </div>
+      </div>
+    </div>
+
     <!-- ── MODULE: FRAMEWORK OUTPUTS (reflects whatever is selected in the Frameworks bar) ── -->
     <div class="mod mod-fwout" id="mod-fwout">
       <div class="mod-hdr">
         <span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you pick that the tool can’t score show up here as lists. You rate each item yourself. CCI, PEMAT, Readability and Plain language have their own cards.">Framework checklists</span>
         <span class="pill pill-empty" id="fwout-pill">—</span>
-        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-fwout')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-fwout')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body"><div id="fwout-body"></div></div>
     </div>
@@ -1288,7 +1303,7 @@ button,input,select,textarea{font-family:inherit}
         <span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid). Your audience sets the goal.">Readability</span>
         
         
-        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-read')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-read')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body" id="read-body">
         <div class="score-why" id="read-why"></div>
@@ -1316,7 +1331,7 @@ button,input,select,textarea{font-family:inherit}
         <span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. <b>A score of 90 or more passes.</b><br><br>AUTO items are scored from your text. Tick the rest yourself.">CCI</span>
         <span class="pill pill-empty" id="cci-pill">—</span>
         
-        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="status-line mod-status" id="cci-status"></div>
@@ -1332,7 +1347,7 @@ button,input,select,textarea{font-family:inherit}
         <span class="mod-name" role="button" tabindex="0" data-tip="PEMAT, from AHRQ, gives two scores. Can a patient <b>understand</b> it (17 items)? Can they <b>act</b> on it (7 items)? Items that don’t apply are left out.<br><br>AHRQ sets no pass mark — higher is better. This card uses <b>70% or more on both</b> as a working target.<br><br>Videos and animation use <b>PEMAT-A/V</b> instead (set Format to Video / animation).">PEMAT</span>
         <span class="pill pill-empty" id="pemat-pill">U — · A —</span>
         
-        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-pemat')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-pemat')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="status-line mod-status" id="pemat-status"></div>
@@ -1353,7 +1368,7 @@ button,input,select,textarea{font-family:inherit}
         <span class="mod-name" role="button" tabindex="0" data-tip="Checks each sentence for long sentences, medical words, passive voice, vague words, bare percents and short forms.<br><br>Click an issue to jump to it.">Plain language</span>
         
         
-        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-scan')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-scan')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="scan-summary">
@@ -1371,7 +1386,7 @@ button,input,select,textarea{font-family:inherit}
         <span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks to run <b>before</b> the Adobe test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fix them here and you fix less in InDesign.">Accessibility</span>
         <span class="pill pill-empty" id="a11y-pill">—</span>
         
-        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-a11y')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-a11y')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="score-why" id="a11y-why"></div>
@@ -1386,7 +1401,7 @@ button,input,select,textarea{font-family:inherit}
         <span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer find a source for each health claim? This flags numbers with no source, old dates, no review date, and words like “always” or “100% safe”.">Accuracy</span>
         <span class="pill pill-empty" id="acc-pill">—</span>
         
-        <button class="mod-min mod-fold" onclick="toggleCollapse('mod-acc')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button class="mod-min mod-hide" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-acc')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="score-why" id="acc-why"></div>
@@ -1406,7 +1421,7 @@ button,input,select,textarea{font-family:inherit}
 <dialog class="about" id="about" aria-labelledby="about-title">
   <div class="about-hdr">
     <h2 id="about-title">About this project</h2>
-    <button type="button" class="about-x" onclick="closeAbout()" aria-label="Close">✕</button>
+    <button type="button" class="btn btn-quiet btn-icon" onclick="closeAbout()" aria-label="Close" title="Close">✕</button>
   </div>
   <div class="about-body" id="about-body">
     <h3>What it is</h3>
@@ -1438,6 +1453,7 @@ button,input,select,textarea{font-family:inherit}
     <p>Sonia Seto (Sonia Seto Studios) and Chloe Ma (GoInvo). This is a work in progress.</p>
   </div>
 </dialog>
+
 
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
@@ -1987,11 +2003,16 @@ function hasArtwork(){
 }
 
 // Every score card, in default order (defined up here: the Frameworks bar renders during load)
-const MODS = ['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc'];
+// The artwork cards come first and show only while an image or PDF is open
+const VIS_MODS = ['mod-vtext','mod-valt','mod-vcolour'];
+const MODS = [...VIS_MODS, 'mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan','mod-a11y','mod-acc'];
 // Each rule answers: can this module say anything useful right now?
 const APPLIES = {
   'mod-goal':  () => true,                       // choosing a framework needs no content
   'mod-a11y':  () => true,                       // guidance is useful before you write
+  'mod-vtext':   () => visualOn,
+  'mod-valt':    () => visualOn,
+  'mod-vcolour': () => visualOn,
   'mod-read':  () => hasContent(),
   // CCI and PEMAT show only when picked in Frameworks (or implied by the Brief)
   'mod-cci':   () => hasContent() && fwChosen('cci'),
@@ -2006,6 +2027,7 @@ const APPLIES = {
 const NA_REASON = {
   'mod-read':'needs text', 'mod-cci':'needs text', 'mod-pemat':'needs text',
   'mod-scan':'needs text', 'mod-acc':'needs text',
+  'mod-vtext':'needs an image or PDF', 'mod-valt':'needs an image or PDF', 'mod-vcolour':'needs an image or PDF',
 };
 
 function updateApplicability(){
@@ -2167,7 +2189,6 @@ function explainScores(stats, empty){
 // ── Main analysis loop ──
 let debounceT = null;
 function scheduleAnalysis(){
-  $('led').classList.add('live');
   clearTimeout(debounceT);
   debounceT = setTimeout(analyze, 380);
 }
@@ -2176,8 +2197,7 @@ function analyze(){
   const struct = readStructure();
   const text = struct.text;
   const empty = !hasContent();
-  $('canvas-empty').style.display =
-    (visualOn || text.trim() || editor.querySelector('img')) ? 'none' : 'flex';
+  setCanvasEmpty(!(visualOn || text.trim() || editor.querySelector('img')));
 
   const stats = empty ? null : computeFK(text);
   lastFlags = autoFlags(stats, empty ? null : struct);
@@ -2268,7 +2288,11 @@ function analyze(){
   renderFwTopBar();          // in-use scoring modules show as selected in the Frameworks bar
   // checklists with text-derived suggestions re-read the material
   if(selectedFrameworks().some(k => FW_AUTO[k])) renderFwOut();
-  $('led').classList.remove('live');
+}
+// While the canvas is empty the empty state carries the one Upload; the header Upload/Clear hide (nothing to clear)
+function setCanvasEmpty(empty){
+  $('canvas-empty').style.display = empty ? 'flex' : 'none';
+  $('canvas').classList.toggle('is-empty', !!empty);
 }
 
 // ════════════════════════════════════════
@@ -2513,46 +2537,71 @@ let cvdMode = 'none';
 let vmImage = null;          // HTMLImageElement of the current artwork
 let vmPalette = [];
 let vmPicked = [];
-let pdfDoc = null, pdfPageNo = 1;
+let pdfDoc = null, pdfPageNo = 1, pdfRenderTask = null;
 
 function isVisual(){ return visualOn; }
 
+let vmLoadTok = 0;           // a slow image load for a file you've already left must not draw over the new one
+
 function openVisual(entry){
+  ocrCancel();                               // a reading still running for another file is now stale
   visualOn = true;
   $('visual-mode').style.display = 'flex';
+  $('canvas').classList.add('is-visual');
   editor.style.display = 'none';
-  $('canvas-empty').style.display = 'none';
+  setCanvasEmpty(false);
   $('etb').style.display = 'none';           // formatting bar is for text, not artwork
   setCanvasTitle(entry.name, entry.kind);
+  vmZoom = null;                             // every artwork opens fitted to the panel
+  pdfDoc = null; vmImage = null;
+  vmStopPdfRender();
+  $('vm-pager').style.display = 'none';
+  $('ver-panel').style.display = 'none';     // versions hold editor text only
 
   $('vm-alt').value = entry.alt || '';
   $('vm-transcript').value = entry.transcript || '';
-  setVisualType(entry.vtype || 'poster', document.querySelector('#seg-vtype button[data-v="'+(entry.vtype||'poster')+'"]'));
+  visualType = entry.vtype || 'poster';      // the Visual type control is gone; the value stays for scoring
+  setOcrState(entry.ocrState || 'idle');
 
   if(entry.kind === 'pdf'){ openPdf(entry); }
-  else { loadArtwork(entry.dataUrl); }
+  else {
+    loadArtwork(entry.dataUrl);
+    // read the words out of the image the first time it is opened
+    if(!entry.transcript && !entry.ocr) ocrImage(entry);
+  }
   onVisualInput();
+  updateApplicability();                     // the artwork cards appear in the score area
   pushNav();
 }
 
 function exitVisual(){
   if(!visualOn) return;
+  ocrCancel();
   visualOn = false;
   pdfDoc = null;
+  vmStopPdfRender();
   $('visual-mode').style.display = 'none';
+  $('canvas').classList.remove('is-visual');
   $('vm-pager').style.display = 'none';
+  setOcrState('idle');
   editor.style.display = '';
   $('etb').style.display = '';
-
+  updateApplicability();                     // and leave again
 }
 
 function loadArtwork(src){
+  const tok = ++vmLoadTok;
   const img = new Image();
-  img.onload = () => { vmImage = img; drawArtwork(); samplePalette(); onVisualInput(); };
+  img.onload = () => {
+    if(tok !== vmLoadTok || !visualOn) return;
+    vmImage = img; drawArtwork({ sample:true }); onVisualInput();
+  };
   img.src = src;
 }
 
-function drawArtwork(){
+// opts.sample: take the palette from the original pixels (before any colour-blind filter);
+// only a newly opened artwork does this, so the two colours you picked survive a filter change
+function drawArtwork(opts){
   const c = $('vm-canvas');
   if(!vmImage || !c.getContext) return;
   const max = 1400;
@@ -2561,7 +2610,9 @@ function drawArtwork(){
   c.height = Math.round(vmImage.height * scale);
   const ctx = c.getContext('2d');
   ctx.drawImage(vmImage, 0, 0, c.width, c.height);
+  if(opts && opts.sample) samplePalette();
   if(cvdMode !== 'none') applyCvd(ctx, c);
+  vmApplyZoom();
 }
 
 // ── Colour vision deficiency simulation (Brettel/Viénot-style matrices) ──
@@ -2592,12 +2643,17 @@ function applyCvd(ctx, c){
 }
 function setCvd(mode, btn){
   cvdMode = mode;
-  if(btn) btn.parentElement.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
-  drawArtwork();
+  const seg = $('seg-cvd');
+  if(seg) seg.querySelectorAll('button').forEach(b => {
+    const on = b.dataset.v === mode;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+  if(pdfDoc) renderPdfPage(false);   // a PDF page re-renders; keep its palette and your picks
+  else drawArtwork();
   onVisualInput();
   pushNav();
 }
-
 // ── Dominant colours straight out of the artwork ──
 function samplePalette(){
   const c = $('vm-canvas');
@@ -2623,9 +2679,10 @@ function samplePalette(){
 }
 function renderPalette(){
   const el = $('vm-palette');
-  if(!vmPalette.length){ el.innerHTML = '<span style="font-size:var(--fs-xs);font-weight:400;color:var(--n400);">No palette yet.</span>'; return; }
+  if(!vmPalette.length){ el.innerHTML = '<span style="font-size:var(--fs-xs);font-weight:400;color:var(--n600);">No palette yet.</span>'; return; }
+  // palette values are '#rrggbb' strings computed from pixels, never user text
   el.innerHTML = vmPalette.map(c =>
-    '<div class="vm-sw'+(vmPicked.includes(c)?' sel':'')+'" style="background:'+c+'" title="'+c+'" onclick="pickSwatch(\''+c+'\')"></div>'
+    '<button type="button" class="vm-sw'+(vmPicked.includes(c)?' sel':'')+'" style="background:'+c+'" title="'+c+'" aria-label="Colour '+c+'" aria-pressed="'+vmPicked.includes(c)+'" onclick="pickSwatch(\''+c+'\')"></button>'
   ).join('');
 }
 function pickSwatch(hex){
@@ -2686,12 +2743,10 @@ function renderContrastCard(){
     '</div>';
 }
 
-function setVisualType(t, btn){
-  visualType = t;
-  const seg = $('seg-vtype');
-  if(seg) seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === t));
-  onVisualInput();
-  pushNav();
+// The Visual type control was removed from the UI; this stays so old history entries and callers don't break
+function setVisualType(t){
+  visualType = t || 'poster';
+  if(visualOn) onVisualInput();
 }
 
 // ── PDF via pdf.js ──
@@ -2702,24 +2757,28 @@ async function openPdf(entry){
   }
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   try {
-    pdfDoc = await pdfjsLib.getDocument({ data: entry.pdfData.slice(0) }).promise;
-    entry.pages = pdfDoc.numPages;
+    const doc = await pdfjsLib.getDocument({ data: entry.pdfData.slice(0) }).promise;
+    if(entry.id !== activeFileId || !visualOn) return;      // you moved on while it loaded
+    pdfDoc = doc;
+    entry.pages = doc.numPages;
     pdfPageNo = 1;
-    await renderPdfPage();
-    // pull the real text layer if this is a text-based PDF
-    if(!entry.transcript){
+    renderPdfPage(true);
+    // pull the real text layer if this is a text-based PDF; if there is none, read the rendered pages
+    if(!entry.transcript && !entry.ocr){
       let all = '';
-      for(let i=1;i<=Math.min(pdfDoc.numPages, 20);i++){
-        const pg = await pdfDoc.getPage(i);
+      for(let i=1;i<=Math.min(doc.numPages, 20);i++){
+        const pg = await doc.getPage(i);
         const tc = await pg.getTextContent();
         all += tc.items.map(t => t.str).join(' ') + '\n\n';
       }
+      if(entry.id !== activeFileId || !visualOn) return;
       if(all.trim().length > 20){
         $('vm-transcript').value = all.trim();
         entry.transcript = all.trim();
+        setOcrState('pdf', 0, entry);
         flashHint('Text extracted from the PDF automatically');
       } else {
-        warnBanner('This PDF has no text layer — the type is outlined or scanned. Type the copy into <b>Text in the artwork</b> to score it, or export a text-based PDF from InDesign.');
+        ocrPdf(entry, doc);
       }
     }
     renderFileHistory();
@@ -2728,25 +2787,48 @@ async function openPdf(entry){
     warnBanner('Could not open <b>'+escapeHtml(entry.name)+'</b> as a PDF. Try exporting it again, or paste the copy in as text.');
   }
 }
-async function renderPdfPage(){
+// resample: true for a new file or page (fresh palette, picks reset); false when only the
+// colour-blind view changed, so the palette and the two colours you picked stay put
+let pdfRenderSeq = 0, pdfNeedSample = false;
+// leaving a PDF: stop its page render so it can't draw over the next artwork (the task stays recorded so the next render waits for it to let go)
+function vmStopPdfRender(){ pdfRenderSeq++; pdfNeedSample = false; if(pdfRenderTask){ try { pdfRenderTask.cancel(); } catch(e){} } }
+async function renderPdfPage(resample){
   if(!pdfDoc) return;
-  const page = await pdfDoc.getPage(pdfPageNo);
+  if(resample !== false) pdfNeedSample = true;   // a superseded new-page render still owes the next one a fresh palette
+  const doc = pdfDoc, seq = ++pdfRenderSeq, pageNo = pdfPageNo;
+  const stale = () => doc !== pdfDoc || seq !== pdfRenderSeq;   // only the latest request draws
+  let page;
+  try { page = await doc.getPage(pageNo); } catch(e){ return; }
+  if(stale()) return;
   const vp = page.getViewport({ scale: 1.6 });
   const c = $('vm-canvas');
+  // a quick second page turn cancels the render still in progress, and waits for it to let go of the canvas
+  const prev = pdfRenderTask;
+  if(prev){ try { prev.cancel(); } catch(e){} try { await prev.promise; } catch(e){} }
+  if(stale()) return;
   c.width = vp.width; c.height = vp.height;
-  await page.render({ canvasContext: c.getContext('2d'), viewport: vp }).promise;
-  if(cvdMode !== 'none') applyCvd(c.getContext('2d'), c);
+  let task;
+  try {
+    task = pdfRenderTask = page.render({ canvasContext: c.getContext('2d'), viewport: vp });
+    await task.promise;
+  } catch(e){
+    if(!(e && e.name === 'RenderingCancelledException') && !stale()) warnBanner('Couldn’t draw this page of the PDF. Try another page, or export the file again.');
+    return;
+  } finally { if(task && pdfRenderTask === task) pdfRenderTask = null; }
+  if(stale()) return;
   vmImage = null;
-  samplePalette();
-  $('vm-pager').style.display = pdfDoc.numPages > 1 ? 'flex' : 'none';
-  $('vm-pageno').textContent = pdfPageNo + ' / ' + pdfDoc.numPages;
+  if(pdfNeedSample){ pdfNeedSample = false; samplePalette(); }   // from the original pixels, before any colour-blind filter
+  if(cvdMode !== 'none') applyCvd(c.getContext('2d'), c);
+  $('vm-pager').style.display = doc.numPages > 1 ? 'flex' : 'none';
+  $('vm-pageno').textContent = pageNo + ' / ' + doc.numPages;
+  vmApplyZoom();
 }
 function pdfPage(delta){
   if(!pdfDoc) return;
   const next = Math.max(1, Math.min(pdfDoc.numPages, pdfPageNo + delta));
   if(next === pdfPageNo) return;
   pdfPageNo = next;
-  renderPdfPage();
+  renderPdfPage(true);
   pushNav();
 }
 
@@ -2756,15 +2838,304 @@ function warnBanner(html){
   w.style.display = 'block';
 }
 
+// ── Artwork zoom and pan ──
+// vmZoom null = fit to the panel (the default); otherwise a scale where 1 (100%) = the artwork's drawn pixel size.
+// Only the canvas's CSS size changes, so colour-blind simulation and palette sampling keep reading the same pixels.
+let vmZoom = null;
+const VM_STEPS = [0.1, 0.25, 0.33, 0.5, 0.67, 0.75, 1, 1.25, 1.5, 2, 3, 4];
+
+function vmFitScale(){
+  const c = $('vm-canvas'), box = $('vm-preview');
+  if(!c || !box || !c.width || !box.clientWidth) return 1;
+  const cs = getComputedStyle(box);
+  const w = box.clientWidth  - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const h = box.clientHeight - parseFloat(cs.paddingTop)  - parseFloat(cs.paddingBottom);
+  return Math.max(0.05, Math.min(1, w / c.width, h / c.height));
+}
+function vmScale(){ return vmZoom == null ? vmFitScale() : vmZoom; }
+function vmApplyZoom(keepCentre){
+  const c = $('vm-canvas'), box = $('vm-preview');
+  if(!c || !box) return;
+  const pct = $('vm-zoom-pct'), fit = $('vm-fit');
+  if(fit) fit.setAttribute('aria-pressed', String(vmZoom == null));
+  if(!c.width){ if(pct) pct.textContent = '—'; return; }
+  let cx = 0.5, cy = 0.5;
+  if(keepCentre){
+    if(box.scrollWidth  > box.clientWidth)  cx = (box.scrollLeft + box.clientWidth / 2)  / box.scrollWidth;
+    if(box.scrollHeight > box.clientHeight) cy = (box.scrollTop  + box.clientHeight / 2) / box.scrollHeight;
+  }
+  const s = vmScale();
+  c.style.width  = Math.round(c.width  * s) + 'px';
+  c.style.height = Math.round(c.height * s) + 'px';
+  if(pct) pct.textContent = Math.round(s * 100) + '%';
+  box.classList.toggle('can-pan', box.scrollWidth > box.clientWidth + 1 || box.scrollHeight > box.clientHeight + 1);
+  if(keepCentre){
+    box.scrollLeft = cx * box.scrollWidth  - box.clientWidth  / 2;
+    box.scrollTop  = cy * box.scrollHeight - box.clientHeight / 2;
+  }
+}
+function vmZoomStep(dir){
+  const cur = vmScale();
+  const next = dir > 0
+    ? (VM_STEPS.find(z => z > cur + 0.001) || VM_STEPS[VM_STEPS.length - 1])
+    : (VM_STEPS.slice().reverse().find(z => z < cur - 0.001) || VM_STEPS[0]);
+  vmZoom = next;
+  vmApplyZoom(true);
+}
+function vmZoomFit(){ vmZoom = null; vmApplyZoom(); }
+
+(function(){
+  const box = $('vm-preview');
+  if(!box) return;
+  let drag = null, wheelT = 0;
+  // drag to pan when the artwork is bigger than the panel (touch keeps native scrolling)
+  box.addEventListener('pointerdown', e => {
+    if(e.button !== 0 || e.pointerType === 'touch' || !box.classList.contains('can-pan')) return;
+    drag = { x:e.clientX, y:e.clientY, l:box.scrollLeft, t:box.scrollTop, id:e.pointerId };
+    try { box.setPointerCapture(e.pointerId); } catch(err){}
+    box.classList.add('panning');
+  });
+  box.addEventListener('pointermove', e => {
+    if(!drag) return;
+    box.scrollLeft = drag.l - (e.clientX - drag.x);
+    box.scrollTop  = drag.t - (e.clientY - drag.y);
+  });
+  const end = () => {
+    if(!drag) return;
+    try { box.releasePointerCapture(drag.id); } catch(err){}
+    drag = null; box.classList.remove('panning');
+  };
+  box.addEventListener('pointerup', end);
+  box.addEventListener('pointercancel', end);
+  // arrows scroll natively (the region is focusable). With the artwork itself focused, plain = / - / 0 also
+  // zoom; Shift and numpad versions are handled for the whole panel below, so they're skipped here.
+  box.addEventListener('keydown', e => {
+    if(e.ctrlKey || e.metaKey || e.altKey || e.shiftKey || /^Numpad/.test(e.code)) return;
+    if(e.code === 'Equal'){ e.preventDefault(); vmZoomStep(1); }
+    else if(e.code === 'Minus'){ e.preventDefault(); vmZoomStep(-1); }
+    else if(e.code === 'Digit0'){ e.preventDefault(); vmZoomFit(); }
+  });
+  // Ctrl/⌘ + wheel (or a trackpad pinch) zooms, one step at a time
+  box.addEventListener('wheel', e => {
+    if(!(e.ctrlKey || e.metaKey)) return;
+    e.preventDefault();
+    const now = Date.now(); if(now - wheelT < 120) return; wheelT = now;
+    vmZoomStep(e.deltaY < 0 ? 1 : -1);
+  }, { passive:false });
+  // refit when the panel changes size (splitter, window, stacking)
+  if(window.ResizeObserver) new ResizeObserver(() => { if(visualOn) vmApplyZoom(); }).observe(box);
+  else window.addEventListener('resize', () => { if(visualOn) vmApplyZoom(); });
+
+  // Keyboard zoom for the whole Material panel: Shift + = / Shift + + in, Shift + - out, Shift + 0 fits,
+  // numpad + / - too. Active while focus is in the panel or the pointer is over it. e.code keeps it
+  // independent of the character the layout produces. Never while typing in a field.
+  const panel = $('canvas');
+  let pointerIn = false;
+  panel.addEventListener('pointerenter', () => { pointerIn = true; });
+  panel.addEventListener('pointerleave', () => { pointerIn = false; });
+  document.addEventListener('keydown', e => {
+    if(!visualOn || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+    const t = e.target;
+    if(t && t.nodeType === 1 && (t.isContentEditable || t.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])'))) return;
+    if(!(pointerIn || panel.contains(document.activeElement))) return;
+    let act = null;
+    if(e.code === 'NumpadAdd') act = 1;
+    else if(e.code === 'NumpadSubtract') act = -1;
+    else if(e.shiftKey && e.code === 'Equal') act = 1;
+    else if(e.shiftKey && e.code === 'Minus') act = -1;
+    else if(e.shiftKey && e.code === 'Digit0') act = 0;
+    if(act === null) return;
+    e.preventDefault();
+    if(act === 0) vmZoomFit(); else vmZoomStep(act);
+  });
+})();
+
+// ════════════════════════════════════════
+// READING TEXT OUT OF THE ARTWORK (OCR)
+// Tesseract.js, pinned and integrity-checked, loaded the first time it is needed. One worker is reused.
+// The result is evidence of words only: it fills "Text in the artwork", which the person checks and corrects.
+// ════════════════════════════════════════
+const OCR_LIB = { src:'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',
+                  sri:'sha384-GJqSu7vueQ9qN0E9yLPb3Wtpd7OrgK8KmYzC8T1IysG1bcvxvIO4qtYR/D3A991F' };
+const OCR_PATHS = {
+  workerPath:'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/worker.min.js',
+  corePath:  'https://cdn.jsdelivr.net/npm/tesseract.js-core@5.1.1',
+  langPath:  'https://cdn.jsdelivr.net/npm/@tesseract.js-data/eng@1.0.0/4.0.0_best_int',
+};
+const OCR_MAX_PDF_PAGES = 3;
+let ocrLibP = null, ocrWorkerP = null, ocrOnProgress = null;
+let ocrJob = 0;               // bumps on every new reading, file switch, exit or Clear; stale results are dropped
+
+function loadOcrLib(){
+  if(window.Tesseract) return Promise.resolve(window.Tesseract);
+  if(!ocrLibP) ocrLibP = new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = OCR_LIB.src; s.integrity = OCR_LIB.sri; s.crossOrigin = 'anonymous'; s.async = true;
+    s.onload  = () => window.Tesseract ? resolve(window.Tesseract) : reject(new Error('Tesseract missing'));
+    s.onerror = () => { s.remove(); reject(new Error('Tesseract failed to load')); };
+    document.head.appendChild(s);
+  }).catch(err => { ocrLibP = null; throw err; });     // a later artwork can try again
+  return ocrLibP;
+}
+function getOcrWorker(){
+  if(!ocrWorkerP) ocrWorkerP = loadOcrLib()
+    .then(T => T.createWorker('eng', 1, Object.assign({
+      logger: m => { if(ocrOnProgress) ocrOnProgress(m); },
+      errorHandler: () => {},
+    }, OCR_PATHS)))
+    .catch(err => { ocrWorkerP = null; throw err; });
+  return ocrWorkerP;
+}
+// Start loading the library in the background the first time any artwork opens (not on page load)
+function ocrWarm(){ loadOcrLib().catch(() => {}); }
+
+function ocrCancel(){ ocrJob++; ocrOnProgress = null; }
+
+// Keep lines the engine is reasonably sure of, drop stray marks from shapes and photos
+function ocrClean(data){
+  const raw = (data.lines && data.lines.length)
+    ? data.lines.filter(l => l.confidence >= 40).map(l => l.text)
+    : String(data.text || '').split('\n');
+  return raw.map(s => s.replace(/[|_~]+/g, ' ').replace(/\s+/g, ' ').trim())
+            .filter(s => (s.match(/[A-Za-z0-9]/g) || []).length >= 2)
+            .join('\n');
+}
+
+// Scale a source to a size the engine reads well (small art up, huge art down), off screen
+function ocrPrepare(src){
+  const w = src.naturalWidth || src.width, h = src.naturalHeight || src.height;
+  const long = Math.max(w, h) || 1;
+  const k = long < 1600 ? Math.min(2, 1600 / long) : long > 3000 ? 3000 / long : 1;
+  const c = document.createElement('canvas');
+  c.width = Math.round(w * k); c.height = Math.round(h * k);
+  const x = c.getContext('2d');
+  x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height);     // transparent PNGs read as black otherwise
+  x.drawImage(src, 0, 0, c.width, c.height);
+  return c;
+}
+
+// images: a list of canvases. Writes into the card only while that file is still the one open.
+async function runOcr(entry, images, what){
+  const job = ++ocrJob;
+  const live = () => job === ocrJob && visualOn && entry.id === activeFileId;
+  let done = 0, lastPct = -1;
+  setOcrState('running', 0, entry);
+  ocrOnProgress = m => {
+    if(!live() || m.status !== 'recognizing text') return;
+    const pct = Math.round(((done + (m.progress || 0)) / images.length) * 100);
+    if(pct !== lastPct){ lastPct = pct; setOcrState('running', pct, entry); }
+  };
+  try {
+    const worker = await getOcrWorker();
+    const parts = [];
+    for(const img of images){
+      if(!live()) return;                     // moved on: drop it, it will run again next time this file opens
+      const r = await worker.recognize(img);
+      parts.push(ocrClean(r.data)); done++;
+    }
+    if(!live()) return;
+    const text = parts.filter(Boolean).join('\n\n').trim();
+    entry.ocr = true;
+    const box = $('vm-transcript');
+    if((text.match(/[A-Za-z0-9]/g) || []).length < 3){
+      setOcrState('fail', 0, entry, what);
+    } else if(box.value.trim()){
+      setOcrState('kept', 0, entry);          // you had started typing: don't overwrite it
+    } else {
+      box.value = text;
+      entry.transcript = text;
+      setOcrState('done', 0, entry);
+    }
+    renderFileHistory();
+    onVisualInput();
+  } catch(err){
+    if(!live()) return;
+    setOcrState('fail', 0, entry, what);
+  } finally {
+    if(job === ocrJob) ocrOnProgress = null;
+  }
+}
+
+function ocrImage(entry){
+  const img = new Image();
+  img.onload  = () => { if(entry.id === activeFileId && visualOn) runOcr(entry, [ocrPrepare(img)], 'image'); };
+  img.onerror = () => { if(entry.id === activeFileId && visualOn) setOcrState('fail', 0, entry, 'image'); };
+  img.src = entry.dataUrl;
+  setOcrState('running', 0, entry);
+}
+
+// A PDF with no text layer: render the first few pages off screen at a scale the engine reads well.
+// The visible canvas, zoom, colour-blind view and picked colours are untouched.
+async function ocrPdf(entry, doc){
+  const job = ocrJob;
+  setOcrState('running', 0, entry);
+  try {
+    const pages = [];
+    for(let i = 1; i <= Math.min(doc.numPages, OCR_MAX_PDF_PAGES); i++){
+      const pg = await doc.getPage(i);
+      const base = pg.getViewport({ scale:1 });
+      const vp = pg.getViewport({ scale: Math.min(4, 2200 / Math.max(base.width, base.height)) });
+      const c = document.createElement('canvas');
+      c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+      const x = c.getContext('2d');
+      x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height);
+      await pg.render({ canvasContext: x, viewport: vp, intent:'print' }).promise;
+      pages.push(c);
+      if(job !== ocrJob || entry.id !== activeFileId) return;
+    }
+    runOcr(entry, pages, 'pdf');
+  } catch(err){
+    if(job === ocrJob && entry.id === activeFileId) setOcrState('fail', 0, entry, 'pdf');
+  }
+}
+
+// One calm line above the text box. The text box stays editable in every state.
+const OCR_MSG = {
+  running:  'Reading text…',
+  done:     'Machine-read — check it against the artwork and fix any mistakes.',
+  fail:     'Couldn’t read text from this image. Type the words you see.',
+  failpdf:  'No text found in this PDF. Type the words you see in the artwork.',
+  kept:     'You’d started typing, so the machine-read text wasn’t added.',
+  supplied: 'Text supplied with the sample.',
+  pdf:      'Text taken from the PDF — check it against the artwork.',
+  idle:     '',
+};
+function setOcrState(state, pct, entry, what){
+  if(entry && state !== 'running'){ entry.ocrState = state === 'fail' && what === 'pdf' ? 'failpdf' : state; }
+  if(entry && entry.id !== activeFileId) return;
+  const key = state === 'fail' && what === 'pdf' ? 'failpdf' : state;
+  const box = $('vm-ocr'), msg = $('vm-ocr-msg'), bar = $('vm-ocr-bar');
+  if(!box) return;
+  box.className = 'vm-ocr is-' + (key === 'failpdf' ? 'fail' : key);
+  msg.textContent = key === 'running' && pct > 0
+    ? 'Reading text… ' + Math.round(pct / 10) * 10 + '%'       // tens, so a screen reader isn't flooded
+    : (OCR_MSG[key] || '');
+  bar.hidden = key !== 'running';
+  if(key === 'running'){ if(pct > 0) bar.value = pct; else bar.removeAttribute('value'); }   // no value = busy, not 0%
+  if(state === 'running') ocrWarm();
+  $('vm-transcript').setAttribute('aria-busy', String(key === 'running'));
+  if(visualOn) syncVisualHint();
+}
+
+function syncVisualHint(){
+  const txt = $('vm-transcript').value.trim();
+  const state = ($('vm-ocr').className.match(/is-(\w+)/) || [])[1] || 'idle';
+  // the "add the text" nudge only when nothing else is already saying what to do
+  $('vm-txt-hint').style.display = (txt.length > 20 || state === 'running' || state === 'fail') ? 'none' : 'block';
+}
+
 // visual-mode edits feed the same analysis pipeline
 function onVisualInput(){
   const alt = $('vm-alt').value.trim();
   const txt = $('vm-transcript').value.trim();
+  const words = (txt.match(/\b\w+\b/g)||[]).length;
   $('vm-alt-count').textContent = alt.length + ' characters' + (alt.length > 150 ? ' — over 150, trim it' : '');
-  $('vm-txt-count').textContent = ((txt.match(/\b\w+\b/g)||[]).length) + ' words';
-  $('vm-txt-hint').style.display = txt.length > 20 ? 'none' : 'block';
+  $('vm-txt-count').textContent = words + (words === 1 ? ' word' : ' words');
+  const pill = $('vtext-pill');
+  if(pill){ pill.textContent = words + (words === 1 ? ' word' : ' words'); pill.className = 'pill ' + (words ? 'pill-count' : 'pill-empty'); }
+  syncVisualHint();
   const cur = fileHistory.find(f => f.id === activeFileId);
-  if(cur){ cur.alt = alt; cur.transcript = txt; cur.vtype = visualType; cur.words = (txt.match(/\b\w+\b/g)||[]).length; }
+  if(cur){ cur.alt = alt; cur.transcript = txt; cur.vtype = visualType; cur.words = words; }
   scheduleAnalysis();
 }
 
@@ -2865,7 +3236,6 @@ document.addEventListener('keydown', e => {
 const fileHistory = [];   // { id, name, kind, when, html?, dataUrl?, pdfData?, alt, transcript, vtype }
 let activeFileId = null;
 
-const KIND_COLOR = { doc:'var(--blue)', text:'var(--n500)', image:'var(--red)', pdf:'var(--orange)' };
 const KIND_LABEL = { doc:'DOC', text:'TXT', image:'IMG', pdf:'PDF' };
 
 function addToHistory(entry){
@@ -2878,21 +3248,23 @@ function addToHistory(entry){
 }
 function renderFileHistory(){
   $('hist-count').textContent = fileHistory.length;
+  $('hist-btn').hidden = fileHistory.length < 2;     // nothing to switch between until a second file is opened
   const list = $('fh-list');
   if(!fileHistory.length){
     list.innerHTML = '<div style="padding:14px 12px;font-size:var(--fs-xs);font-weight:400;color:var(--n400);">Nothing opened yet. Uploads and pasted images are listed here so you can switch back to them.</div>';
     return;
   }
   list.innerHTML = fileHistory.map(f =>
-    '<div class="fh-item'+(f.id===activeFileId?' active':'')+'" onclick="reopenFile(\''+f.id+'\')">'+
-      '<div class="fh-ico" style="background:'+(KIND_COLOR[f.kind]||'var(--n400)')+'">'+(KIND_LABEL[f.kind]||'?')+'</div>'+
-      '<div style="min-width:0;flex:1">'+
-        '<div class="fh-name">'+escapeHtml(f.name)+'</div>'+
-        '<div class="fh-meta">'+f.when.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+
+    '<div class="fh-item'+(f.id===activeFileId?' active':'')+'">'+
+      '<button type="button" class="btn btn-quiet fh-open" onclick="reopenFile(\''+f.id+'\')"'+(f.id===activeFileId?' aria-current="true"':'')+'>'+
+      '<span class="fh-ico">'+(KIND_LABEL[f.kind]||'?')+'</span>'+
+      '<span class="fh-txt">'+
+        '<span class="fh-name">'+escapeHtml(f.name)+'</span>'+
+        '<span class="fh-meta">'+f.when.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+
           (f.kind==='pdf'&&f.pages ? ' · '+f.pages+' pages' : '')+
-          (f.words ? ' · '+f.words+' words' : '')+'</div>'+
-      '</div>'+
-      '<button class="fh-del" onclick="event.stopPropagation();removeFile(\''+f.id+'\')" title="Remove from list">✕</button>'+
+          (f.words ? ' · '+f.words+' words' : '')+'</span>'+
+      '</span></button>'+
+      '<button type="button" class="btn btn-quiet btn-icon" onclick="removeFile(\''+f.id+'\')" title="Remove from list" aria-label="Remove '+escapeHtml(f.name)+' from the list">✕</button>'+
     '</div>'
   ).join('');
 }
@@ -2904,7 +3276,6 @@ function setCanvasTitle(name, kind){
   if(!name){ wrap.style.display = 'none'; $('f-file').textContent = 'unsaved draft'; return; }
   wrap.style.display = 'flex';
   $('canvas-file-kind').textContent = KIND_LABEL[kind] || 'FILE';
-  $('canvas-file-kind').style.background = KIND_COLOR[kind] || 'var(--n400)';
   const el = $('canvas-file-name');
   el.textContent = name;
   el.title = name;
@@ -2962,7 +3333,7 @@ let lastTrackedText = '';
 function toggleTrack(){
   trackOn = !trackOn;
   const b = $('track-btn');
-  b.classList.toggle('on', trackOn);
+  b.setAttribute('aria-pressed', String(trackOn));
   b.textContent = 'Track changes: ' + (trackOn ? 'on' : 'off');
   if(trackOn){
     lastTrackedText = editor.textContent || '';
@@ -2997,7 +3368,7 @@ function saveVersion(label){
 function renderVersions(){
   const list = $('ver-list');
   if(!versions.length){
-    list.innerHTML = '<div style="padding:14px 12px;font-size:var(--fs-xs);font-weight:400;color:var(--n400);">No versions yet. Hit <b>＋ Version</b> (or Ctrl/⌘+S) to save one, or switch on <b>Track changes</b> to record them automatically.</div>';
+    list.innerHTML = '<div style="padding:14px 12px;font-size:var(--fs-xs);font-weight:400;color:var(--n400);">No versions yet. Use <b>Save version</b> above (or Ctrl/⌘+S), or switch on <b>Track changes</b> to record them automatically.</div>';
     return;
   }
   list.innerHTML = versions.map((v,i) =>
@@ -3007,7 +3378,7 @@ function renderVersions(){
         ' <span style="color:var(--n400)">· '+v.words+' words · CCI '+v.cci+'</span></span>'+
       (v.dCci ? '<span class="ver-delta '+(v.dCci>0?'up':'down')+'">'+(v.dCci>0?'+':'')+v.dCci+' CCI</span>' : '')+
       (i===0 ? '<span class="ver-delta" style="color:var(--n400)">current</span>'
-             : '<button class="ver-restore" onclick="restoreVersion(\''+v.id+'\')">Restore</button>')+
+             : '<button type="button" class="btn btn-secondary" onclick="restoreVersion(\''+v.id+'\')">Restore</button>')+
     '</div>'
   ).join('');
 }
@@ -3051,6 +3422,7 @@ function clearEditor(){
   Object.keys(cciPartNA).forEach(k => cciPartNA[k] = null);
   $('vm-alt').value = ''; $('vm-transcript').value = '';
   vmPalette = []; vmPicked = []; vmImage = null; renderPalette();
+  setOcrState('idle');
   renderContrastCard();
   activeFileId = null;
   renderFileHistory();
@@ -3100,7 +3472,7 @@ async function intakeFile(file){
     });
     const entry = addToHistory({ name:file.name, kind:'image', dataUrl, alt:'', transcript:'', vtype:'poster' });
     openVisual(entry);
-    flashHint('Transcribe the words in the artwork to score it');
+    flashHint('Reading the words in the artwork. Check them in the Text in the artwork card.');
     return;
   }
 
@@ -3354,7 +3726,7 @@ function loadSamplePoster(){
   ].join('\n');
   stashActive();
   resetLiveOverrides();
-  const entry = addToHistory({ name:'sample-poster.png', kind:'image', dataUrl:c.toDataURL('image/png'), alt:'', transcript, vtype:'poster' });
+  const entry = addToHistory({ name:'sample-poster.png', kind:'image', dataUrl:c.toDataURL('image/png'), alt:'', transcript, vtype:'poster', ocrState:'supplied' });
   openVisual(entry);
   flashHint('Sample poster loaded. Pick two colours to test contrast, and add alt text.');
 }
@@ -3850,7 +4222,7 @@ function renderFwOut(){
       : 'Paste or type your material into the workspace';
     html += '<div class="fwo-need"><b>' + escapeHtml(names) + (live.length === 1 ? ' needs' : ' need') + ' text to score.</b> '
           + escapeHtml(what) + ' and ' + (live.length === 1 ? 'its card' : 'their cards') + ' will appear below.'
-          + '<div><button class="fwo-link" style="margin-top:6px" onclick="focusArtworkText()">' + (visualOn ? 'Add the poster\'s text' : 'Go to the workspace') + '</button></div></div>';
+          + '<div><button type="button" class="btn btn-secondary" style="margin-top:var(--sp-2)" onclick="focusArtworkText()">' + (visualOn ? 'Add the poster\'s text' : 'Go to the workspace') + '</button></div></div>';
   }
   if(part.length) html += fwGroupHdr('PARTIAL', part.length) + part.map(renderFwItem).join('');
   if(self.length) html += fwGroupHdr('SELF', self.length) + self.map(renderFwItem).join('');
@@ -4109,6 +4481,9 @@ function applyLayout(key, silent){
       rail.appendChild(m);
     });
   });
+  // the artwork cards are in every workspace (they hide themselves in text mode), always first
+  const right = $('rail-right');
+  VIS_MODS.slice().reverse().forEach(id => { const m = $(id); if(!m) return; m.classList.remove('hidden'); right.insertBefore(m, right.firstChild); });
   updateApplicability();
   $('layout-sel').value = key;
   lsSet(LS_LAST, key);
@@ -4119,7 +4494,7 @@ function applyLayout(key, silent){
 const MOD_NAMES = {
   'mod-fwout':'Framework checklists', 'mod-read':'Readability', 'mod-cci':'CCI',
   'mod-pemat':'PEMAT', 'mod-scan':'Plain language', 'mod-a11y':'Accessibility',
-  'mod-acc':'Accuracy',
+  'mod-acc':'Accuracy', 'mod-vtext':'Text in the artwork', 'mod-valt':'Alt text', 'mod-vcolour':'Colour and contrast',
 };
 
 // The "add module" menu only lists what isn't already on screen
@@ -4319,7 +4694,7 @@ function applyNav(s){
     }
     if(s.visual && visualOn){
       if(s.vtype && s.vtype !== visualType)
-        setVisualType(s.vtype, document.querySelector('#seg-vtype button[data-v="'+s.vtype+'"]'));
+        setVisualType(s.vtype);
       if(s.cvd && s.cvd !== cvdMode)
         setCvd(s.cvd, document.querySelector('#seg-cvd button[data-v="'+s.cvd+'"]'));
       if(pdfDoc && s.page && s.page !== pdfPageNo){ pdfPageNo = s.page; renderPdfPage(); }
@@ -4435,6 +4810,8 @@ $("about").addEventListener("close", () => $("about-btn").focus());             
 })();
 
 // ── Init ──
+// the artwork canvas is read back for the palette and colour-blind view, so ask for a readback-friendly context first
+try { $('vm-canvas').getContext('2d', { willReadFrequently:true }); } catch(e){}
 renderReqs();
 renderBriefTargets();
 renderFileHistory();
