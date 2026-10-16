@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Top nav: Full compass and About
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Full compass (26) ↗** moved from inside the Frameworks panel to a new top nav on the
+  right of the top bar.
+- **About** opens a dialog with the project summary. It's adapted from the "BMC AI Talk Proposal"
+  Google Doc and covers:
+  - what the tool is and why we built it
+  - how it works and how we built it with Claude
+  - the takeaways, and who we are
+- The proposal's title options, its undecided PRISM name variants and contact email are
+  left out. The working name is given as Prism.
+- The dialog closes with Escape, the ✕ button or a click outside. Focus returns to the About button.
+
 ## 2026-10-16 — Remove the mode-switch hints
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

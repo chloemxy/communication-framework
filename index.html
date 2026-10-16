@@ -680,8 +680,6 @@ input[type=range]{width:100%;accent-color:var(--blue)}
 .fw-top-card .full{font-size:var(--fs-xs);color:var(--n600);line-height:1.4}
 .fwc-meta{display:flex;align-items:center;gap:6px;margin-top:auto}
 .fwc-how{font-size:var(--fs-xs);color:var(--n500)}
-.fw-compass-link{font-size:var(--fs-xs);font-weight:700;color:var(--n500);text-decoration:none;white-space:nowrap}
-.fw-compass-link:hover{color:var(--n900)}
 
 /* ── FRAMEWORK OUTPUTS card + selection reflected on live cards ── */
 .mod.fw-off{opacity:.5;transition:opacity .15s}
@@ -807,6 +805,25 @@ button, select, input, textarea{font-family:var(--sans)}
 .mode-toggle button.on{background:var(--white);color:var(--n900);box-shadow:var(--shadow-1)}
 .dock{background:var(--n50);border:1px solid var(--n200);border-radius:var(--radius)}
 
+.topnav{display:flex;align-items:center;gap:var(--sp-1);margin-left:auto;flex-shrink:0}
+.topnav-link{border:none;background:none;cursor:pointer;font-size:var(--fs-sm);font-weight:600;color:var(--n600);text-decoration:none;padding:6px 10px;border-radius:var(--radius-sm);white-space:nowrap}
+.topnav-link:hover{background:var(--n100);color:var(--n900)}
+
+/* About dialog */
+.about{width:min(640px, calc(100vw - 32px));max-height:min(80vh, 760px);padding:0;border:1px solid var(--n200);border-radius:var(--radius-lg);box-shadow:var(--shadow-3);color:var(--n900);background:var(--white)}
+.about::backdrop{background:rgba(28,25,23,.35)}
+.about-hdr{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4) var(--sp-5);border-bottom:1px solid var(--n200);position:sticky;top:0;background:var(--white)}
+.about-hdr h2{font-size:var(--fs-lg);font-weight:650;margin-right:auto}
+.about-x{border:none;background:none;cursor:pointer;font-size:var(--fs-lg);color:var(--n500);width:32px;height:32px;border-radius:var(--radius-sm)}
+.about-x:hover{background:var(--n100);color:var(--n900)}
+.about-body{padding:var(--sp-4) var(--sp-5) var(--sp-6);font-size:var(--fs-sm);line-height:1.6;color:var(--n700)}
+.about-body h3{font-size:var(--fs-md);font-weight:650;color:var(--n900);margin:var(--sp-5) 0 var(--sp-2)}
+.about-body h3:first-child{margin-top:0}
+.about-body p{margin-bottom:var(--sp-3)}
+.about-body ul{padding-left:1.2em;margin-bottom:var(--sp-3)}
+.about-body li{margin-bottom:var(--sp-1)}
+.about-body a{color:var(--blue)}
+
 /* Brief / Frameworks bars */
 .fw-topbar{height:52px;border:1px solid var(--n200);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);gap:var(--sp-3)}
 .fw-topbar:hover{box-shadow:var(--shadow-2);border-color:var(--n300)}
@@ -930,6 +947,11 @@ button, select, input, textarea{font-family:var(--sans)}
     </div>
   </div>
 
+  <nav class="topnav" aria-label="Site">
+    <a href="framework-compass.html" target="_blank" rel="noopener" class="topnav-link" title="All 26 frameworks, including the 6 that need real-world data (Pink Book, OPTION, PAM, CAHPS, NPS, EBCD)">Full compass (26) <span aria-hidden="true">↗</span></a>
+    <button type="button" class="topnav-link" id="about-btn" onclick="openAbout()" aria-haspopup="dialog">About</button>
+  </nav>
+
   <!-- Workspace presets, add/save/reset and Clear inputs: hidden until the feature is ready for public use -->
   <div class="dock" id="dock" hidden>
     <div class="dock-preset">
@@ -1011,7 +1033,6 @@ button, select, input, textarea{font-family:var(--sans)}
               <button data-v="partial" onclick="setOutFilter('partial')">Partial score</button>
               <button data-v="qual" onclick="setOutFilter('qual')">Qualitative</button>
             </div>
-            <a href="framework-compass.html" target="_blank" rel="noopener" class="fw-compass-link" onclick="event.stopPropagation()" title="All 26 frameworks, including the 6 that need real-world data (Pink Book, OPTION, PAM, CAHPS, NPS, EBCD)">Full compass (26) ↗</a>
             <button class="fw-clear-btn" onclick="clearFrameworks()" title="Untick every framework and reset the filter">Clear selection</button>
           </div>
           <div class="fw-top-grid" id="fw-top-grid"></div>
@@ -1287,6 +1308,42 @@ button, select, input, textarea{font-family:var(--sans)}
 </div><!-- /stage -->
 
 <div id="tip"></div>
+
+<dialog class="about" id="about" aria-labelledby="about-title">
+  <div class="about-hdr">
+    <h2 id="about-title">About this project</h2>
+    <button type="button" class="about-x" onclick="closeAbout()" aria-label="Close">✕</button>
+  </div>
+  <div class="about-body" id="about-body">
+    <h3>What it is</h3>
+    <p>A free, open-source tool that checks patient-facing visuals and text against published patient experience frameworks, such as the CDC Clear Communication Index and AHRQ's PEMAT. Use it before production, to plan and refine a piece, and after release, to look back at what it achieved. The working name is Prism.</p>
+
+    <h3>Why we built it</h3>
+    <p>While designing posters, infographics and resource guides with UHN's Patient Education and Engagement team, Sonia would often hear "this looks great" at handoff, and then nothing. Did the piece make a difference? How much? What worked, what didn't, and how did it shape the patient's experience?</p>
+    <p>We put a lot into designing good patient experiences, but we rarely get to measure their impact. This tool adds that missing step, and grounds it in established frameworks instead of opinion.</p>
+
+    <h3>How it works</h3>
+    <ul>
+      <li>Set a Brief (audience and format) and pick the frameworks that fit your project.</li>
+      <li>Paste, type or upload a draft. Checks that can be measured from the text are scored for you. You rate the rest.</li>
+      <li>Every check links to its published source. Items you haven't reviewed never count against you.</li>
+      <li>It grades your work. It does not write it.</li>
+    </ul>
+
+    <h3>How we built it</h3>
+    <p>The project grew from a conversation into a working tool, built with Claude. We split the work: Claude helped build and test the code, and we decided what to measure, which sources to trust, and what a good result looks like.</p>
+
+    <h3>What we hope you take away</h3>
+    <ul>
+      <li><b>Test your idea.</b> AI tools can get you to a working prototype faster than you expect.</li>
+      <li><b>Reach out.</b> This started as two people with one shared complaint. It wouldn't exist without collaboration.</li>
+      <li><b>Drive the design.</b> Know which half of the question the machine can answer, and keep the other half yours.</li>
+    </ul>
+
+    <h3>Who we are</h3>
+    <p>Sonia Seto (Sonia Seto Studios) and Chloe Ma (GoInvo). This is a work in progress.</p>
+  </div>
+</dialog>
 
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
@@ -4217,6 +4274,12 @@ document.addEventListener('keydown', e => {
 
 window.addEventListener('scroll', hideTip, true);
 window.addEventListener('resize', hideTip);
+
+// ── About dialog (native <dialog>: Escape or a click outside closes; focus goes back to the About button) ──
+function openAbout(){ const d = $("about"); if(!d.open) d.showModal(); }
+function closeAbout(){ $("about").close(); }
+$("about").addEventListener("click", e => { if(e.target === e.currentTarget) closeAbout(); });   // click outside closes
+$("about").addEventListener("close", () => $("about-btn").focus());                           // back to where the reader was
 
 // ── Init ──
 renderReqs();
