@@ -4,6 +4,13 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Release to Production
+
+Branch: `master` · Vercel: Production
+
+- Merged `frameworks-t1-t3` into `master` (merge commit `fd503b4`), shipping the
+  framework additions below to the live site.
+
 ## 2026-10-16 — Add PEMAT-A/V, CDC IDD/ELL and CDC Inclusive Communication
 
 Branch: `frameworks-t1-t3` · Vercel: Preview
