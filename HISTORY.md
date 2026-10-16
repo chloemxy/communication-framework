@@ -4,6 +4,35 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Design refresh: tokens, 13px type floor, smaller canvas
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Layout.** The studio is a grid now, not absolutely positioned panels.
+  - The document column is capped at 560px. It used to fill everything left of a
+    320px card column.
+  - Score cards fill the rest, in balanced 300px+ columns (two on a laptop).
+  - The Brief and Frameworks bars span the top.
+  - Below 1000px everything stacks into one scrolling column. At 375px the editor is
+    usable (326px wide; it was 13px) and nothing scrolls sideways.
+- **Type.** Every font size is on a scale of 13 / 14 / 15 / 17 / 20 / 24 px. Nothing on the
+  site renders below 13px; it used to go down to 8px, with 145 declarations under 13px.
+  - Measured in the browser: 0 text elements under 13px in the studio (text and visual mode),
+    `classic.html`, `framework-compass.html` and `framework-scoring-logic.html`. The other
+    three pages had 218 sizes under 13px raised to 13px, with no other restyling.
+  - Tiny uppercase tracked labels are now sentence-case semibold labels.
+- **Colour.** New stone-neutral palette with a deep blue accent (`#2f4ac0`) in place of
+  the purple.
+  - Every text grey is at least 5:1 on every surface; the accent is 7.3:1 on white.
+  - A browser scan of visible text found no contrast below 4.5:1, apart from the
+    user's own artwork and swatch previews.
+- **System.** Design tokens on `:root`: type scale, 4px spacing scale, radii, shadows and
+  focus ring.
+  - A refresh layer restyles the top bar, the bars, cards, pills, tags, checklists,
+    meters, segmented controls and the tooltip on those tokens.
+  - A visible focus ring is shown for keyboard users.
+  - `prefers-reduced-motion` is respected.
+
 ## 2026-10-16 — Close open tasks: honest scoring, single-source notes, verified wording
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
