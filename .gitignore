@@ -1,2 +1,6 @@
 .vercel
 .env*
+# Added by code-review-graph
+.code-review-graph/
+# Local archive (has its own .git and env copies)
+Archive/
