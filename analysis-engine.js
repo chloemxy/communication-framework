@@ -118,7 +118,9 @@ const FRAMEWORK_REGISTRY = {
     zone: 'clarity',
     scoringType: 'scored',
     formula: 'Understandability % = (Σ agrees on U items / # applicable U items) × 100 | Actionability % = (Σ agrees on A items / # applicable A items) × 100',
-    passThreshold: { pass: 70, unit: '%', label: 'Both scores must exceed 70%' },
+    // AHRQ sets no cutoff ("The higher the score, the more understandable or actionable the
+    // material" — User's Guide, Step 7). 70% is kept as this tool's working target only.
+    passThreshold: { pass: 70, unit: '%', official: false, label: 'No AHRQ cutoff (higher is better) — 70% used here as a working target' },
     criteria: [
       // Understandability — PEMAT-P (17 items)
       { id: 'PEMAT-U1',  domain: 'Understandability / Content',       text: 'The material makes its purpose evident.' },
@@ -151,7 +153,100 @@ const FRAMEWORK_REGISTRY = {
       'Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. Patient Education and Counseling, 96(3), 395–403. https://doi.org/10.1016/j.pec.2014.05.027',
       'Agency for Healthcare Research and Quality. PEMAT and User\'s Guide. https://www.ahrq.gov/health-literacy/patient-education/pemat.html',
     ],
-    notes: 'PEMAT produces two separate scores — Understandability and Actionability — never combined. N/A items are excluded from the denominator. Both scores must exceed 70% independently. PEMAT-A/V version applies to audiovisual materials.',
+    notes: 'PEMAT-P is for printable materials. It produces two separate scores — Understandability and Actionability — never combined. N/A items are excluded from the denominator. AHRQ publishes no pass mark; this tool treats 70% on each score as a working target, not an official threshold. Audiovisual materials use PEMAT_AV instead.',
+  },
+
+  PEMAT_AV: {
+    id: 'PEMAT_AV',
+    name: 'Patient Education Materials Assessment Tool for Audiovisual Materials (PEMAT-A/V)',
+    abbr: 'PEMAT-A/V',
+    zone: 'clarity',
+    scoringType: 'scored',
+    formula: 'Understandability % = (Σ Agree on U items / # U items rated, excluding N/A) × 100 | Actionability % = (Σ Agree on A items / # A items rated, excluding N/A) × 100',
+    passThreshold: null, // AHRQ: "The higher the score, the more understandable or actionable the material." No cutoff.
+    itemScale: 'Disagree = 0 / Agree = 1 / N/A only where the item offers it (excluded from the denominator)',
+    // Official AHRQ item numbers are kept (non-consecutive: A/V skips print-only items).
+    // naOption is the exact N/A condition printed on the AHRQ form; null = no N/A option.
+    criteria: [
+      // Understandability (13 items)
+      { id: 'PEMAT-AV-1',  itemNo: 1,  scale: 'U', domain: 'Understandability / Content',             naOption: null,                                   text: 'The material makes its purpose completely evident.' },
+      { id: 'PEMAT-AV-3',  itemNo: 3,  scale: 'U', domain: 'Understandability / Word Choice & Style', naOption: null,                                   text: 'The material uses common, everyday language.' },
+      { id: 'PEMAT-AV-4',  itemNo: 4,  scale: 'U', domain: 'Understandability / Word Choice & Style', naOption: null,                                   text: 'Medical terms are used only to familiarize audience with the terms. When used, medical terms are defined.' },
+      { id: 'PEMAT-AV-5',  itemNo: 5,  scale: 'U', domain: 'Understandability / Word Choice & Style', naOption: null,                                   text: 'The material uses the active voice.' },
+      { id: 'PEMAT-AV-8',  itemNo: 8,  scale: 'U', domain: 'Understandability / Organization',        naOption: 'Very short material',                  text: 'The material breaks or "chunks" information into short sections.' },
+      { id: 'PEMAT-AV-9',  itemNo: 9,  scale: 'U', domain: 'Understandability / Organization',        naOption: 'Very short material',                  text: 'The material’s sections have informative headers.' },
+      { id: 'PEMAT-AV-10', itemNo: 10, scale: 'U', domain: 'Understandability / Organization',        naOption: null,                                   text: 'The material presents information in a logical sequence.' },
+      { id: 'PEMAT-AV-11', itemNo: 11, scale: 'U', domain: 'Understandability / Organization',        naOption: 'Very short material',                  text: 'The material provides a summary.' },
+      { id: 'PEMAT-AV-12', itemNo: 12, scale: 'U', domain: 'Understandability / Layout & Design',     naOption: 'Video',                                text: 'The material uses visual cues (e.g., arrows, boxes, bullets, bold, larger font, highlighting) to draw attention to key points.', requiresVisual: true },
+      { id: 'PEMAT-AV-13', itemNo: 13, scale: 'U', domain: 'Understandability / Layout & Design',     naOption: 'No text or all text is narrated',      text: 'Text on the screen is easy to read.', requiresVisual: true },
+      { id: 'PEMAT-AV-14', itemNo: 14, scale: 'U', domain: 'Understandability / Layout & Design',     naOption: 'No narration',                         text: 'The material allows the user to hear the words clearly (e.g., not too fast, not garbled).', requiresVisual: true },
+      { id: 'PEMAT-AV-18', itemNo: 18, scale: 'U', domain: 'Understandability / Use of Visual Aids',  naOption: 'No visual aids',                       text: 'The material uses illustrations and photographs that are clear and uncluttered.', requiresVisual: true },
+      { id: 'PEMAT-AV-19', itemNo: 19, scale: 'U', domain: 'Understandability / Use of Visual Aids',  naOption: 'No tables',                            text: 'The material uses simple tables with short and clear row and column headings.', requiresVisual: true },
+      // Actionability (4 items)
+      { id: 'PEMAT-AV-20', itemNo: 20, scale: 'A', domain: 'Actionability',                           naOption: null,                                   text: 'The material clearly identifies at least one action the user can take.' },
+      { id: 'PEMAT-AV-21', itemNo: 21, scale: 'A', domain: 'Actionability',                           naOption: null,                                   text: 'The material addresses the user directly when describing actions.' },
+      { id: 'PEMAT-AV-22', itemNo: 22, scale: 'A', domain: 'Actionability',                           naOption: null,                                   text: 'The material breaks down any action into manageable, explicit steps.' },
+      { id: 'PEMAT-AV-25', itemNo: 25, scale: 'A', domain: 'Actionability',                           naOption: 'No charts, graphs, tables, diagrams', text: 'The material explains how to use the charts, graphs, tables, or diagrams to take actions.' },
+    ],
+    sources: [
+      'Agency for Healthcare Research and Quality. PEMAT Tool for Audiovisual Materials (PEMAT-A/V). Content last reviewed November 2020. https://www.ahrq.gov/health-literacy/patient-education/pemat-av.html',
+      'Agency for Healthcare Research and Quality. The Patient Education Materials Assessment Tool (PEMAT) and User’s Guide. Content last reviewed November 2020. https://www.ahrq.gov/health-literacy/patient-education/pemat.html',
+      'Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. Patient Education and Counseling, 96(3), 395–403. https://doi.org/10.1016/j.pec.2014.05.027',
+    ],
+    notes: 'For audiovisual materials (videos, animation, multimedia) — not podcasts. Two separate scores, never combined. Rate "Agree" only when the characteristic holds nearly all of the time (80–100%). N/A is allowed only on items that print an N/A condition; N/A items are excluded from the denominator. A very short A/V material is a video or multimedia presentation under 1 minute, or one with 6 or fewer slides or screenshots. AHRQ publishes no pass mark: higher is better.',
+  },
+
+  CDC_IDD: {
+    id: 'CDC_IDD',
+    name: 'How to Develop Products for Adults with Intellectual Developmental Disabilities and Extreme Low Literacy: A Product Development Tool',
+    abbr: 'CDC IDD/ELL',
+    zone: 'clarity',
+    scoringType: 'scored',
+    formula: 'Total score = (# Yes / (27 − # N/A)) × 100',
+    passThreshold: { pass: 90, unit: '%', label: '90 or above (CDC: "Excellent!"); 89 or below — revise and score again' },
+    itemScale: 'Yes = 1 / No = 0 / N/A only where the item offers it (subtracted from the 27 possible points)',
+    // Item text is the score-sheet question, verbatim. naOption paraphrases the score sheet's
+    // "select N/A" note for that item; null = the item has no N/A option.
+    // check: 'text' = judgeable from the words alone; 'layout' / 'visual' = needs the laid-out
+    // product or its visuals (requiresVisual → not_assessable from text alone).
+    criteria: [
+      // Part A: Behavior
+      { id: 'CDC-IDD-1',  itemNo: 1,  domain: 'Part A: Behavior',          check: 'text',   naOption: null, text: 'Does the product include only 1 focused behavioral recommendation?', rule: 'If the product has more than 1 behavioral recommendation, answer no. If you answer no to this question, answer no to all the questions in Part A.' },
+      { id: 'CDC-IDD-2',  itemNo: 2,  domain: 'Part A: Behavior',          check: 'text',   naOption: 'Product is only 1 page or screen (e.g., a poster or digital sign)', text: 'Is the behavioral recommendation stated more than 1 time?', rule: 'If the behavioral recommendation is stated more than once using the same words, answer yes. If it\'s only stated once, or if it\'s stated more than once but uses different words, answer no.' },
+      { id: 'CDC-IDD-3',  itemNo: 3,  domain: 'Part A: Behavior',          check: 'text',   naOption: 'Only 1 page or screen and a supplement to a longer product', text: 'Does the product show how to perform the behavioral recommendation by breaking the behavior down into a series of single steps or actions?', rule: 'If the product does not include step-by-step instructions, answer no. If you select N/A for this item, select N/A for items 4 and 5. If you select no for this item, select no for items 4 and 5.' },
+      { id: 'CDC-IDD-4',  itemNo: 4,  domain: 'Part A: Behavior',          check: 'layout', naOption: 'Follows item 3', text: 'Does the product convey only 1 idea or behavioral step per page or screen?', rule: 'If the product includes more than 1 idea or step on a single page or screen, answer no.', requiresVisual: true },
+      { id: 'CDC-IDD-5',  itemNo: 5,  domain: 'Part A: Behavior',          check: 'visual', naOption: 'Follows item 3', text: 'Does the product use both text and visuals to illustrate each step or action?', rule: 'If the product has no visuals, or it does not include a visual for each step or action, answer no.', requiresVisual: true },
+      { id: 'CDC-IDD-6',  itemNo: 6,  domain: 'Part A: Behavior',          check: 'visual', naOption: null, text: 'Does the product use one single main character to demonstrate all of the behavioral steps?', requiresVisual: true },
+      // Part B: Sentences
+      { id: 'CDC-IDD-7',  itemNo: 7,  domain: 'Part B: Sentences',         check: 'text',   naOption: null, text: 'Does each sentence focus on 1 key point?' },
+      { id: 'CDC-IDD-8',  itemNo: 8,  domain: 'Part B: Sentences',         check: 'text',   naOption: null, text: 'Do all (or almost all) sentences, headers, and titles use 10 or fewer words?' },
+      { id: 'CDC-IDD-9',  itemNo: 9,  domain: 'Part B: Sentences',         check: 'text',   naOption: null, text: 'Are all sentences in the active voice?', rule: 'If some sentences use passive voice, answer no.' },
+      { id: 'CDC-IDD-10', itemNo: 10, domain: 'Part B: Sentences',         check: 'text',   naOption: 'Product does not include headers or titles', text: 'Are all headers and titles informative statements?', rule: 'If the product includes headers phrased as questions (e.g., "How do you wash your hands?") or headers that do not clearly convey what the content is about, answer no.' },
+      { id: 'CDC-IDD-11', itemNo: 11, domain: 'Part B: Sentences',         check: 'text',   naOption: null, text: 'Is a consistent tense used throughout the product?', rule: 'If the product includes sentences in different tenses (e.g., past and present tense), answer no.' },
+      // Part C: Words and Numbers
+      { id: 'CDC-IDD-12', itemNo: 12, domain: 'Part C: Words and Numbers', check: 'text',   naOption: null, text: 'Does the product always use words the primary audience understands?' },
+      { id: 'CDC-IDD-13', itemNo: 13, domain: 'Part C: Words and Numbers', check: 'text',   naOption: 'Product does not include any jargon terms', text: 'Does the product clearly define any need-to-know jargon terms using familiar words?' },
+      { id: 'CDC-IDD-14', itemNo: 14, domain: 'Part C: Words and Numbers', check: 'text',   naOption: null, text: 'Does the product always use the same word for the same concept?', rule: 'If the product uses different words to refer to the same concept, answer no.' },
+      { id: 'CDC-IDD-15', itemNo: 15, domain: 'Part C: Words and Numbers', check: 'text',   naOption: 'Product does not include any numbers', text: 'If the product conveys a quantity or length of time, are whole numbers (e.g., 1 to 10) used?', rule: 'If the product includes fractions, decimals, ratios, or percentages, answer no.' },
+      { id: 'CDC-IDD-16', itemNo: 16, domain: 'Part C: Words and Numbers', check: 'text',   naOption: 'Product does not include any numbers', text: 'Are all numbers shown as numerals rather than spelled out (e.g., 1, not "one")?', rule: 'If the product includes spelled-out numbers (e.g., "three"), answer no.' },
+      // Part D: Text Layout
+      { id: 'CDC-IDD-17', itemNo: 17, domain: 'Part D: Text Layout',       check: 'layout', naOption: 'Product is a video', text: 'Is text left aligned?', requiresVisual: true },
+      { id: 'CDC-IDD-18', itemNo: 18, domain: 'Part D: Text Layout',       check: 'layout', naOption: 'Product is only 1 page', text: 'If the product is on more than 1 page, is the text formatted the same way on each page?', requiresVisual: true },
+      { id: 'CDC-IDD-19', itemNo: 19, domain: 'Part D: Text Layout',       check: 'layout', naOption: null, text: 'Does every sentence finish on the same page it starts?', requiresVisual: true },
+      { id: 'CDC-IDD-20', itemNo: 20, domain: 'Part D: Text Layout',       check: 'layout', naOption: null, text: 'Does the product use a single sans-serif font?', rule: 'If the product uses serif fonts, answer no. If it uses more than 1 font, answer no.', requiresVisual: true },
+      { id: 'CDC-IDD-21', itemNo: 21, domain: 'Part D: Text Layout',       check: 'layout', naOption: 'You did not create the product and cannot check the font size', text: 'Does the product always use a 14-point or larger font size?', requiresVisual: true },
+      { id: 'CDC-IDD-22', itemNo: 22, domain: 'Part D: Text Layout',       check: 'layout', naOption: null, text: 'Is the product free from italicized or underlined words?', requiresVisual: true },
+      // Part E: Visuals
+      { id: 'CDC-IDD-23', itemNo: 23, domain: 'Part E: Visuals',           check: 'visual', naOption: 'A few images on one page or screen are appropriate (e.g., an ordering activity)', text: 'Is only 1 visual included on each page or screen?', requiresVisual: true },
+      { id: 'CDC-IDD-24', itemNo: 24, domain: 'Part E: Visuals',           check: 'visual', naOption: null, text: 'Does each visual have no more than 1 to 2 lines of corresponding text that describe what is happening in the visual?', rule: 'If a page includes more than 2 lines of text, or the text does not describe the visual, answer no.', requiresVisual: true },
+      { id: 'CDC-IDD-25', itemNo: 25, domain: 'Part E: Visuals',           check: 'visual', naOption: null, text: 'Is text supporting the visual positioned directly below the visual?', requiresVisual: true },
+      { id: 'CDC-IDD-26', itemNo: 26, domain: 'Part E: Visuals',           check: 'visual', naOption: null, text: 'Are all visuals literal images of the item or action rather than abstract symbols?', rule: 'If any images include abstract symbols (for example, wavy lines for heat or musical notes for singing), answer no.', requiresVisual: true },
+      { id: 'CDC-IDD-27', itemNo: 27, domain: 'Part E: Visuals',           check: 'visual', naOption: 'Product does not include images of people', text: 'When using an illustration of a person, are at least minimal facial features included (eyes, nose, and mouth)?', requiresVisual: true },
+    ],
+    sources: [
+      'Centers for Disease Control and Prevention, Office of the Associate Director for Communication; National Center on Birth Defects and Developmental Disabilities; RTI International; CommunicateHealth. (2023). How to Develop Products for Adults with Intellectual Developmental Disabilities and Extreme Low Literacy: A Product Development Tool. CDC Stacks. https://stacks.cdc.gov/view/cdc/129950',
+    ],
+    notes: 'A separate CDC tool, not a version of the Clear Communication Index. Before scoring, CDC asks you to know the primary audience, the main behavioral recommendation, and the product types planned. Answer "yes" only if all instances of an item meet the criteria. A no on item 1 means no on all of Part A (items 2–6); items 4–5 follow item 3 (N/A or no on item 3 carries to 4 and 5). Layout and visual items need the laid-out product. CDC: the tool is not a substitute for user testing.',
   },
 
   SAM: {
@@ -329,6 +424,119 @@ const FRAMEWORK_REGISTRY = {
       'Plain Writing Act of 2010, Pub. L. 111-274, 124 Stat. 2861 (2010). https://www.govinfo.gov/content/pkg/PLAW-111publ274/pdf/PLAW-111publ274.pdf',
     ],
     notes: 'Plain Language is a prescriptive editing checklist, not a scoring rubric. Applied during drafting and revision, not as post-hoc auditing. No numerical score — compliance is qualitative.',
+  },
+
+  CDC_EQUITY: {
+    id: 'CDC_EQUITY',
+    name: 'CDC Health Equity Guiding Principles for Inclusive Communication',
+    abbr: 'CDC Inclusive Comms',
+    zone: 'clarity',
+    scoringType: 'checklist',
+    formula: null,
+    passThreshold: null, // CDC: "a starting point and an approach, not a mandate". Pass / flag per principle, no score.
+    // Principle text is quoted from the CDC site (archived) or the Calanan et al. summary (Box 1/2).
+    criteria: [
+      { id: 'EQ-1',  domain: 'Key principles',                 check: 'text',   scan: true, text: 'Avoid use of adjectives such as vulnerable, marginalized, and high-risk.' },
+      { id: 'EQ-2',  domain: 'Key principles',                 check: 'text',   scan: true, text: 'Avoid dehumanizing language. Use person-first language instead.' },
+      { id: 'EQ-3',  domain: 'Key principles',                 check: 'text',   scan: true, text: 'Remember that there are many types of subpopulations. Use of the term minority/minorities should be limited, in general, and should be defined when used.' },
+      { id: 'EQ-4',  domain: 'Key principles',                 check: 'text',   scan: true, text: 'Avoid saying target, tackle, combat, or other terms with violent connotation when referring to people, groups, or communities.' },
+      { id: 'EQ-5',  domain: 'Key principles',                 check: 'text',   scan: true, text: 'Avoid unintentional blaming.' },
+      { id: 'EQ-6',  domain: 'Preferred terms',                check: 'text',   scan: true, text: 'Language in communication products should reflect and speak to the needs of people in the audience of focus.' },
+      { id: 'EQ-7',  domain: 'Using a health equity lens',     check: 'text',   text: 'Intentionally consider the potential positive and negative impacts of proposed messages, including how messages could help reduce or contribute to inequities.' },
+      { id: 'EQ-8',  domain: 'Developing inclusive communications', check: 'process', notAssessableFromDoc: true, text: 'Work with community members, leaders, and population-specific representatives or experts to develop culturally responsive content.' },
+      { id: 'EQ-9',  domain: 'Developing inclusive communications', check: 'process', notAssessableFromDoc: true, text: 'Translate materials into the preferred languages of the intended audience, and make sure a native speaker reviews translated materials.' },
+      { id: 'EQ-10', domain: 'Developing inclusive communications', check: 'text', text: 'Emphasize positive actions and highlight community strengths and solutions.' },
+      { id: 'EQ-11', domain: 'Inclusive images',               check: 'visual', requiresVisual: true, text: 'Depict positive and health-promoting behaviors, and don’t unintentionally reinforce stereotypes or perpetuate health inequities.' },
+      { id: 'EQ-12', domain: 'Inclusive images',               check: 'visual', requiresVisual: true, text: 'Include alternate text that can be easily understood and images with enough color contrast for people with low visual acuity.' },
+    ],
+    // Text scan. Each entry is an "Instead of this…" term from CDC's tables, with that table's
+    // "Try this…" suggestions. CDC's tables are lists per topic, not one-to-one swaps, so a hit
+    // offers the topic's suggestions to consider — never an automatic replacement. CDC says the
+    // list is not comprehensive: no hits ≠ the principle is met.
+    // Left out on purpose (too many false hits in health copy): "individuals", "cases", "subjects",
+    // "fragile" (fragile X), "senior" (senior staff), "offender", "ethnic/racial groups"
+    // (CDC's own suggestion contains them).
+    termScan: [
+      { p: 'EQ-1', topic: 'Vague adjectives', page: 'kp', re: '\\bvulnerable\\s+(?:groups?|populations?|communit(?:y|ies)|people|persons?)\\b|\\bthe vulnerable\\b',
+        try: ['Groups that have been economically/socially marginalized', 'People who are not equitably served by [programs, initiatives, infrastructure, or systems]', 'Groups placed at increased risk/put at increased risk of [outcome]'] },
+      { p: 'EQ-1', topic: 'Vague adjectives', page: 'kp', re: '\\bmarginali[sz]ed\\s+(?:groups?|populations?|communit(?:y|ies)|people)\\b',
+        try: ['Groups that have been marginalized', 'Groups that have been economically/socially marginalized'] },
+      { p: 'EQ-1', topic: 'Vague adjectives', page: 'kp', re: '\\bhard[- ]to[- ]reach\\b',
+        try: ['Communities that are underserved by/with limited access to [specific service/resource]'] },
+      { p: 'EQ-1', topic: 'Vague adjectives', page: 'kp', re: '\\bunderserved\\s+(?:groups?|populations?|communit(?:y|ies)|people)\\b|\\bthe underserved\\b',
+        try: ['Communities that are underserved by/with limited access to [specific service/resource]', 'People who are underserved by [specific service/resource]'] },
+      { p: 'EQ-1', topic: 'Vague adjectives', page: 'kp', re: '\\bunderprivileged\\b|\\bdisadvantaged\\s+(?:groups?|populations?|communit(?:y|ies)|people)\\b',
+        try: ['Groups experiencing disadvantage because of [reason]', 'Under-resourced communities (Should be used only in the literal sense when an area lacks resources, for example clean water. Be specific about which resources are lacking.)'] },
+      { p: 'EQ-1', topic: 'Vague adjectives', page: 'kp', re: '\\b(?:high|at)[- ]risk\\s+(?:groups?|populations?|people|persons?|communit(?:y|ies))\\b|\\bhigh[- ]burden\\s+groups?\\b|\\bpriority populations?\\b',
+        try: ['Groups with higher risk of [outcome]', 'People who are at increased/higher risk for [condition]', 'People living with increased risk of [outcome] because of [reason]'] },
+      { p: 'EQ-1', topic: 'Vague adjectives', page: 'kp', re: '\\bthe needy\\b',
+        try: ['People who are not equitably served by [programs, initiatives, infrastructure, or systems]'] },
+
+      { p: 'EQ-2', topic: 'Person-first language', page: 'kp', re: '\\bdiabetics\\b|\\bdiabetes patients\\b|\\bthe diabetes population\\b',
+        try: ['People/persons with [disease]', 'Patients with [disease] (if referring to people who are receiving healthcare)'] },
+      { p: 'EQ-2', topic: 'Person-first language', page: 'kp', re: '\\bthe (?:morbidly )?obese\\b',
+        try: ['People with obesity; people with severe obesity'] },
+      { p: 'EQ-2', topic: 'Person-first language', page: 'kp', re: '\\bthe homeless\\b|\\bhomeless (?:people|persons|men|women)\\b',
+        try: ['People who are experiencing homelessness'] },
+      { p: 'EQ-2', topic: 'Person-first language', page: 'kp', re: '\\bdisabled (?:person|people|persons)\\b|\\bhandicapped\\b',
+        try: ['People with disabilities/a disability', 'People who are experiencing [condition or disability type]', 'Person with mobility disability'] },
+      { p: 'EQ-2', topic: 'Person-first language', page: 'kp', re: '\\binmates?\\b',
+        try: ['People who are incarcerated'] },
+      { p: 'EQ-2', topic: 'Person-first language', page: 'kp', re: '\\bvictims? of (?:abuse|violence)\\b',
+        try: ['Survivors [of abuse, cancer, violence]'] },
+
+      { p: 'EQ-3', topic: 'Subpopulations', page: 'kp', re: '\\bminorities\\b|\\bminority\\b(?!\\s+groups?)',
+        try: ['(People from) racial and ethnic minority groups', '(People from) sexual/gender/linguistic/religious minority groups', 'Specify the type of subpopulation'] },
+
+      { p: 'EQ-4', topic: 'Violent connotation', page: 'kp', re: '\\btarget(?:ed|ing)?\\s+(?:populations?|communit(?:y|ies)|groups?)\\b',
+        try: ['Population of focus', 'Communities/populations of focus', 'Engage/prioritize/collaborate with/serve [population of focus]'] },
+      { p: 'EQ-4', topic: 'Violent connotation', page: 'kp', re: '\\btackl(?:e|es|ed|ing)\\b|\\baimed at communities\\b',
+        try: ['Consider the needs of/Tailor to the needs of [population of focus]'] },
+      { p: 'EQ-4', topic: 'Violent connotation', page: 'kp', re: '\\bcombat(?:s|ing|ting)?\\b|\\bfight(?:s|ing)? (?:against )?(?:the )?(?:disease|cancer|virus|infection|flu|covid)\\w*\\b|\\bwar (?:on|against)\\b',
+        try: ['Eliminate/eradicate [issue/disease]', 'Prevent/control spread of [disease]'] },
+      { p: 'EQ-4', topic: 'Working partners', page: 'pt', re: '\\bstakeholders?\\b',
+        try: ['Whenever possible, describe specific groups and/or individuals with interest in an activity using relevant names, categories, or descriptions of the nature of their influence or involvement (for example, advisors, consultants, co-owners).', 'Examples: contributors, community members, coalition members, colleagues, interested parties/groups, implementing partners, working partners, funders'] },
+
+      { p: 'EQ-5', topic: 'Unintentional blaming', page: 'kp', re: '\\b(?:who|that) refuses?\\b|\\brefus(?:e|es|ed|ing) (?:to (?:get |be )?)?vaccinat\\w*',
+        try: ['People who are unvaccinated', 'People who have yet to receive/do [vaccination/specific behavior]'] },
+      { p: 'EQ-5', topic: 'Unintentional blaming', page: 'kp', re: '\\bdo(?:es)? not seek (?:health ?care|care|treatment)\\b|\\bdo(?:es)? not use PPE\\b',
+        try: ['People with limited access to [specific service/resource]', 'Workers under-resourced with [specific service/resource]'] },
+
+      { p: 'EQ-6', topic: 'Corrections & detentions', page: 'pt', re: '\\bprisoners?\\b|\\b(?:ex-)?convicts?\\b|\\bcriminals\\b|\\bparolees?\\b|\\bdetainees?\\b',
+        try: ['People/persons who are incarcerated or detained', 'People who were formerly incarcerated', 'Persons on parole or probation'] },
+      { p: 'EQ-6', topic: 'Disability', page: 'pt', re: '\\bdifferently[- ]abled\\b|\\bafflicted\\b|\\bhearing[- ]impaired\\b|\\bwheelchair[- ]bound\\b|\\bconfined to a wheelchair\\b',
+        try: ['People with disabilities/a disability', 'People who are deaf or hard of hearing or who are blind or have low vision', 'People who use a wheelchair or mobility device'] },
+      { p: 'EQ-6', topic: 'Drug / substance use', page: 'pt', re: '\\baddicts?\\b|\\bdrug[- ](?:users?|abusers?)\\b|\\balcoholics?\\b|\\bsmokers\\b',
+        try: ['Persons who use drugs/people who inject drugs', 'Persons with substance use disorder', 'Persons with alcohol use disorder', 'People who smoke'] },
+      { p: 'EQ-6', topic: 'Healthcare access', page: 'pt', re: '\\bthe uninsured\\b',
+        try: ['People who are uninsured/people who are underinsured/people who do not have health insurance'] },
+      { p: 'EQ-6', topic: 'Homelessness', page: 'pt', re: '\\btransient populations?\\b',
+        try: ['Persons experiencing unstable housing/housing insecurity/persons who are not securely housed'] },
+      { p: 'EQ-6', topic: 'Lower socioeconomic status', page: 'pt', re: '\\bpoverty[- ]stricken\\b|\\bthe poor\\b|\\bpoor (?:people|families|households)\\b',
+        try: ['People with lower incomes', 'People experiencing poverty'] },
+      { p: 'EQ-6', topic: 'Mental / behavioral health', page: 'pt', re: '\\bmentally ill\\b|\\bcrazy\\b|\\binsane\\b|\\bmental defect\\b|\\bsuffer(?:s|ing)? from\\b|\\basylum\\b(?!\\s+seek)',
+        try: ['People with a mental illness', 'People with a diagnosis of a mental illness/mental health disorder/behavioral health disorder', 'Psychiatric hospital/facility'] },
+      { p: 'EQ-6', topic: 'Immigration status', page: 'pt', re: '\\billegals\\b|\\billegal (?:immigrants?|aliens?|migrants?)\\b|\\bforeigners\\b',
+        try: ['People with undocumented status', 'Immigrant, migrant', 'Non-U.S.-born persons/foreign-born persons'] },
+      { p: 'EQ-6', topic: 'Older adults', page: 'pt', re: '\\b(?:the )?elderly\\b|\\bseniors\\b|\\bfrail\\b',
+        try: ['Older adults', 'Persons aged [numeric age group]', 'Elderly or frail elderly when referring to older adults in a specific clinical context'] },
+      { p: 'EQ-6', topic: 'Race & ethnicity', page: 'pt', re: '\\b(?:blacks|whites|hispanics|latinos)\\b|\\bcolou?red people\\b|\\beskimos?\\b|\\boriental\\b|\\bafro-american\\b|\\bnegro\\b|\\bcaucasians?\\b|\\bnon-white\\b',
+        try: ['Black or African American persons; Black persons', 'Hispanic or Latino persons', 'White persons', 'Be as specific as possible about the group'] },
+      { p: 'EQ-6', topic: 'Rural', page: 'pt', re: '\\brural people\\b|\\bfrontier people\\b',
+        try: ['People who live in rural/sparsely populated areas', 'Rural communities'] },
+      { p: 'EQ-6', topic: 'Sexual orientation & gender identity', page: 'pt', re: '\\bhomosexuals?\\b|\\btransgendered\\b|\\btransgenders\\b|\\btranssexual\\b|\\bbiologically (?:male|female)\\b|\\bgenetically (?:male|female)\\b|\\bhermaphrodites?\\b|\\bsexual preference\\b|\\bhe/she\\b|\\bhis/her\\b',
+        try: ['Lesbian, gay, or bisexual (when referring to self-identified sexual orientation)', 'Transgender', 'Assigned male/female at birth', 'Singular they or their'] },
+    ],
+    sourcePages: {
+      kp: 'https://web.archive.org/web/20240119163401/https://www.cdc.gov/healthcommunication/Key_Principles.html',
+      pt: 'https://web.archive.org/web/20231208141915/https://www.cdc.gov/healthcommunication/preferred_terms.html',
+    },
+    sources: [
+      'Centers for Disease Control and Prevention. Health Equity Guiding Principles for Inclusive Communication. Originally https://www.cdc.gov/healthcommunication/Health_Equity.html (no longer live). Archived Key Principles page (last reviewed August 2, 2022): https://web.archive.org/web/20240119163401/https://www.cdc.gov/healthcommunication/Key_Principles.html',
+      'Centers for Disease Control and Prevention. Preferred Terms for Select Population Groups & Communities (last reviewed November 3, 2022). Archived: https://web.archive.org/web/20231208141915/https://www.cdc.gov/healthcommunication/preferred_terms.html',
+      'Calanan RM, Bonds ME, Bedrosian SR, Laird SK, Satter D, Penman-Aguilar A. (2023). CDC’s Guiding Principles to Promote an Equity-Centered Approach to Public Health Communication. Preventing Chronic Disease, 20, 230061. https://doi.org/10.5888/pcd20.230061',
+    ],
+    notes: 'CDC describes the Guiding Principles as "a starting point and an approach, not a mandate". No score: each principle is marked pass or flag. The term scan uses CDC\'s "Instead of this…" lists; a hit is a prompt to reconsider with the topic\'s "Try this…" options, and some terms suit specific contexts (e.g., "elderly" in a clinical context). The lists are not comprehensive, so a clean scan does not mean a principle is met. CDC recommends asking people from the community of focus which terms they prefer. The original CDC pages were removed; citations point to archived copies.',
   },
 
   NCI_PINK_BOOK: {
@@ -1011,7 +1219,11 @@ function buildAnalysisPrompt(documentText, frameworkId) {
   const fw = getFramework(frameworkId); // Throws if not registered
 
   const criteriaBlock = fw.criteria.map(c =>
-    `  [${c.id}] (${c.domain}) ${c.text}${c.notAssessableFromDoc ? ' ⚠ REQUIRES DATA BEYOND DOCUMENT — mark not_assessable' : ''}`
+    `  [${c.id}] (${c.domain}) ${c.text}` +
+    (c.rule ? ` Rule: ${c.rule}` : '') +
+    (c.naOption !== undefined ? (c.naOption ? ` N/A allowed only if: ${c.naOption}.` : ' No N/A option.') : '') +
+    (c.notAssessableFromDoc ? ' ⚠ REQUIRES DATA BEYOND DOCUMENT — mark not_assessable' : '') +
+    (c.requiresVisual ? ' ⚠ NEEDS THE LAID-OUT PRODUCT OR ITS VISUALS — mark not_assessable when only text is supplied' : '')
   ).join('\n');
 
   const sourcesBlock = fw.sources.map((s, i) => `  [${i + 1}] ${s}`).join('\n');
