@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Scoring rules folded into the Framework Compass
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Each Compass row has a collapsed **How it's scored** section, built from the engine
+  registry. It lists the formula, pass mark and rating scale (where the instrument has
+  them), a short note, and every item grouped by part.
+  - Each item carries its scoring rule and a tag if it needs the design or records
+    beyond the material.
+  - Items keep their instrument numbers. For example, PEMAT-P runs 1–12 and 15–26, as
+    AHRQ numbers it.
+  - Frameworks with no pass mark say so plainly.
+- Deleted `framework-scoring-logic.html`. Nothing linked to it, and it covered the old 26
+  frameworks with hand-written rules that could drift from the engine.
+
 ## 2026-10-16 — Remove the Classic page
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

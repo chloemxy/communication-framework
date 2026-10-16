@@ -37,6 +37,20 @@
   .fw-desc { margin-top: var(--sp-1); color: var(--n700); }
   .fw-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); margin-top: var(--sp-2); }
   .fw-source { font-size: var(--fs-xs); font-weight: 600; }
+  /* Collapsed sections open full width under the row */
+  .fw-foot details[open] { flex-basis: 100%; }
+  .fw-scoring { padding-top: 0; }
+  .sc-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sp-1) var(--sp-4); margin-top: var(--sp-3); }
+  .sc-facts dt { font-size: var(--fs-xs); font-weight: 600; color: var(--n700); }
+  .sc-facts dd { font-size: var(--fs-xs); color: var(--n700); overflow-wrap: anywhere; }
+  .sc-note { font-size: var(--fs-xs); color: var(--n600); margin-top: var(--sp-3); }
+  .sc-list { margin-top: var(--sp-2); }
+  .sc-dom { font-size: var(--fs-xs); font-weight: 600; color: var(--n900); margin-top: var(--sp-3); }
+  .sc-items { margin: var(--sp-1) 0 0 var(--sp-5); font-size: var(--fs-sm); color: var(--n800); }
+  .sc-items li { margin-bottom: var(--sp-2); }
+  .sc-items .tag { margin-left: var(--sp-1); vertical-align: 1px; }
+  .sc-rule { font-size: var(--fs-xs); color: var(--n600); margin-top: 2px; }
+  @media (max-width: 600px) { .sc-facts { grid-template-columns: minmax(0, 1fr); } }
   .fw-refs ol { margin: var(--sp-2) 0 0 var(--sp-5); font-size: var(--fs-xs); color: var(--n700); }
   .fw-refs li { margin-bottom: var(--sp-1); overflow-wrap: anywhere; }
   .empty { color: var(--n600); padding: var(--sp-6) 0; }
@@ -90,6 +104,36 @@
   const linkify = s => esc(s).replace(/https?:\/\/[^\s<]+[^\s<.,;)]/g, u => '<a href="' + u + '" target="_blank" rel="noopener">' + u + '</a>');
   const TAG = { score: 'tag-pass', partial: 'tag-warn', checklist: '' };
 
+  // Pass mark, whatever shape the registry uses: a label, scoring bands, or per-formula targets
+  function passMark(p){
+    if(!p) return 'No pass mark';
+    if(p.uiLabel || p.label) return p.uiLabel || p.label;
+    const parts = Object.entries(p).map(([k, v]) =>
+      v && typeof v === 'object' ? (v.label || (k.toUpperCase() + (v.target ? ' target ' + v.target : ''))) : null).filter(Boolean);
+    return parts.length ? parts.join(' · ') : 'None';
+  }
+  // "How it's scored": formula, pass mark, rating scale, a short note, then every item by part
+  function scoring(reg){
+    const rows = [];
+    if(reg.formula) rows.push(['Formula', reg.formula]);
+    rows.push(['Pass mark', passMark(reg.passThreshold)]);
+    if(reg.itemScale) rows.push(['Rating', reg.itemScale]);
+    let items = '', dom = null, n = 0;
+    (reg.criteria || []).forEach(c => {
+      n++;   // items keep their instrument numbers across parts (official number when the engine has one)
+      if(c.domain !== dom){ items += (dom === null ? '' : '</ol>') + '<h4 class="sc-dom">' + esc(c.domain) + '</h4><ol class="sc-items">'; dom = c.domain; }
+      const tags = [c.requiresVisual ? 'needs the design' : '', c.notAssessableFromDoc ? 'needs records beyond the material' : ''].filter(Boolean);
+      const idNo = /^[A-Z][A-Z_-]*?-(\d+)$/.exec(c.id || '');   // e.g. PEMAT-26 → 26; SHARE-S, UPL-1.2 → in order
+      items += '<li value="' + (c.itemNo || (idNo ? +idNo[1] : n)) + '">' + esc(c.text) + (tags.length ? ' <span class="tag">' + tags.join(' · ') + '</span>' : '') +
+        (c.rule ? '<div class="sc-rule">' + esc(c.rule) + '</div>' : '') + '</li>';
+    });
+    if(dom !== null) items += '</ol>';
+    return '<details class="disclose fw-scoring"><summary>How it’s scored</summary>' +
+      '<dl class="sc-facts">' + rows.map(([k, v]) => '<dt>' + k + '</dt><dd>' + esc(v) + '</dd>').join('') + '</dl>' +
+      (reg.uiNote || reg.notes ? '<p class="sc-note">' + esc(reg.uiNote || reg.notes) + '</p>' : '') +
+      (items ? '<div class="sc-list">' + items + '</div>' : '') + '</details>';
+  }
+
   $('compass-intro').textContent = 'The ' + FRAMEWORKS.length + ' frameworks the studio checks against, each linked to its original source.';
   $('zone-filter').innerHTML = '<option value="">All areas</option>' + ZONES.map(z => '<option value="' + z.key + '">' + esc(z.name) + '</option>').join('');
 
@@ -106,6 +150,7 @@
           '<p class="fw-desc">' + esc(f.desc) + '</p>' +
           '<div class="fw-foot">' +
             '<a class="fw-source" href="' + esc(f.source.url) + '" target="_blank" rel="noopener">' + esc(f.source.label) + ' ↗</a>' +
+            (reg.criteria ? scoring(reg) : '') +
             (refs ? '<details class="disclose fw-refs"><summary>All references</summary><ol>' + refs + '</ol></details>' : '') +
           '</div></li>';
       }).join('') + '</ul></section>';
