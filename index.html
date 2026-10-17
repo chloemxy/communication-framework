@@ -279,26 +279,24 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 /* Highlighter marks (::highlight(pea-flag) and pea-flag-focus) live in design-system.css: a yellow mark
    plus a 2px ink-2 underline; the issue just clicked gets a thicker ink underline. */
 
-/* Empty state: a drop target in the middle of the sheet */
-/* Empty panel: an upload box, then what PRISM checks, editing, and saving. Left-aligned on the
-   panel's text edge (DESIGN.md alignment rule). Clicking blank space starts typing. */
+/* Empty panel: one large drop box (page icon, big Upload button), then three one-line notes.
+   No heading: the panel is already titled Material and the Guide already says "Add your
+   material". Left-aligned on the panel's text edge. Clicking blank space starts typing. */
 .canvas-empty{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column;gap:var(--sp-5);
   padding:var(--sp-4) var(--inset);text-align:left;cursor:text}
-.ce-drop{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-2);padding:var(--sp-5) var(--sp-4);
+.ce-drop{flex:1 0 auto;min-height:260px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  gap:var(--sp-4);padding:var(--sp-6) var(--sp-5);color:var(--ink-2);
   border:2px dashed var(--control-border);border-radius:var(--radius-sheet);background:var(--sheet-2);cursor:default}
-.canvas-body.drag-over .ce-drop{border-color:var(--form-blue);background:var(--selected)}
-.ce-title{font-size:var(--fs-2xl);font-weight:600;line-height:1.25;color:var(--ink)}
-.ce-sub{font-size:var(--fs-sm);font-weight:400;color:var(--ink-2)}
-.ce-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-2)}
-.ce-upload{min-height:40px;padding:0 var(--sp-5);font-size:var(--fs-sm)}
-.ce-types{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
-.ce-samples{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1) var(--sp-2);font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);margin-top:var(--sp-1)}
-.ce-guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--sp-4) var(--sp-5);cursor:default}
-.ce-guide h3{font-size:var(--fs-sm);font-weight:600;color:var(--ink);margin-bottom:var(--sp-2)}
-.ce-guide ul{list-style:none;display:grid;gap:var(--sp-1)}
-.ce-guide li{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2);padding-left:var(--sp-3);position:relative}
-.ce-guide li::before{content:"";position:absolute;left:0;top:.6em;width:4px;height:4px;border-radius:50%;background:var(--ink-2)}
-.ce-guide b{font-weight:600;color:var(--ink)}
+.canvas-body.drag-over .ce-drop{border-color:var(--form-blue);background:var(--selected);color:var(--form-blue)}
+.ce-icon{display:block}
+.ce-actions{display:flex;flex-wrap:wrap;gap:var(--sp-3)}
+.ce-upload,.ce-type{min-height:48px;padding:0 var(--sp-6);font-size:var(--fs-lg);font-weight:600}
+.ce-types{font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink-2)}
+.ce-samples{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1) var(--sp-2);font-size:var(--fs-sm);font-weight:400;color:var(--ink-2)}
+.ce-guide{display:grid;gap:var(--sp-2);margin:0;cursor:default}
+.ce-guide>div{display:grid;grid-template-columns:4.5em 1fr;gap:var(--sp-3);align-items:baseline}
+.ce-guide dt{font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.ce-guide dd{margin:0;font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink)}
 
 /* Footer: counts in Caption, figures in Caption strong */
 .canvas-foot{flex:0 0 auto;margin-top:auto;order:99;display:flex;align-items:center;flex-wrap:wrap;gap:0 var(--sp-3);min-width:0;padding:var(--sp-1) var(--sp-3);
@@ -861,47 +859,28 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
       </div>
 
       <div class="canvas-empty" id="canvas-empty">
-        <section class="ce-drop" aria-labelledby="ce-title">
-          <h3 class="ce-title" id="ce-title">Add your material</h3>
-          <p class="ce-sub">Drop a file anywhere in this panel, or choose one.</p>
+        <section class="ce-drop" aria-label="Upload or drop a file">
+          <svg class="ce-icon" viewBox="0 0 48 56" width="48" height="56" aria-hidden="true" focusable="false">
+            <path d="M4 3h28l12 12v38H4z" fill="var(--sheet)" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M32 3v12h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M24 44V24m-8 8 8-8 8 8" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
           <div class="ce-actions">
             <button type="button" class="btn btn-primary ce-upload" onclick="document.getElementById('file-doc').click()">Upload a file</button>
-            <button type="button" class="btn btn-secondary" onclick="focusEditor()">Type or paste instead</button>
+            <button type="button" class="btn btn-secondary ce-type" onclick="focusEditor()">Type or paste</button>
           </div>
-          <p class="ce-types">Word (.docx), PDF, text (.txt, .md, .html), or an image (PNG, JPG).</p>
-          <p class="ce-samples">Not ready yet? Try a sample:
-            <button type="button" class="btn btn-quiet" onclick="loadSample()" title="A one-page Word handout, opened in the editor">Word handout</button>
+          <p class="ce-types">Or drop it here. Word, PDF, text or an image.</p>
+          <p class="ce-samples">Try a sample:
+            <button type="button" class="btn btn-quiet" onclick="loadSample()" title="A one-page Word handout, opened in the editor">Handout</button>
             <button type="button" class="btn btn-quiet" onclick="loadSamplePoster()" title="A poster image, opened in visual mode">Poster</button>
           </p>
         </section>
 
-        <div class="ce-guide">
-          <section aria-labelledby="ce-checks">
-            <h3 id="ce-checks">What PRISM checks</h3>
-            <ul>
-              <li>Reading level and sentence length</li>
-              <li>Medical jargon, passive voice, vague words</li>
-              <li>The checklists of the frameworks you pick</li>
-              <li>For images: the text is read for you; check contrast and alt text</li>
-            </ul>
-          </section>
-          <section aria-labelledby="ce-edit">
-            <h3 id="ce-edit">While you edit</h3>
-            <ul>
-              <li>Edit right here. Scores update as you type.</li>
-              <li>Click a flagged issue to find it in your text.</li>
-              <li>Press Ctrl/⌘+S to save a version you can go back to.</li>
-            </ul>
-          </section>
-          <section aria-labelledby="ce-save">
-            <h3 id="ce-save">Saving your work</h3>
-            <ul>
-              <li>Your file stays in your browser. PRISM doesn’t upload it.</li>
-              <li>Edits and versions last until you close or reload this tab.</li>
-              <li>Use <b>Export</b> to copy your text or download it. The .html opens in Word.</li>
-            </ul>
-          </section>
-        </div>
+        <dl class="ce-guide">
+          <div><dt>Checks</dt><dd>Reading level, jargon and your frameworks’ checklists.</dd></div>
+          <div><dt>Edit</dt><dd>Fix the text here. Scores update as you type.</dd></div>
+          <div><dt>Save</dt><dd>Nothing leaves your browser. Use Export to download.</dd></div>
+        </dl>
       </div>
     </div>
 
