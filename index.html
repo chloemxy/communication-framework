@@ -679,9 +679,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
             <button type="button" data-v="poster" aria-pressed="false"   onclick="setBrief('format','poster',this)">Poster</button>
             <button type="button" data-v="brochure" aria-pressed="false" onclick="setBrief('format','brochure',this)">Brochure</button>
             <button type="button" data-v="handout" aria-pressed="false"  onclick="setBrief('format','handout',this)">Handout</button>
-            <button type="button" data-v="digital" aria-pressed="false"  onclick="setBrief('format','digital',this)">Digital</button>
+            <button type="button" data-v="digital" aria-pressed="false"  onclick="setBrief('format','digital',this)" title="Web pages, PDFs and e-handouts. AHRQ scores these with PEMAT-P (printable); interactive or video content uses PEMAT-A/V.">Digital</button>
             <button type="button" data-v="manual" aria-pressed="false"   onclick="setBrief('format','manual',this)">Manual</button>
-            <button type="button" data-v="video" aria-pressed="false"    onclick="setBrief('format','video',this)" title="Video, animation or multimedia. Scores with PEMAT-A/V instead of the print PEMAT.">Video / animation</button>
+            <button type="button" data-v="video" aria-pressed="false"    onclick="setBrief('format','video',this)" title="Video, animation or multimedia. Scores with PEMAT-A/V instead of PEMAT-P (printable).">Video / animation</button>
           </div>
 
           <div class="brief-targets" id="brief-targets"></div>
@@ -1033,7 +1033,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
         <div class="meter-lbl"><span class="meter-name">Actionability</span><span class="meter-num" id="pemat-a-num">—</span></div>
         <div class="meter-track"><div class="meter-fill" id="pemat-a-fill"></div><span class="meter-target" id="pemat-a-target" aria-hidden="true"></span></div>
         <div class="meter-bench">Working target: 70% or more on both. AHRQ sets no cutoff.</div>
-        <div class="fwo-need" id="pemat-av-note" style="display:none">This card is the <b>print</b> PEMAT. Your brief says <b>video / animation</b>, so score it with <b>PEMAT-A/V</b> (17 items) in Framework checklists.</div>
+        <div class="fwo-need" id="pemat-av-note" style="display:none">This card is <b>PEMAT-P</b>, for printable materials (print, PDFs, web page text). Your brief says <b>video / animation</b>, so score it with <b>PEMAT-A/V</b> (17 items) in Framework checklists.</div>
         <div id="pemat-list"></div>
       </div>
     </div>
@@ -1449,7 +1449,7 @@ const FORMAT_SPEC = {
   manual:   { label:'Manual',      words:[600,6000], visualCritical:false,
     note:'Long pieces need clear parts, short summaries and a review date.' },
   video:    { label:'Video / animation', words:[50,1500], visualCritical:true,
-    note:'Audiovisual — paste the narration script and on-screen text. Scored with PEMAT-A/V (AHRQ) instead of the print PEMAT.' },
+    note:'Audiovisual — paste the narration script and on-screen text. Scored with PEMAT-A/V (AHRQ) instead of PEMAT-P (printable).' },
 };
 
 // Frameworks the brief switches on by itself. A manual untick in the Frameworks bar still wins.

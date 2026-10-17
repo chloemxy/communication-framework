@@ -4,6 +4,23 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — PEMAT for digital materials, made clear
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- AHRQ publishes no separate "digital" PEMAT. Its User's Guide (checked 2026-10-17) says:
+  - PEMAT-P covers printable materials "(e.g., brochures, pamphlets, PDFs)", including
+    material printed from websites "(e.g., PDFs or html text)".
+  - PEMAT-A/V covers video and multimedia, including "interactive content".
+  - PEMAT can't assess podcasts or the user-friendliness of websites.
+- Wording updated to match:
+  - PEMAT is now "— printable (PEMAT-P)", described as "for print and printable digital:
+    PDFs and web page text".
+  - PEMAT-A/V mentions multimedia and interactive content.
+  - The "Print handout or poster" situation is now "Handout, poster or web page". It's
+    suggested for the Digital Brief too.
+  - The Brief's Digital choice has a tooltip saying which PEMAT applies.
+
 ## 2026-10-17 — Light by default, one Dark toggle; "Clear"
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
