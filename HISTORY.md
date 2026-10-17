@@ -4,6 +4,14 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Compass: search row pinned to the top
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- On the Framework Compass, the search box, area filter and "N of 23" count stay pinned at
+  the top of the screen while you scroll the list. Jumping to a framework by link (e.g.
+  `#upl`) leaves room so the row doesn't cover it.
+
 ## 2026-10-16 — Frameworks list: pinned header, full names
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
