@@ -4,6 +4,24 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — About dialog: shorter, clearer, centred
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Centred.** The page's global `margin:0` reset had cancelled the browser's automatic
+  centring of dialogs; it now sits in the middle of the screen.
+- **Shorter:** 157 words, down from about 420, and fits without scrolling on a laptop.
+- **New structure:**
+  - a one-line lead
+  - "How it works" as three numbered steps (Set the Brief, Add your draft, Pick
+    frameworks), plus one line on the tool's principle
+  - a two-sentence "Why we built it"
+  - "Made by"
+  - a footer with a Framework Compass link and Close
+- Removed the talk takeaways and the "working name is Prism" line.
+- Checked in both themes: text passes contrast, it uses only the existing type
+  treatments, and focus starts on Close.
+
 ## 2026-10-16 — Compass: search row pinned to the top
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

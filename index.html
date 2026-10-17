@@ -543,17 +543,29 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .guide-body p:last-child{margin-bottom:0}
 
 /* ── About dialog (floating sheet) ── */
-.about{width:min(640px, calc(100vw - 32px));max-height:min(80vh, 760px);padding:0;color:var(--ink);background:var(--sheet);
+/* About dialog — centred in the viewport (the global margin:0 reset had cancelled <dialog>'s auto-centring) */
+.about{position:fixed;inset:0;margin:auto;width:min(560px, calc(100vw - 32px));max-height:min(85vh, 720px);padding:0;
+  display:none;flex-direction:column;color:var(--ink);background:var(--sheet);
   border:1px solid var(--rule);border-radius:var(--radius-sheet);box-shadow:var(--shadow-float)}
+.about[open]{display:flex}
 .about::backdrop{background:var(--scrim)}
-.about-hdr{position:sticky;top:0;display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4) var(--sp-5);background:var(--sheet);border-bottom:1px solid var(--rule)}
+.about-hdr{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-6);border-bottom:1px solid var(--rule)}
 .about-hdr h2{margin-right:auto;font-size:var(--fs-lg);font-weight:600}
-.about-body{padding:var(--sp-4) var(--sp-5) var(--sp-6);font-size:var(--fs-sm);font-weight:400;line-height:1.6;color:var(--ink)}
-.about-body h3{margin:var(--sp-5) 0 var(--sp-2);font-size:var(--fs-sm);font-weight:600}
-.about-body h3:first-child{margin-top:0}
-.about-body p{margin-bottom:var(--sp-3)}
-.about-body ul{padding-left:1.2em;margin-bottom:var(--sp-3)}
-.about-body li{margin-bottom:var(--sp-1)}
+.about-body{flex:1 1 auto;overflow-y:auto;padding:var(--sp-5) var(--sp-6) var(--sp-6);font-size:var(--fs-sm);font-weight:400;line-height:1.6;color:var(--ink)}
+.about-lead{font-size:var(--fs-sm);font-weight:400;line-height:1.6;color:var(--ink);margin-bottom:var(--sp-6)}
+.about-body section + section{margin-top:var(--sp-5);padding-top:var(--sp-5);border-top:1px solid var(--rule)}
+.about-body h3{margin-bottom:var(--sp-2);font-size:var(--fs-sm);font-weight:600}
+.about-body p{color:var(--ink-2)}
+.about-steps{list-style:none;display:grid;gap:var(--sp-2);margin-bottom:var(--sp-3)}
+.about-steps li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:var(--sp-2);align-items:baseline;color:var(--ink-2)}
+.about-steps b{color:var(--ink)}
+.about-n{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums;text-align:right}
+.about-note{font-size:var(--fs-xs)}
+.about-foot{display:flex;justify-content:flex-end;gap:var(--sp-2);padding:var(--sp-3) var(--sp-6);border-top:1px solid var(--rule);background:var(--sheet-2)}
+@media (max-width: 600px){
+  .about-hdr{padding-left:var(--sp-4)} .about-body{padding:var(--sp-4)} .about-foot{padding:var(--sp-3) var(--sp-4)}
+
+}
 
 /* ── Narrow screens: one column; the page scrolls instead of the panes ── */
 @media (max-width: 1000px){
@@ -1068,39 +1080,37 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 <div id="tip" role="status" aria-live="polite"></div>
 
-<dialog class="about" id="about" aria-labelledby="about-title">
+<dialog class="about" id="about" aria-labelledby="about-title" aria-describedby="about-lead">
   <div class="about-hdr">
-    <h2 id="about-title">About this project</h2>
+    <h2 id="about-title">About Patient Education Analyzer</h2>
     <button type="button" class="btn btn-quiet btn-icon" onclick="closeAbout()" aria-label="Close" title="Close">✕</button>
   </div>
-  <div class="about-body" id="about-body">
-    <h3>What it is</h3>
-    <p>A free, open-source tool that checks patient-facing visuals and text against published patient experience frameworks, such as the CDC Clear Communication Index and AHRQ's PEMAT. Use it before production, to plan and refine a piece, and after release, to look back at what it achieved. The working name is Prism.</p>
+  <div class="about-body">
+    <p class="about-lead" id="about-lead">A free, open-source tool that checks patient handouts, posters and videos against published frameworks, such as CDC’s Clear Communication Index and AHRQ’s PEMAT.</p>
 
-    <h3>Why we built it</h3>
-    <p>While designing posters, infographics and resource guides with UHN's Patient Education and Engagement team, Sonia would often hear "this looks great" at handoff, and then nothing. Did the piece make a difference? How much? What worked, what didn't, and how did it shape the patient's experience?</p>
-    <p>We put a lot into designing good patient experiences, but we rarely get to measure their impact. This tool adds that missing step, and grounds it in established frameworks instead of opinion.</p>
+    <section aria-labelledby="about-how">
+      <h3 id="about-how">How it works</h3>
+      <ol class="about-steps">
+        <li><span class="about-n" aria-hidden="true">1</span><span><b>Set the Brief.</b> Who it’s for and what it is.</span></li>
+        <li><span class="about-n" aria-hidden="true">2</span><span><b>Add your draft.</b> Type, paste, or upload a file or image.</span></li>
+        <li><span class="about-n" aria-hidden="true">3</span><span><b>Pick frameworks.</b> The tool scores what it can measure. You rate the rest.</span></li>
+      </ol>
+      <p class="about-note">It grades your work; it doesn’t write it. Every check links to its source, and items you haven’t reviewed never count against you.</p>
+    </section>
 
-    <h3>How it works</h3>
-    <ul>
-      <li>Set a Brief (audience and format) and pick the frameworks that fit your project.</li>
-      <li>Paste, type or upload a draft. Checks that can be measured from the text are scored for you. You rate the rest.</li>
-      <li>Every check links to its published source. Items you haven't reviewed never count against you.</li>
-      <li>It grades your work. It does not write it.</li>
-    </ul>
+    <section aria-labelledby="about-why">
+      <h3 id="about-why">Why we built it</h3>
+      <p>People who design patient materials often hear “this looks great” at handoff, and then nothing. We wanted a way to check a piece against established evidence, not opinion, before and after it goes out.</p>
+    </section>
 
-    <h3>How we built it</h3>
-    <p>The project grew from a conversation into a working tool, built with Claude. We split the work: Claude helped build and test the code, and we decided what to measure, which sources to trust, and what a good result looks like.</p>
-
-    <h3>What we hope you take away</h3>
-    <ul>
-      <li><b>Test your idea.</b> AI tools can get you to a working prototype faster than you expect.</li>
-      <li><b>Reach out.</b> This started as two people with one shared complaint. It wouldn't exist without collaboration.</li>
-      <li><b>Drive the design.</b> Know which half of the question the machine can answer, and keep the other half yours.</li>
-    </ul>
-
-    <h3>Who we are</h3>
-    <p>Sonia Seto (Sonia Seto Studios) and Chloe Ma (GoInvo). This is a work in progress.</p>
+    <section aria-labelledby="about-who">
+      <h3 id="about-who">Made by</h3>
+      <p>Sonia Seto (Sonia Seto Studios) and Chloe Ma (GoInvo), with Claude helping to build and test the code. A work in progress.</p>
+    </section>
+  </div>
+  <div class="about-foot">
+    <a class="btn btn-secondary" href="framework-compass.html" target="_blank" rel="noopener">Framework Compass <span aria-hidden="true">↗</span></a>
+    <button type="button" class="btn btn-primary" onclick="closeAbout()">Close</button>
   </div>
 </dialog>
 
