@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script>try{if(localStorage.getItem('pea.theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
-<title>Patient Education Analyzer — Studio</title>
+<title>PRISM — Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -575,6 +575,12 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .about-steps b{color:var(--ink)}
 .about-n{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums;text-align:right}
 .about-note{font-size:var(--fs-xs)}
+/* credits: names first and prominent, the studio or company under each */
+.about-people{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--sp-3);margin-bottom:var(--sp-3)}
+.about-people li{display:flex;flex-direction:column;padding:var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);background:var(--sheet-2)}
+.about-person{font-size:var(--fs-lg);font-weight:600;color:var(--ink);line-height:1.3}
+.about-org{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+.about-body a[href^="mailto:"]{font-weight:600}
 .about-foot{display:flex;justify-content:flex-end;gap:var(--sp-2);padding:var(--sp-3) var(--sp-6);border-top:1px solid var(--rule);background:var(--sheet-2)}
 @media (max-width: 600px){
   .about-hdr{padding-left:var(--sp-4)} .about-body{padding:var(--sp-4)} .about-foot{padding:var(--sp-3) var(--sp-4)}
@@ -621,7 +627,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 <a class="skip-link" href="#stage">Skip to main content</a>
 <header class="site-bar">
-  <h1 class="site-name">Patient Education Analyzer</h1>
+  <h1 class="site-name">PRISM</h1>
   <div class="site-page">
     <div class="seg mode-toggle" id="mode-toggle" role="group" aria-label="Mode">
       <button type="button" class="on" aria-pressed="true" data-m="evaluate" onclick="setMode('evaluate',this)" title="Upload a draft and score it against frameworks">Evaluate a draft</button>
@@ -1097,11 +1103,11 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 <dialog class="about" id="about" aria-labelledby="about-title" aria-describedby="about-lead">
   <div class="about-hdr">
-    <h2 id="about-title">About Patient Education Analyzer</h2>
+    <h2 id="about-title">About PRISM</h2>
     <button type="button" class="btn btn-quiet btn-icon" onclick="closeAbout()" aria-label="Close" title="Close">✕</button>
   </div>
   <div class="about-body">
-    <p class="about-lead" id="about-lead">A free, open-source tool that checks patient handouts, posters and videos against published frameworks, such as CDC’s Clear Communication Index and AHRQ’s PEMAT.</p>
+    <p class="about-lead" id="about-lead">PRISM is a free, open-source tool that checks patient handouts, posters and videos against published frameworks, such as CDC’s Clear Communication Index and AHRQ’s PEMAT.</p>
 
     <section aria-labelledby="about-how">
       <h3 id="about-how">How it works</h3>
@@ -1120,7 +1126,16 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
     <section aria-labelledby="about-who">
       <h3 id="about-who">Made by</h3>
-      <p>Sonia Seto (Sonia Seto Studios) and Chloe Ma (GoInvo), with Claude helping to build and test the code. A work in progress.</p>
+      <ul class="about-people">
+        <li><span class="about-person">Sonia Seto</span><span class="about-org">Sonia Seto Studios</span></li>
+        <li><span class="about-person">Chloe Ma</span><span class="about-org">GoInvo</span></li>
+      </ul>
+      <p class="about-note">Claude helped build and test the code. A work in progress.</p>
+    </section>
+
+    <section aria-labelledby="about-feedback">
+      <h3 id="about-feedback">Feedback</h3>
+      <p>Tell us what works and what doesn’t: <a href="mailto:prism@goinvo.com">prism@goinvo.com</a></p>
     </section>
   </div>
   <div class="about-foot">

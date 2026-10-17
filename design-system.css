@@ -1,6 +1,6 @@
 /* avoid-ai-design-ignore: SD2 (the scanner reports this rule at line 1 for the whole file; see "Why" below)
    ════════════════════════════════════════════════════════════════
-   Patient Education Analyzer — shared design system ("Proofing desk")
+   PRISM — shared design system ("Proofing desk")
    One stylesheet for every page (studio, Framework Compass, sub-pages). Contract: DESIGN.md.
    Tokens live only here; page stylesheets use them and never redefine them.
    Light and dark: the roles below are re-tuned for dark (not inverted). Dark applies when the

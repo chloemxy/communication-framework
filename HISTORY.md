@@ -4,6 +4,23 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Renamed to PRISM; About credits and feedback
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **The app is PRISM.** "Patient Education Analyzer" is replaced in:
+  - the site bar on both pages
+  - the page titles ("PRISM — Studio", "Framework Compass — PRISM")
+  - the About dialog ("About PRISM", and the lead now opens "PRISM is a free,
+    open-source tool…")
+  - the design-system header
+- **Credits stand out.** About's "Made by" shows Sonia Seto (Sonia Seto Studios) and Chloe
+  Ma (GoInvo) as two name cards: the name in Heading weight, the studio or company under
+  it. A short line notes Claude helped build and test the code.
+- **Feedback.** A new section links to prism@goinvo.com.
+- Checked in both themes. On a 768px-tall screen the About text now scrolls slightly, but
+  the header and footer stay in view.
+
 ## 2026-10-17 — Frameworks rows: name on two lines, distinct output tag
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
