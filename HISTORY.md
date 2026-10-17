@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Empty Material panel: simpler and bigger
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Feedback: the empty panel was hard to read, too wordy, and repeated "Add your material"
+  (already step 2 of the Guide).
+- The heading is gone. The drop box now fills the panel and shows a page-with-arrow icon,
+  then two 48px buttons, "Upload a file" and "Type or paste", in 17px type.
+- One short line, "Or drop it here. Word, PDF, text or an image.", and the samples
+  (Handout, Poster), in 14px instead of 13px.
+- The three bulleted guide sections (10 lines) became three one-line rows in full-contrast
+  14px text: Checks, Edit, Save.
+- Checked on localhost: 1440×900, an 800px pane, 375px phone (no sideways scroll), and dark
+  mode.
+
 ## 2026-10-17 — Empty Material panel with guidance; Export
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
