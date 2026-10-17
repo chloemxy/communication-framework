@@ -4,6 +4,19 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Frameworks rows: name on two lines, distinct output tag
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Each framework row reads, in order:
+  1. the abbreviation (Body strong)
+  2. the full name on its own line (Body)
+  3. what it checks (Caption)
+- The output type ("Score", "Partial score", "Checklist") is now a small outlined tag in
+  ink. How it's scored ("Auto + review", "Self-rated") stays plain grey text beside it,
+  so the two read as different things.
+- Contrast checked in both themes.
+
 ## 2026-10-17 — PEMAT for digital materials, made clear
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

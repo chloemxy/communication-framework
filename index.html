@@ -142,13 +142,14 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-row.match .fwc-box::after{content:"✓"}
 .fwc-main{grid-area:main;min-width:0}
 .fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.fw-row .name-full{font-weight:400;color:var(--ink-2)}
-.fw-row .full{display:block;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.fwc-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.fwc-out{font-weight:600}
+.fw-row .name-full{display:block;font-size:var(--fs-sm);font-weight:400;color:var(--ink)}
+.fw-row .full{display:block;margin-top:2px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
+.fwc-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:var(--sp-1);text-align:right;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
+.fwc-out{color:var(--ink)}           /* output type: a tag */
+.fwc-how{color:var(--ink-2)}         /* how it is scored: plain caption */
 @container fwpanel (max-width: 520px){
   .fw-row{grid-template-columns:16px minmax(0,1fr);grid-template-areas:"box main" ". meta"}
-  .fwc-meta{flex-direction:row;flex-wrap:wrap;gap:0 var(--sp-3);align-items:baseline;text-align:left}
+  .fwc-meta{flex-direction:row;flex-wrap:wrap;gap:var(--sp-1) var(--sp-3);align-items:center;text-align:left}
 }
 .fw-top-panel-inner{container:fwpanel / inline-size}
 
@@ -4884,8 +4885,12 @@ function fwPickRow(f){
   // clicks and Space/Enter are handled once on the list (below), not per row
   return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '">'
     + '<span class="fwc-box" aria-hidden="true"></span>'
-    + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + (fwFullName(f) ? ' <span class="name-full">' + fwFullName(f) + '</span>' : '') + '</span><span class="full">' + FW_FULL[f] + '</span></span>'
-    + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
+    // row 1 abbreviation · row 2 full name · then what it checks
+    + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + '</span>'
+    + (fwFullName(f) ? '<span class="name-full">' + fwFullName(f) + '</span>' : '')
+    + '<span class="full">' + FW_FULL[f] + '</span></span>'
+    // output type is a tag; how it's scored is plain text, so the two read differently
+    + '<span class="fwc-meta"><span class="tag fwc-out">' + OUT_LABEL[out] + '</span>'
     + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></span>'
     + '</div>';
 }
