@@ -4,6 +4,44 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Proofing desk look, with light and dark themes
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **New look, written down in DESIGN.md:**
+  - The material sits on a white sheet on a cool grey desk. Panels are flat sheets with thin
+    rules; only menus, dialogs and the open Brief and Frameworks panels have a shadow.
+  - The type is Public Sans for the interface and Source Serif 4 for the document, still in the
+    same seven treatments.
+  - Actions are ink and links are form blue. The old indigo accent and cream background are gone.
+- **Light and dark themes:**
+  - Both pages have a System / Light / Dark switch in the site bar. System follows your
+    computer's setting.
+  - Your choice is remembered, and the page opens in it without a flash of the other theme.
+  - Every colour in the studio comes from the shared tokens, so dark mode has no light leftovers.
+    The document paper goes dark too. Your uploaded artwork is never recoloured.
+- **Highlighter marks:** flagged words in the document (jargon, bare percentages, vague words,
+  acronyms) get a yellow mark and an underline, so they show without relying on colour.
+  Clicking an issue underlines its words more heavily. The document itself isn't changed.
+- **Score sheets:** checklist rows show the item number in a left margin, then the text and the
+  rating buttons, with thin rules between rows instead of boxes inside boxes. The Frameworks
+  picker is a list of rows instead of a grid of cards.
+- **One site bar:** both pages share the same site bar (Studio, Framework Compass, About), with a
+  skip link. On a phone it takes two rows on the Compass and three on the studio.
+- **Text in artwork:** the tool reads each image twice, normally and inverted, so white text on
+  coloured backgrounds is found. On the sample poster it now finds 49 of 55 words; it found 32
+  before. The card warns that this kind of text is easy to miss.
+- **Smaller fixes:**
+  - The artwork highlight is an outline with no fill, so the artwork's own text stays readable.
+  - "Read text again" asks for confirmation on the page instead of in a browser pop-up.
+  - The CCI summary counts add up.
+  - The .doc warning clears when you open something else.
+  - Switching theme no longer flickers.
+- **Checks:**
+  - The avoid-ai-design scanner finds nothing on either page or the stylesheet; Inter, indigo,
+    cream, accent words, arrows on buttons and dot-separated meta lines were all flagged before.
+  - All text measures at least 4.5:1 contrast in both themes, at desktop and phone widths.
+
 ## 2026-10-16 — Studio and Compass share one framework list and one design system
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

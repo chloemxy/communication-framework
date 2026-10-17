@@ -12,6 +12,7 @@
 <script src="theme-switch.js" defer></script>
 <style>
   /* Page layout only: colours, type, controls and the theme switch come from design-system.css */
+  .compass:focus { outline: none; }
   .compass { max-width: 960px; margin: 0 auto; padding: var(--sp-8) var(--sp-5) var(--sp-12); }
   .compass-head { margin-bottom: var(--sp-6); }
   .compass-head p { color: var(--ink-2); margin-top: var(--sp-1); max-width: 70ch; }
@@ -35,7 +36,8 @@
   .fw-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3); }
   .fw-label { font-size: var(--fs-sm); font-weight: 600; color: var(--ink); }
   .fw-name { font-size: var(--fs-xs); color: var(--ink-2); }
-  .fw-top .tag { margin-left: auto; }
+  /* output type: plain caption text, the same as the studio's Frameworks list (no status colour) */
+  .fw-out { margin-left: auto; font-size: var(--fs-xs); color: var(--ink-2); white-space: nowrap; }
   .fw-desc { margin-top: var(--sp-1); color: var(--ink); max-width: 70ch; }
   .fw-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-5); margin-top: var(--sp-1); }
   .fw-source { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 32px; font-size: var(--fs-xs); font-weight: 600; }
@@ -79,21 +81,23 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-bar">
   <a class="site-name" href="index.html">Patient Education Analyzer</a>
   <nav class="site-nav" aria-label="Site">
     <a href="index.html">Studio</a>
     <a href="framework-compass.html" aria-current="page">Framework Compass</a>
+    <a href="index.html#about">About</a>
   </nav>
   <span class="bar-divider" aria-hidden="true"></span>
   <div class="seg theme-switch" role="group" aria-label="Colour theme" data-theme-switch hidden>
-    <button type="button" data-theme-set="system" aria-pressed="true">System</button>
-    <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
-    <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+    <button type="button" data-theme-set="system" aria-pressed="true" title="Follow the system setting"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="5.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 2.25a5.75 5.75 0 0 1 0 11.5z" fill="currentColor"/></svg><span class="ts-lbl">System</span></button>
+    <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="2.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="ts-lbl">Light</span></button>
+    <button type="button" data-theme-set="dark" aria-pressed="false" title="Dark"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span class="ts-lbl">Dark</span></button>
   </div>
 </header>
 
-<main class="compass">
+<main class="compass" id="main" tabindex="-1">
   <div class="compass-head">
     <h1>Framework Compass</h1>
     <p id="compass-intro">The frameworks the studio checks against, each linked to its original source.</p>
@@ -123,7 +127,6 @@
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
   const linkify = s => esc(s).replace(/https?:\/\/[^\s<]+[^\s<.,;)]/g, u => '<a href="' + u + '" target="_blank" rel="noopener">' + u + '</a>');
-  const TAG = { score: 'tag-pass', partial: 'tag-warn', checklist: '' };
 
   // Pass mark, whatever shape the registry uses: a label, scoring bands, or per-formula targets
   function passMark(p){
@@ -170,7 +173,7 @@
         const refs = (reg.sources || []).map(s => '<li>' + linkify(s) + '</li>').join('');
         return '<li class="fw" id="' + f.key + '" data-text="' + esc((f.label + ' ' + f.name + ' ' + f.desc).toLowerCase()) + '">' +
           '<div class="fw-top"><span class="fw-label">' + esc(f.label) + '</span><span class="fw-name">' + esc(f.name) + '</span>' +
-            '<span class="tag ' + TAG[f.output] + '">' + OUTPUT_LABEL[f.output] + '</span></div>' +
+            '<span class="fw-out">' + OUTPUT_LABEL[f.output] + '</span></div>' +
           '<p class="fw-desc">' + esc(f.desc) + '</p>' +
           '<div class="fw-foot">' +
             '<a class="fw-source" href="' + esc(f.source.url) + '" target="_blank" rel="noopener">' + esc(f.source.label) + ' <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>' +

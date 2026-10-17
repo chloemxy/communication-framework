@@ -42,14 +42,10 @@ h1{font-size:var(--fs-2xl);font-weight:600}
 h2,h3{font-size:var(--fs-lg);font-weight:600}
 h4,h5,h6{font-size:var(--fs-sm);font-weight:600}
 
-/* ── Site bar: app name, mode, nav, theme switch ── */
-.topbar{display:flex;align-items:center;flex-wrap:wrap;gap:var(--sp-2) var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-5);
-  flex-shrink:0;background:var(--sheet);border-bottom:1px solid var(--rule);z-index:600}
-.topbar-left{display:flex;align-items:center;gap:var(--sp-4);flex-shrink:0;min-width:0}
-.topbar h1.topbar-sub{font-size:var(--fs-lg);font-weight:600;line-height:1.3;color:var(--ink);white-space:nowrap}
+/* ── Site bar: the shared .site-bar component (design-system.css); the mode toggle is this page's control ── */
+body > .site-bar{flex-shrink:0;position:relative;z-index:600}
+.stage:focus{outline:none}
 .mode-toggle{flex-shrink:0}
-.topnav{display:flex;align-items:center;flex-wrap:wrap;gap:var(--sp-1);margin-left:auto;min-width:0}
-.topnav-links{display:flex;align-items:center;gap:var(--sp-1)}
 .dock{display:flex;align-items:center;gap:var(--sp-2)}
 .dock[hidden]{display:none}
 .mod-hide{display:none !important}   /* removing a card needs the hidden Workspace bar to undo */
@@ -83,6 +79,8 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-top-count{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);white-space:nowrap;flex-shrink:0;font-variant-numeric:tabular-nums}
 .fw-top-chips{display:flex;gap:var(--sp-1);flex:1;overflow:hidden;min-width:0}
 .fw-top-chips .tag{flex-shrink:0}
+/* framework and brief chips are names, not statuses: square-cornered like controls (pills are for status tags only) */
+.tag.fw-tag{border-radius:var(--radius-control)}
 .fw-top-chips .tag[hidden]{display:none}
 .fw-top-empty{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);white-space:normal}
 .fw-top-toggle{margin-left:auto;font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);white-space:nowrap;flex-shrink:0}
@@ -112,25 +110,31 @@ body.resizing{cursor:col-resize;user-select:none}
   background:var(--sheet);font-size:var(--fs-sm);font-weight:400;color:var(--ink)}
 .brief-input::placeholder{color:var(--ink-2);opacity:1}
 
-/* Frameworks panel: option tiles are checkbox controls (hairline, radius 4; selected = form blue) */
+/* Frameworks panel: a score-sheet list of checkbox rows (hairline separators, no cards, no pills).
+   Box | name and description | output type and how it's scored, as caption text. Selected = form blue. */
 .fw-top-grid-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-2);margin-bottom:var(--sp-2)}
 .fw-top-grid-hdr .lbl{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-top-grid-hdr .btn{margin-left:var(--sp-1)}
-.fw-top-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--sp-2)}
-.fw-top-card{display:flex;flex-direction:column;gap:var(--sp-1);min-height:84px;padding:var(--sp-3);cursor:pointer;
-  background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-control);transition:border-color .12s,background-color .12s}
-.fw-top-card:hover{border-color:var(--control-border)}
-.fw-top-card:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
-.fw-top-card.match{background:var(--selected);border-color:var(--form-blue);box-shadow:inset 0 0 0 1px var(--form-blue)}
-.fwc-top{display:flex;align-items:flex-start;gap:var(--sp-2)}
-.fwc-box{flex-shrink:0;width:16px;height:16px;margin-top:2px;border:1px solid var(--control-border);border-radius:2px;background:var(--sheet);
+.fw-top-grid{border-top:1px solid var(--rule)}
+.fw-row{display:grid;grid-template-columns:16px minmax(0,1fr) max-content;grid-template-areas:"box main meta";column-gap:var(--sp-3);row-gap:var(--sp-1);
+  align-items:start;padding:var(--sp-2) var(--sp-2);border-bottom:1px solid var(--rule);cursor:pointer;transition:background-color .12s}
+.fw-row:hover{background:var(--hover)}
+.fw-row:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px;border-radius:var(--radius-control)}
+.fw-row.match{background:var(--selected)}
+.fwc-box{grid-area:box;width:16px;height:16px;margin-top:2px;border:1px solid var(--control-border);border-radius:2px;background:var(--sheet);
   display:flex;align-items:center;justify-content:center;font-size:var(--fs-xs);font-weight:600;line-height:1;color:var(--sheet)}
-.fw-top-card.match .fwc-box{background:var(--form-blue);border-color:var(--form-blue)}
-.fw-top-card.match .fwc-box::after{content:"✓"}
-.fw-top-card .name{font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.fw-top-card .full{font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.fwc-meta{display:flex;align-items:center;flex-wrap:wrap;gap:var(--sp-2);margin-top:auto}
-.fwc-how{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+.fw-row.match .fwc-box{background:var(--form-blue);border-color:var(--form-blue)}
+.fw-row.match .fwc-box::after{content:"✓"}
+.fwc-main{grid-area:main;min-width:0}
+.fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.fw-row .full{display:block;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
+.fwc-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
+.fwc-out{font-weight:600}
+@container fwpanel (max-width: 520px){
+  .fw-row{grid-template-columns:16px minmax(0,1fr);grid-template-areas:"box main" ". meta"}
+  .fwc-meta{flex-direction:row;flex-wrap:wrap;gap:0 var(--sp-3);align-items:baseline;text-align:left}
+}
+.fw-top-panel-inner{container:fwpanel / inline-size}
 
 /* Filter menu (floating) and the chip that names the active filter */
 .fw-filter{position:relative;display:flex;align-items:center;gap:var(--sp-1);margin-left:auto}
@@ -219,7 +223,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .canvas-body{flex:1 1 auto;min-height:0;overflow-y:auto;scrollbar-gutter:stable;position:relative}
 .canvas-body:has(#editor:focus){outline:2px solid var(--focus-ring);outline-offset:-2px}
 .canvas-body.drag-over{outline:2px dashed var(--form-blue);outline-offset:-8px;border-radius:var(--radius-sheet)}
-#editor{min-height:100%;max-width:68ch;margin:0 auto;padding:var(--sp-8) var(--sp-6) var(--sp-12);outline:none;word-break:break-word;
+#editor{min-height:100%;max-width:68ch;margin:0 auto;padding:var(--sp-8) var(--sp-6) var(--sp-12);outline:none;word-break:break-word;text-underline-offset:2px;
   font-family:var(--serif);font-size:var(--fs-md);font-weight:400;line-height:1.7;color:var(--ink);background:var(--sheet)}
 #editor:focus-visible{outline:none}
 #editor h1{margin:.8em 0 .35em;font-family:var(--sans);font-size:var(--fs-2xl);font-weight:600;line-height:1.25}
@@ -248,10 +252,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
    readable on the sheet in both themes. Scoring reads the text, never its colour. */
 #editor [style], #editor font, #editor mark{color:inherit !important;background-color:transparent !important}
 #editor a, #editor a [style]{color:var(--form-blue) !important}
-/* Highlighter: flagged words (CSS Custom Highlight API, no change to the document). The focus mark
-   is the issue just clicked; it clears after a moment. Text on the mark stays ink. */
-::highlight(pea-flag){background-color:var(--highlighter);color:var(--ink)}
-::highlight(pea-flag-focus){background-color:var(--highlighter);color:var(--ink);text-decoration-line:underline;text-decoration-thickness:2px;text-decoration-color:var(--ink)}
+/* Highlighter marks (::highlight(pea-flag) and pea-flag-focus) live in design-system.css: a yellow mark
+   plus a 2px ink-2 underline; the issue just clicked gets a thicker ink underline. */
 
 /* Empty state: a drop target in the middle of the sheet */
 .canvas-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--sp-2);padding:var(--sp-8);text-align:center;pointer-events:none}
@@ -288,7 +290,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .canvas.is-visual #ver-btn, .canvas.is-visual #ver-panel{display:none !important}
 /* Where a line of text sits on the artwork: theme-independent overlay roles, because the artwork is not themed */
 .vm-hl-layer{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none}
-.vm-hl{position:absolute;border:2px solid var(--overlay-outline);border-radius:2px;background:var(--overlay-fill);box-shadow:0 0 0 1px var(--overlay-halo)}
+.vm-hl{position:absolute;border:2px solid var(--overlay-outline);border-radius:2px;background:none;box-shadow:0 0 0 2px var(--overlay-halo), inset 0 0 0 1px var(--overlay-halo)}
 
 /* ── Score area: cards flow into balanced 300px+ columns ── */
 .rail-scroll{grid-column:3;grid-row:2;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;padding:2px var(--sp-1) 2px 2px}
@@ -454,7 +456,6 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 #pemat-av-note{margin:var(--sp-3) 0 0}
 .fwo-list{margin:var(--sp-1) 0 0;padding-left:var(--sp-4);font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink)}
 .fwo-list li{margin:var(--sp-1) 0}
-.fw-out-tag{padding:0 var(--sp-2);background:var(--sheet-2);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--rule);border-radius:var(--radius-pill);font-size:var(--fs-xs);font-weight:600;white-space:nowrap}
 /* Framework sources: collapsed by default */
 .fwo-src-wrap{margin-top:var(--sp-2);font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2)}
 .fwo-src-wrap summary{display:list-item;width:max-content;max-width:100%;padding:var(--sp-1) 0;font-weight:600;color:var(--ink-2);cursor:pointer}
@@ -484,6 +485,10 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .vm-ocr-bar::-moz-progress-bar{background:var(--form-blue);border-radius:2px}
 .vm-ocr-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin:0 0 var(--sp-2)}
 .vm-ocr-actions[hidden], .vm-ocr-actions .btn[hidden]{display:none}
+.vm-ocr-caveat[hidden]{display:none}
+.vm-ocr-confirm{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);margin:0 0 var(--sp-2)}
+.vm-ocr-confirm[hidden]{display:none}
+.vm-ocr-confirm-q{font-size:var(--fs-xs);font-weight:600;color:var(--ink)}
 .vm-alt-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-2)}
 .vm-alt-why{margin:var(--sp-2) 0 0}
 .vm-alt-status{display:block;font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink)}
@@ -549,7 +554,6 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 /* ── Narrow screens: one column; the page scrolls instead of the panes ── */
 @media (max-width: 1000px){
-  .topbar{overflow:visible}
   .stage{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto;overflow-y:auto;padding:var(--sp-3) var(--sp-4) var(--sp-5);gap:var(--sp-4)}
   .splitter{display:none}
   .top-bars{flex-direction:column;gap:var(--sp-2)}
@@ -562,19 +566,18 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
   .mod-rail{column-width:auto;columns:1;min-height:0}
 }
 @media (max-width: 600px){
-  .topbar{padding:var(--sp-2) var(--sp-4)}
-  .topbar-left{flex:1 1 100%;flex-wrap:wrap;gap:var(--sp-2)}
-  .topbar h1.topbar-sub{white-space:normal}
   .mode-toggle{display:flex;flex:1 1 100%}
   .mode-toggle button{flex:1 1 0;white-space:normal}
-  .topnav{flex:1 1 100%;margin-left:0}
-  .topbar .bar-divider{display:none}
-  .theme-switch{margin-left:auto}
-  .fw-topbar{height:auto;min-height:52px;flex-wrap:wrap}
-  .bar-title{padding:var(--sp-3) 0 0 var(--sp-3);align-self:flex-start}
-  .fw-top-btn{flex-wrap:wrap;row-gap:var(--sp-1);padding:var(--sp-2) var(--sp-3)}
-  .fw-top-btn .fw-top-chips, #brief-top-btn #brief-top-summary{flex-basis:100%;order:3;flex-wrap:wrap;overflow:visible}
-  .fw-topbar > #fw-top-clear{margin:0 var(--sp-2) var(--sp-2) auto}
+  /* Two rows: title, count, Clear and the toggle on the first; the chips or summary under them.
+     The toggle button spans the whole bar (a subgrid), so the title and Clear sit in its first row. */
+  .fw-topbar{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-rows:auto auto;column-gap:var(--sp-2);height:auto;min-height:52px}
+  .bar-title{grid-column:1;grid-row:1;position:relative;z-index:1;padding:var(--sp-2) 0 0 var(--sp-3);line-height:24px}
+  .fw-top-btn{grid-column:1 / -1;grid-row:1 / 3;display:grid;grid-template-columns:subgrid;grid-template-rows:subgrid;align-items:center;row-gap:var(--sp-1);padding:var(--sp-2) var(--sp-3)}
+  .fw-top-count{grid-column:2;grid-row:1}
+  .fw-top-toggle{grid-column:4;grid-row:1;margin-left:0;padding-right:24px}
+  .fw-top-chev{grid-column:4;grid-row:1;justify-self:end}
+  .fw-top-btn .fw-top-chips, #brief-top-btn #brief-top-summary{grid-column:1 / -1;grid-row:2;flex-wrap:wrap;overflow:visible}
+  .fw-topbar > #fw-top-clear{grid-column:3;grid-row:1;position:relative;z-index:1;min-height:24px;margin:var(--sp-2) 0 0}
   .canvas-hdr{flex-wrap:wrap}
   #editor{padding:var(--sp-5) var(--sp-4) var(--sp-8)}
   .canvas-foot .foot-avg{display:none}
@@ -587,26 +590,26 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-left">
-    <h1 class="topbar-sub">Patient Education Analyzer</h1>
+<a class="skip-link" href="#stage">Skip to main content</a>
+<header class="site-bar">
+  <h1 class="site-name">Patient Education Analyzer</h1>
+  <div class="site-page">
     <div class="seg mode-toggle" id="mode-toggle" role="group" aria-label="Mode">
       <button type="button" class="on" aria-pressed="true" data-m="evaluate" onclick="setMode('evaluate',this)" title="Upload a draft and score it against frameworks">Evaluate a draft</button>
       <button type="button" aria-pressed="false" data-m="plan" onclick="setMode('plan',this)" title="No draft yet: use Brief and Frameworks to plan before writing">Plan from an idea</button>
     </div>
   </div>
-
-  <div class="topnav">
-    <nav class="topnav-links" aria-label="Site">
-      <a href="framework-compass.html" target="_blank" rel="noopener" class="btn btn-quiet" title="Every framework the studio uses, with its sources and how it's scored">Framework Compass <span aria-hidden="true">↗</span></a>
-      <button type="button" class="btn btn-quiet" id="about-btn" onclick="openAbout()" aria-haspopup="dialog">About</button>
-    </nav>
-    <span class="bar-divider" aria-hidden="true"></span>
-    <div class="seg theme-switch" role="group" aria-label="Colour theme" data-theme-switch hidden>
-      <button type="button" data-theme-set="system" aria-pressed="true">System</button>
-      <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
-      <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
-    </div>
+  <nav class="site-nav" aria-label="Site">
+    <a href="index.html" aria-current="page">Studio</a>
+    <!-- opens in a new tab on purpose: the studio keeps the material and ratings in this page only, so leaving it would lose them -->
+    <a href="framework-compass.html" target="_blank" rel="noopener" title="Every framework the studio uses, with its sources and how it's scored. Opens in a new tab, so your work here stays open.">Framework Compass<span class="sr-only"> (opens in a new tab)</span></a>
+    <button type="button" id="about-btn" onclick="openAbout()" aria-haspopup="dialog">About</button>
+  </nav>
+  <span class="bar-divider" aria-hidden="true"></span>
+  <div class="seg theme-switch" role="group" aria-label="Colour theme" data-theme-switch hidden>
+    <button type="button" data-theme-set="system" aria-pressed="true" title="Follow the system setting"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="5.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 2.25a5.75 5.75 0 0 1 0 11.5z" fill="currentColor"/></svg><span class="ts-lbl">System</span></button>
+    <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="2.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="ts-lbl">Light</span></button>
+    <button type="button" data-theme-set="dark" aria-pressed="false" title="Dark"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span class="ts-lbl">Dark</span></button>
   </div>
 
   <!-- Workspace presets, add/save/reset and Clear inputs: hidden until the feature is ready for public use -->
@@ -620,9 +623,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
     <button type="button" class="btn btn-quiet" onclick="resetLayout()" title="Restore this workspace's default arrangement — does not touch the document or scores">Reset</button>
     <button type="button" class="btn btn-quiet" onclick="clearInputs()" title="Clear the Brief (Audience, Format) and the Frameworks selection — does not touch the document or layout">Clear inputs</button>
   </div>
-</div>
+</header>
 
-<main class="stage" id="stage">
+<main class="stage" id="stage" tabindex="-1">
 
   <!-- ── TOP BARS: BRIEF + FRAMEWORKS, side by side ── -->
   <div class="top-bars" id="top-bars">
@@ -705,7 +708,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
             </div>
             <button type="button" class="btn btn-quiet" onclick="clearFrameworks()" title="Untick every framework and reset the filter">Clear selection</button>
           </div>
-          <div class="fw-top-grid" id="fw-top-grid"></div>
+          <div class="fw-top-grid" id="fw-top-grid" role="group" aria-labelledby="fw-h fw-grid-lbl"></div>
         </div>
       </div>
     </div>
@@ -721,7 +724,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
         <span class="cf-name" id="canvas-file-name"></span>
       </span>
       <div class="canvas-actions">
-        <button type="button" class="btn btn-quiet" id="hist-btn" onclick="toggleFileHistory()" title="Files opened this session" aria-controls="file-history" hidden>Files <span id="hist-count">0</span></button>
+        <button type="button" class="btn btn-quiet" id="hist-btn" onclick="toggleFileHistory()" title="Files opened this session" aria-controls="file-history" aria-expanded="false" hidden>Files <span id="hist-count">0</span></button>
         <button type="button" class="btn btn-secondary hide-when-empty" onclick="document.getElementById('file-doc').click()" title="Upload a document, image or PDF">Upload</button>
         <button type="button" class="btn btn-quiet hide-when-empty" onclick="clearEditor()" title="Remove the material and reset all scores">Clear</button>
       </div>
@@ -801,7 +804,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
       <span class="foot-stat"><b id="f-words">0</b> <span id="f-words-lbl">words</span></span>
       <span class="foot-stat"><b id="f-sents">0</b> <span id="f-sents-lbl">sentences</span></span>
       <span class="foot-stat foot-avg"><b id="f-avg">0</b> words per sentence</span>
-      <button type="button" class="btn btn-quiet" id="ver-btn" onclick="toggleVersions()" aria-controls="ver-panel" title="Version history, Save version and Track changes"><b id="f-vers">0</b> <span id="f-vers-lbl">versions</span></button>
+      <button type="button" class="btn btn-quiet" id="ver-btn" onclick="toggleVersions()" aria-controls="ver-panel" aria-expanded="false" title="Version history, Save version and Track changes"><b id="f-vers">0</b> <span id="f-vers-lbl">versions</span></button>
       <span id="f-file">unsaved draft</span>
     </div>
 
@@ -869,11 +872,18 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
       <div class="mod-body">
         <div class="vm-ocr" id="vm-ocr" role="status">
           <span class="vm-ocr-msg" id="vm-ocr-msg"></span>
+          <span class="vm-ocr-msg vm-ocr-caveat" id="vm-ocr-caveat" hidden>Text on dark or coloured backgrounds is easy to miss — check it against the artwork.</span>
           <progress class="vm-ocr-bar" id="vm-ocr-bar" max="100" aria-label="Reading text" hidden></progress>
         </div>
         <div class="vm-ocr-actions" id="vm-ocr-actions" hidden>
           <button type="button" class="btn btn-secondary" id="vm-ocr-use" hidden>Use the machine-read text</button>
           <button type="button" class="btn btn-quiet" id="vm-ocr-again">Read text again</button>
+        </div>
+        <!-- two-step confirm in place of a native dialog: themed, keyboard operable, works where dialogs are blocked -->
+        <div class="vm-ocr-confirm" id="vm-ocr-confirm" role="group" aria-labelledby="vm-ocr-confirm-q" hidden>
+          <span class="vm-ocr-confirm-q" id="vm-ocr-confirm-q">Replace your text?</span>
+          <button type="button" class="btn btn-secondary" id="vm-ocr-confirm-yes">Confirm</button>
+          <button type="button" class="btn btn-quiet" id="vm-ocr-confirm-no">Cancel</button>
         </div>
         <p class="vm-help" id="vm-txt-help">Fix any misread words — the scores use this text.</p>
         <textarea class="brief-input" id="vm-transcript" aria-label="Text the tool read" aria-describedby="vm-txt-help vm-ocr-msg" rows="8" placeholder="Headline…&#10;Body copy…&#10;Chart labels, captions, call to action…" oninput="onVisualInput()"></textarea>
@@ -1647,7 +1657,7 @@ function refreshScores(){
   const cciOn = hasContent() && cci.pct !== null;
   cciPill.textContent = !cciOn ? '—'
     : cci.done ? cci.pct+(cci.pct >= CCI_PASS ? ', passes' : ', below '+CCI_PASS)
-    : cci.met+' met, '+cci.open+' open';
+    : cci.met+' met, '+cci.not+' not met, '+cci.open+' to review';   // the same counts and words as the explanation below
   cciPill.className = 'pill ' + (!cciOn ? 'pill-empty'
     : cci.done ? pillClass(cci.pct, CCI_PASS, 70)
     : cci.best < CCI_PASS ? 'pill-fail' : 'pill-count');
@@ -2261,6 +2271,7 @@ function openVisual(entry){
   vmStopPdfRender();
   $('vm-pager').style.display = 'none';
   $('ver-panel').style.display = 'none';     // versions hold editor text only
+  syncDrawerButtons();
 
   $('vm-alt').value = entry.alt || '';
   $('vm-transcript').value = entry.transcript || '';
@@ -2592,6 +2603,8 @@ function pdfPage(delta){
 }
 
 // html is authored here; file names in it are passed through escapeHtml by the callers
+// Every way of opening other material (a file, a sample, a file from the list, Clear) dismisses the banner
+function hideDocWarn(){ const w = $('doc-warn'); if(w) w.style.display = 'none'; }
 function warnBanner(html){
   const w = $('doc-warn');
   const lead = /^\s*<b>/.test(html) ? '' : '<b class="doc-warn-lead">Check this:</b> ';
@@ -2640,11 +2653,18 @@ function vmApplyZoom(keepCentre){
 }
 function vmZoomStep(dir){
   const cur = vmScale();
-  // From Fit (an in-between scale) the first step must be a visible jump: at least 1.25× either way
-  const k = vmZoom == null ? 1.25 : 1.001;
-  const next = dir > 0
-    ? (VM_STEPS.find(z => z >= cur * k) || VM_STEPS[VM_STEPS.length - 1])
-    : (VM_STEPS.slice().reverse().find(z => z <= cur / k) || VM_STEPS[0]);
+  const lo = VM_STEPS[0], hi = VM_STEPS[VM_STEPS.length - 1];
+  let next;
+  if(vmZoom == null){
+    // From Fit (an in-between scale) the first step is exactly 1.25× either way (41% → 51%, not 67%);
+    // later steps snap to the usual stops
+    next = Math.round(Math.max(lo, Math.min(hi, dir > 0 ? cur * 1.25 : cur / 1.25)) * 100) / 100;
+  } else {
+    // at least 1.1× per press, so a stop just next to the current scale isn't a near-invisible step
+    next = dir > 0
+      ? (VM_STEPS.find(z => z >= cur * 1.1) || hi)
+      : (VM_STEPS.slice().reverse().find(z => z <= cur / 1.1) || lo);
+  }
   vmZoom = next;
   vmApplyZoom(true);
 }
@@ -2749,6 +2769,9 @@ function getOcrWorker(){
       logger: m => { if(ocrOnProgress) ocrOnProgress(m); },
       errorHandler: () => {},
     }, OCR_PATHS)))
+    // Fully automatic page layout (Tesseract's own default; tesseract.js starts in single-block mode).
+    // On posters, single-block mode skipped text sitting in a coloured box, such as a call-to-action panel.
+    .then(w => w.setParameters({ tessedit_pageseg_mode:'3' }).then(() => w))
     .catch(err => { ocrWorkerP = null; throw err; });
   return ocrWorkerP;
 }
@@ -2784,6 +2807,71 @@ function ocrWordBoxes(data, img, page){
   }
   return out;
 }
+// ── Second reading for light text on dark or coloured backgrounds ──
+// The engine reads dark-on-light far more reliably, so white type on a red or blue band is often
+// missed. Each image is read twice: as is, and as a contrast-stretched, inverted greyscale copy.
+// Lines from the second reading are added only where the first found nothing (box overlap), unless
+// the first line there was a much weaker guess. Everything is kept in reading order with word boxes.
+const OCR_MIN_CONF = 40;
+function ocrInverted(src){
+  const c = document.createElement('canvas');
+  c.width = src.width; c.height = src.height;
+  const x = c.getContext('2d', { willReadFrequently:true });
+  x.drawImage(src, 0, 0);
+  const im = x.getImageData(0, 0, c.width, c.height), d = im.data;
+  let lo = 255, hi = 0;
+  for(let i = 0; i < d.length; i += 4){
+    const g = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+    d[i] = g; if(g < lo) lo = g; if(g > hi) hi = g;
+  }
+  const k = hi > lo ? 255 / (hi - lo) : 1;
+  for(let i = 0; i < d.length; i += 4){ const v = 255 - (d[i] - lo) * k; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; }
+  x.putImageData(im, 0, 0);
+  return c;
+}
+// The lines the engine is reasonably sure of, with their boxes
+function ocrLines(data){
+  return (data && data.lines || []).filter(l => l.confidence >= OCR_MIN_CONF && l.bbox)
+    .map(l => ({ text:l.text, conf:l.confidence, box:l.bbox, words:l.words || [] }));
+}
+// How much two boxes overlap, as a share of the smaller one (0 to 1)
+function ocrOverlap(a, b){
+  const w = Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0), h = Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0);
+  if(w <= 0 || h <= 0) return 0;
+  const area = r => Math.max(1, (r.x1 - r.x0) * (r.y1 - r.y0));
+  return (w * h) / Math.min(area(a), area(b));
+}
+function ocrMerge(first, second){
+  const out = first.slice();
+  second.forEach(l => {
+    const hit = out.filter(f => ocrOverlap(f.box, l.box) > 0.3);
+    if(!hit.length) out.push(l);
+    // the first reading put a weak guess where the second reads it clearly: keep the clear one
+    else if(hit.every(f => l.conf >= f.conf + 20)){ hit.forEach(f => out.splice(out.indexOf(f), 1)); out.push(l); }
+  });
+  // reading order: top to bottom; lines that share a row go left to right
+  return out.sort((a, b) => {
+    const ov = Math.min(a.box.y1, b.box.y1) - Math.max(a.box.y0, b.box.y0);
+    const minH = Math.min(a.box.y1 - a.box.y0, b.box.y1 - b.box.y0) || 1;
+    return ov > minH * 0.5 ? a.box.x0 - b.box.x0 : a.box.y0 - b.box.y0;
+  });
+}
+function ocrCleanLine(t){ return String(t || '').replace(/[|_~]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+function ocrLineText(lines){
+  return lines.map(l => ocrCleanLine(l.text)).filter(t => (t.match(/[A-Za-z0-9]/g) || []).length >= 2).join('\n');
+}
+function ocrLineBoxes(lines, img, page){
+  const W = img.width || 1, H = img.height || 1, out = [];
+  lines.forEach((ln, li) => {
+    if((ocrCleanLine(ln.text).match(/[A-Za-z0-9]/g) || []).length < 2) return;   // same cut as the text
+    ln.words.forEach(w => {
+      const t = ocrNorm(w && w.text), b = w && w.bbox;
+      if(t && b) out.push({ t, x:b.x0 / W, y:b.y0 / H, w:(b.x1 - b.x0) / W, h:(b.y1 - b.y0) / H, p:page, l:page * 100000 + li });
+    });
+  });
+  return out;
+}
+
 // Tolerant word form for matching: case, accents and punctuation don't count
 function ocrNorm(s){
   return String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^\p{L}\p{N}]+/gu, '');
@@ -2806,11 +2894,13 @@ function ocrPrepare(src){
 async function runOcr(entry, images, what){
   const job = ++ocrJob;
   const live = () => job === ocrJob && visualOn && entry.id === activeFileId;
+  // two readings per image (as is, then inverted), so progress runs over twice the images
+  const passes = images.length * 2;
   let done = 0, lastPct = -1;
   setOcrState('running', 0, entry);
   ocrOnProgress = m => {
     if(!live() || m.status !== 'recognizing text') return;
-    const pct = Math.round(((done + (m.progress || 0)) / images.length) * 100);
+    const pct = Math.min(99, Math.round(((done + (m.progress || 0)) / passes) * 100));
     if(pct !== lastPct){ lastPct = pct; setOcrState('running', pct, entry); }
   };
   try {
@@ -2818,10 +2908,25 @@ async function runOcr(entry, images, what){
     const parts = [], words = [];
     for(let i = 0; i < images.length; i++){
       if(!live()) return;                     // moved on: drop it, it will run again next time this file opens
+      const page = what === 'pdf' ? i + 1 : 0;
       const r = await worker.recognize(images[i]);
-      parts.push(ocrClean(r.data)); done++;
-      // where each word sits, so a line in the card can be found on the artwork (PDF pages count from 1)
-      try { words.push(...ocrWordBoxes(r.data, images[i], what === 'pdf' ? i + 1 : 0)); } catch(e){}
+      done++;
+      if(!live()) return;
+      let second = null;
+      try { second = await worker.recognize(ocrInverted(images[i])); } catch(e){ second = null; }
+      done++;
+      if(!live()) return;
+      const l1 = ocrLines(r.data);
+      if(r.data.lines && (r.data.lines.length || (second && second.data.lines))){
+        const merged = ocrMerge(l1, second ? ocrLines(second.data) : []);
+        parts.push(ocrLineText(merged));
+        // where each word sits, so a line in the card can be found on the artwork (PDF pages count from 1)
+        try { words.push(...ocrLineBoxes(merged, images[i], page)); } catch(e){}
+      } else {
+        // no line structure from this engine build: the first reading's text and word boxes only
+        parts.push(ocrClean(r.data));
+        try { words.push(...ocrWordBoxes(r.data, images[i], page)); } catch(e){}
+      }
     }
     if(!live()) return;
     const text = parts.filter(Boolean).join('\n\n').trim();
@@ -2909,6 +3014,7 @@ function setOcrState(state, pct, entry, what){
     ? 'Reading text… ' + Math.round(pct / 10) * 10 + '%'       // tens, so a screen reader isn't flooded
     : (OCR_MSG[key] || '');
   bar.hidden = key !== 'running';
+  const caveat = $('vm-ocr-caveat'); if(caveat) caveat.hidden = key !== 'done';
   if(key === 'running'){ if(pct > 0) bar.value = pct; else bar.removeAttribute('value'); }   // no value = busy, not 0%
   if(state === 'running') ocrWarm();
   $('vm-transcript').setAttribute('aria-busy', String(key === 'running'));
@@ -2918,31 +3024,49 @@ function setOcrState(state, pct, entry, what){
 
 // "Read text again" for images and PDFs with no text layer (never while a reading runs);
 // "Use the machine-read text" only while a reading is waiting because you had typed
+let ocrAsk = null;            // the action waiting on the inline "Replace your text?" confirm: 'again' | 'use' | null
 function syncOcrActions(key){
   const wrap = $('vm-ocr-actions'); if(!wrap) return;
   if(key === undefined) key = ($('vm-ocr').className.match(/is-(\w+)/) || [])[1] || 'idle';
   const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
   const canRead = !!entry && (entry.kind === 'image' || (entry.kind === 'pdf' && !entry.textLayer && !!pdfDoc));
   const running = key === 'running';
-  $('vm-ocr-again').hidden = !canRead || running;
-  $('vm-ocr-use').hidden = !entry || running || !entry.ocrPending;
+  if(ocrAsk && (running || !entry || (ocrAsk === 'use' && !entry.ocrPending) || (ocrAsk === 'again' && !canRead))) ocrAsk = null;
+  $('vm-ocr-again').hidden = !canRead || running || !!ocrAsk;
+  $('vm-ocr-use').hidden = !entry || running || !entry.ocrPending || !!ocrAsk;
   wrap.hidden = $('vm-ocr-again').hidden && $('vm-ocr-use').hidden;
+  $('vm-ocr-confirm').hidden = !ocrAsk;
 }
-function ocrReadAgain(){
+// Ask in place: the buttons give way to "Replace your text?" with Confirm and Cancel
+function ocrAskReplace(which){
+  ocrAsk = which;
+  syncOcrActions();
+  $('vm-ocr-confirm-yes').focus();
+}
+function ocrAskEnd(confirmed){
+  const which = ocrAsk;
+  ocrAsk = null;
+  syncOcrActions();
+  if(!which) return;
+  if(confirmed){ if(which === 'again') ocrReadAgain(true); else ocrUsePending(true); }
+  else { const back = $(which === 'again' ? 'vm-ocr-again' : 'vm-ocr-use'); if(back && !back.hidden) back.focus(); else $('vm-transcript').focus(); }
+}
+function ocrReadAgain(confirmed){
   const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
   if(!entry) return;
   const box = $('vm-transcript');
-  if(box.value.trim() && !confirm('Read the artwork again and replace the text in this card?\n\nAnything you typed here will be replaced.')) return;
+  if(box.value.trim() && confirmed !== true){ ocrAskReplace('again'); return; }
   entry.ocrPending = null;
   entry.ocrReplace = box.value;              // replaced only if nothing is typed while it reads
   if(entry.kind === 'pdf'){ if(pdfDoc) ocrPdf(entry, pdfDoc); }
   else ocrImage(entry);
+  $('vm-transcript').focus();                // the reading is announced by the status line above it
 }
-function ocrUsePending(){
+function ocrUsePending(confirmed){
   const entry = visualOn && fileHistory.find(f => f.id === activeFileId);
   if(!entry || !entry.ocrPending) return;
   const box = $('vm-transcript');
-  if(box.value.trim() && !confirm('Replace the text you typed with the machine-read text?')) return;
+  if(box.value.trim() && confirmed !== true){ ocrAskReplace('use'); return; }
   box.value = entry.ocrPending;
   entry.transcript = entry.ocrPending;
   entry.ocrPending = null;
@@ -2951,9 +3075,12 @@ function ocrUsePending(){
   box.focus();
 }
 (function(){
-  const again = $('vm-ocr-again'), use = $('vm-ocr-use');
-  if(again) again.addEventListener('click', ocrReadAgain);
-  if(use) use.addEventListener('click', ocrUsePending);
+  const again = $('vm-ocr-again'), use = $('vm-ocr-use'), ask = $('vm-ocr-confirm');
+  if(again) again.addEventListener('click', () => ocrReadAgain());
+  if(use) use.addEventListener('click', () => ocrUsePending());
+  $('vm-ocr-confirm-yes').addEventListener('click', () => ocrAskEnd(true));
+  $('vm-ocr-confirm-no').addEventListener('click', () => ocrAskEnd(false));
+  ask.addEventListener('keydown', e => { if(e.key === 'Escape'){ e.preventDefault(); e.stopPropagation(); ocrAskEnd(false); } });
 })();
 
 function syncVisualHint(){
@@ -3580,7 +3707,15 @@ function toggleFileHistory(){
   const open = p.style.display !== 'none';
   p.style.display = open ? 'none' : 'block';
   if(!open) renderFileHistory();
+  syncDrawerButtons();
   pushNav();
+}
+// The Files and versions buttons say whether their drawer is open
+function syncDrawerButtons(){
+  [['hist-btn','file-history'], ['ver-btn','ver-panel']].forEach(([b, d]) => {
+    const btn = $(b), drawer = $(d);
+    if(btn && drawer) btn.setAttribute('aria-expanded', String(drawer.style.display !== 'none'));
+  });
 }
 function removeFile(id){
   const i = fileHistory.findIndex(f => f.id === id);
@@ -3592,6 +3727,7 @@ function reopenFile(id){
   const f = fileHistory.find(x => x.id === id);
   if(!f) return;
   intakeTok++;
+  hideDocWarn();
   // stash current work before switching away
   stashActive();
   activeFileId = id;
@@ -3693,6 +3829,7 @@ function toggleVersions(){
   const open = p.style.display !== 'none';
   p.style.display = open ? 'none' : 'block';
   if(!open) renderVersions();
+  syncDrawerButtons();
   pushNav();
 }
 
@@ -3724,8 +3861,7 @@ function clearEditor(){
   activeFileId = null;
   renderFileHistory();
   setCanvasTitle(null);
-  const warn = $('doc-warn');
-  if(warn) warn.style.display = 'none';
+  hideDocWarn();
   analyze();
   pushNav();
 }
@@ -3763,7 +3899,7 @@ async function intakeFile(file){
   const tok = ++intakeTok;
   const stale = () => tok !== intakeTok;
   stashActive();
-  $('doc-warn').style.display = 'none';
+  hideDocWarn();
   const ext = file.name.split('.').pop().toLowerCase();
 
   // Images → visual mode
@@ -3986,6 +4122,7 @@ function mdToHtml(md){
 // ── Sample handout ──
 function loadSample(){
   intakeTok++;                               // a file still loading must not take over
+  hideDocWarn();
   resetLiveOverrides();
   exitVisual();
   editor.innerHTML =
@@ -4009,6 +4146,7 @@ function loadSample(){
 // It keeps a few real problems for the checks to find: no alt text, a low-contrast footer, a bare percentage and a number range.
 function loadSamplePoster(){
   intakeTok++;                               // a file still loading must not take over
+  hideDocWarn();
   const W = 900, H = 1200;
   const c = document.createElement('canvas'); c.width = W; c.height = H;
   const x = c.getContext('2d');
@@ -4689,20 +4827,35 @@ function renderFwTopGrid(){
   $('fw-grid-lbl').textContent = fwOutFilter === 'all'
     ? shown.length + ' frameworks'
     : shown.length + ' of ' + FW_AVAILABLE.length + ' shown, ' + OUT_LABEL[fwOutFilter].toLowerCase() + ' only';
+  // a re-render replaces the rows: keep keyboard focus on the row that had it
+  const had = document.activeElement && document.activeElement.closest && document.activeElement.closest('#fw-top-grid .fw-row');
+  const hadKey = had ? had.dataset.f : null;
   grid.innerHTML = shown.map(f => {
     const isSel = selected.includes(f);
     const bd = FW_BADGE[FW_LEVEL[f]];
     const out = fwOutType(f);
-    return '<div class="fw-top-card' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '"'
-           + ' onclick="toggleFwManual(\'' + f + '\')" onkeydown="if(event.key===\' \'||event.key===\'Enter\'){event.preventDefault();toggleFwManual(\'' + f + '\')}">'
-      + '<div class="fwc-top"><span class="fwc-box" aria-hidden="true"></span><span class="name">' + FW_LABEL[f] + '</span>'
-      + '</div>'
-      + '<div class="full">' + FW_FULL[f] + '</div>'
-      + '<div class="fwc-meta"><span class="fw-out-tag">' + OUT_LABEL[out] + '</span>'
-      + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></div>'
+    // clicks and Space/Enter are handled once on the list (below), not per row
+    return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '">'
+      + '<span class="fwc-box" aria-hidden="true"></span>'
+      + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + '</span><span class="full">' + FW_FULL[f] + '</span></span>'
+      + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
+      + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></span>'
       + '</div>';
   }).join('');
+  if(hadKey){ const r = grid.querySelector('.fw-row[data-f="' + hadKey + '"]'); if(r) r.focus(); }
 }
+(function(){
+  const grid = $('fw-top-grid');
+  const pick = row => { if(row && FW_LABEL[row.dataset.f]) toggleFwManual(row.dataset.f); };
+  grid.addEventListener('click', e => pick(e.target.closest('.fw-row')));
+  grid.addEventListener('keydown', e => {
+    if(e.key !== ' ' && e.key !== 'Enter') return;
+    const row = e.target.closest('.fw-row');
+    if(!row) return;
+    e.preventDefault();
+    pick(row);
+  });
+})();
 // Hide chips that don't fit and add a "+N more" chip in their place
 function fitChips(box){
   const chips = [...box.querySelectorAll('.fw-tag:not(.fw-more)')];
@@ -5121,6 +5274,7 @@ function applyNav(s){
     $('ver-panel').style.display    = s.drawer === 'versions' ? 'block' : 'none';
     if(s.drawer === 'files') renderFileHistory();
     if(s.drawer === 'versions') renderVersions();
+    syncDrawerButtons();
   } finally {
     navRestoring = false;
   }
@@ -5193,7 +5347,12 @@ window.addEventListener('resize', hideTip);
 function openAbout(){ const d = $("about"); if(!d.open) d.showModal(); }
 function closeAbout(){ $("about").close(); }
 $("about").addEventListener("click", e => { if(e.target === e.currentTarget) closeAbout(); });   // click outside closes
-$("about").addEventListener("close", () => $("about-btn").focus());                           // back to where the reader was
+$("about").addEventListener("close", () => {
+  $("about-btn").focus();                                                                    // back to where the reader was
+  if(location.hash === "#about"){ try { history.replaceState(history.state, "", location.pathname + location.search); } catch(e){} }
+});
+// The Compass's About link opens the studio at #about: show the dialog on arrival
+if(location.hash === "#about") openAbout();
 
 // ── Divider: drag, arrow keys, double-click to reset; width remembered per browser ──
 (function(){
