@@ -4,6 +4,13 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — About dialog: one "Got it" button
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- The About footer has a single button, **Got it**, which closes the dialog. The
+  Framework Compass button was removed; the Compass is still in the site bar.
+
 ## 2026-10-17 — Renamed to PRISM; About credits and feedback
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
