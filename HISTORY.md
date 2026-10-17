@@ -4,6 +4,19 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Fix: Dark button missing after an update
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Cause:** the Dark toggle started hidden and was revealed by `theme-switch.js`. A
+  browser still holding the previous cached copy of that script (which revealed the old
+  three-button switch) left the new button hidden.
+- **Fix:** the toggle is visible in the page markup from the start.
+- Shared files are now loaded with a version (`?v=20261017b`), so browsers fetch fresh
+  copies after a change. This covers `design-system.css`, `theme-switch.js`,
+  `frameworks.js` and `analysis-engine.js`. **Bump the version** whenever one of these
+  files changes.
+
 ## 2026-10-17 — About dialog: one "Got it" button
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

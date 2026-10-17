@@ -10,10 +10,10 @@
  *
  *    Then design-system.css, and <script src="theme-switch.js" defer></script>.
  *
- * 2. Markup (in the site bar). `hidden` keeps it out of the way when scripts do not run; this
- *    file reveals it. The icon shows at 600px and below; the word stays the accessible name.
+ * 2. Markup (in the site bar). Visible from the start, so an old cached copy of this file can't
+ *    leave it hidden. The icon shows at 600px and below; the word stays the accessible name.
  *
- *    <button type="button" class="btn btn-quiet theme-toggle" data-theme-toggle aria-pressed="false" title="Dark mode" hidden>
+ *    <button type="button" class="btn btn-quiet theme-toggle" data-theme-toggle aria-pressed="false" title="Dark mode">
  *      <svg class="ts-ico" …aria-hidden="true" focusable="false">…</svg><span class="ts-lbl">Dark</span></button>
  *
  * Switching adds .theme-switching to <html> for two frames, which turns transitions off
