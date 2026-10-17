@@ -390,7 +390,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .issue-sev.error{color:var(--fail)}
 .issue-sev.warn{color:var(--warn)}
 .issue-msg{grid-column:1 / -1;font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.issue-snip{grid-column:1 / -1;display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+.issue-snip{grid-column:1 / -1;display:block;max-width:100%;white-space:normal;overflow-wrap:anywhere;font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}   /* the whole sentence, wrapped */
 /* "Can't find these words on the artwork." */
 .hl-miss{font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
 .hl-miss:empty{display:none}
@@ -1984,7 +1984,7 @@ function analyze(){
         '<span class="issue-lbl">'+escapeHtml(i.lbl)+'</span>'+
         '<span class="issue-sev '+i.sev+'">'+(i.sev==='error'?'Fix':'Review')+'</span>'+
         '<div class="issue-msg">'+escapeHtml(i.msg)+'</div>'+
-        '<span class="issue-snip">“'+escapeHtml(i.snip)+'”</span>'+
+        '<span class="issue-snip">“'+escapeHtml(i.src)+'”</span>'+
       '</div>').join('');
   }
 

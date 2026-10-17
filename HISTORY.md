@@ -4,6 +4,14 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Plain language issues show the full sentence
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Each issue in the Plain language card now quotes the whole sentence it's about, wrapped
+  over as many lines as it needs. Before, sentences were cut at 58 characters and to one
+  line with "…".
+
 ## 2026-10-16 — Proofing desk look, with light and dark themes
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
