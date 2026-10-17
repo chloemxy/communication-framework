@@ -4,6 +4,16 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Light by default, one Dark toggle; "Clear"
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- The site is light by default and no longer follows the system's dark setting.
+- The System / Light / Dark switch is replaced by one **Dark** toggle in the site bar, on
+  both pages. Your choice is remembered (`pea.theme`) and shared between the pages.
+  Checked with the OS set to dark: the site still opens light.
+- The Frameworks panel's "Clear selection" button now reads **Clear**.
+
 ## 2026-10-17 — Frameworks dropdown: situations and grouping
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

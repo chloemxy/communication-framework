@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script>try{var t=localStorage.getItem('pea.theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
+<script>try{if(localStorage.getItem('pea.theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 <title>Framework Compass — Patient Education Analyzer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -92,11 +92,7 @@
     <a href="index.html#about">About</a>
   </nav>
   <span class="bar-divider" aria-hidden="true"></span>
-  <div class="seg theme-switch" role="group" aria-label="Colour theme" data-theme-switch hidden>
-    <button type="button" data-theme-set="system" aria-pressed="true" title="Follow the system setting"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="5.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 2.25a5.75 5.75 0 0 1 0 11.5z" fill="currentColor"/></svg><span class="ts-lbl">System</span></button>
-    <button type="button" data-theme-set="light" aria-pressed="false" title="Light"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="2.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span class="ts-lbl">Light</span></button>
-    <button type="button" data-theme-set="dark" aria-pressed="false" title="Dark"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span class="ts-lbl">Dark</span></button>
-  </div>
+  <button type="button" class="btn btn-quiet theme-toggle" data-theme-toggle aria-pressed="false" title="Dark mode" hidden><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span class="ts-lbl">Dark</span></button>
 </header>
 
 <main class="compass" id="main" tabindex="-1">
