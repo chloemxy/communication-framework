@@ -63,6 +63,7 @@
   --fs-xs:13px; --fs-sm:14px; --fs-md:15px; --fs-lg:17px; --fs-2xl:24px;
 
   /* ── Space ── */
+  --inset:16px;   /* the one left edge for text inside bars, panels and cards */
   --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px; --sp-12:48px;
 
   /* ── Shape ── */

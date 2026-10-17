@@ -4,6 +4,29 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — One left edge for text, everywhere
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Rule:** every container (bar, panel, card, dialog, list) has one left edge for its
+  text, the new `--inset` token (16px). Rows with a checkbox or number put it on that edge,
+  and all their text shares one indent. Written into `DESIGN.md` and into the design
+  agents (layout designer, design-system manager, coder, reader-advocate, design lead).
+- **Fixed against it:**
+  - The Brief and Frameworks panels now start on the bar title's edge (they were 4px
+    further in).
+  - Framework rows put the checkbox on the edge, with the hover fill still running edge
+    to edge.
+  - "Score" is plain strong text on the row indent instead of a padded pill; "Auto +
+    review" follows after a hairline. Both were right-aligned in wide layouts.
+  - The Material header is on the same edge as the cards. Card headers and bodies, bar
+    titles and Compass rows all use `--inset`.
+- **Measured:** in the Frameworks panel, every heading, the count, the checkboxes and the
+  situation boxes start on one edge, and row text shares one indent. Card titles and
+  bodies, and the Material header, sit on the same edge.
+- `DESIGN.md` now says the theme is light by default with one Dark toggle. It still
+  described the old System / Light / Dark switch.
+
 ## 2026-10-17 — Fix: Dark button missing after an update
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

@@ -54,9 +54,28 @@ re-tuned values, every text pair re-checked to ≥ 4.5:1.
   per region. Labels are verbs, no trailing arrows. External links may keep a small ↗.
 - Rating buttons: same height and radius as buttons; pressed state uses the status colour
   as a 2px inset border plus the word — never colour alone.
-- Theme switch in the site bar: System / Light / Dark. Default follows
-  `prefers-color-scheme`; a choice is saved in `localStorage` (`pea.theme`) and applied as
-  `data-theme="light|dark"` on `<html>` before first paint (no flash).
+- Theme: light by default (does not follow the OS). One **Dark** toggle in the site bar; the
+  choice is saved in `localStorage` (`pea.theme`) and applied as `data-theme="dark"` on `<html>`
+  before first paint (no flash).
+
+## Alignment: one left edge
+
+- Every container (bar, panel, card, dialog, list) has **one left edge** for its text — the
+  container's inset (in this project `--inset`, 16px).
+- Titles, labels, counts, section headings and paragraphs start on that edge. Text is
+  left-aligned: never centred or right-aligned (numbers may right-align inside their own
+  numeric column).
+- Rows with a control (checkbox, item number, chevron) put the control on the edge; all of
+  the row's text — name, full name, description, small labels such as "Score" — starts on
+  **one shared indent** after it.
+- Bordered or filled sub-boxes (cards, tiles, buttons) put their box on the edge and inset
+  their own text. Labels that sit in a line of text are plain text, not padded pills, so
+  their text stays on the indent.
+- A panel that opens under a bar uses the bar's edge, so the panel's first line sits
+  directly under the bar title.
+- Content shown as a document (a page preview) keeps its own page margins.
+- Check by measuring where each text block starts inside each container: one edge, plus at
+  most one row indent. Anything else is a defect.
 
 ## Never
 

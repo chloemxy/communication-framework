@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261017b">
-<script src="theme-switch.js?v=20261017b" defer></script>
+<link rel="stylesheet" href="design-system.css?v=20261017c">
+<script src="theme-switch.js?v=20261017c" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -72,7 +72,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .top-bar-col:last-child{flex:1}
 .fw-topbar{display:flex;align-items:center;gap:var(--sp-3);height:52px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet);transition:border-color .12s}
 .fw-topbar:hover{border-color:var(--ink-2)}
-.bar-title{flex:0 0 auto;margin:0;padding-left:var(--sp-4);font-size:var(--fs-sm);font-weight:600;line-height:1.3;color:var(--ink);white-space:nowrap;cursor:pointer}
+.bar-title{flex:0 0 auto;margin:0;padding-left:var(--inset);font-size:var(--fs-sm);font-weight:600;line-height:1.3;color:var(--ink);white-space:nowrap;cursor:pointer}
 .fw-top-btn{flex:1 1 auto;min-width:0;align-self:stretch;display:flex;align-items:center;gap:var(--sp-3);padding:0 var(--sp-4) 0 0;
   border:none;border-radius:var(--radius-sheet);background:transparent;font-size:var(--fs-sm);font-weight:400;line-height:1.3;color:var(--ink);text-align:left;cursor:pointer}
 .fw-top-btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
@@ -97,7 +97,7 @@ body.resizing{cursor:col-resize;user-select:none}
   background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet);box-shadow:var(--shadow-float);
   transition:max-height .18s ease,opacity .15s ease,visibility 0s linear .18s}
 .fw-top-panel.open{max-height:min(70vh,640px);overflow-y:auto;opacity:1;visibility:visible;transition:max-height .18s ease,opacity .15s ease,visibility 0s}
-.fw-top-panel-inner{padding:var(--sp-5)}
+.fw-top-panel-inner{padding:var(--sp-4) var(--inset)}   /* same left edge as the bar title above it */
 .tune-lbl{margin:var(--sp-4) 0 var(--sp-2);font-size:var(--fs-xs);font-weight:600;color:var(--ink-2)}
 .tune-lbl:first-child{margin-top:0}
 .tune-lbl-gap{margin-top:var(--sp-4)}
@@ -114,7 +114,7 @@ body.resizing{cursor:col-resize;user-select:none}
    Box | name and description | output type and how it's scored, as caption text. Selected = form blue. */
 .fw-top-grid-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-2);margin-bottom:var(--sp-2)}
 /* the count / Filter / Clear row stays pinned at the top of the panel while the list scrolls */
-.fw-top-grid-hdr{position:sticky;top:0;z-index:2;background:var(--sheet);margin:calc(-1 * var(--sp-5)) calc(-1 * var(--sp-5)) var(--sp-2);padding:var(--sp-3) var(--sp-5);border-bottom:1px solid var(--rule)}
+.fw-top-grid-hdr{position:sticky;top:0;z-index:2;background:var(--sheet);margin:calc(-1 * var(--sp-4)) calc(-1 * var(--inset)) var(--sp-2);padding:var(--sp-3) var(--inset);border-bottom:1px solid var(--rule)}
 .fw-top-grid-hdr .lbl{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-top-grid-hdr .btn{margin-left:var(--sp-1)}
 .fw-top-grid{border-top:1px solid var(--rule)}
@@ -132,7 +132,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-zone-h{display:flex;align-items:baseline;gap:var(--sp-2);padding:var(--sp-4) 0 var(--sp-2);font-size:var(--fs-xs);font-weight:600;color:var(--ink);border-bottom:1px solid var(--rule)}
 .fw-zone-h span{font-weight:400;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-row{display:grid;grid-template-columns:16px minmax(0,1fr) max-content;grid-template-areas:"box main meta";column-gap:var(--sp-3);row-gap:var(--sp-1);
-  align-items:start;padding:var(--sp-2) var(--sp-2);border-bottom:1px solid var(--rule);cursor:pointer;transition:background-color .12s}
+  align-items:start;margin:0 calc(-1 * var(--inset));padding:var(--sp-2) var(--inset);border-bottom:1px solid var(--rule);cursor:pointer;transition:background-color .12s}
 .fw-row:hover{background:var(--hover)}
 .fw-row:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px;border-radius:var(--radius-control)}
 .fw-row.match{background:var(--selected)}
@@ -144,9 +144,9 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .fw-row .name-full{display:block;font-size:var(--fs-sm);font-weight:400;color:var(--ink)}
 .fw-row .full{display:block;margin-top:2px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.fwc-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;gap:var(--sp-1);text-align:right;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.fwc-out{color:var(--ink)}           /* output type: a tag */
-.fwc-how{color:var(--ink-2)}         /* how it is scored: plain caption */
+.fwc-meta{grid-area:meta;display:flex;flex-direction:row;align-items:baseline;gap:var(--sp-3);text-align:left;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
+.fwc-out{font-weight:600;color:var(--ink)}                                  /* output type: strong, on the text edge */
+.fwc-how{color:var(--ink-2);padding-left:var(--sp-3);border-left:1px solid var(--rule)}   /* how it is scored: plain, after a hairline */
 @container fwpanel (max-width: 520px){
   .fw-row{grid-template-columns:16px minmax(0,1fr);grid-template-areas:"box main" ". meta"}
   .fwc-meta{flex-direction:row;flex-wrap:wrap;gap:var(--sp-1) var(--sp-3);align-items:center;text-align:left}
@@ -182,7 +182,7 @@ body.resizing{cursor:col-resize;user-select:none}
 /* ── Material panel: the sheet the document sits on ── */
 .canvas{grid-column:1;grid-row:2;position:relative;min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden;
   background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet)}
-.canvas-hdr{display:flex;align-items:center;flex-wrap:nowrap;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-3);flex-shrink:0;overflow:hidden;
+.canvas-hdr{display:flex;align-items:center;flex-wrap:nowrap;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-3) var(--sp-2) var(--inset);flex-shrink:0;overflow:hidden;
   background:var(--sheet);border-bottom:1px solid var(--rule)}
 h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;line-height:1.3;color:var(--ink)}
 .canvas-file{display:flex;align-items:center;gap:var(--sp-2);flex:0 1 auto;min-width:0;overflow:hidden;padding-left:var(--sp-2);border-left:1px solid var(--rule)}
@@ -322,7 +322,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .mod.dragging{box-shadow:var(--shadow-float);opacity:.4}
 .mod.collapsed .mod-body{display:none}
 .mod.hidden, .mod.na-hidden{display:none}
-.mod-hdr{display:flex;align-items:center;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4);
+.mod-hdr{display:flex;align-items:center;gap:var(--sp-2);min-height:48px;padding:var(--sp-2) var(--sp-2) var(--sp-2) var(--inset);
   cursor:grab;user-select:none;background:var(--sheet);border-bottom:1px solid var(--rule)}
 .mod.collapsed .mod-hdr{border-bottom:none}
 .mod-hdr:active{cursor:grabbing}
@@ -331,7 +331,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .mod-name{font-size:var(--fs-sm);font-weight:600;color:var(--ink);white-space:nowrap}
 .mod-fold{transition:transform .15s}
 .mod.collapsed .mod-fold{transform:rotate(-90deg)}
-.mod-body{padding:var(--sp-3) var(--sp-4) var(--sp-4);overflow-y:auto;scrollbar-gutter:stable;min-height:90px;max-height:640px;resize:vertical;container-type:inline-size}
+.mod-body{padding:var(--sp-3) var(--inset) var(--sp-4);overflow-y:auto;scrollbar-gutter:stable;min-height:90px;max-height:640px;resize:vertical;container-type:inline-size}
 .mod-note{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2)}
 .status-line{margin-bottom:var(--sp-2);font-size:var(--fs-xs);font-weight:600}
 .status-line:empty{display:none}
@@ -606,7 +606,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
   /* Two rows: title, count, Clear and the toggle on the first; the chips or summary under them.
      The toggle button spans the whole bar (a subgrid), so the title and Clear sit in its first row. */
   .fw-topbar{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;grid-template-rows:auto auto;column-gap:var(--sp-2);height:auto;min-height:52px}
-  .bar-title{grid-column:1;grid-row:1;position:relative;z-index:1;padding:var(--sp-2) 0 0 var(--sp-3);line-height:24px}
+  .bar-title{grid-column:1;grid-row:1;position:relative;z-index:1;padding:var(--sp-2) 0 0 var(--inset);line-height:24px}
   .fw-top-btn{grid-column:1 / -1;grid-row:1 / 3;display:grid;grid-template-columns:subgrid;grid-template-rows:subgrid;align-items:center;row-gap:var(--sp-1);padding:var(--sp-2) var(--sp-3)}
   .fw-top-count{grid-column:2;grid-row:1}
   .fw-top-toggle{grid-column:4;grid-row:1;margin-left:0;padding-right:24px}
@@ -1147,7 +1147,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
 
-<script src="frameworks.js?v=20261017b"></script>
+<script src="frameworks.js?v=20261017c"></script>
 <script>
 'use strict';
 // ════════════════════════════════════════
@@ -4904,7 +4904,7 @@ function fwPickRow(f){
     + (fwFullName(f) ? '<span class="name-full">' + fwFullName(f) + '</span>' : '')
     + '<span class="full">' + FW_FULL[f] + '</span></span>'
     // output type is a tag; how it's scored is plain text, so the two read differently
-    + '<span class="fwc-meta"><span class="tag fwc-out">' + OUT_LABEL[out] + '</span>'
+    + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
     + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></span>'
     + '</div>';
 }
