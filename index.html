@@ -191,6 +191,13 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 /* action buttons stay pinned right no matter how long the file name is */
 .canvas-actions{display:flex;align-items:center;gap:var(--sp-2);margin-left:auto;flex-shrink:0}
 .canvas.is-empty .hide-when-empty{display:none}
+.canvas.is-visual .hide-in-visual{display:none}
+/* Export menu (floats under its button) */
+.export{position:relative}
+.export-menu{position:absolute;top:calc(100% + var(--sp-1));right:0;z-index:30;display:flex;flex-direction:column;align-items:stretch;min-width:240px;padding:var(--sp-1);
+  background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet);box-shadow:var(--shadow-float)}
+.export-menu[hidden]{display:none}
+.export-menu .btn{justify-content:flex-start}
 
 /* Formatting toolbar: quiet controls on the same paper, a hairline below */
 .etb{display:flex;align-items:center;flex-wrap:wrap;gap:2px;padding:var(--sp-1) var(--sp-2);flex-shrink:0;background:var(--sheet);border-bottom:1px solid var(--rule)}
@@ -273,10 +280,25 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
    plus a 2px ink-2 underline; the issue just clicked gets a thicker ink underline. */
 
 /* Empty state: a drop target in the middle of the sheet */
-.canvas-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--sp-2);padding:var(--sp-8);text-align:center;pointer-events:none}
+/* Empty panel: an upload box, then what PRISM checks, editing, and saving. Left-aligned on the
+   panel's text edge (DESIGN.md alignment rule). Clicking blank space starts typing. */
+.canvas-empty{position:absolute;inset:0;overflow-y:auto;display:flex;flex-direction:column;gap:var(--sp-5);
+  padding:var(--sp-4) var(--inset);text-align:left;cursor:text}
+.ce-drop{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-2);padding:var(--sp-5) var(--sp-4);
+  border:2px dashed var(--control-border);border-radius:var(--radius-sheet);background:var(--sheet-2);cursor:default}
+.canvas-body.drag-over .ce-drop{border-color:var(--form-blue);background:var(--selected)}
 .ce-title{font-size:var(--fs-2xl);font-weight:600;line-height:1.25;color:var(--ink)}
-.ce-sub{max-width:360px;font-size:var(--fs-sm);font-weight:400;color:var(--ink-2)}
-.ce-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-2);margin-top:var(--sp-3);pointer-events:auto}
+.ce-sub{font-size:var(--fs-sm);font-weight:400;color:var(--ink-2)}
+.ce-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-2)}
+.ce-upload{min-height:40px;padding:0 var(--sp-5);font-size:var(--fs-sm)}
+.ce-types{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+.ce-samples{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1) var(--sp-2);font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);margin-top:var(--sp-1)}
+.ce-guide{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:var(--sp-4) var(--sp-5);cursor:default}
+.ce-guide h3{font-size:var(--fs-sm);font-weight:600;color:var(--ink);margin-bottom:var(--sp-2)}
+.ce-guide ul{list-style:none;display:grid;gap:var(--sp-1)}
+.ce-guide li{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2);padding-left:var(--sp-3);position:relative}
+.ce-guide li::before{content:"";position:absolute;left:0;top:.6em;width:4px;height:4px;border-radius:50%;background:var(--ink-2)}
+.ce-guide b{font-weight:600;color:var(--ink)}
 
 /* Footer: counts in Caption, figures in Caption strong */
 .canvas-foot{flex:0 0 auto;margin-top:auto;order:99;display:flex;align-items:center;flex-wrap:wrap;gap:0 var(--sp-3);min-width:0;padding:var(--sp-1) var(--sp-3);
@@ -766,6 +788,14 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
       </span>
       <div class="canvas-actions">
         <button type="button" class="btn btn-quiet" id="hist-btn" onclick="toggleFileHistory()" title="Files opened this session" aria-controls="file-history" aria-expanded="false" hidden>Files <span id="hist-count">0</span></button>
+        <div class="export hide-when-empty hide-in-visual" id="export">
+          <button type="button" class="btn btn-secondary" id="export-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="export-menu" title="Copy or download your edited text">Export</button>
+          <div class="export-menu" id="export-menu" role="menu" aria-label="Export" hidden>
+            <button type="button" class="btn btn-quiet" role="menuitem" data-export="copy">Copy text</button>
+            <button type="button" class="btn btn-quiet" role="menuitem" data-export="html">Download for Word (.html)</button>
+            <button type="button" class="btn btn-quiet" role="menuitem" data-export="txt">Download plain text (.txt)</button>
+          </div>
+        </div>
         <button type="button" class="btn btn-secondary hide-when-empty" onclick="document.getElementById('file-doc').click()" title="Upload a document, image or PDF">Upload</button>
         <button type="button" class="btn btn-quiet hide-when-empty" onclick="clearEditor()" title="Remove the material and reset all scores">Clear</button>
       </div>
@@ -831,12 +861,46 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
       </div>
 
       <div class="canvas-empty" id="canvas-empty">
-        <div class="ce-title">Drop anything in here</div>
-        <div class="ce-sub">Type or paste here, or upload a document, image or PDF.</div>
-        <div class="ce-actions">
-          <button type="button" class="btn btn-primary" onclick="document.getElementById('file-doc').click()" title="Upload a document, image or PDF">Upload</button>
-          <button type="button" class="btn btn-secondary" onclick="loadSample()" title="A one-page Word handout, opened in the editor">Sample Word handout</button>
-          <button type="button" class="btn btn-secondary" onclick="loadSamplePoster()" title="A poster image, opened in visual mode with its text typed in">Sample poster</button>
+        <section class="ce-drop" aria-labelledby="ce-title">
+          <h3 class="ce-title" id="ce-title">Add your material</h3>
+          <p class="ce-sub">Drop a file anywhere in this panel, or choose one.</p>
+          <div class="ce-actions">
+            <button type="button" class="btn btn-primary ce-upload" onclick="document.getElementById('file-doc').click()">Upload a file</button>
+            <button type="button" class="btn btn-secondary" onclick="focusEditor()">Type or paste instead</button>
+          </div>
+          <p class="ce-types">Word (.docx), PDF, text (.txt, .md, .html), or an image (PNG, JPG).</p>
+          <p class="ce-samples">Not ready yet? Try a sample:
+            <button type="button" class="btn btn-quiet" onclick="loadSample()" title="A one-page Word handout, opened in the editor">Word handout</button>
+            <button type="button" class="btn btn-quiet" onclick="loadSamplePoster()" title="A poster image, opened in visual mode">Poster</button>
+          </p>
+        </section>
+
+        <div class="ce-guide">
+          <section aria-labelledby="ce-checks">
+            <h3 id="ce-checks">What PRISM checks</h3>
+            <ul>
+              <li>Reading level and sentence length</li>
+              <li>Medical jargon, passive voice, vague words</li>
+              <li>The checklists of the frameworks you pick</li>
+              <li>For images: the text is read for you; check contrast and alt text</li>
+            </ul>
+          </section>
+          <section aria-labelledby="ce-edit">
+            <h3 id="ce-edit">While you edit</h3>
+            <ul>
+              <li>Edit right here. Scores update as you type.</li>
+              <li>Click a flagged issue to find it in your text.</li>
+              <li>Press Ctrl/⌘+S to save a version you can go back to.</li>
+            </ul>
+          </section>
+          <section aria-labelledby="ce-save">
+            <h3 id="ce-save">Saving your work</h3>
+            <ul>
+              <li>Your file stays in your browser. PRISM doesn’t upload it.</li>
+              <li>Edits and versions last until you close or reload this tab.</li>
+              <li>Use <b>Export</b> to copy your text or download it. The .html opens in Word.</li>
+            </ul>
+          </section>
         </div>
       </div>
     </div>
@@ -3894,6 +3958,46 @@ editor.addEventListener('input', () => {
 editor.addEventListener('paste', () => setTimeout(scheduleAnalysis, 30));
 
 function focusEditor(){ editor.focus(); $('canvas-empty').style.display = 'none'; }
+$('canvas-empty').addEventListener('click', e => { if(!e.target.closest('button, a, .ce-drop, .ce-guide')) focusEditor(); });
+// ── Export: copy the edited text, or download it (.html opens in Word; .txt is plain text).
+// Everything happens in the browser; the original file is never changed.
+function exportBaseName(){
+  const n = ($('canvas-file-name') && $('canvas-file-name').textContent.trim()) || 'material';
+  return n.replace(/\.[^.]+$/, '') + '-edited';
+}
+function exportMaterial(kind){
+  if(kind === 'copy'){
+    const t = editorText();
+    const done = () => flashHint('Copied your text. Paste it back into your file to keep the changes.');
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, () => flashHint('Couldn’t copy. Select the text and press Ctrl/⌘+C.'));
+    else flashHint('Couldn’t copy. Select the text and press Ctrl/⌘+C.');
+    return;
+  }
+  const name = exportBaseName();
+  const blob = kind === 'html'
+    ? new Blob(['<!DOCTYPE html>\n<html><head><meta charset="utf-8"><title>' + escapeHtml(name) + '</title></head><body>\n' + editor.innerHTML + '\n</body></html>'], { type:'text/html' })
+    : new Blob([editorText()], { type:'text/plain' });
+  const url = URL.createObjectURL(blob), a = document.createElement('a');
+  a.href = url; a.download = name + (kind === 'html' ? '.html' : '.txt');
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  flashHint(kind === 'html' ? 'Downloaded. Open it in Word, then save as .docx.' : 'Downloaded as plain text.');
+}
+(function(){
+  const btn = $('export-btn'), menu = $('export-menu');
+  const items = () => [...menu.querySelectorAll('[role=menuitem]')];
+  const open = on => { menu.hidden = !on; btn.setAttribute('aria-expanded', String(on)); if(on) items()[0].focus(); };
+  btn.addEventListener('click', e => { e.stopPropagation(); open(menu.hidden); });
+  menu.addEventListener('click', e => { const b = e.target.closest('[data-export]'); if(!b) return; open(false); btn.focus(); exportMaterial(b.dataset.export); });
+  menu.addEventListener('keydown', e => {
+    const list = items(), i = list.indexOf(document.activeElement);
+    if(e.key === 'ArrowDown'){ e.preventDefault(); list[(i + 1) % list.length].focus(); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); list[(i - 1 + list.length) % list.length].focus(); }
+    else if(e.key === 'Escape'){ e.preventDefault(); open(false); btn.focus(); }
+  });
+  document.addEventListener('click', e => { if(!menu.hidden && !e.target.closest('#export')) open(false); });
+})();
+
 function clearEditor(){
   intakeTok++;                               // a file still loading must not reappear after Clear
   exitVisual();

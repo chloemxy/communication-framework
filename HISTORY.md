@@ -4,6 +4,31 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Empty Material panel with guidance; Export
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Empty panel redesigned.** The panel used to show a centred "Drop anything in here" with
+  three small buttons. It now shows, left-aligned on the panel's edge:
+  - **Add your material:** a dashed drop box with a large **Upload a file** button,
+    "Type or paste instead", the accepted file types (Word .docx, PDF, .txt/.md/.html,
+    PNG/JPG), and the two samples.
+  - **What PRISM checks:** reading level and sentence length; jargon, passive voice and
+    vague words; the chosen frameworks' checklists; for images, text read automatically
+    plus contrast and alt text.
+  - **While you edit:** scores update as you type, flagged issues link to your text, and
+    Ctrl/⌘+S saves a version.
+  - **Saving your work:** your file stays in your browser and isn't uploaded; edits and
+    versions last until the tab is closed or reloaded; Export copies or downloads.
+  - Clicking blank space starts typing. It fits a 1440×900 screen without scrolling, with
+    three guide columns that stack on a phone.
+- **Export** (Material header, once there's text; hidden for images):
+  - Copy text.
+  - Download for Word (.html), which opens in Word.
+  - Download plain text (.txt).
+  - Files are named `<file>-edited`, and the original is never changed.
+- Checked in both themes: contrast passes and only the existing type treatments are used.
+
 ## 2026-10-17 — Frameworks: use-case tags replace the situation tiles
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
