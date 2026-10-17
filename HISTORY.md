@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-17 — Empty Material panel: simpler and bigger
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - Feedback: the empty panel was hard to read, too wordy, and repeated "Add your material"
   (already step 2 of the Guide).
@@ -21,7 +21,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Empty Material panel with guidance; Export
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Empty panel redesigned.** The panel used to show a centred "Drop anything in here" with
   three small buttons. It now shows, left-aligned on the panel's edge:
@@ -46,7 +46,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Frameworks: use-case tags replace the situation tiles
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - Removed the "Start from a situation" section from the Frameworks dropdown.
 - Each framework now shows **use-case tags**: Common, Print & web, Video, Low literacy,
@@ -59,7 +59,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Frameworks: sort, and shorter rows
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Sort** (next to Filter): By area (default), Recommended, Name A–Z, By use case. The
   choice is remembered (`pea.fwSort`).
@@ -74,7 +74,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — One left edge for text, everywhere
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Rule:** every container (bar, panel, card, dialog, list) has one left edge for its
   text, the new `--inset` token (16px). Rows with a checkbox or number put it on that edge,
@@ -97,7 +97,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Fix: Dark button missing after an update
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Cause:** the Dark toggle started hidden and was revealed by `theme-switch.js`. A
   browser still holding the previous cached copy of that script (which revealed the old
@@ -110,14 +110,14 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — About dialog: one "Got it" button
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - The About footer has a single button, **Got it**, which closes the dialog. The
   Framework Compass button was removed; the Compass is still in the site bar.
 
 ## 2026-10-17 — Renamed to PRISM; About credits and feedback
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **The app is PRISM.** "Patient Education Analyzer" is replaced in:
   - the site bar on both pages
@@ -134,7 +134,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Frameworks rows: name on two lines, distinct output tag
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - Each framework row reads, in order:
   1. the abbreviation (Body strong)
@@ -147,7 +147,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — PEMAT for digital materials, made clear
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - AHRQ publishes no separate "digital" PEMAT. Its User's Guide (checked 2026-10-17) says:
   - PEMAT-P covers printable materials "(e.g., brochures, pamphlets, PDFs)", including
@@ -164,7 +164,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Light by default, one Dark toggle; "Clear"
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - The site is light by default and no longer follows the system's dark setting.
 - The System / Light / Dark switch is replaced by one **Dark** toggle in the site bar, on
@@ -174,7 +174,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Frameworks dropdown: situations and grouping
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Start from a situation.** The Frameworks dropdown opens with nine one-click starting
   points. Each shows which frameworks it picks; clicking it again clears that set.
@@ -199,7 +199,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — About dialog: shorter, clearer, centred
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Centred.** The page's global `margin:0` reset had cancelled the browser's automatic
   centring of dialogs; it now sits in the middle of the screen.
@@ -217,7 +217,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Compass: search row pinned to the top
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - On the Framework Compass, the search box, area filter and "N of 23" count stay pinned at
   the top of the screen while you scroll the list. Jumping to a framework by link (e.g.
@@ -225,7 +225,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Frameworks list: pinned header, full names
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - The "23 frameworks · Filter · Clear selection" row stays pinned at the top of the
   Frameworks panel while the list scrolls under it. The Filter menu still opens on top.
@@ -239,7 +239,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Plain language issues show the full sentence
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - Each issue in the Plain language card now quotes the whole sentence it's about, wrapped
   over as many lines as it needs. Before, sentences were cut at 58 characters and to one
@@ -247,7 +247,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Proofing desk look, with light and dark themes
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **New look, written down in DESIGN.md:**
   - The material sits on a white sheet on a cool grey desk. Panels are flat sheets with thin
@@ -285,7 +285,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Studio and Compass share one framework list and one design system
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Same frameworks everywhere.** The studio now builds its framework list (names,
   descriptions, areas, source links) from `frameworks.js`, the list the Framework Compass
@@ -307,7 +307,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Studio refinement: calmer buttons, artwork review, honest artwork scores
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **Buttons:** one button style in three strengths (primary, secondary, quiet). The coloured
   dots on Upload, Files, Clear and the samples are gone, because the colours meant nothing.
@@ -341,7 +341,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Scoring rules folded into the Framework Compass
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - Each Compass row has a collapsed **How it's scored** section, built from the engine
   registry. It lists the formula, pass mark and rating scale (where the instrument has
@@ -356,14 +356,14 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Remove the Classic page
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - Deleted `classic.html`, the old "Classic" analyzer view. Nothing linked to it any more;
   the studio (`index.html`) replaces it. It stays in git history if it's ever needed.
 
 ## 2026-10-16 — Framework Compass rebuilt; UPL and PCORI added; shared design system
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **One list of frameworks.** New `frameworks.js` holds the 23 frameworks the studio uses: a
   one-line description, output type and the framework's own primary source for each.
@@ -402,7 +402,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Getting-started steps in the empty card area
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - While no score cards are showing, the card area shows "How to check your material":
   1. Set your Brief (with an Open Brief button)
@@ -415,7 +415,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-16 — Cards show only what you picked; fewer notes
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
 
 - **CCI and PEMAT cards** show only when CCI or PEMAT is picked in Frameworks (or switched
   on by the Brief). Before, they always showed once there was text.
