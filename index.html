@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261017d">
-<script src="theme-switch.js?v=20261017d" defer></script>
+<link rel="stylesheet" href="design-system.css?v=20261017e">
+<script src="theme-switch.js?v=20261017e" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -123,17 +123,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-sort:hover{background:var(--hover);color:var(--ink)}
 .fw-sort select{border:none;background:transparent;color:inherit;font-size:var(--fs-xs);font-weight:600;cursor:pointer;padding:0 2px}
 .fw-sort select:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;border-radius:2px}
-/* Frameworks panel: situations first (one click picks a recommended set), then every framework by area */
-.fw-sec-h{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);margin:var(--sp-3) 0 var(--sp-2)}
-.fw-sits-wrap{margin-bottom:var(--sp-5)}
-.fw-sits{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--sp-2)}
-.fw-sit{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;cursor:pointer;
-  padding:var(--sp-2) var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);background:var(--sheet);color:var(--ink)}
-.fw-sit:hover{background:var(--hover)}
-.fw-sit:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
-.fw-sit.on{background:var(--selected);border-color:var(--form-blue);box-shadow:inset 0 0 0 1px var(--form-blue)}
-.fw-sit-name{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;font-size:var(--fs-sm);font-weight:600}
-.fw-sit-fws{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+/* Frameworks panel: rows grouped by use case (default), area, or a flat sorted list */
 .fw-zone-h{display:flex;align-items:baseline;gap:var(--sp-2);padding:var(--sp-4) 0 var(--sp-2);font-size:var(--fs-xs);font-weight:600;color:var(--ink);border-bottom:1px solid var(--rule)}
 .fw-zone-h span{font-weight:400;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-row{display:grid;grid-template-columns:16px minmax(0,1fr) max-content;grid-template-areas:"box main meta";column-gap:var(--sp-3);row-gap:var(--sp-1);
@@ -149,6 +139,9 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .fw-row .name[data-tip]{display:inline-block;border-bottom:1px dotted var(--ink-2);cursor:help}
 .fw-row .name[data-tip]:hover{border-bottom-style:solid}
+.fwc-tags{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1)}
+.fw-utag{font-size:var(--fs-xs);font-weight:400;line-height:1.4;padding:0 6px;border:1px solid var(--rule);border-radius:var(--radius-control);color:var(--ink-2);background:var(--sheet)}
+.fw-utag.hit{border-color:var(--form-blue);color:var(--ink);font-weight:600;background:var(--selected)}
 .fw-row .name-full{display:block;font-size:var(--fs-sm);font-weight:400;color:var(--ink)}
 .fw-row .full{display:block;margin-top:2px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
 .fwc-meta{grid-area:meta;display:flex;flex-direction:row;align-items:baseline;gap:var(--sp-3);text-align:left;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
@@ -748,20 +741,15 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
               <svg class="fw-filter-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 3v10M4 13l-2-2M4 13l2-2M12 13V3M12 3l-2 2M12 3l2 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               <span class="sr-only">Sort</span>
               <select id="fw-sort" onchange="setFwSort(this.value)">
+                <option value="usecase">By use case</option>
                 <option value="area">By area</option>
                 <option value="recommended">Recommended</option>
                 <option value="name">Name A–Z</option>
-                <option value="usecase">By use case</option>
               </select>
             </label>
             <button type="button" class="btn btn-quiet" onclick="clearFrameworks()" title="Untick every framework and reset the filter" aria-label="Clear selected frameworks">Clear</button>
           </div>
-          <section class="fw-sits-wrap" aria-labelledby="fw-sits-h">
-            <h3 class="fw-sec-h" id="fw-sits-h">Start from a situation</h3>
-            <div class="fw-sits" id="fw-sits"></div>
-          </section>
-          <h3 class="fw-sec-h" id="fw-all-h">All frameworks</h3>
-          <div class="fw-top-grid" id="fw-top-grid" role="group" aria-labelledby="fw-all-h fw-grid-lbl"></div>
+          <div class="fw-top-grid" id="fw-top-grid" role="group" aria-labelledby="fw-grid-lbl"></div>
         </div>
       </div>
     </div>
@@ -1164,7 +1152,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
 
-<script src="frameworks.js?v=20261017d"></script>
+<script src="frameworks.js?v=20261017e"></script>
 <script>
 'use strict';
 // ════════════════════════════════════════
@@ -4899,15 +4887,14 @@ function renderFwTopGrid(){
   // a re-render replaces the rows: keep keyboard focus on the row that had it
   const had = document.activeElement && document.activeElement.closest && document.activeElement.closest('#fw-top-grid .fw-row');
   const hadKey = had ? had.dataset.f : null;
-  renderFwSituations(selected);
   const sortSel = $('fw-sort'); if(sortSel && sortSel.value !== fwSort) sortSel.value = fwSort;
   grid.innerHTML = fwSortedGroups(shown).map(g =>
     (g.name ? '<div class="fw-zone-h" role="presentation">' + escapeHtml(g.name) + ' <span>' + g.items.length + '</span></div>' : '')
     + g.items.map(fwPickRow).join('')).join('');
   if(hadKey){ const r = grid.querySelector('.fw-row[data-f="' + hadKey + '"]'); if(r) r.focus(); }
 }
-// ── Sort: by area (default), recommended order, name, or use case ──
-let fwSort = 'area';
+// ── Sort: by use case (default), area, recommended order, or name ──
+let fwSort = 'usecase';   // default: grouped by use case
 try { const v = localStorage.getItem('pea.fwSort'); if(['area','recommended','name','usecase'].includes(v)) fwSort = v; } catch(e){}
 function setFwSort(v){ fwSort = v; try { localStorage.setItem('pea.fwSort', v); } catch(e){} renderFwTopGrid(); }
 // Returns [{ name, items }]; a group with no name renders as a plain list
@@ -4941,6 +4928,7 @@ function fwPickRow(f){
     + '<span class="fwc-main"><span class="name" data-tip="' + escapeHtml(FW_FULL[f]) + '">' + FW_LABEL[f] + '</span>'
     + '<span class="sr-only" id="fwd-' + f + '">' + escapeHtml(FW_FULL[f]) + '</span>'
     + (fwFullName(f) ? '<span class="name-full">' + fwFullName(f) + '</span>' : '')
+    + fwUseCaseTags(f)
     + '</span>'
     // output type is a tag; how it's scored is plain text, so the two read differently
     + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
@@ -4948,35 +4936,20 @@ function fwPickRow(f){
     + '</div>';
 }
 
-// ── Situations: one click picks a recommended set; clicking a fully-picked set clears it ──
-const FW_SITUATIONS = window.PEA_FRAMEWORKS.SITUATIONS || [];   // an older cached frameworks.js has none: no situations rather than an error
-function situationSuggested(s){
+// ── Use-case tags on each framework; a tag that matches the Brief is highlighted ──
+const FW_SITUATIONS = window.PEA_FRAMEWORKS.SITUATIONS || [];   // an older cached frameworks.js has none: no tags rather than an error
+function situationMatchesBrief(s){
   if(!s.brief) return false;
   return (s.brief.format || []).includes(brief.format) || (s.brief.audience || []).includes(brief.audience);
 }
-function renderFwSituations(selected){
-  const box = $('fw-sits'); if(!box) return;
-  const had = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.sit;
-  // suggested ones (from the Brief) first, then the list's own order
-  const list = FW_SITUATIONS.slice().sort((a, b) => situationSuggested(b) - situationSuggested(a));
-  box.innerHTML = list.map(s => {
-    const on = s.fws.every(f => selected.includes(f));
-    const names = s.fws.map(f => FW_LABEL[f]).join(', ');
-    return '<button type="button" class="fw-sit' + (on ? ' on' : '') + '" data-sit="' + s.key + '" aria-pressed="' + on + '"'
-      + ' title="' + (on ? 'Clear these frameworks' : 'Pick these frameworks') + '">'
-      + '<span class="fw-sit-name">' + escapeHtml(s.name) + (situationSuggested(s) ? ' <span class="tag">Suggested</span>' : '') + '</span>'
-      + '<span class="fw-sit-fws">' + escapeHtml(names) + '</span></button>';
-  }).join('');
-  if(had){ const b = box.querySelector('[data-sit="' + had + '"]'); if(b) b.focus(); }
+function fwUseCaseTags(f){
+  const uses = FW_SITUATIONS.filter(s => s.fws.includes(f));
+  if(!uses.length) return '';
+  return '<span class="fwc-tags" aria-label="Use cases">' + uses.map(s => {
+    const hit = situationMatchesBrief(s);
+    return '<span class="fw-utag' + (hit ? ' hit' : '') + '"' + (hit ? ' title="Matches your Brief"' : '') + '>' + escapeHtml(s.tag || s.name) + '</span>';
+  }).join('') + '</span>';
 }
-function applySituation(key){
-  const s = FW_SITUATIONS.find(x => x.key === key); if(!s) return;
-  const sel = selectedFrameworks();
-  const allOn = s.fws.every(f => sel.includes(f));
-  s.fws.forEach(f => { fwManual[f] = !allOn; });
-  renderFwTopBar();
-}
-$('fw-sits').addEventListener('click', e => { const b = e.target.closest('.fw-sit'); if(b) applySituation(b.dataset.sit); });
 (function(){
   const grid = $('fw-top-grid');
   const pick = row => { if(row && FW_LABEL[row.dataset.f]) toggleFwManual(row.dataset.f); };

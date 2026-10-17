@@ -93,26 +93,26 @@
   ];
   const OUTPUT_LABEL = { score: 'Score', partial: 'Partial score', checklist: 'Checklist' };
 
-  // Starting points: a situation picks a recommended set. `brief` says which Brief choices
-  // make it a suggestion (format / audience values from the studio's Brief).
+  // Use cases. `tag` is the short label shown on each framework; `brief` says which Brief
+  // choices make it a match (format / audience values from the studio's Brief).
   const SITUATIONS = [
-    { key: 'common',    name: 'Used often in our work', desc: 'The two frameworks our partners use most.',
+    { key: 'common',    tag: 'Common',       name: 'Used often in our work', desc: 'The two frameworks our partners use most.',
       fws: ['upl', 'pcori'] },
-    { key: 'print',     name: 'Handout, poster or web page', desc: 'Clarity, understanding and reading level, in print or on screen.',
+    { key: 'print',     tag: 'Print & web',  name: 'Handout, poster or web page', desc: 'Clarity, understanding and reading level, in print or on screen.',
       fws: ['cci', 'pemat', 'readability', 'plainlang', 'upl', 'eqip'], brief: { format: ['handout', 'poster', 'manual', 'digital'] } },
-    { key: 'video',     name: 'Video or animation', desc: 'The audiovisual PEMAT plus plain words.',
+    { key: 'video',     tag: 'Video',        name: 'Video or animation', desc: 'The audiovisual PEMAT plus plain words.',
       fws: ['pematav', 'readability', 'plainlang', 'upl'], brief: { format: ['video'] } },
-    { key: 'literacy',  name: 'Low literacy or IDD', desc: 'For readers who find reading hard.',
+    { key: 'literacy',  tag: 'Low literacy', name: 'Low literacy or IDD', desc: 'For readers who find reading hard.',
       fws: ['cdcidd', 'sam', 'readability', 'plainlang', 'ahrq', 'teachback'], brief: { audience: ['lowlit', 'idd'] } },
-    { key: 'decision',  name: 'Decision aid', desc: 'Helping people weigh treatment options.',
+    { key: 'decision',  tag: 'Decision aid', name: 'Decision aid', desc: 'Helping people weigh treatment options.',
       fws: ['ipdas', 'ottawa', 'share', 'discern'] },
-    { key: 'behaviour', name: 'Changing a behaviour', desc: 'Messages that ask people to act.',
+    { key: 'behaviour', tag: 'Behaviour',    name: 'Changing a behaviour', desc: 'Messages that ask people to act.',
       fws: ['comb', 'hbm', 'eppm', 'ttm'] },
-    { key: 'inclusive', name: 'Inclusive, person-centred', desc: 'Respectful wording and care that puts the person first.',
+    { key: 'inclusive', tag: 'Inclusive',    name: 'Inclusive, person-centred', desc: 'Respectful wording and care that puts the person first.',
       fws: ['cdceq', 'upl', 'picker'] },
-    { key: 'research',  name: 'Research with patient partners', desc: 'How the project involves patients.',
+    { key: 'research',  tag: 'Research',     name: 'Research with patient partners', desc: 'How the project involves patients.',
       fws: ['pcori'] },
-    { key: 'emergency', name: 'Health emergency', desc: 'Outbreaks and urgent public messages.',
+    { key: 'emergency', tag: 'Emergency',    name: 'Health emergency', desc: 'Outbreaks and urgent public messages.',
       fws: ['whorisks', 'cci', 'plainlang'] },
   ];
 

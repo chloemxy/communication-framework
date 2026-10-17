@@ -4,6 +4,19 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Frameworks: use-case tags replace the situation tiles
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Removed the "Start from a situation" section from the Frameworks dropdown.
+- Each framework now shows **use-case tags**: Common, Print & web, Video, Low literacy,
+  Decision aid, Behaviour, Inclusive, Research, Emergency. A tag that matches the Brief's
+  format or audience is highlighted.
+- The list is **sorted by use case** by default. Area, Recommended and Name A–Z are still
+  in Sort.
+- The Framework Compass rows show the same tags. The short tag names live in
+  `frameworks.js`.
+
 ## 2026-10-17 — Frameworks: sort, and shorter rows
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
