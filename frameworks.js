@@ -60,7 +60,7 @@
       source: { label: 'AHRQ', url: 'https://www.ahrq.gov/health-literacy/improve/precautions/index.html' } },
 
     // ── Behaviour change ──
-    { key: 'comb',        id: 'COM_B',          zone: 'behavior', label: 'COM-B',               name: 'COM-B model of behaviour',
+    { key: 'comb',        id: 'COM_B',          zone: 'behavior', label: 'COM-B',               name: 'Capability, Opportunity, Motivation – Behaviour model',
       desc: 'Capability, opportunity and motivation behind a behaviour.', output: 'checklist',
       source: { label: 'Michie, van Stralen & West (2011)', url: 'https://doi.org/10.1186/1748-5908-6-42' } },
     { key: 'hbm',         id: 'HBM',            zone: 'behavior', label: 'HBM',                 name: 'Health Belief Model',

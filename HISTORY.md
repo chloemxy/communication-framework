@@ -4,6 +4,20 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-16 — Frameworks list: pinned header, full names
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- The "23 frameworks · Filter · Clear selection" row stays pinned at the top of the
+  Frameworks panel while the list scrolls under it. The Filter menu still opens on top.
+- Each framework shows its full name after the abbreviation, for example "CCI CDC Clear
+  Communication Index".
+  - Where the name starts with the abbreviation, only the rest is shown (PCORI
+    "Foundational Expectations for Partnerships in Research").
+  - DISCERN and Teach-Back stay as they are.
+  - COM-B is spelled out as "Capability, Opportunity, Motivation – Behaviour model"
+    (in `frameworks.js`, so the Compass shows it too).
+
 ## 2026-10-16 — Plain language issues show the full sentence
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

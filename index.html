@@ -113,6 +113,8 @@ body.resizing{cursor:col-resize;user-select:none}
 /* Frameworks panel: a score-sheet list of checkbox rows (hairline separators, no cards, no pills).
    Box | name and description | output type and how it's scored, as caption text. Selected = form blue. */
 .fw-top-grid-hdr{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-2);margin-bottom:var(--sp-2)}
+/* the count / Filter / Clear row stays pinned at the top of the panel while the list scrolls */
+.fw-top-grid-hdr{position:sticky;top:0;z-index:2;background:var(--sheet);margin:calc(-1 * var(--sp-5)) calc(-1 * var(--sp-5)) var(--sp-2);padding:var(--sp-3) var(--sp-5);border-bottom:1px solid var(--rule)}
 .fw-top-grid-hdr .lbl{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-top-grid-hdr .btn{margin-left:var(--sp-1)}
 .fw-top-grid{border-top:1px solid var(--rule)}
@@ -127,6 +129,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-row.match .fwc-box::after{content:"✓"}
 .fwc-main{grid-area:main;min-width:0}
 .fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.fw-row .name-full{font-weight:400;color:var(--ink-2)}
 .fw-row .full{display:block;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
 .fwc-meta{grid-area:meta;display:flex;flex-direction:column;align-items:flex-end;text-align:right;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
 .fwc-out{font-weight:600}
@@ -4209,6 +4212,16 @@ const PEA_FW = window.PEA_FRAMEWORKS.FRAMEWORKS;
 const FW_ZONE   = Object.fromEntries(PEA_FW.map(f => [f.key, f.zone]));
 const FW_LABEL  = Object.fromEntries(PEA_FW.map(f => [f.key, f.label]));
 const FW_FULL   = Object.fromEntries(PEA_FW.map(f => [f.key, f.desc]));
+const FW_NAME   = Object.fromEntries(PEA_FW.map(f => [f.key, f.name]));
+// Full name after the abbreviation. If the name starts with the abbreviation, show the rest
+// ("PCORI" + "Foundational Expectations…"); skip it when that adds a single word or nothing.
+const fwFullName = f => {
+  const n = FW_NAME[f] || '', l = FW_LABEL[f] || '';
+  if(!n || n.toLowerCase() === l.toLowerCase()) return '';
+  if(!n.toLowerCase().startsWith(l.toLowerCase() + ' ')) return n;
+  const rest = n.slice(l.length + 1);
+  return rest.split(/s+/).length > 1 ? rest : '';
+};
 const FW_SOURCE = Object.fromEntries(PEA_FW.map(f => [f.key, f.source.url]));
 function fwSourceUrl(f){ return FW_SOURCE[f] || 'framework-compass.html#' + f; }
 // Framework criteria, scoring types and sources — generated from analysis-engine.js FRAMEWORK_REGISTRY.
@@ -4837,7 +4850,7 @@ function renderFwTopGrid(){
     // clicks and Space/Enter are handled once on the list (below), not per row
     return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '">'
       + '<span class="fwc-box" aria-hidden="true"></span>'
-      + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + '</span><span class="full">' + FW_FULL[f] + '</span></span>'
+      + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + (fwFullName(f) ? ' <span class="name-full">' + fwFullName(f) + '</span>' : '') + '</span><span class="full">' + FW_FULL[f] + '</span></span>'
       + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
       + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></span>'
       + '</div>';
