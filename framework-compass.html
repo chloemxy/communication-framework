@@ -108,7 +108,7 @@
   <div class="compass-tools" role="search">
     <label class="sr-only" for="q">Search frameworks</label>
     <input id="q" type="search" placeholder="Search frameworks" autocomplete="off">
-    <label class="sr-only" for="zone-filter">Area</label>
+    <label class="sr-only" for="zone-filter">Show</label>
     <select id="zone-filter"></select>
     <span class="compass-count" id="count" aria-live="polite"></span>
   </div>
@@ -124,7 +124,7 @@
 // Built from frameworks.js (what the studio uses) and the engine registry (full references),
 // so the Compass shows exactly the frameworks the studio does.
 (function(){
-  const { FRAMEWORKS, ZONES, OUTPUT_LABEL } = window.PEA_FRAMEWORKS;
+  const { FRAMEWORKS, ZONES, OUTPUT_LABEL, SITUATIONS } = window.PEA_FRAMEWORKS;
   const REG = window.AnalysisEngine.FRAMEWORK_REGISTRY;
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
@@ -164,7 +164,10 @@
   }
 
   $('compass-intro').textContent = 'The ' + FRAMEWORKS.length + ' frameworks the studio checks against, each linked to its original source.';
-  $('zone-filter').innerHTML = '<option value="">All areas</option>' + ZONES.map(z => '<option value="' + z.key + '">' + esc(z.name) + '</option>').join('');
+  // one filter: by area, or by situation (the same recommended sets the studio offers)
+  $('zone-filter').innerHTML = '<option value="">All frameworks</option>'
+    + '<optgroup label="Situation">' + SITUATIONS.map(x => '<option value="s:' + x.key + '">' + esc(x.name) + '</option>').join('') + '</optgroup>'
+    + '<optgroup label="Area">' + ZONES.map(z => '<option value="z:' + z.key + '">' + esc(z.name) + '</option>').join('') + '</optgroup>';
 
   $('zones').innerHTML = ZONES.map(z => {
     const items = FRAMEWORKS.filter(f => f.zone === z.key);
@@ -191,7 +194,8 @@
     document.querySelectorAll('.zone').forEach(sec => {
       let any = 0;
       sec.querySelectorAll('.fw').forEach(li => {
-        const ok = (!zf || sec.dataset.zone === zf) && (!q || li.dataset.text.includes(q));
+        const sit = zf.startsWith('s:') ? SITUATIONS.find(x => 's:' + x.key === zf) : null;
+        const ok = (!zf || (sit ? sit.fws.includes(li.id) : sec.dataset.zone === zf.slice(2))) && (!q || li.dataset.text.includes(q));
         li.hidden = !ok; if(ok){ any++; shown++; }
       });
       sec.hidden = !any;

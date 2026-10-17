@@ -4,6 +4,31 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Frameworks dropdown: situations and grouping
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Start from a situation.** The Frameworks dropdown opens with nine one-click starting
+  points. Each shows which frameworks it picks; clicking it again clears that set.
+  - Used often in our work: UPL, PCORI
+  - Print handout or poster: CCI, PEMAT, Readability, Plain Language, UPL, EQIP
+  - Video or animation: PEMAT-A/V, Readability, Plain Language, UPL
+  - Low literacy or IDD: CDC IDD/ELL, SAM, Readability, Plain Language, AHRQ Toolkit,
+    Teach-Back
+  - Decision aid: IPDAS, Ottawa DSF, SHARE, DISCERN
+  - Changing a behaviour: COM-B, HBM, EPPM, TTM
+  - Inclusive, person-centred: CDC Inclusive Comms, UPL, Picker
+  - Research with patient partners: PCORI
+  - Health emergency: WHO ERC, CCI, Plain Language
+- Situations that match the Brief (format or audience) move to the top, marked "Suggested".
+- **All frameworks** are listed below, grouped under area headings with counts.
+- The situations live in `frameworks.js`, so the Compass's filter offers the same ones
+  ("Show: by situation or by area").
+- UPL's description notes it was developed with Bridgeable (per the UPL Rules document).
+  UPL and PCORI are confirmed as frequently used, so they stay.
+- PCORI in the tool is the Foundational Expectations, which PCORI says update its 2014
+  Engagement Rubric.
+
 ## 2026-10-16 — About dialog: shorter, clearer, centred
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

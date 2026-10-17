@@ -118,6 +118,19 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-top-grid-hdr .lbl{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-top-grid-hdr .btn{margin-left:var(--sp-1)}
 .fw-top-grid{border-top:1px solid var(--rule)}
+/* Frameworks panel: situations first (one click picks a recommended set), then every framework by area */
+.fw-sec-h{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);margin:var(--sp-3) 0 var(--sp-2)}
+.fw-sits-wrap{margin-bottom:var(--sp-5)}
+.fw-sits{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--sp-2)}
+.fw-sit{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;cursor:pointer;
+  padding:var(--sp-2) var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);background:var(--sheet);color:var(--ink)}
+.fw-sit:hover{background:var(--hover)}
+.fw-sit:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.fw-sit.on{background:var(--selected);border-color:var(--form-blue);box-shadow:inset 0 0 0 1px var(--form-blue)}
+.fw-sit-name{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap;font-size:var(--fs-sm);font-weight:600}
+.fw-sit-fws{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+.fw-zone-h{display:flex;align-items:baseline;gap:var(--sp-2);padding:var(--sp-4) 0 var(--sp-2);font-size:var(--fs-xs);font-weight:600;color:var(--ink);border-bottom:1px solid var(--rule)}
+.fw-zone-h span{font-weight:400;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-row{display:grid;grid-template-columns:16px minmax(0,1fr) max-content;grid-template-areas:"box main meta";column-gap:var(--sp-3);row-gap:var(--sp-1);
   align-items:start;padding:var(--sp-2) var(--sp-2);border-bottom:1px solid var(--rule);cursor:pointer;transition:background-color .12s}
 .fw-row:hover{background:var(--hover)}
@@ -723,7 +736,12 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
             </div>
             <button type="button" class="btn btn-quiet" onclick="clearFrameworks()" title="Untick every framework and reset the filter">Clear selection</button>
           </div>
-          <div class="fw-top-grid" id="fw-top-grid" role="group" aria-labelledby="fw-h fw-grid-lbl"></div>
+          <section class="fw-sits-wrap" aria-labelledby="fw-sits-h">
+            <h3 class="fw-sec-h" id="fw-sits-h">Start from a situation</h3>
+            <div class="fw-sits" id="fw-sits"></div>
+          </section>
+          <h3 class="fw-sec-h" id="fw-all-h">All frameworks</h3>
+          <div class="fw-top-grid" id="fw-top-grid" role="group" aria-labelledby="fw-all-h fw-grid-lbl"></div>
         </div>
       </div>
     </div>
@@ -4853,20 +4871,58 @@ function renderFwTopGrid(){
   // a re-render replaces the rows: keep keyboard focus on the row that had it
   const had = document.activeElement && document.activeElement.closest && document.activeElement.closest('#fw-top-grid .fw-row');
   const hadKey = had ? had.dataset.f : null;
-  grid.innerHTML = shown.map(f => {
-    const isSel = selected.includes(f);
-    const bd = FW_BADGE[FW_LEVEL[f]];
-    const out = fwOutType(f);
-    // clicks and Space/Enter are handled once on the list (below), not per row
-    return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '">'
-      + '<span class="fwc-box" aria-hidden="true"></span>'
-      + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + (fwFullName(f) ? ' <span class="name-full">' + fwFullName(f) + '</span>' : '') + '</span><span class="full">' + FW_FULL[f] + '</span></span>'
-      + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
-      + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></span>'
-      + '</div>';
+  renderFwSituations(selected);
+  // rows grouped by area, in the shared list's order
+  const ZONES = window.PEA_FRAMEWORKS.ZONES;
+  grid.innerHTML = ZONES.map(z => {
+    const inZone = shown.filter(f => FW_ZONE[f] === z.key);
+    if(!inZone.length) return '';
+    return '<div class="fw-zone-h" role="presentation">' + escapeHtml(z.name) + ' <span>' + inZone.length + '</span></div>' + inZone.map(fwPickRow).join('');
   }).join('');
   if(hadKey){ const r = grid.querySelector('.fw-row[data-f="' + hadKey + '"]'); if(r) r.focus(); }
 }
+function fwPickRow(f){
+  const isSel = selectedFrameworks().includes(f);
+  const bd = FW_BADGE[FW_LEVEL[f]];
+  const out = fwOutType(f);
+  // clicks and Space/Enter are handled once on the list (below), not per row
+  return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '">'
+    + '<span class="fwc-box" aria-hidden="true"></span>'
+    + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + (fwFullName(f) ? ' <span class="name-full">' + fwFullName(f) + '</span>' : '') + '</span><span class="full">' + FW_FULL[f] + '</span></span>'
+    + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
+    + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></span>'
+    + '</div>';
+}
+
+// ── Situations: one click picks a recommended set; clicking a fully-picked set clears it ──
+const FW_SITUATIONS = window.PEA_FRAMEWORKS.SITUATIONS || [];   // an older cached frameworks.js has none: no situations rather than an error
+function situationSuggested(s){
+  if(!s.brief) return false;
+  return (s.brief.format || []).includes(brief.format) || (s.brief.audience || []).includes(brief.audience);
+}
+function renderFwSituations(selected){
+  const box = $('fw-sits'); if(!box) return;
+  const had = document.activeElement && document.activeElement.dataset && document.activeElement.dataset.sit;
+  // suggested ones (from the Brief) first, then the list's own order
+  const list = FW_SITUATIONS.slice().sort((a, b) => situationSuggested(b) - situationSuggested(a));
+  box.innerHTML = list.map(s => {
+    const on = s.fws.every(f => selected.includes(f));
+    const names = s.fws.map(f => FW_LABEL[f]).join(', ');
+    return '<button type="button" class="fw-sit' + (on ? ' on' : '') + '" data-sit="' + s.key + '" aria-pressed="' + on + '"'
+      + ' title="' + (on ? 'Clear these frameworks' : 'Pick these frameworks') + '">'
+      + '<span class="fw-sit-name">' + escapeHtml(s.name) + (situationSuggested(s) ? ' <span class="tag">Suggested</span>' : '') + '</span>'
+      + '<span class="fw-sit-fws">' + escapeHtml(names) + '</span></button>';
+  }).join('');
+  if(had){ const b = box.querySelector('[data-sit="' + had + '"]'); if(b) b.focus(); }
+}
+function applySituation(key){
+  const s = FW_SITUATIONS.find(x => x.key === key); if(!s) return;
+  const sel = selectedFrameworks();
+  const allOn = s.fws.every(f => sel.includes(f));
+  s.fws.forEach(f => { fwManual[f] = !allOn; });
+  renderFwTopBar();
+}
+$('fw-sits').addEventListener('click', e => { const b = e.target.closest('.fw-sit'); if(b) applySituation(b.dataset.sit); });
 (function(){
   const grid = $('fw-top-grid');
   const pick = row => { if(row && FW_LABEL[row.dataset.f]) toggleFwManual(row.dataset.f); };

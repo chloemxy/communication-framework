@@ -39,7 +39,7 @@
       desc: 'CDC’s principles and preferred terms for respectful, inclusive language.', output: 'checklist',
       source: { label: 'Calanan et al., Preventing Chronic Disease (2023)', url: 'https://www.cdc.gov/pcd/issues/2023/23_0061.htm' } },
     { key: 'upl',         id: 'UPL',            zone: 'clarity',  label: 'UPL',                 name: 'Universal Patient Language Best Practices',
-      desc: 'Bristol Myers Squibb’s 9 best practices for patient communication.', output: 'checklist',
+      desc: 'Bristol Myers Squibb’s 9 best practices for patient communication, developed with Bridgeable.', output: 'checklist',
       source: { label: 'UPL Guidance Document (PDF)', url: 'https://www.upl.org/assets/buildeasy/us-corp/be-upl/en/resources/UPL%20Guidance%20Document.pdf' } },
 
     // ── Decisions & conversations ──
@@ -93,6 +93,29 @@
   ];
   const OUTPUT_LABEL = { score: 'Score', partial: 'Partial score', checklist: 'Checklist' };
 
-  root.PEA_FRAMEWORKS = { FRAMEWORKS, ZONES, OUTPUT_LABEL };
+  // Starting points: a situation picks a recommended set. `brief` says which Brief choices
+  // make it a suggestion (format / audience values from the studio's Brief).
+  const SITUATIONS = [
+    { key: 'common',    name: 'Used often in our work', desc: 'The two frameworks our partners use most.',
+      fws: ['upl', 'pcori'] },
+    { key: 'print',     name: 'Print handout or poster', desc: 'Clarity, understanding and reading level.',
+      fws: ['cci', 'pemat', 'readability', 'plainlang', 'upl', 'eqip'], brief: { format: ['handout', 'poster', 'manual', 'digital'] } },
+    { key: 'video',     name: 'Video or animation', desc: 'The audiovisual PEMAT plus plain words.',
+      fws: ['pematav', 'readability', 'plainlang', 'upl'], brief: { format: ['video'] } },
+    { key: 'literacy',  name: 'Low literacy or IDD', desc: 'For readers who find reading hard.',
+      fws: ['cdcidd', 'sam', 'readability', 'plainlang', 'ahrq', 'teachback'], brief: { audience: ['lowlit', 'idd'] } },
+    { key: 'decision',  name: 'Decision aid', desc: 'Helping people weigh treatment options.',
+      fws: ['ipdas', 'ottawa', 'share', 'discern'] },
+    { key: 'behaviour', name: 'Changing a behaviour', desc: 'Messages that ask people to act.',
+      fws: ['comb', 'hbm', 'eppm', 'ttm'] },
+    { key: 'inclusive', name: 'Inclusive, person-centred', desc: 'Respectful wording and care that puts the person first.',
+      fws: ['cdceq', 'upl', 'picker'] },
+    { key: 'research',  name: 'Research with patient partners', desc: 'How the project involves patients.',
+      fws: ['pcori'] },
+    { key: 'emergency', name: 'Health emergency', desc: 'Outbreaks and urgent public messages.',
+      fws: ['whorisks', 'cci', 'plainlang'] },
+  ];
+
+  root.PEA_FRAMEWORKS = { FRAMEWORKS, ZONES, OUTPUT_LABEL, SITUATIONS };
   if (typeof module !== 'undefined' && module.exports) module.exports = root.PEA_FRAMEWORKS;
 })(typeof window !== 'undefined' ? window : globalThis);
