@@ -3,62 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>try{var t=localStorage.getItem('pea.theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <title>Framework Compass — Patient Education Analyzer</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css">
+<script src="theme-switch.js" defer></script>
 <style>
-  /* Page layout only — colours, type and components come from design-system.css */
+  /* Page layout only: colours, type, controls and the theme switch come from design-system.css */
   .compass { max-width: 960px; margin: 0 auto; padding: var(--sp-8) var(--sp-5) var(--sp-12); }
   .compass-head { margin-bottom: var(--sp-6); }
-  .compass-head p { color: var(--n600); margin-top: var(--sp-1); }
+  .compass-head p { color: var(--ink-2); margin-top: var(--sp-1); max-width: 70ch; }
 
   .compass-tools { display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center; margin-bottom: var(--sp-6); }
-  .compass-tools input, .compass-tools select {
-    min-height: 36px; padding: 0 var(--sp-3); border: 1px solid var(--n300); border-radius: var(--radius-sm);
-    background: var(--white); font-size: var(--fs-sm); color: var(--n900);
-  }
-  .compass-tools input { flex: 1 1 240px; }
-  .compass-count { font-size: var(--fs-xs); color: var(--n600); margin-left: auto; }
+  .compass-tools input, .compass-tools select { min-height: 36px; padding: 0 var(--sp-3); }
+  .compass-tools input { flex: 1 1 240px; min-width: 0; }
+  .compass-tools select { max-width: 100%; }
+  .compass-count { font-size: var(--fs-xs); color: var(--ink-2); font-variant-numeric: tabular-nums; margin-left: auto; }
 
+  /* Zones: a heading on the desk, then one sheet of rows separated by hairlines */
   .zone { margin-bottom: var(--sp-8); }
   .zone[hidden] { display: none; }
-  .zone-title { font-size: var(--fs-lg); font-weight: 600; margin-bottom: var(--sp-3); display: flex; align-items: center; gap: var(--sp-2); }
-  .zone-title::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--zc); }
-  .zone-list { list-style: none; }
+  .zone-title { margin-bottom: var(--sp-3); color: var(--ink); }
+  .zone-list { list-style: none; overflow: hidden; }
 
-  .fw { padding: var(--sp-4) var(--sp-5); border-bottom: 1px solid var(--n100); scroll-margin-top: var(--sp-6); }
+  .fw { padding: var(--sp-4) var(--sp-5); border-bottom: 1px solid var(--rule); scroll-margin-top: var(--sp-6); }
   .fw:last-child { border-bottom: none; }
   .fw[hidden] { display: none; }
-  .fw:target { background: var(--blue-lt); }
+  .fw:target { background: var(--sheet-2); box-shadow: inset 2px 0 0 var(--form-blue); }
   .fw-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--sp-1) var(--sp-3); }
-  .fw-label { font-size: var(--fs-sm); font-weight: 600; color: var(--n900); }
-  .fw-name { font-size: var(--fs-xs); color: var(--n600); }
+  .fw-label { font-size: var(--fs-sm); font-weight: 600; color: var(--ink); }
+  .fw-name { font-size: var(--fs-xs); color: var(--ink-2); }
   .fw-top .tag { margin-left: auto; }
-  .fw-desc { margin-top: var(--sp-1); color: var(--n700); }
-  .fw-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2) var(--sp-4); margin-top: var(--sp-2); }
-  .fw-source { font-size: var(--fs-xs); font-weight: 600; }
+  .fw-desc { margin-top: var(--sp-1); color: var(--ink); max-width: 70ch; }
+  .fw-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-5); margin-top: var(--sp-1); }
+  .fw-source { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 32px; font-size: var(--fs-xs); font-weight: 600; }
+  .fw-source:focus-visible, details.disclose > summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
   /* Collapsed sections open full width under the row */
   .fw-foot details[open] { flex-basis: 100%; }
-  .fw-scoring { padding-top: 0; }
-  .sc-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sp-1) var(--sp-4); margin-top: var(--sp-3); }
-  .sc-facts dt { font-size: var(--fs-xs); font-weight: 600; color: var(--n700); }
-  .sc-facts dd { font-size: var(--fs-xs); color: var(--n700); overflow-wrap: anywhere; }
-  .sc-note { font-size: var(--fs-xs); color: var(--n600); margin-top: var(--sp-3); }
-  .sc-list { margin-top: var(--sp-2); }
-  .sc-dom { font-size: var(--fs-xs); font-weight: 600; color: var(--n900); margin-top: var(--sp-3); }
-  .sc-items { margin: var(--sp-1) 0 0 var(--sp-5); font-size: var(--fs-sm); color: var(--n800); }
-  .sc-items li { margin-bottom: var(--sp-2); }
-  .sc-items .tag { margin-left: var(--sp-1); vertical-align: 1px; }
-  .sc-rule { font-size: var(--fs-xs); color: var(--n600); margin-top: 2px; }
-  @media (max-width: 600px) { .sc-facts { grid-template-columns: minmax(0, 1fr); } }
-  .fw-refs ol { margin: var(--sp-2) 0 0 var(--sp-5); font-size: var(--fs-xs); color: var(--n700); }
+
+  /* "How it's scored": facts, then the score sheet */
+  .sc-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sp-1) var(--sp-4); margin-top: var(--sp-2); }
+  .sc-facts dt { font-size: var(--fs-xs); font-weight: 600; color: var(--ink-2); }
+  .sc-facts dd { font-size: var(--fs-xs); color: var(--ink); overflow-wrap: anywhere; }
+  .sc-note { font-size: var(--fs-xs); color: var(--ink-2); margin-top: var(--sp-3); max-width: 70ch; }
+  .sc-list { margin-top: var(--sp-2); padding-bottom: var(--sp-2); }
+  /* Section label: one step heavier rule than the row hairlines, like a printed score sheet */
+  .sc-dom { font-size: var(--fs-xs); font-weight: 600; line-height: 1.5; color: var(--ink); margin-top: var(--sp-5); padding-bottom: var(--sp-1); border-bottom: 1px solid var(--ink-2); }
+  .sc-list > .sc-dom:first-child { margin-top: var(--sp-3); }
+  /* Score-sheet rows: item number in a fixed margin column, then the text */
+  .sc-items { list-style: none; }
+  .sc-items li { display: grid; grid-template-columns: 4ch minmax(0, 1fr); column-gap: var(--sp-3); padding: var(--sp-2) 0; border-bottom: 1px solid var(--rule); }
+  .sc-items li:last-child { border-bottom: none; }
+  .sc-n { text-align: right; font-size: var(--fs-xs); color: var(--ink-2); font-variant-numeric: tabular-nums; padding-top: 1px; }
+  .sc-t { font-size: var(--fs-sm); color: var(--ink); overflow-wrap: anywhere; }
+  .sc-tags { display: inline-flex; flex-wrap: wrap; gap: var(--sp-1); margin-left: var(--sp-2); vertical-align: 1px; }
+  .sc-rule { font-size: var(--fs-xs); color: var(--ink-2); margin-top: 2px; }
+
+  .fw-refs ol { margin: var(--sp-2) 0 var(--sp-2) var(--sp-5); font-size: var(--fs-xs); color: var(--ink); }
   .fw-refs li { margin-bottom: var(--sp-1); overflow-wrap: anywhere; }
-  .empty { color: var(--n600); padding: var(--sp-6) 0; }
+  .empty { color: var(--ink-2); padding: var(--sp-6) 0; }
 
   @media (max-width: 600px) {
     .compass { padding: var(--sp-5) var(--sp-4) var(--sp-8); }
     .fw { padding: var(--sp-3) var(--sp-4); }
-    .site-bar { flex-wrap: wrap; padding: var(--sp-2) var(--sp-4); }
+    .sc-facts { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .sc-facts dd { margin-bottom: var(--sp-1); }
+    .compass-count { margin-left: 0; flex-basis: 100%; }
+  }
+  @media (max-width: 600px), (pointer: coarse) {
+    .compass-tools input, .compass-tools select { min-height: 40px; }
   }
 </style>
 </head>
@@ -70,6 +85,12 @@
     <a href="index.html">Studio</a>
     <a href="framework-compass.html" aria-current="page">Framework Compass</a>
   </nav>
+  <span class="bar-divider" aria-hidden="true"></span>
+  <div class="seg theme-switch" role="group" aria-label="Colour theme" data-theme-switch hidden>
+    <button type="button" data-theme-set="system" aria-pressed="true">System</button>
+    <button type="button" data-theme-set="light" aria-pressed="false">Light</button>
+    <button type="button" data-theme-set="dark" aria-pressed="false">Dark</button>
+  </div>
 </header>
 
 <main class="compass">
@@ -110,7 +131,7 @@
     if(p.uiLabel || p.label) return p.uiLabel || p.label;
     const parts = Object.entries(p).map(([k, v]) =>
       v && typeof v === 'object' ? (v.label || (k.toUpperCase() + (v.target ? ' target ' + v.target : ''))) : null).filter(Boolean);
-    return parts.length ? parts.join(' · ') : 'None';
+    return parts.length ? parts.join('; ') : 'None';
   }
   // "How it's scored": formula, pass mark, rating scale, a short note, then every item by part
   function scoring(reg){
@@ -124,8 +145,11 @@
       if(c.domain !== dom){ items += (dom === null ? '' : '</ol>') + '<h4 class="sc-dom">' + esc(c.domain) + '</h4><ol class="sc-items">'; dom = c.domain; }
       const tags = [c.requiresVisual ? 'needs the design' : '', c.notAssessableFromDoc ? 'needs records beyond the material' : ''].filter(Boolean);
       const idNo = /^[A-Z][A-Z_-]*?-(\d+)$/.exec(c.id || '');   // e.g. PEMAT-26 → 26; SHARE-S, UPL-1.2 → in order
-      items += '<li value="' + (c.itemNo || (idNo ? +idNo[1] : n)) + '">' + esc(c.text) + (tags.length ? ' <span class="tag">' + tags.join(' · ') + '</span>' : '') +
-        (c.rule ? '<div class="sc-rule">' + esc(c.rule) + '</div>' : '') + '</li>';
+      const no = c.itemNo || (idNo ? +idNo[1] : n);
+      // Score-sheet row: the number sits in the margin column (list marker hidden; value keeps the semantics)
+      items += '<li value="' + esc(no) + '"><span class="sc-n">' + esc(no) + '</span><div class="sc-t">' + esc(c.text) +
+        (tags.length ? '<span class="sc-tags">' + tags.map(t => '<span class="tag">' + t + '</span>').join('') + '</span>' : '') +
+        (c.rule ? '<div class="sc-rule">' + esc(c.rule) + '</div>' : '') + '</div></li>';
     });
     if(dom !== null) items += '</ol>';
     return '<details class="disclose fw-scoring"><summary>How it’s scored</summary>' +
@@ -139,7 +163,7 @@
 
   $('zones').innerHTML = ZONES.map(z => {
     const items = FRAMEWORKS.filter(f => f.zone === z.key);
-    return '<section class="zone" data-zone="' + z.key + '" aria-labelledby="z-' + z.key + '" style="--zc:var(--zone-' + z.key + ')">' +
+    return '<section class="zone" data-zone="' + z.key + '" aria-labelledby="z-' + z.key + '">' +
       '<h2 class="zone-title" id="z-' + z.key + '">' + esc(z.name) + '</h2>' +
       '<ul class="zone-list surface">' + items.map(f => {
         const reg = REG[f.id] || {};
@@ -149,7 +173,7 @@
             '<span class="tag ' + TAG[f.output] + '">' + OUTPUT_LABEL[f.output] + '</span></div>' +
           '<p class="fw-desc">' + esc(f.desc) + '</p>' +
           '<div class="fw-foot">' +
-            '<a class="fw-source" href="' + esc(f.source.url) + '" target="_blank" rel="noopener">' + esc(f.source.label) + ' ↗</a>' +
+            '<a class="fw-source" href="' + esc(f.source.url) + '" target="_blank" rel="noopener">' + esc(f.source.label) + ' <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>' +
             (reg.criteria ? scoring(reg) : '') +
             (refs ? '<details class="disclose fw-refs"><summary>All references</summary><ol>' + refs + '</ol></details>' : '') +
           '</div></li>';

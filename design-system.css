@@ -1,121 +1,320 @@
 /* ════════════════════════════════════════════════════════════════
-   Patient Education Analyzer — shared design system
-   One stylesheet for every page (studio, Framework Compass, sub-pages), so the look and
-   feel stays the same everywhere. Page stylesheets build on these tokens and components
-   and should not redefine them.
+   Patient Education Analyzer — shared design system ("Proofing desk")
+   One stylesheet for every page (studio, Framework Compass, sub-pages). Contract: DESIGN.md.
+   Tokens live only here; page stylesheets use them and never redefine them.
+   Light and dark: the roles below are re-tuned for dark (not inverted). Dark applies when the
+   OS asks for it and the person has not chosen Light, or when the person chose Dark
+   (data-theme on <html>, set before first paint by the head snippet documented in theme-switch.js).
+
+   avoid-ai-design-ignore-file: SD2
+   Why: the scanner reads both themes as one palette. It pairs the dark desk (#121417) with the
+   LIGHT-theme fail red (#B3261E), which never appears on the dark desk (dark fail is #F28B82,
+   a low-saturation salmon, and dark pass is a muted mint). Both reds are DESIGN.md status
+   roles, always paired with a word, never an accent.
    ════════════════════════════════════════════════════════════════ */
 
-:root {
-  /* Colour. Neutrals are warm stone; every text grey (n400 and darker) is ≥ 4.5:1 on
-     white, --n50 and --page. */
-  --n900: #1c1917; --n800: #292524; --n700: #3f3a36; --n600: #57524d; --n500: #66605a; --n400: #6b655f;
-  --n300: #d9d5cf;   /* borders, tracks */
-  --n200: #e8e5e0;   /* hairlines */
-  --n100: #f1efeb;   /* quiet fills */
-  --n50:  #f8f7f4;   /* raised-quiet surface */
-  --white: #ffffff;
-  --page:  #f3f2ee;  /* app background */
-  --dark:  #1f2937;  /* primary fill */
-  --blue: #2f4ac0; --blue-hov: #243a9c; --blue-lt: rgba(47,74,192,0.08);   /* accent: links, focus, selection */
-  --teal: #15803d; --teal-bg: #ecf8f0;     /* pass */
-  --orange: #b45309; --orange-bg: #fdf5e7; /* attention */
-  --red: #c62828; --red-bg: #fdeeee;       /* fail */
+:root{
+  color-scheme: light;
 
-  --serif: 'Source Serif 4', Georgia, serif;
-  --sans:  'Inter', -apple-system, 'Segoe UI', sans-serif;
+  /* ── Roles (DESIGN.md) ── */
+  --desk:#ECEEF0;          /* page background */
+  --sheet:#FFFFFF;         /* panels, cards, the document paper, floating surfaces */
+  --sheet-2:#F6F7F8;       /* quiet fills, headers inside a sheet, neutral tags, disabled fill */
+  --rule:#D5D9DE;          /* hairlines, score-sheet rules (decorative: never the only cue for a control) */
+  --ink:#16181D;           /* text; primary button fill */
+  --ink-2:#4A5059;         /* secondary text, item numbers, quiet-button text */
+  --form-blue:#1D4F91;     /* links, focus ring, selected state */
+  --highlighter:#FFE066;   /* flagged words in the document only (::highlight, .flash-sel). Never chrome. */
+  --pass:#1E6B3A; --warn:#8A5300; --fail:#B3261E;   /* status text, tags, pressed rating borders */
 
-  /* Type: seven treatments, nothing below 13px, weights 400 and 600 only,
+  /* ── Derived roles ── */
+  --pass-bg:#E5F1E9; --warn-bg:#FAEFD9; --fail-bg:#FBE8E6;   /* status tag / note fills */
+  --selected:#E6EDF7;      /* pressed/selected fill: always paired with a form-blue border or text */
+  --hover:#EEF0F2;         /* hover fill for quiet buttons, rows, menu items */
+  --form-blue-hover:#163D70;
+  --on-ink:#FFFFFF;        /* text and icons on the ink fill (primary button) */
+  --ink-hover:#2E333B;     /* primary button hover fill */
+  --ink-disabled:#5C636D;  /* disabled text, kept ≥ 4.5:1 */
+  --focus-ring:#1D4F91;    /* = form-blue; separate name so it can be tuned alone */
+  --control-border:#7A828C;/* borders that identify a control (inputs, selects, checkboxes): ≥ 3:1 */
+  --meter-track:#E1E4E8;
+  --meter-neutral:var(--ink-2);          /* meter fill when there is no verdict yet */
+  --tooltip-bg:var(--sheet);             /* tooltips are floating sheets */
+  --scrim:rgba(22,24,29,.40);            /* dialog ::backdrop */
+  --shadow-float:0 1px 2px rgba(22,24,29,.06), 0 8px 24px rgba(22,24,29,.14);   /* floating things only */
+  --scroll-thumb:#B9BFC6;
+  --checker-a:#FFFFFF; --checker-b:#E6E9EC;   /* transparent-artwork backdrop */
+  --checker:repeating-conic-gradient(var(--checker-a) 0 25%, var(--checker-b) 0 50%) 0 0 / 16px 16px;
+
+  /* Artwork text overlay: deliberately the same in both themes. It sits on the person's
+     artwork, which never changes with the theme, so a fixed yellow fill + near-black 2px
+     outline + 1px white halo stays visible on any artwork. */
+  --overlay-fill:rgba(255,224,102,.40);
+  --overlay-outline:#16181D;
+  --overlay-halo:#FFFFFF;
+
+  /* ── Type: Public Sans (interface) + Source Serif 4 (the document) ──
+     Seven treatments, nothing below 13px, weights 400 and 600 only,
      no italics, uppercase or letter-spacing.
-     1 Display 24/600 · 2 Heading 17/600 · 3 Body 14/400 · 4 Body strong 14/600 ·
-     5 Caption 13/400 · 6 Caption strong 13/600 · 7 Reading serif 15/400 (the document only) */
-  --fs-xs: 13px; --fs-sm: 14px; --fs-md: 15px; --fs-lg: 17px; --fs-2xl: 24px;
+     Display 24/600, Heading 17/600, Body 14/400, Body strong 14/600,
+     Caption 13/400, Caption strong 13/600, and Reading 15/400 in the serif (the document only). */
+  --sans:'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --serif:'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --fs-xs:13px; --fs-sm:14px; --fs-md:15px; --fs-lg:17px; --fs-2xl:24px;
 
-  /* Space (4px base), shape, depth */
-  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-12: 48px;
-  --radius-sm: 6px; --radius: 10px; --radius-lg: 14px;
-  --shadow-1: 0 1px 2px rgba(28,25,23,.05);
-  --shadow-2: 0 1px 2px rgba(28,25,23,.04), 0 4px 14px rgba(28,25,23,.06);
-  --shadow-3: 0 12px 36px rgba(28,25,23,.14);
-  --focus: 0 0 0 3px rgba(47,74,192,.35);
+  /* ── Space ── */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px; --sp-12:48px;
 
-  /* Framework zones */
-  --zone-clarity: #1e5f96; --zone-process: #5b3aa8; --zone-behavior: #a2470a; --zone-outcomes: #15803d;
+  /* ── Shape ── */
+  --radius-control:4px;   /* buttons, inputs, segmented controls, rating buttons, menus, tooltips */
+  --radius-sheet:6px;     /* sheets: panels, cards, dialogs, Brief/Frameworks bars and panels */
+  --radius-pill:999px;    /* status tags only */
+
+  /* ── Legacy aliases (temporary). They point at roles, so they flip in dark.
+     Declared once here: a custom property that references another resolves on :root after
+     the dark block has overridden the role, so the aliases need no dark copy. ── */
+  --page:var(--desk);
+  --white:var(--sheet);          /* SURFACES ONLY. Text on ink uses --on-ink. */
+  --dark:var(--ink);
+  --n900:var(--ink);  --n800:var(--ink);
+  --n700:var(--ink-2); --n600:var(--ink-2); --n500:var(--ink-2); --n400:var(--ink-2);
+  --n300:var(--rule);            /* control borders should move to --control-border */
+  --n200:var(--rule);
+  --n100:var(--sheet-2);         /* hairlines using n100 should move to --rule */
+  --n50:var(--sheet-2);
+  --blue:var(--form-blue); --blue-hov:var(--form-blue-hover); --blue-lt:var(--selected);
+  --teal:var(--pass); --teal-bg:var(--pass-bg);
+  --orange:var(--warn); --orange-bg:var(--warn-bg);
+  --red:var(--fail); --red-bg:var(--fail-bg);
+  --zone-clarity:var(--ink-2); --zone-process:var(--ink-2); --zone-behavior:var(--ink-2); --zone-outcomes:var(--ink-2);
+  --shadow-1:none; --shadow-2:none; --shadow-3:var(--shadow-float);
+  --focus:0 0 0 1px var(--focus-ring);   /* only for inputs that use border + shadow as their focus ring */
+  --radius-sm:var(--radius-control); --radius:var(--radius-sheet); --radius-lg:var(--radius-sheet);
+}
+
+/* ── Dark: follows the OS unless the person chose Light ── */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
+    --ink:#E9EBEE; --ink-2:#B4BAC2; --form-blue:#8DB4EC;
+    --highlighter:rgba(255,214,0,.28);
+    --pass:#7FD19B; --warn:#F0B357; --fail:#F28B82;
+    --pass-bg:#1B3325; --warn-bg:#3A2C12; --fail-bg:#3F2220;
+    --selected:#1F2C3F; --hover:#2A2F35; --form-blue-hover:#AECBF3;
+    --on-ink:#16181D; --ink-hover:#FFFFFF; --ink-disabled:#9EA5AE;
+    --focus-ring:#8DB4EC; --control-border:#717A85;
+    --meter-track:#2E3339;
+    --scrim:rgba(0,0,0,.60);
+    --shadow-float:0 1px 2px rgba(0,0,0,.40), 0 8px 24px rgba(0,0,0,.55);
+    --scroll-thumb:#474E57;
+    --checker-a:#2B3036; --checker-b:#22262B;
+  }
+}
+/* ── Dark: chosen explicitly (same values; keep the two blocks identical) ── */
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
+  --ink:#E9EBEE; --ink-2:#B4BAC2; --form-blue:#8DB4EC;
+  --highlighter:rgba(255,214,0,.28);
+  --pass:#7FD19B; --warn:#F0B357; --fail:#F28B82;
+  --pass-bg:#1B3325; --warn-bg:#3A2C12; --fail-bg:#3F2220;
+  --selected:#1F2C3F; --hover:#2A2F35; --form-blue-hover:#AECBF3;
+  --on-ink:#16181D; --ink-hover:#FFFFFF; --ink-disabled:#9EA5AE;
+  --focus-ring:#8DB4EC; --control-border:#717A85;
+  --meter-track:#2E3339;
+  --scrim:rgba(0,0,0,.60);
+  --shadow-float:0 1px 2px rgba(0,0,0,.40), 0 8px 24px rgba(0,0,0,.55);
+  --scroll-thumb:#474E57;
+  --checker-a:#2B3036; --checker-b:#22262B;
 }
 
 /* ── Base ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--sans); font-size: var(--fs-sm); font-weight: 400; line-height: 1.5; color: var(--n900); background: var(--page); -webkit-font-smoothing: antialiased; }
-b, strong { font-weight: 600; }
-em, i, cite, address, dfn { font-style: normal; }
-small { font-size: inherit; }
-a { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
-a:hover { color: var(--blue-hov); }
-button, input, select, textarea { font: inherit; color: inherit; }
-:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+*, *::before, *::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--desk);scrollbar-color:var(--scroll-thumb) transparent}
+body{font-family:var(--sans);font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink);background:var(--desk);-webkit-font-smoothing:antialiased}
+b, strong{font-weight:600}
+em, i, cite, address, dfn{font-style:normal}
+small{font-size:inherit}
+a{color:var(--form-blue);text-decoration:underline;text-underline-offset:2px}
+a:hover{color:var(--form-blue-hover)}
+button, input, select, textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+::selection{background:var(--selected);color:var(--ink)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:var(--radius-pill);border:2px solid transparent;background-clip:padding-box}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.num{font-variant-numeric:tabular-nums}
 
-/* ── Type treatments ── */
-.t-display        { font-size: var(--fs-2xl); font-weight: 600; line-height: 1.25; }
-.t-heading        { font-size: var(--fs-lg);  font-weight: 600; line-height: 1.35; }
-.t-body           { font-size: var(--fs-sm);  font-weight: 400; }
-.t-body-strong    { font-size: var(--fs-sm);  font-weight: 600; }
-.t-caption        { font-size: var(--fs-xs);  font-weight: 400; color: var(--n600); }
-.t-caption-strong { font-size: var(--fs-xs);  font-weight: 600; }
-.t-reading        { font-family: var(--serif); font-size: var(--fs-md); font-weight: 400; line-height: 1.7; }
-h1 { font-size: var(--fs-2xl); font-weight: 600; line-height: 1.25; }
-h2, h3 { font-size: var(--fs-lg); font-weight: 600; line-height: 1.35; }
-h4, h5, h6 { font-size: var(--fs-sm); font-weight: 600; }
+/* ── Type treatments (exactly seven) ── */
+.t-display       {font-size:var(--fs-2xl);font-weight:600;line-height:1.25}
+.t-heading       {font-size:var(--fs-lg);font-weight:600;line-height:1.35}
+.t-body          {font-size:var(--fs-sm);font-weight:400}
+.t-body-strong   {font-size:var(--fs-sm);font-weight:600}
+.t-caption       {font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+.t-caption-strong{font-size:var(--fs-xs);font-weight:600}
+.t-reading       {font-family:var(--serif);font-size:var(--fs-md);font-weight:400;line-height:1.7}
+h1{font-size:var(--fs-2xl);font-weight:600;line-height:1.25}
+h2, h3{font-size:var(--fs-lg);font-weight:600;line-height:1.35}
+h4, h5, h6{font-size:var(--fs-sm);font-weight:600}
 
-/* ── Button: one component, three variants ──
-   Primary   the single most important action in a region (at most one per region)
-   Secondary normal actions
-   Quiet     low-emphasis, utility and reversible actions; no border or fill until hover
-   All share height, padding, radius, Caption strong type and the focus ring.
-   .btn-icon is the square size for glyph-only buttons (always with an aria-label or title). */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+/* ── Surfaces: hairlines, not shadows. Only floating things get --shadow-float. ── */
+.sheet, .surface{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet)}
+.floating{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet);box-shadow:var(--shadow-float)}
+
+/* ── Button: one component, three variants, one size (32px), Caption strong ──
+   Primary   ink fill; the single most important action in a region (at most one per region)
+   Secondary sheet + hairline border; normal actions
+   Quiet     no border or fill until hover; utility and reversible actions
+   .btn-icon is the square glyph-only size (always with an aria-label).
+   Labels are verbs, no trailing arrows. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
   min-height:32px;min-width:32px;padding:0 var(--sp-3);
-  border:1px solid transparent;border-radius:var(--radius-sm);background:transparent;
-  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1.2;color:var(--n700);
+  border:1px solid transparent;border-radius:var(--radius-control);background:transparent;
+  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1.2;color:var(--ink);
   white-space:nowrap;text-decoration:none;cursor:pointer;user-select:none;flex-shrink:0;
-  transition:background-color .12s,border-color .12s,color .12s;
-}
+  transition:background-color .12s,border-color .12s,color .12s}
 .btn[hidden]{display:none}
-.btn:focus-visible{outline:2px solid var(--blue);outline-offset:1px;box-shadow:var(--focus)}
-.btn-primary{background:var(--blue);border-color:var(--blue);color:var(--white)}
-.btn-primary:hover{background:var(--blue-hov);border-color:var(--blue-hov);color:var(--white)}
-.btn-secondary{background:var(--white);border-color:var(--n300);color:var(--n800)}
-.btn-secondary:hover{background:var(--n50);border-color:var(--n400);color:var(--n900)}
-.btn-quiet{color:var(--n600)}
-.btn-quiet:hover{background:var(--n100);color:var(--n900)}
+.btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.btn-primary{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.btn-primary:hover{background:var(--ink-hover);border-color:var(--ink-hover);color:var(--on-ink)}
+.btn-secondary{background:var(--sheet);border-color:var(--rule);color:var(--ink)}
+.btn-secondary:hover{background:var(--hover);border-color:var(--control-border);color:var(--ink)}
+.btn-quiet{color:var(--ink-2)}
+.btn-quiet:hover{background:var(--hover);color:var(--ink)}
 .btn-icon{width:32px;padding:0}
-.btn.on, .btn[aria-pressed="true"]{background:var(--blue-lt);border-color:transparent;color:var(--blue)}
-.btn:disabled, .btn[aria-disabled="true"]{cursor:not-allowed;background:var(--n50);border-color:var(--n200);color:var(--n400)}
-.btn-quiet:disabled{background:transparent;border-color:transparent}
+/* toggle buttons (Track changes, Fit, B/I): pressed = selected */
+.btn.on, .btn[aria-pressed="true"]{background:var(--selected);border-color:var(--form-blue);color:var(--form-blue)}
+.btn:active:not(:disabled){background:var(--selected)}
+.btn-primary:active:not(:disabled){background:var(--ink-hover)}
+.btn:disabled, .btn[aria-disabled="true"]{cursor:not-allowed;background:var(--sheet-2);border-color:var(--rule);color:var(--ink-disabled)}
+.btn-quiet:disabled, .btn-quiet[aria-disabled="true"]{background:transparent;border-color:transparent}
 .btn b{font-weight:600;color:inherit}
 
-/* ── Surfaces ── */
-.surface { background: var(--white); border: 1px solid var(--n200); border-radius: var(--radius-lg); box-shadow: var(--shadow-2); }
-.tag { display: inline-flex; align-items: center; font-size: var(--fs-xs); font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--n100); color: var(--n700); white-space: nowrap; }
-.tag-pass { background: var(--teal-bg); color: #11622f; }
-.tag-warn { background: var(--orange-bg); color: #8a4106; }
-.tag-fail { background: var(--red-bg); color: #a11f1f; }
+/* ── Form controls: the border identifies the control → --control-border (≥ 3:1).
+   :where() keeps specificity at zero so page rules for a specific control always win. ── */
+:where(.input, input[type=text], input[type=search], input[type=email], input[type=url], input[type=number], select, textarea){
+  min-height:32px;padding:0 var(--sp-2);border:1px solid var(--control-border);border-radius:var(--radius-control);
+  background:var(--sheet);color:var(--ink);font-family:inherit;font-size:var(--fs-sm)}
+:where(textarea){padding:var(--sp-2)}
+::placeholder{color:var(--ink-2);opacity:1}
+input[type=checkbox], input[type=radio], input[type=range], progress{accent-color:var(--form-blue)}
 
-/* ── Site top bar (shared by every page) ── */
-.site-bar { display: flex; align-items: center; gap: var(--sp-3); min-height: 56px; padding: 0 var(--sp-5); background: var(--white); border-bottom: 1px solid var(--n200); }
-.site-bar .site-name { font-size: var(--fs-lg); font-weight: 600; color: var(--n900); text-decoration: none; margin-right: auto; }
-.site-nav { display: flex; align-items: center; gap: var(--sp-1); }
-.site-nav a, .site-nav button { font-size: var(--fs-sm); font-weight: 600; color: var(--n600); text-decoration: none; padding: 6px 10px; border-radius: var(--radius-sm); background: none; border: none; cursor: pointer; }
-.site-nav a:hover, .site-nav button:hover { background: var(--n100); color: var(--n900); }
-.site-nav a[aria-current="page"] { color: var(--n900); background: var(--n100); }
+/* ── Rating button (rateCtl): the one checklist control, same height/radius as .btn ──
+   pressed = 2px inset border in the status colour + its tint + the label word; never colour alone */
+.rate{display:flex;flex-wrap:wrap;gap:var(--sp-1)}
+.rate-b{min-height:32px;padding:0 var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);
+  background:var(--sheet);color:var(--ink);font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1;
+  white-space:nowrap;cursor:pointer;transition:background-color .12s,border-color .12s,color .12s}
+.rate-b:hover:not(:disabled){background:var(--hover);border-color:var(--control-border)}
+.rate-b:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.rate-b.on.pos{background:var(--pass-bg);border-color:var(--pass);box-shadow:inset 0 0 0 1px var(--pass);color:var(--pass)}
+.rate-b.on.neg{background:var(--fail-bg);border-color:var(--fail);box-shadow:inset 0 0 0 1px var(--fail);color:var(--fail)}
+.rate-b.on.neu{background:var(--sheet-2);border-color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--ink-2);color:var(--ink)}
+/* suggested by the tool, not yet confirmed: 1px dashed status border, no fill */
+.rate-b.sug{border-style:dashed}
+.rate-b.sug.pos{border-color:var(--pass);color:var(--pass)}
+.rate-b.sug.neg{border-color:var(--fail);color:var(--fail)}
+.rate-b.sug.neu{border-color:var(--ink-2)}
+.rate-b:disabled{cursor:default;background:var(--sheet-2);color:var(--ink-disabled)}
+.rate-b.on:disabled{opacity:1}
+.rate-b.on.pos:disabled{background:var(--pass-bg);color:var(--pass)}
+.rate-b.on.neg:disabled{background:var(--fail-bg);color:var(--fail)}
+.rate-b.on.neu:disabled{background:var(--sheet-2);color:var(--ink)}
 
-/* ── Disclosure (collapsed details) ── */
-details.disclose > summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: var(--sp-1); font-size: var(--fs-xs); font-weight: 600; color: var(--n600); }
-details.disclose > summary::-webkit-details-marker { display: none; }
-details.disclose > summary::before { content: "▸"; transition: transform .12s; }
-details.disclose[open] > summary::before { transform: rotate(90deg); }
-details.disclose > summary:hover { color: var(--n900); }
+/* ── Segmented control: one exclusive choice (mode toggle, CVD, Brief chips, theme switch) ──
+   Markup: <div class="seg" role="group" aria-label="…"><button type="button" aria-pressed="true|false">…</button>…</div>
+   .seg-wrap lets options wrap (Brief audience/format); .seg-grid is the 2-column picker. */
+.seg{display:inline-flex;gap:2px;padding:2px;background:var(--sheet-2);border:1px solid var(--rule);border-radius:var(--radius-control)}
+.seg button{min-height:28px;padding:0 var(--sp-3);border:1px solid transparent;border-radius:3px;background:transparent;
+  font-family:var(--sans);font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.seg button:hover{background:var(--hover);color:var(--ink)}
+.seg button.on, .seg button[aria-pressed="true"]{background:var(--selected);border-color:var(--form-blue);color:var(--form-blue);font-weight:600}
+.seg button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.seg.seg-wrap{display:flex;flex-wrap:wrap}
+.seg.seg-grid{display:grid;grid-template-columns:1fr 1fr}
+.seg.seg-grid button{white-space:normal;min-height:32px}
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+/* ── Theme switch (System / Light / Dark): a .seg in the site bar; wiring in theme-switch.js ── */
+.theme-switch[hidden]{display:none}
+.theme-switch button{min-height:28px;padding:0 var(--sp-2)}
+.bar-divider{flex:none;width:1px;height:24px;margin:0 var(--sp-2);background:var(--rule)}
+
+/* ── Status tags (pills allowed). Every tag carries its word or a glyph with sr-only text. ── */
+.tag{display:inline-flex;align-items:center;gap:var(--sp-1);padding:2px 10px;border-radius:var(--radius-pill);
+  font-size:var(--fs-xs);font-weight:600;line-height:1.4;white-space:nowrap;font-variant-numeric:tabular-nums;
+  background:var(--sheet-2);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--rule)}
+.tag-pass{background:var(--pass-bg);color:var(--pass);box-shadow:none}
+.tag-warn{background:var(--warn-bg);color:var(--warn);box-shadow:none}
+.tag-fail{background:var(--fail-bg);color:var(--fail);box-shadow:none}
+.tag-info{background:var(--selected);color:var(--form-blue);box-shadow:none}
+
+/* ── Status note (warn banner, "what this needs"): flat, ink text, status rule on the left ── */
+.note{padding:var(--sp-2) var(--sp-3);border-left:3px solid var(--rule);font-size:var(--fs-xs);line-height:1.5;color:var(--ink)}
+.note-warn{background:var(--warn-bg);border-left-color:var(--warn)}
+.note-fail{background:var(--fail-bg);border-left-color:var(--fail)}
+.note-pass{background:var(--pass-bg);border-left-color:var(--pass)}
+
+/* ── Meter: the verdict is always also in text (score + target, pill word) ── */
+.meter-track{height:8px;background:var(--meter-track);border-radius:2px;overflow:hidden}
+.meter-fill{height:100%;background:var(--meter-neutral);border-radius:2px}
+.meter-fill.is-pass{background:var(--pass)}
+.meter-fill.is-warn{background:var(--warn)}
+.meter-fill.is-fail{background:var(--fail)}
+
+/* ── Tooltip (a small floating sheet) ── */
+#tip{background:var(--tooltip-bg);color:var(--ink);border:1px solid var(--rule);border-radius:var(--radius-control);box-shadow:var(--shadow-float)}
+#tip b{color:var(--ink)}
+
+/* ── Dialog ── */
+dialog{background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:var(--radius-sheet);box-shadow:var(--shadow-float)}
+dialog::backdrop{background:var(--scrim)}
+
+/* ── Site top bar (shared by every page) ──
+   Order: app name, (page controls), flexible gap, nav, .bar-divider, .theme-switch */
+.site-bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-5);background:var(--sheet);border-bottom:1px solid var(--rule)}
+.site-bar .site-name{display:inline-flex;align-items:center;min-height:32px;font-size:var(--fs-lg);font-weight:600;line-height:1.35;color:var(--ink);text-decoration:none;margin-right:auto}
+.site-bar .site-name:hover{color:var(--ink);text-decoration:underline}
+.site-nav{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1)}
+.site-nav a, .site-nav button{display:inline-flex;align-items:center;min-height:32px;padding:0 var(--sp-3);border:none;border-radius:var(--radius-control);background:none;
+  font-size:var(--fs-sm);font-weight:600;color:var(--ink-2);text-decoration:none;cursor:pointer}
+.site-nav a:hover, .site-nav button:hover{background:var(--hover);color:var(--ink)}
+.site-nav a[aria-current="page"]{background:var(--selected);color:var(--ink)}
+@media (max-width:600px){
+  .site-bar{padding:var(--sp-2) var(--sp-4)}
+  .site-bar .site-name{flex-basis:100%;margin-right:0}
+  .site-bar .bar-divider{display:none}
+  .site-bar .theme-switch{margin-left:auto}
+}
+
+/* ── Disclosure (collapsed details): CSS chevron, no glyph ── */
+details.disclose > summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:var(--sp-2);min-height:32px;
+  font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);border-radius:var(--radius-control)}
+details.disclose > summary::-webkit-details-marker{display:none}
+details.disclose > summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(-45deg);transition:transform .12s}
+details.disclose[open] > summary::before{transform:rotate(45deg)}
+details.disclose > summary:hover{color:var(--ink)}
+
+/* ── Highlighter: flagged words in the document (CSS Custom Highlight API; no DOM change).
+   Text under the mark is forced to ink: in dark, ink-2 on the mark is only 4.0:1. ── */
+::highlight(pea-flag){background-color:var(--highlighter);color:var(--ink)}
+::highlight(pea-flag-focus){background-color:var(--highlighter);color:var(--ink);text-decoration:underline 2px var(--ink);text-underline-offset:2px}
+@keyframes flashSel{0%,100%{background-color:transparent}35%{background-color:var(--highlighter)}}
+.flash-sel{animation:flashSel 1.1s ease;color:var(--ink)}
+/* reduced motion: a steady mark instead of the flash; the page removes the class on a timer */
+@media (prefers-reduced-motion: reduce){ .flash-sel{animation:none;background-color:var(--highlighter)} }
+
+/* ── Artwork overlay (OCR / text-to-artwork) and backdrop: theme-independent overlay roles ── */
+.vm-hl{border:2px solid var(--overlay-outline);border-radius:2px;background:var(--overlay-fill);box-shadow:0 0 0 1px var(--overlay-halo)}
+#vm-canvas{background:var(--checker)}     /* the canvas itself is never filtered, blended or recoloured */
+
+/* ── Document paper: author colours neutralised for display only.
+   Scoring reads text, not colour, so overriding pasted inline colours is safe. ── */
+#editor{background:var(--sheet);color:var(--ink)}
+#editor [style], #editor font{color:inherit !important;background-color:transparent !important}
+#editor a, #editor a[style], #editor a [style]{color:var(--form-blue) !important}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
 }
