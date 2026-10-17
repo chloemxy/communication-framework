@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Frameworks: sort, and shorter rows
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Sort** (next to Filter): By area (default), Recommended, Name A–Z, By use case. The
+  choice is remembered (`pea.fwSort`).
+  - Recommended puts UPL and PCORI first (used most by our partners), then the checks
+    that fit most patient materials, then specialist ones. It's a recommendation, not a
+    usage statistic (`RECOMMENDED` in `frameworks.js`).
+  - By use case groups frameworks under the situations, each framework once, under its
+    first situation.
+- **Shorter rows:** the description line is gone. Hover over or click the abbreviation
+  (dotted underline) to read it. Clicking the abbreviation doesn't tick the row; screen
+  readers still get the description through the row.
+
 ## 2026-10-17 — One left edge for text, everywhere
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

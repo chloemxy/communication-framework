@@ -116,6 +116,11 @@
       fws: ['whorisks', 'cci', 'plainlang'] },
   ];
 
-  root.PEA_FRAMEWORKS = { FRAMEWORKS, ZONES, OUTPUT_LABEL, SITUATIONS };
+  // "Recommended" sort order: the two our partners use most, then the checks that fit most
+  // patient materials, then specialist ones. A recommendation, not a usage statistic.
+  const RECOMMENDED = ['upl', 'pcori', 'cci', 'pemat', 'readability', 'plainlang', 'pematav', 'cdcidd', 'sam', 'cdceq',
+    'teachback', 'ahrq', 'eqip', 'discern', 'ipdas', 'ottawa', 'share', 'picker', 'hbm', 'comb', 'eppm', 'ttm', 'whorisks'];
+
+  root.PEA_FRAMEWORKS = { FRAMEWORKS, ZONES, OUTPUT_LABEL, SITUATIONS, RECOMMENDED };
   if (typeof module !== 'undefined' && module.exports) module.exports = root.PEA_FRAMEWORKS;
 })(typeof window !== 'undefined' ? window : globalThis);

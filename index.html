@@ -8,8 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261017c">
-<script src="theme-switch.js?v=20261017c" defer></script>
+<link rel="stylesheet" href="design-system.css?v=20261017d">
+<script src="theme-switch.js?v=20261017d" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -118,6 +118,11 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-top-grid-hdr .lbl{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .fw-top-grid-hdr .btn{margin-left:var(--sp-1)}
 .fw-top-grid{border-top:1px solid var(--rule)}
+/* Sort: a quiet select with an icon, matching the Filter button */
+.fw-sort{display:inline-flex;align-items:center;gap:var(--sp-1);min-height:32px;padding:0 var(--sp-2);border-radius:var(--radius-control);color:var(--ink-2);cursor:pointer}
+.fw-sort:hover{background:var(--hover);color:var(--ink)}
+.fw-sort select{border:none;background:transparent;color:inherit;font-size:var(--fs-xs);font-weight:600;cursor:pointer;padding:0 2px}
+.fw-sort select:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px;border-radius:2px}
 /* Frameworks panel: situations first (one click picks a recommended set), then every framework by area */
 .fw-sec-h{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);margin:var(--sp-3) 0 var(--sp-2)}
 .fw-sits-wrap{margin-bottom:var(--sp-5)}
@@ -142,6 +147,8 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-row.match .fwc-box::after{content:"✓"}
 .fwc-main{grid-area:main;min-width:0}
 .fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.fw-row .name[data-tip]{display:inline-block;border-bottom:1px dotted var(--ink-2);cursor:help}
+.fw-row .name[data-tip]:hover{border-bottom-style:solid}
 .fw-row .name-full{display:block;font-size:var(--fs-sm);font-weight:400;color:var(--ink)}
 .fw-row .full{display:block;margin-top:2px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
 .fwc-meta{grid-area:meta;display:flex;flex-direction:row;align-items:baseline;gap:var(--sp-3);text-align:left;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
@@ -737,6 +744,16 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
               </div>
               <button type="button" class="btn btn-secondary fw-filter-chip" id="fw-filter-chip" hidden></button>
             </div>
+            <label class="fw-sort" title="Sort the list">
+              <svg class="fw-filter-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 3v10M4 13l-2-2M4 13l2-2M12 13V3M12 3l-2 2M12 3l2 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span class="sr-only">Sort</span>
+              <select id="fw-sort" onchange="setFwSort(this.value)">
+                <option value="area">By area</option>
+                <option value="recommended">Recommended</option>
+                <option value="name">Name A–Z</option>
+                <option value="usecase">By use case</option>
+              </select>
+            </label>
             <button type="button" class="btn btn-quiet" onclick="clearFrameworks()" title="Untick every framework and reset the filter" aria-label="Clear selected frameworks">Clear</button>
           </div>
           <section class="fw-sits-wrap" aria-labelledby="fw-sits-h">
@@ -1147,7 +1164,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
 
-<script src="frameworks.js?v=20261017c"></script>
+<script src="frameworks.js?v=20261017d"></script>
 <script>
 'use strict';
 // ════════════════════════════════════════
@@ -4883,26 +4900,48 @@ function renderFwTopGrid(){
   const had = document.activeElement && document.activeElement.closest && document.activeElement.closest('#fw-top-grid .fw-row');
   const hadKey = had ? had.dataset.f : null;
   renderFwSituations(selected);
-  // rows grouped by area, in the shared list's order
-  const ZONES = window.PEA_FRAMEWORKS.ZONES;
-  grid.innerHTML = ZONES.map(z => {
-    const inZone = shown.filter(f => FW_ZONE[f] === z.key);
-    if(!inZone.length) return '';
-    return '<div class="fw-zone-h" role="presentation">' + escapeHtml(z.name) + ' <span>' + inZone.length + '</span></div>' + inZone.map(fwPickRow).join('');
-  }).join('');
+  const sortSel = $('fw-sort'); if(sortSel && sortSel.value !== fwSort) sortSel.value = fwSort;
+  grid.innerHTML = fwSortedGroups(shown).map(g =>
+    (g.name ? '<div class="fw-zone-h" role="presentation">' + escapeHtml(g.name) + ' <span>' + g.items.length + '</span></div>' : '')
+    + g.items.map(fwPickRow).join('')).join('');
   if(hadKey){ const r = grid.querySelector('.fw-row[data-f="' + hadKey + '"]'); if(r) r.focus(); }
+}
+// ── Sort: by area (default), recommended order, name, or use case ──
+let fwSort = 'area';
+try { const v = localStorage.getItem('pea.fwSort'); if(['area','recommended','name','usecase'].includes(v)) fwSort = v; } catch(e){}
+function setFwSort(v){ fwSort = v; try { localStorage.setItem('pea.fwSort', v); } catch(e){} renderFwTopGrid(); }
+// Returns [{ name, items }]; a group with no name renders as a plain list
+function fwSortedGroups(shown){
+  const P = window.PEA_FRAMEWORKS;
+  if(fwSort === 'recommended'){
+    const rank = f => { const i = (P.RECOMMENDED || []).indexOf(f); return i < 0 ? 999 : i; };
+    return [{ name:'', items: shown.slice().sort((a, b) => rank(a) - rank(b)) }];
+  }
+  if(fwSort === 'name')
+    return [{ name:'', items: shown.slice().sort((a, b) => FW_LABEL[a].localeCompare(FW_LABEL[b], undefined, { sensitivity:'base' })) }];
+  if(fwSort === 'usecase'){
+    // each framework once, under the first situation that uses it
+    const placed = new Set();
+    return (P.SITUATIONS || []).map(s => {
+      const items = s.fws.filter(f => shown.includes(f) && !placed.has(f));
+      items.forEach(f => placed.add(f));
+      return { name: s.name, items };
+    }).filter(g => g.items.length);
+  }
+  return P.ZONES.map(z => ({ name: z.name, items: shown.filter(f => FW_ZONE[f] === z.key) })).filter(g => g.items.length);
 }
 function fwPickRow(f){
   const isSel = selectedFrameworks().includes(f);
   const bd = FW_BADGE[FW_LEVEL[f]];
   const out = fwOutType(f);
   // clicks and Space/Enter are handled once on the list (below), not per row
-  return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '">'
+  return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '" aria-describedby="fwd-' + f + '">'
     + '<span class="fwc-box" aria-hidden="true"></span>'
     // row 1 abbreviation · row 2 full name · then what it checks
-    + '<span class="fwc-main"><span class="name">' + FW_LABEL[f] + '</span>'
+    + '<span class="fwc-main"><span class="name" data-tip="' + escapeHtml(FW_FULL[f]) + '">' + FW_LABEL[f] + '</span>'
+    + '<span class="sr-only" id="fwd-' + f + '">' + escapeHtml(FW_FULL[f]) + '</span>'
     + (fwFullName(f) ? '<span class="name-full">' + fwFullName(f) + '</span>' : '')
-    + '<span class="full">' + FW_FULL[f] + '</span></span>'
+    + '</span>'
     // output type is a tag; how it's scored is plain text, so the two read differently
     + '<span class="fwc-meta"><span class="fwc-out">' + OUT_LABEL[out] + '</span>'
     + '<span class="fwc-how" title="' + escapeHtml(bd.tip) + '">' + bd.label + '</span></span>'
@@ -4941,7 +4980,13 @@ $('fw-sits').addEventListener('click', e => { const b = e.target.closest('.fw-si
 (function(){
   const grid = $('fw-top-grid');
   const pick = row => { if(row && FW_LABEL[row.dataset.f]) toggleFwManual(row.dataset.f); };
-  grid.addEventListener('click', e => pick(e.target.closest('.fw-row')));
+  grid.addEventListener('click', e => {
+    const n = e.target.closest('.name[data-tip]');
+    if(n){ e.stopPropagation(); showTip(n); return; }   // the abbreviation shows its description; it never ticks the row
+    pick(e.target.closest('.fw-row'));
+  });
+  grid.addEventListener('mouseover', e => { const n = e.target.closest('.name[data-tip]'); if(n && tipOwner !== n) showTip(n); });
+  grid.addEventListener('mouseout', e => { const n = e.target.closest('.name[data-tip]'); if(n && !n.contains(e.relatedTarget) && tipOwner === n) hideTip(); });
   grid.addEventListener('keydown', e => {
     if(e.key !== ' ' && e.key !== 'Enter') return;
     const row = e.target.closest('.fw-row');
