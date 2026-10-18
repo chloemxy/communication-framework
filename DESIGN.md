@@ -9,9 +9,11 @@ The tool is a desk where someone proofs a patient handout against published scor
 So: the material sits on a **sheet of paper** on a cool grey **desk**; the checks look like
 **printed score sheets** — hairline rules, item numbers in a left margin, tabular figures.
 Actions are **ink**; links are **form blue** (the blue of government forms). The one signature
-colour is **highlighter yellow**, and it marks only flagged words on the document — never chrome.
+colour is **highlighter yellow**. In the document it marks flagged words. In the chrome it is the theme
+colour: the logo's I, the current page in the site bar, and the chosen option in a segmented toggle.
+It is always a fill under ink text, never text or a border on its own.
 
-Spend the boldness in one place: the highlighter marks and the score-sheet rows. Everything
+Spend the boldness in one place: the yellow, the score-sheet rows and the logo. Everything
 else is quiet.
 
 ## Colour (light / dark)
@@ -24,12 +26,21 @@ else is quiet.
 | rule | `#D5D9DE` | `#343A41` | hairlines, borders, score-sheet rules |
 | ink | `#16181D` | `#E9EBEE` | text, primary button fill (dark: light fill, dark text) |
 | ink-2 | `#4A5059` | `#B4BAC2` | secondary text (≥ 4.5:1 on sheet and desk) |
-| form-blue | `#1D4F91` | `#8DB4EC` | links, focus ring, selected state |
-| highlighter | `#FFE066` | `rgba(255,214,0,.28)` | marks on flagged words in the document only |
+| form-blue | `#1D4F91` | `#8DB4EC` | links, focus ring, selected state (other than segmented toggles) |
+| highlighter | `#FFE066` | `rgba(255,214,0,.28)` | marks on flagged words in the document |
+| brand | `#FFE066` | `#F5CF4A` | theme yellow in chrome: logo I, current nav page, chosen segment. Always a fill with `on-brand` text |
+| on-brand | `#16181D` | `#16181D` | text on the brand fill (13.6:1 light, 11.8:1 dark) |
 | pass / warn / fail | `#1E6B3A` / `#8A5300` / `#B3261E` | `#7FD19B` / `#F0B357` / `#F28B82` | status text and tags only, always with a word or icon |
 
 No gradients. No indigo/violet. No cream. Dark mode is designed, not inverted: same roles,
 re-tuned values, every text pair re-checked to ≥ 4.5:1.
+
+## Logo
+
+**Flagged I**: the wordmark PRISM in Public Sans 600, with the I marked by a slanted chisel
+swipe of brand yellow. The slant belongs to the logo only: flags in the document are plain
+rectangles, so the logo can't be mistaken for a flag. The favicon (`favicon.svg`) is the I
+alone on the swipe. The wordmark carries `PRISM` as screen-reader text.
 
 ## Type
 

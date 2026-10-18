@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-18 — Flagged I logo; yellow becomes the theme colour
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Logo.** The wordmark on both pages is now PRISM with the I on a slanted swipe of highlighter
+  yellow (concept 3, "Flagged I", from `design/brainstorm/`). Screen readers still hear "PRISM".
+  New `favicon.svg` shows the I on the swipe, and switches to a light stem in dark browser tabs.
+- **Theme colour.** New tokens `--brand` (`#FFE066` light, `#F5CF4A` dark) and `--on-brand`
+  (ink, 13.6:1 light, 11.8:1 dark). Yellow now fills the current page in the site bar and the
+  chosen option in segmented toggles (e.g. Evaluate a draft / Plan from an idea). Those toggles
+  keep an ink border as the visible cue. Links, focus ring and other selected states stay form blue.
+- **DESIGN.md.** The "yellow never in chrome" rule is replaced: yellow is the theme colour, always
+  a fill under ink text. Added a Logo section and the two tokens.
+- Fonts unchanged (Public Sans + Source Serif 4).
+
 ## 2026-10-17 — Plan from an idea: a guided path
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
@@ -69,6 +84,17 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 - **Previews:** changes close together share one excerpt instead of repeating the words between
   them.
 - **Change log:** an Apply all entry lists 2 changes, then "and N more".
+
+## 2026-10-17 — Logo and type brainstorm (design/brainstorm/)
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- New folder `design/brainstorm/` with an index page, three type directions (`typography.html`/`.md`),
+  six logo concepts with an online similarity check (`logo.html`/`.md`, `logo-svgs/`).
+- Picks: type direction 2 "Health column" (Newsreader masthead and headings); logos Pilcrow P and
+  Flagged I. Nothing in the studio changed.
+- Flagged: the name PRISM is also used by a Kaiser Permanente Washington readability programme.
+  A trademark search is needed before adopting a mark.
 
 ## 2026-10-17 — Suggested rewrites with Apply; change log with Undo
 

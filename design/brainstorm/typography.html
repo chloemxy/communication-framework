@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRISM type directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Atkinson+Hyperlegible+Next:wght@400;600;800&family=Literata:opsz,wght@7..72,400;7..72,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+/* Brainstorm page only. Colours are the existing Proofing desk tokens; no new colours. */
+:root{
+  --desk:#ECEEF0; --sheet:#FFFFFF; --sheet-2:#F6F7F8; --rule:#D5D9DE;
+  --ink:#16181D; --ink-2:#4A5059; --form-blue:#1D4F91; --highlighter:#FFE066;
+  --pass:#1E6B3A; --pass-bg:#E5F1E9; --fail:#B3261E; --fail-bg:#FBE8E6;
+  --selected:#E6EDF7; --hover:#EEF0F2; --control-border:#7A828C;
+  --page-sans:'Public Sans', system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--desk)}
+body{margin:0;background:var(--desk);color:var(--ink);font-family:var(--page-sans);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--form-blue)}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 16px 64px}
+.page-h{font-size:24px;font-weight:600;line-height:1.25;margin:0 0 8px}
+.page-lede{margin:0 0 32px;max-width:68ch;color:var(--ink-2)}
+.toc{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0 0 32px;padding:0;list-style:none}
+
+/* One direction = annotation column + specimen */
+.dir{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:24px;padding:32px 0;border-top:1px solid var(--rule)}
+@media (max-width:820px){.dir{grid-template-columns:minmax(0,1fr)}}
+.notes h2{font-size:17px;font-weight:600;line-height:1.35;margin:0 0 4px}
+.notes .idea{margin:0 0 16px}
+.notes dl{margin:0 0 16px}
+.notes dt{font-weight:600;font-size:13px;margin-top:8px}
+.notes dd{margin:0;font-size:13px;color:var(--ink-2)}
+.notes ul{margin:4px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2)}
+.notes h3{font-size:13px;font-weight:600;margin:16px 0 0}
+pre.scale{margin:16px 0 0;padding:12px;background:var(--sheet);border:1px solid var(--rule);border-radius:4px;font:13px/1.5 ui-monospace,Consolas,monospace;overflow-x:auto;color:var(--ink)}
+.check{font-size:13px;color:var(--ink-2);margin-top:8px}
+.check b{color:var(--ink);font-weight:600}
+
+/* ── Specimen: same structure for every direction, faces and scale come from the direction class ── */
+.spec{min-width:0;background:var(--desk);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.s-bar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;min-height:56px;padding:8px 16px;background:var(--sheet);border-bottom:1px solid var(--rule);font-family:var(--ui)}
+.s-nav{display:flex;flex-wrap:wrap;gap:4px;margin-left:auto}
+.s-nav span{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:4px;font-size:var(--fs-body);font-weight:600;color:var(--ink-2)}
+.s-nav span.cur{background:var(--selected);color:var(--ink)}
+.s-body{padding:16px;display:grid;gap:16px}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:16px;font-family:var(--ui);font-size:var(--fs-body)}
+.s-display{margin:0;font-family:var(--display-face,var(--ui));font-size:var(--fs-display);font-weight:var(--display-w,600);line-height:1.2}
+.s-cap{margin:4px 0 0;font-size:var(--fs-caption);color:var(--ink-2)}
+.s-heading{margin:16px 0 0;font-family:var(--heading-face,var(--ui));font-size:var(--fs-heading);font-weight:600;line-height:1.3}
+.row{display:grid;grid-template-columns:var(--num-col,28px) minmax(0,1fr);column-gap:0;row-gap:8px;align-items:baseline;padding:12px 0;border-top:1px solid var(--rule);margin-top:12px}
+.row + .row{margin-top:0}
+.row .n{font-family:var(--num-face,var(--ui));font-variant-numeric:tabular-nums lining-nums;font-size:var(--fs-num,var(--fs-body));font-weight:var(--num-w,400);color:var(--num-c,var(--ink-2));line-height:1.45}
+.row .t{font-size:var(--fs-body);line-height:1.45}
+.rate{grid-column:2;display:flex;flex-wrap:wrap;gap:4px}
+.rate button{min-height:32px;padding:0 12px;border:1px solid var(--rule);border-radius:4px;background:var(--sheet);color:var(--ink);font-family:var(--ui);font-size:var(--fs-caption);font-weight:600;line-height:1;cursor:pointer}
+.rate button.on{background:var(--pass-bg);border-color:var(--pass);box-shadow:inset 0 0 0 1px var(--pass);color:var(--pass)}
+.rate button:focus-visible{outline:2px solid var(--form-blue);outline-offset:2px}
+.src{margin:8px 0 0;font-size:var(--fs-caption);color:var(--ink-2)}
+.paper{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:24px 24px 28px}
+.paper h4{margin:0 0 8px;font-family:var(--read);font-size:calc(var(--fs-read) * 1.25);font-weight:600;line-height:1.3}
+.paper p{margin:0;font-family:var(--read);font-size:var(--fs-read);line-height:1.65;max-width:62ch}
+mark{background:var(--highlighter);color:var(--ink);padding:0 1px;border-radius:1px}
+.glyphs{margin:0;font-size:var(--fs-caption);color:var(--ink-2)}
+.glyphs span{font-size:20px;color:var(--ink);margin-right:12px;white-space:nowrap}
+.glyphs .g-ui{font-family:var(--ui)} .glyphs .g-read{font-family:var(--read)}
+
+/* ── 0. Current baseline ── */
+.d0{--ui:'Public Sans',system-ui,sans-serif;--read:'Source Serif 4',Georgia,serif;
+  --fs-caption:13px;--fs-body:14px;--fs-read:15px;--fs-heading:17px;--fs-display:24px}
+.d0 .wm{margin:0;font-family:'Public Sans',sans-serif;font-size:17px;font-weight:600;line-height:1.35}
+
+/* ── 1. Hyperlegible ── */
+.d1{--ui:'Atkinson Hyperlegible Next',system-ui,sans-serif;--read:'Literata',Georgia,serif;
+  --fs-caption:13px;--fs-body:15px;--fs-read:17px;--fs-heading:19px;--fs-display:28px;--display-w:800;--num-w:600}
+.d1 .wm{margin:0;font-family:'Atkinson Hyperlegible Next',sans-serif;font-size:21px;font-weight:800;line-height:1.2}
+.d1 .paper p{font-variation-settings:'opsz' 12}
+
+/* ── 2. Health column ── */
+.d2{--ui:'Public Sans',system-ui,sans-serif;--read:'Newsreader',Georgia,serif;--display-face:'Newsreader',Georgia,serif;--heading-face:'Newsreader',Georgia,serif;
+  --fs-caption:13px;--fs-body:14px;--fs-read:17px;--fs-heading:19px;--fs-display:30px;
+  --num-face:'Newsreader',Georgia,serif;--fs-num:17px;--num-w:600;--num-c:var(--ink);--num-col:32px}
+.d2 .s-display{font-variation-settings:'opsz' 72;letter-spacing:-.005em}
+.d2 .s-heading{font-variation-settings:'opsz' 24}
+.d2 .row .n{font-variation-settings:'opsz' 24;line-height:1.2}
+.d2 .wm{margin:0;font-family:'Newsreader',Georgia,serif;font-variation-settings:'opsz' 72;font-size:23px;font-weight:600;line-height:1;letter-spacing:.07em}
+.d2 cite{font-style:italic}
+
+/* ── 3. Printed form ── */
+.d3{--ui:'Archivo',system-ui,sans-serif;--read:'Source Serif 4',Georgia,serif;
+  --fs-caption:13px;--fs-body:14px;--fs-read:16px;--fs-heading:17px;--fs-display:26px;--display-w:800;
+  --fs-num:15px;--num-w:800;--num-c:var(--ink);--num-col:32px}
+.d3 .wm{margin:0;display:inline-flex;font-family:'Archivo',sans-serif;font-size:15px;font-weight:600;line-height:1}
+.d3 .wm span{display:inline-flex;align-items:center;justify-content:center;width:24px;height:30px;border:1px solid var(--control-border);border-left-width:0;font-variant-numeric:tabular-nums}
+.d3 .wm span:first-child{border-left-width:1px;border-radius:3px 0 0 3px}
+.d3 .wm span:last-child{border-radius:0 3px 3px 0}
+.d3 .s-display{font-stretch:75%;line-height:1.1}
+.d3 .s-heading{font-weight:800;font-stretch:87.5%}
+.d3 .row .n{font-stretch:87.5%}
+.d3 .row .n{font-size:var(--fs-num)}
+@media (max-width:420px){.s-nav span{padding:0 8px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1 class="page-h">PRISM type directions</h1>
+  <p class="page-lede">Brainstorm only, nothing here is implemented. Each direction is shown on the same Proofing desk colours: the site bar with the wordmark, a page heading, one score-sheet row, and a piece of patient handout with one flagged word. Direction 0 is what ships today.</p>
+  <ul class="toc">
+    <li><a href="#d0">0. Current</a></li><li><a href="#d1">1. Hyperlegible</a></li><li><a href="#d2">2. Health column</a></li><li><a href="#d3">3. Printed form</a></li>
+  </ul>
+
+  <!-- ═══════════ 0 ═══════════ -->
+  <section class="dir d0" id="d0" data-ui="Public Sans" data-read="Source Serif 4">
+    <div class="notes">
+      <h2>0. Current baseline</h2>
+      <p class="idea">Public Sans for the interface, Source Serif 4 for the document. Correct and calm, but the wordmark is set exactly like a panel heading, so nothing says "this is PRISM".</p>
+      <dl>
+        <dt>Interface</dt><dd>Public Sans 400/600</dd>
+        <dt>Reading</dt><dd>Source Serif 4 400</dd>
+        <dt>Wordmark</dt><dd>Public Sans 600, 17px, same as a heading</dd>
+      </dl>
+      <pre class="scale">--fs-xs:13px;  /* caption */
+--fs-sm:14px;  /* body */
+--fs-md:15px;  /* reading (serif) */
+--fs-lg:17px;  /* heading, wordmark */
+--fs-2xl:24px; /* display */</pre>
+      <p class="check" data-check></p>
+    </div>
+    <div class="spec">
+      <div class="s-bar"><p class="wm">PRISM</p><div class="s-nav"><span class="cur">Studio</span><span>Framework Compass</span><span>About</span></div></div>
+      <div class="s-body">
+        <div class="sheet">
+          <h3 class="s-display">Check the handout against PEMAT</h3>
+          <p class="s-cap">Understandability, 13 items. Score 9 of 12 so far.</p>
+          <h4 class="s-heading">Word choice and style</h4>
+          <div class="row"><span class="n">3.</span><span class="t">The material uses common, everyday language.</span>
+            <div class="rate"><button type="button" class="on" aria-pressed="true">Agree</button><button type="button" aria-pressed="false">Disagree</button></div></div>
+          <p class="src">Source: The Patient Education Materials Assessment Tool (PEMAT) and User's Guide, AHRQ.</p>
+        </div>
+        <div class="paper">
+          <h4>Taking your water pill</h4>
+          <p>Take one tablet each morning with breakfast. Weigh yourself before you eat. If your ankles show <mark>edema</mark> or you gain more than 2 pounds in a day, call your care team at 555-0134.</p>
+        </div>
+        <p class="glyphs"><span class="g-ui">Il1 0O 18</span><span class="g-read">Il1 0O 18</span>interface, reading</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 1 ═══════════ -->
+  <section class="dir d1" id="d1" data-ui="Atkinson Hyperlegible Next" data-read="Literata">
+    <div class="notes">
+      <h2>1. Hyperlegible</h2>
+      <p class="idea">A health-literacy tool set in a typeface built for low-vision readers. The character is the letterforms themselves: the tailed l, the slashed-looking zero, the open apertures that make Atkinson look unlike any other sans.</p>
+      <dl>
+        <dt>Interface and wordmark</dt><dd>Atkinson Hyperlegible Next (Braille Institute) 400/600/800. Every confusable pair is drawn apart: I, l and 1 differ, 0 and O differ, rn does not read as m. Large x-height.</dd>
+        <dt>Reading</dt><dd>Literata 400/600 (designed for long reading on screens, optical sizes, sturdy serifs, generous x-height). Pairs well with Atkinson's open, slightly wide shapes.</dd>
+        <dt>Wordmark</dt><dd>PRISM in Atkinson 800, 21px: the only 800 in the interface besides Display.</dd>
+      </dl>
+      <h3>DESIGN.md Type changes</h3>
+      <ul><li>Faces change (both).</li><li>Add weight 800 for Display and the wordmark only.</li><li>Body moves 14 to 15, reading 15 to 17 (Atkinson and Literata both set large; 17 is closer to print handout size).</li></ul>
+      <h3>Stays</h3>
+      <ul><li>No italics, uppercase (wordmark excepted, it already is) or letter-spacing.</li><li>Seven treatments plus the wordmark; nothing under 13px; tabular numbers.</li></ul>
+      <pre class="scale">--sans:'Atkinson Hyperlegible Next', system-ui, sans-serif;
+--serif:'Literata', Georgia, serif;
+--fs-xs:13px;  /* caption */
+--fs-sm:15px;  /* body */
+--fs-md:17px;  /* reading (serif) */
+--fs-lg:19px;  /* heading */
+--fs-2xl:28px; /* display, 800 */
+--fs-mark:21px; /* wordmark, 800 */</pre>
+      <p class="check" data-check></p>
+    </div>
+    <div class="spec">
+      <div class="s-bar"><p class="wm">PRISM</p><div class="s-nav"><span class="cur">Studio</span><span>Framework Compass</span><span>About</span></div></div>
+      <div class="s-body">
+        <div class="sheet">
+          <h3 class="s-display">Check the handout against PEMAT</h3>
+          <p class="s-cap">Understandability, 13 items. Score 9 of 12 so far.</p>
+          <h4 class="s-heading">Word choice and style</h4>
+          <div class="row"><span class="n">3.</span><span class="t">The material uses common, everyday language.</span>
+            <div class="rate"><button type="button" class="on" aria-pressed="true">Agree</button><button type="button" aria-pressed="false">Disagree</button></div></div>
+          <p class="src">Source: The Patient Education Materials Assessment Tool (PEMAT) and User's Guide, AHRQ.</p>
+        </div>
+        <div class="paper">
+          <h4>Taking your water pill</h4>
+          <p>Take one tablet each morning with breakfast. Weigh yourself before you eat. If your ankles show <mark>edema</mark> or you gain more than 2 pounds in a day, call your care team at 555-0134.</p>
+        </div>
+        <p class="glyphs"><span class="g-ui">Il1 0O 18</span><span class="g-read">Il1 0O 18</span>interface, reading</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 2 ═══════════ -->
+  <section class="dir d2" id="d2" data-ui="Public Sans" data-read="Newsreader">
+    <div class="notes">
+      <h2>2. Health column</h2>
+      <p class="idea">The editorial health page: a newspaper masthead and serif headlines over a plain government-sans interface. PRISM reads as a desk that publishes, not a form that processes.</p>
+      <dl>
+        <dt>Interface</dt><dd>Public Sans 400/600, unchanged. Keeps the U.S. Web Design System link and every control as it is.</dd>
+        <dt>Reading, display and wordmark</dt><dd>Newsreader (Production Type, drawn for on-screen news) 400/600 with an italic. Optical sizes: tight and crisp at 72 for the masthead, sturdier at text size. Lining tabular figures for item numbers.</dd>
+        <dt>Wordmark</dt><dd>PRISM in Newsreader 600 at display optical size, 23px, tracked +0.07em like a masthead.</dd>
+      </dl>
+      <h3>DESIGN.md Type changes</h3>
+      <ul><li>The serif moves out of the document into Display, page Heading, score-sheet item numbers and the wordmark.</li><li>One italic: titles of cited sources (<i>User's Guide</i>, journal names), as an editor would set them.</li><li>Letter-spacing on the wordmark only.</li><li>Reading 15 to 17 (Newsreader has a smaller x-height than Source Serif).</li></ul>
+      <h3>Stays</h3>
+      <ul><li>Public Sans everywhere else; weights 400/600; no uppercase in running text; nothing under 13px.</li></ul>
+      <pre class="scale">--sans:'Public Sans', system-ui, sans-serif;
+--serif:'Newsreader', Georgia, serif;
+--fs-xs:13px;  /* caption (sans) */
+--fs-sm:14px;  /* body (sans) */
+--fs-md:17px;  /* reading (serif, opsz auto) */
+--fs-lg:19px;  /* page heading (serif, opsz 24) */
+--fs-2xl:30px; /* display (serif, opsz 72) */
+--fs-item:17px;/* score-sheet item number (serif 600, tnum) */
+--fs-mark:23px;/* wordmark (serif 600, +0.07em) */</pre>
+      <p class="check" data-check></p>
+    </div>
+    <div class="spec">
+      <div class="s-bar"><p class="wm">PRISM</p><div class="s-nav"><span class="cur">Studio</span><span>Framework Compass</span><span>About</span></div></div>
+      <div class="s-body">
+        <div class="sheet">
+          <h3 class="s-display">Check the handout against PEMAT</h3>
+          <p class="s-cap">Understandability, 13 items. Score 9 of 12 so far.</p>
+          <h4 class="s-heading">Word choice and style</h4>
+          <div class="row"><span class="n">3.</span><span class="t">The material uses common, everyday language.</span>
+            <div class="rate"><button type="button" class="on" aria-pressed="true">Agree</button><button type="button" aria-pressed="false">Disagree</button></div></div>
+          <p class="src">Source: AHRQ, <cite>The Patient Education Materials Assessment Tool (PEMAT) and User's Guide</cite>.</p>
+        </div>
+        <div class="paper">
+          <h4>Taking your water pill</h4>
+          <p>Take one tablet each morning with breakfast. Weigh yourself before you eat. If your ankles show <mark>edema</mark> or you gain more than 2 pounds in a day, call your care team at 555-0134.</p>
+        </div>
+        <p class="glyphs"><span class="g-ui">Il1 0O 18</span><span class="g-read">Il1 0O 18</span>interface, reading</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ 3 ═══════════ -->
+  <section class="dir d3" id="d3" data-ui="Archivo" data-read="Source Serif 4">
+    <div class="notes">
+      <h2>3. Printed form</h2>
+      <p class="idea">The printed government form: a condensed black form title (think the big "Form 1040" header), heavy item numbers, and a wordmark written one letter per box, the way people fill in a paper form.</p>
+      <dl>
+        <dt>Interface and wordmark</dt><dd>Archivo 400/600/800 with a width axis (62 to 125). A grotesque built for informational print and screen use. Normal width for running text; condensed 75% at 800 for the form title, 87.5% for section headings and item numbers. Tabular figures.</dd>
+        <dt>Reading</dt><dd>Source Serif 4, unchanged (it is already right for the document), at 16px.</dd>
+        <dt>Wordmark</dt><dd>P R I S M in Archivo 600, each letter in a comb box drawn with the control-border grey, as on a form field.</dd>
+      </dl>
+      <h3>DESIGN.md Type changes</h3>
+      <ul><li>Interface face changes.</li><li>Allow the width axis: condensed for Display, headings and item numbers only.</li><li>Weight 800 for Display, section headings and score-sheet item numbers (item numbers move from ink-2 to ink).</li><li>The wordmark is a drawn component, not a text treatment.</li></ul>
+      <h3>Stays</h3>
+      <ul><li>Source Serif 4 document; no italics or letter-spacing; nothing under 13px.</li></ul>
+      <p class="check">Weakness: Archivo's capital I and lowercase l are both plain strokes. Fine for chrome; it is not the face to show patients.</p>
+      <pre class="scale">--sans:'Archivo', system-ui, sans-serif;
+--serif:'Source Serif 4', Georgia, serif;
+--fs-xs:13px;  /* caption */
+--fs-sm:14px;  /* body */
+--fs-item:15px;/* item number, 800, 87.5% wide, tnum */
+--fs-md:16px;  /* reading (serif) */
+--fs-lg:17px;  /* heading, 800, 87.5% wide */
+--fs-2xl:26px; /* display, 800, 75% wide */</pre>
+      <p class="check" data-check></p>
+    </div>
+    <div class="spec">
+      <div class="s-bar"><p class="wm" aria-label="PRISM"><span aria-hidden="true">P</span><span aria-hidden="true">R</span><span aria-hidden="true">I</span><span aria-hidden="true">S</span><span aria-hidden="true">M</span></p><div class="s-nav"><span class="cur">Studio</span><span>Framework Compass</span><span>About</span></div></div>
+      <div class="s-body">
+        <div class="sheet">
+          <h3 class="s-display">Check the handout against PEMAT</h3>
+          <p class="s-cap">Understandability, 13 items. Score 9 of 12 so far.</p>
+          <h4 class="s-heading">Word choice and style</h4>
+          <div class="row"><span class="n">3.</span><span class="t">The material uses common, everyday language.</span>
+            <div class="rate"><button type="button" class="on" aria-pressed="true">Agree</button><button type="button" aria-pressed="false">Disagree</button></div></div>
+          <p class="src">Source: The Patient Education Materials Assessment Tool (PEMAT) and User's Guide, AHRQ.</p>
+        </div>
+        <div class="paper">
+          <h4>Taking your water pill</h4>
+          <p>Take one tablet each morning with breakfast. Weigh yourself before you eat. If your ankles show <mark>edema</mark> or you gain more than 2 pounds in a day, call your care team at 555-0134.</p>
+        </div>
+        <p class="glyphs"><span class="g-ui">Il1 0O 18</span><span class="g-read">Il1 0O 18</span>interface, reading</p>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+/* Checks, in this browser, that each face really has tabular figures (tnum):
+   with tnum on, "1111" and "0000" must measure the same width. */
+document.fonts.ready.then(function(){
+  var c=document.createElement('canvas').getContext('2d');
+  var probe=document.createElement('span');
+  probe.style.cssText='position:absolute;left:-9999px;font-size:40px;font-variant-numeric:tabular-nums;white-space:pre';
+  document.body.appendChild(probe);
+  function w(face,txt){probe.style.fontFamily="'"+face+"'";probe.textContent=txt;return probe.getBoundingClientRect().width}
+  function tnum(face){
+    var loaded=document.fonts.check("40px '"+face+"'");
+    if(!loaded) return face+': not loaded';
+    return face+(Math.abs(w(face,'1111')-w(face,'0000'))<0.5?': tabular figures OK':': no tabular figures');
+  }
+  document.querySelectorAll('.dir').forEach(function(d){
+    var out=d.querySelector('[data-check]'); if(!out) return;
+    var r=[tnum(d.dataset.ui),tnum(d.dataset.read)];
+    out.innerHTML='<b>Checked in this browser:</b> '+r.join('; ')+'.';
+  });
+  probe.remove();
+});
+</script>
+</body>
+</html>

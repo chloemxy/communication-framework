@@ -24,7 +24,9 @@
   --ink:#16181D;           /* text; primary button fill */
   --ink-2:#4A5059;         /* secondary text, item numbers, quiet-button text */
   --form-blue:#1D4F91;     /* links, focus ring, selected state */
-  --highlighter:#FFE066;   /* flagged words in the document only (::highlight, .flash-sel). Never chrome. */
+  --highlighter:#FFE066;   /* flagged words in the document (::highlight, .flash-sel) */
+  --brand:#FFE066;         /* theme yellow in chrome: the logo's I, current page, chosen option. A fill, never text */
+  --on-brand:#16181D;      /* text and icons on the brand fill (both themes) */
   --pass:#1E6B3A; --warn:#8A5300; --fail:#B3261E;   /* status text, tags, pressed rating borders */
 
   /* ── Derived roles ── */
@@ -100,6 +102,7 @@
   --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
   --ink:#E9EBEE; --ink-2:#B4BAC2; --form-blue:#8DB4EC;
   --highlighter:rgba(255,214,0,.28);
+  --brand:#F5CF4A; --on-brand:#16181D;
   --pass:#7FD19B; --warn:#F0B357; --fail:#F28B82;
   --pass-bg:#1B3325; --warn-bg:#3A2C12; --fail-bg:#3F2220;
   --selected:#1F2C3F; --hover:#2A2F35; --form-blue-hover:#AECBF3;
@@ -212,7 +215,7 @@ input[type=checkbox], input[type=radio], input[type=range], progress{accent-colo
 .seg button{min-height:28px;padding:0 var(--sp-3);border:1px solid transparent;border-radius:3px;background:transparent;
   font-family:var(--sans);font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);cursor:pointer;white-space:nowrap}
 .seg button:hover{background:var(--hover);color:var(--ink)}
-.seg button.on, .seg button[aria-pressed="true"]{background:var(--selected);border-color:var(--form-blue);color:var(--form-blue);font-weight:600}
+.seg button.on, .seg button[aria-pressed="true"]{background:var(--brand);border-color:var(--ink);color:var(--on-brand);font-weight:600}
 .seg button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
 .seg.seg-wrap{display:flex;flex-wrap:wrap}
 .seg.seg-grid{display:grid;grid-template-columns:1fr 1fr}
@@ -266,7 +269,12 @@ dialog::backdrop{background:var(--scrim)}
 .site-nav a, .site-nav button{display:inline-flex;align-items:center;min-height:32px;padding:0 var(--sp-3);border:none;border-radius:var(--radius-control);background:none;
   font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;line-height:1.2;color:var(--ink-2);text-decoration:none;white-space:nowrap;cursor:pointer}
 .site-nav a:hover, .site-nav button:hover{background:var(--hover);color:var(--ink)}
-.site-nav a[aria-current="page"]{background:var(--selected);color:var(--ink)}
+.site-nav a[aria-current="page"]{background:var(--brand);color:var(--on-brand)}
+.site-nav a[aria-current="page"]:hover{background:var(--brand);color:var(--on-brand);text-decoration:underline}
+/* Wordmark: PRISM with the I marked by the highlighter swipe (logo "Flagged I").
+   The slanted chisel shape is the logo's own; flags in the document are plain rectangles. */
+.site-name .hl-i{position:relative;display:inline-block;padding:0 .14em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
+.site-name .hl-i::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
 .site-nav a:focus-visible, .site-nav button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 /* theme switch: words on wide screens, icons (with the words kept as accessible names) on narrow ones */
 .theme-toggle .ts-ico{display:none;flex:none}
