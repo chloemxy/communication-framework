@@ -4,6 +4,47 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Plan from an idea: a guided path
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Why: in Nati Chen's interview (TASKS-framework-gaps.md, T6 and T7), the biggest gap was knowing
+  where in the design process the frameworks help, and "most people start with copy only".
+- **Plan from an idea** now opens a guided page in place of the workspace. The Brief and
+  Frameworks bars stay. Its code lives in the new file `plan.js`.
+- **Format picker:** Handout, Poster, Web page, Video / animation. It is synced with the Brief, and
+  the plan remembers it across reloads.
+- **Four stages**, listed down the side with a status ("1 of 6", "Done"). Stages that use PRISM
+  are tagged "PRISM checks".
+  - Video: Outline → Script → Storyboard → Animation.
+  - Print and web: Outline → Draft → Layout → Final check.
+- **Stage by stage:**
+  - **Outline:** main message, what to do, up to 3 key points, how long, and medical words. Checks:
+    CCI 1, 2, 10; CCI 5; CCI 13–14.
+  - **Script / Draft:** opens the editor with the outline in place and turns on the right checks
+    (PEMAT-A/V or PEMAT-P, CCI, Readability, Plain Language). Lists the items PRISM scores itself.
+  - **Storyboard:** one scene per paragraph of the script (shown / said / words on screen).
+    "Check the storyboard words" sends them to the editor. Checks: CDC IDD/ELL 4, PEMAT-A/V 10,
+    22, 13, 18, CCI 4.
+  - **Layout:** open a layout image or PDF to check it. Checks: CCI 3, 4; PEMAT-P 15, 16, 18.
+  - **Animation / Final check:** PEMAT-A/V 14, WCAG 1.2.2 and 1.2.5 (video); WCAG 1.4.3 and 1.1.1
+    (print); try it with people from the audience.
+- Source links are small and sit after each check; the full citation is on hover.
+- **Back to plan:** after the plan sends you to the editor, a "Back to plan: <next stage>" button
+  appears in the Material header.
+- Replacing editor text asks first and saves a version. Cancel stays in the Plan. **Start over**
+  clears the plan but not the editor.
+- Reviewed by the reader-advocate agent. Fixed from its review:
+  - the script now carries into the storyboard
+  - ticks no longer carry over between formats
+  - the phone layout no longer clips
+  - citations tightened: "one idea per scene" now cites CDC IDD/ELL item 4; audio description is
+    WCAG 1.2.5
+- Checked on localhost: the video path end to end (outline → editor → back → scenes from the
+  script), Cancel, ticks per format, 375px with no sideways scroll, and dark mode.
+- Not tested with users yet. Nati walking through it would show whether animators storyboard
+  after the script.
+
 ## 2026-10-17 — Quieter sources; version history side panel; Wordy rewrites
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

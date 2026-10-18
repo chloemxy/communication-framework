@@ -10,6 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="design-system.css?v=20261017e">
 <script src="theme-switch.js?v=20261017e" defer></script>
+<script src="plan.js?v=20261017f" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -49,6 +50,67 @@ body > .site-bar{flex-shrink:0;position:relative;z-index:600}
 .dock{display:flex;align-items:center;gap:var(--sp-2)}
 .dock[hidden]{display:none}
 .mod-hide{display:none !important}   /* removing a card needs the hidden Workspace bar to undo */
+
+/* ── Plan from an idea: replaces the workspace (canvas, divider, score rails) in Plan mode ── */
+.stage.is-plan > :not(.top-bars):not(.plan){display:none !important}
+.plan{grid-column:1 / -1;grid-row:2;min-height:0;overflow-y:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet)}
+.plan[hidden]{display:none}
+.plan-head{padding:var(--sp-6) var(--inset) var(--sp-5);border-bottom:1px solid var(--rule)}
+.plan-title-row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)}
+.plan-title{margin:0 0 var(--sp-1);font-size:var(--fs-2xl);font-weight:600;line-height:1.25;color:var(--ink)}
+.plan-lead{margin:0 0 var(--sp-4);max-width:68ch;font-size:var(--fs-sm);line-height:1.5;color:var(--ink-2)}
+.plan-fmt-row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3)}
+.plan-fmt-lbl{font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.plan-fmt{flex-wrap:wrap;max-width:100%}
+.plan-body{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:0}
+.plan-nav{border-right:1px solid var(--rule);padding:var(--sp-3) 0}
+.plan-steps{list-style:none;margin:0;padding:0}
+.plan-step{display:grid;grid-template-columns:2ch minmax(0,1fr) auto;grid-template-areas:"n name stat" ". tag tag";column-gap:var(--sp-2);row-gap:2px;
+  width:100%;padding:var(--sp-2) var(--inset);border:0;background:none;font:inherit;text-align:left;color:var(--ink);cursor:pointer}
+.plan-step:hover{background:var(--hover)}
+.plan-step.on{background:var(--selected);box-shadow:inset 3px 0 0 var(--form-blue)}
+.plan-step:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+.plan-n{grid-area:n;font-size:var(--fs-sm);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.plan-sname{grid-area:name;font-size:var(--fs-sm);font-weight:600}
+.plan-stat{grid-area:stat;font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.plan-prism{grid-area:tag;justify-self:start;font-size:var(--fs-xs);font-weight:600;color:var(--form-blue)}
+.plan-stage{padding:var(--sp-5) var(--inset) var(--sp-8);max-width:760px}
+.plan-stage-h{margin:0 0 var(--sp-1);font-size:var(--fs-lg);font-weight:600;color:var(--ink);outline:none}
+.plan-line,.plan-p{margin:0 0 var(--sp-4);font-size:var(--fs-sm);line-height:1.5;color:var(--ink)}
+.plan-line{color:var(--ink-2)}
+.plan-p b{font-weight:600}
+.plan-form{display:grid;gap:var(--sp-3);margin-bottom:var(--sp-5)}
+.plan-f{display:grid;gap:var(--sp-1)}
+.plan-f>span{font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.plan-f input,.plan-f textarea{width:100%;min-height:36px;padding:var(--sp-2);border:1px solid var(--control-border);border-radius:var(--radius-control);
+  background:var(--sheet);font:inherit;font-size:var(--fs-sm);color:var(--ink);resize:vertical}
+.plan-f input::placeholder,.plan-f textarea::placeholder{color:var(--ink-2)}
+.plan-f input:focus-visible,.plan-f textarea:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.plan-sub{margin:0 0 var(--sp-2);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.plan-checks{list-style:none;margin:0 0 var(--sp-5);padding:0;border-top:1px solid var(--rule)}
+.plan-checks li{display:flex;flex-wrap:wrap;align-items:baseline;gap:var(--sp-1) var(--sp-3);padding:var(--sp-2) 0;border-bottom:1px solid var(--rule);font-size:var(--fs-sm);color:var(--ink)}
+.plan-checks label{display:flex;align-items:baseline;gap:var(--sp-2);flex:0 1 auto;cursor:pointer}
+.plan-checks input{margin:0;accent-color:var(--form-blue);transform:translateY(2px)}
+.plan-src{display:inline-flex;align-items:center;min-height:24px;font-size:var(--fs-xs);color:var(--ink-2);text-decoration:underline;text-underline-offset:2px;white-space:nowrap}
+.plan-auto li{padding-left:0}
+.plan-src:hover{color:var(--form-blue)}
+.plan-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-bottom:var(--sp-5)}
+.plan-cta{min-height:40px;padding:0 var(--sp-5);font-size:var(--fs-sm)}
+.plan-scenes{display:grid;gap:0;margin-bottom:var(--sp-3);border-top:1px solid var(--rule)}
+.plan-scene{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;grid-template-areas:"n n n x" "a b c c";gap:var(--sp-2) var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--rule)}
+.plan-scene-n{grid-area:n;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.plan-scene-x{grid-area:x;justify-self:end;min-height:28px}
+.plan-scene .plan-f:nth-of-type(1){grid-area:a}
+.plan-scene .plan-f:nth-of-type(2){grid-area:b}
+.plan-scene .plan-f:nth-of-type(3){grid-area:c}
+.plan-scene .plan-f>span{font-weight:400;color:var(--ink-2);font-size:var(--fs-xs)}
+.plan-next{padding-top:var(--sp-4);border-top:1px solid var(--rule)}
+@media (max-width:760px){
+  .plan{overflow:visible;min-height:max-content}
+  .plan-body{grid-template-columns:1fr}
+  .plan-nav{border-right:0;border-bottom:1px solid var(--rule)}
+  .plan-scene{grid-template-columns:1fr auto;grid-template-areas:"n x" "a a" "b b" "c c"}
+}
 
 /* ── Stage: Brief + Frameworks bars on top; the document column and the score area below ── */
 .stage{flex:1;min-height:0;position:relative;overflow:hidden;display:grid;
@@ -686,7 +748,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
   <div class="site-page">
     <div class="seg mode-toggle" id="mode-toggle" role="group" aria-label="Mode">
       <button type="button" class="on" aria-pressed="true" data-m="evaluate" onclick="setMode('evaluate',this)" title="Upload a draft and score it against frameworks">Evaluate a draft</button>
-      <button type="button" aria-pressed="false" data-m="plan" onclick="setMode('plan',this)" title="No draft yet: use Brief and Frameworks to plan before writing">Plan from an idea</button>
+      <button type="button" aria-pressed="false" data-m="plan" onclick="setMode('plan',this)" title="No draft yet: go from an outline to a draft, storyboard or layout, and a final check">Plan from an idea</button>
     </div>
   </div>
   <nav class="site-nav" aria-label="Site">
@@ -811,6 +873,21 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
   </div>
 
+  <!-- ── PLAN FROM AN IDEA: shown instead of the workspace in Plan mode (plan.js) ── -->
+  <section class="plan" id="plan" aria-labelledby="plan-h" hidden>
+    <div class="plan-head">
+      <div class="plan-title-row"><h2 class="plan-title" id="plan-h">Plan from an idea</h2>
+        <button type="button" class="btn btn-quiet" onclick="planReset()">Start over</button></div>
+      <p class="plan-lead">Go from an idea to a finished piece, one stage at a time. PRISM checks your words at the stages marked “PRISM checks”.</p>
+      <div class="plan-fmt-row"><span class="plan-fmt-lbl" id="plan-fmt-lbl">What are you making?</span>
+        <div class="seg plan-fmt" id="plan-fmt" role="group" aria-labelledby="plan-fmt-lbl"></div></div>
+    </div>
+    <div class="plan-body">
+      <nav class="plan-nav" aria-label="Stages"><ol class="plan-steps" id="plan-steps"></ol></nav>
+      <div class="plan-stage" id="plan-stage"></div>
+    </div>
+  </section>
+
   <!-- ── CANVAS ── -->
   <div class="canvas is-empty" id="canvas">
     <div class="canvas-hdr">
@@ -820,6 +897,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
         <span class="cf-name" id="canvas-file-name"></span>
       </span>
       <div class="canvas-actions">
+        <button type="button" class="btn btn-quiet" id="plan-back" onclick="planBack()" hidden>Back to plan</button>
         <button type="button" class="btn btn-quiet" id="hist-btn" onclick="toggleFileHistory()" title="Files opened this session" aria-controls="file-history" aria-expanded="false" hidden>Files <span id="hist-count">0</span></button>
         <div class="export hide-when-empty hide-in-visual" id="export">
           <button type="button" class="btn btn-secondary" id="export-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="export-menu" title="Copy or download your edited text">Export</button>
@@ -5507,11 +5585,13 @@ function renderLayoutSelect(){
 
 function setMode(m, btn){
   btn.parentElement.querySelectorAll('button').forEach(b => { b.classList.toggle('on', b === btn); b.setAttribute('aria-pressed', String(b === btn)); });
-  if(m === 'plan'){
-    applyLayout('frameworks', true);
-  } else {
-    applyLayout('everything', true);
-  }
+  // Plan shows the guided stages instead of the workspace; the Brief and Frameworks bars stay
+  const planning = m === 'plan';
+  $('stage').classList.toggle('is-plan', planning);
+  $('plan').hidden = !planning;
+  if(planning){ if(typeof renderPlan === 'function') renderPlan(); }
+  else applyLayout('everything', true);
+  if(typeof planBackSync === 'function') planBackSync();
 }
 
 function applyLayout(key, silent){
