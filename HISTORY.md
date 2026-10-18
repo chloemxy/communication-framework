@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-18 — Flagged I logo; yellow becomes the theme colour
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)
 
 - **Logo.** The wordmark on both pages is now PRISM with the I on a slanted swipe of highlighter
   yellow (concept 3, "Flagged I", from `design/brainstorm/`). Screen readers still hear "PRISM".
@@ -21,7 +21,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Plan from an idea: a guided path
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)
 
 - Why: in Nati Chen's interview (TASKS-framework-gaps.md, T6 and T7), the biggest gap was knowing
   where in the design process the frameworks help, and "most people start with copy only".
@@ -62,7 +62,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Quieter sources; version history side panel; Wordy rewrites
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)
 
 - **Sources take less space.** Each suggestion shows a small "Source" link beside "Suggested". The
   full citation appears on hover and opens in a new tab.
@@ -87,7 +87,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Logo and type brainstorm (design/brainstorm/)
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)
 
 - New folder `design/brainstorm/` with an index page, three type directions (`typography.html`/`.md`),
   six logo concepts with an online similarity check (`logo.html`/`.md`, `logo-svgs/`).
@@ -98,7 +98,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Suggested rewrites with Apply; change log with Undo
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)
 
 - **Suggested rewrites.** Plain-language cards now show a suggested edit, its source, and an
   **Apply** button where a rule can rewrite safely. These rules are used:
@@ -129,7 +129,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-17 — Empty Material panel: option C, neater
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)
 
 - Feedback: the upload section still looked bad. Three options were built as a demo
   (`demos/upload-options.html`, not committed), critiqued, and reviewed by the reader-advocate
