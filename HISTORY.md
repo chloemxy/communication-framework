@@ -4,6 +4,37 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Suggested rewrites with Apply; change log with Undo
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Suggested rewrites.** Plain-language cards now show a suggested edit, its source, and an
+  **Apply** button where a rule can rewrite safely. These rules are used:
+  - **Long / longish sentence:** split at an existing ", and", ", but", ", so" or ";". The card
+    shows the whole new sentence. Source: Federal Plain Language Guidelines (write short sentences).
+  - **Jargon:** the plain words from PRISM's word list, with "a/an" corrected. The card shows only
+    the changed words and a few words either side. Source: PEMAT-P items 3–4 (AHRQ).
+  - **Bare percentage:** "25% of readings" becomes "1 in 4 readings", but only where it still
+    reads right ("25% of the time" gets no rewrite). Source: Gigerenzer & Hoffrage (1995).
+  - Passive voice, vague words and acronyms keep their advice but get no automatic rewrite: a
+    rule could change the meaning.
+- Cards with a rewrite no longer repeat the original sentence: clicking the card highlights it in
+  the text.
+- **Apply all** above the list applies every suggested change, sentence by sentence.
+- Each edit goes through the editor's own undo (Ctrl/⌘+Z) and keeps bold and other formatting.
+  Word map: "asymptomatic" now becomes "without symptoms" (was "no symptoms", which didn't fit
+  as an adjective).
+- **Change log.** The Versions drawer records every applied suggestion: struck-through old words,
+  underlined new words.
+  - **Undo last change** goes back one step. **Restore** brings back any older version.
+  - Nothing is deleted: undo and restore add entries.
+  - The state before the first suggestion is saved automatically.
+- **Fixed:** the previous commit's empty-panel markup closed one `</div>` too many, which pushed
+  the word-count footer and Versions drawer outside the Material panel. (Not pushed, so the
+  Preview was never affected.)
+- Checked on localhost with the sample handout: previews, Apply, Undo, Apply all (3 changes, none
+  left), formatting kept, change log entries, light and dark.
+
 ## 2026-10-17 — Empty Material panel: option C, neater
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

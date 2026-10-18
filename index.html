@@ -238,6 +238,10 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .ver-what{flex:1;min-width:0;font-size:var(--fs-xs);font-weight:400;line-height:1.4;color:var(--ink)}
 .ver-what b{font-weight:600}
 .ver-meta{color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ver-change{display:block;margin-top:2px;color:var(--ink);overflow-wrap:anywhere}
+.ver-change del{color:var(--ink-2);text-decoration:line-through}
+.ver-change ins{font-weight:600;text-decoration:underline 2px var(--pass);text-underline-offset:3px}
+.ver-help{margin:0;padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--rule);font-size:var(--fs-xs);line-height:1.45;color:var(--ink-2)}
 .ver-delta{white-space:nowrap;font-size:var(--fs-xs);font-weight:600;font-variant-numeric:tabular-nums}
 .ver-delta.up{color:var(--pass)}
 .ver-delta.down{color:var(--fail)}
@@ -429,11 +433,24 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .find-msg{font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink-2)}
 
 /* Plain-language issues: buttons that find the words in the document or on the artwork */
-.issue{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--sp-3);margin:0 calc(-1 * var(--sp-1));padding:var(--sp-2) var(--sp-1);
-  border-bottom:1px solid var(--rule);border-radius:var(--radius-control);cursor:pointer}
+.issue{margin:0 calc(-1 * var(--sp-1));border-bottom:1px solid var(--rule)}
 .issue:last-child{border-bottom:none}
-.issue:hover{background:var(--hover)}
-.issue:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+.issue-main{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--sp-3);width:100%;padding:var(--sp-2) var(--sp-1);
+  border:0;border-radius:var(--radius-control);background:none;font:inherit;text-align:left;color:inherit;cursor:pointer}
+.issue-main:hover{background:var(--hover)}
+.issue-main:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
+/* Suggested rewrite: removed words struck through, new words in strong ink with a pass-green underline */
+.issue-fix{display:grid;gap:var(--sp-1);justify-items:start;padding:0 var(--sp-1) var(--sp-3)}
+.issue-fix-lbl{font-size:var(--fs-xs);font-weight:600;color:var(--ink)}
+.issue-fix-txt{margin:0;font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
+.issue-fix-txt del{color:var(--ink-2);text-decoration:line-through}
+.issue-fix-txt ins{font-weight:600;text-decoration:underline 2px var(--pass);text-underline-offset:3px}
+.issue-fix-src{margin:0;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
+.issue-fix-src a{color:var(--form-blue)}
+.issue-apply{margin-top:var(--sp-1)}
+.scan-fixall{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-bottom:var(--sp-2);padding:var(--sp-2) 0;
+  border-bottom:1px solid var(--rule);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+.scan-fixall[hidden]{display:none}
 .issue-lbl{font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .issue-sev{font-size:var(--fs-xs);font-weight:600;white-space:nowrap}
 .issue-sev.error{color:var(--fail)}
@@ -917,7 +934,6 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
         </section>
       </div>
       <div class="ce-overlay" aria-hidden="true">Drop to open it</div>
-      </div>
     </div>
 
     <div class="canvas-foot">
@@ -932,10 +948,12 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
     <div id="ver-panel" style="display:none">
       <div class="fh-hdr">Version history &amp; changes<button type="button" class="btn btn-quiet btn-icon" onclick="toggleVersions()" aria-label="Close version history" title="Close">✕</button></div>
       <div class="ver-actions">
+        <button type="button" class="btn btn-secondary" id="ver-undo" onclick="undoLastChange()" disabled title="Go back to the version before the last change">Undo last change</button>
         <button type="button" class="btn btn-secondary" onclick="saveVersion()" title="Save a named version you can return to">Save version</button>
         <button type="button" class="btn btn-quiet" id="track-btn" onclick="toggleTrack()" aria-pressed="false" title="Record a version each time you stop typing">Track changes: off</button>
         <span class="ver-kbd">Ctrl/⌘+S also saves a version</span>
       </div>
+      <p class="ver-help">Each applied suggestion is recorded here with what changed. Restore brings back any version; nothing is deleted.</p>
       <div id="ver-list"></div>
     </div>
   </div>
@@ -1143,6 +1161,10 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
           <div class="scan-count" id="scan-warn">0<small>to review</small></div>
           <div class="scan-count" id="scan-ok">0<small>sentences fine</small></div>
         </div>
+        <div class="scan-fixall" id="scan-fixall" hidden>
+          <span id="scan-fixall-n">0 suggested changes</span>
+          <button type="button" class="btn btn-secondary" onclick="applyAllFixes()">Apply all</button>
+        </div>
         <div id="scan-list"><div class="mod-note">Issues appear here as you write.</div></div>
       </div>
     </div>
@@ -1321,7 +1343,7 @@ const JARGON = {
   comorbidity:'other health condition',prognosis:'likely outcome',
   hemorrhage:'bleeding',tachycardia:'fast heart rate',bradycardia:'slow heart rate',
   hyperlipidemia:'high cholesterol',glycemic:'blood sugar',exacerbation:'worsening',
-  pathology:'disease',sequelae:'after-effects',asymptomatic:'no symptoms',
+  pathology:'disease',sequelae:'after-effects',asymptomatic:'without symptoms',
   bilateral:'on both sides',subcutaneous:'under the skin',intravenous:'into a vein',
   intramuscular:'into a muscle',diuretic:'water pill',anticoagulant:'blood thinner',
   carcinoma:'cancer',malignant:'cancerous',benign:'non-cancerous',
@@ -1334,6 +1356,96 @@ const JARGON = {
 const JARGON_KEYS = Object.keys(JARGON);
 const VAGUE = ['some','many','often','sometimes','various','several','a number of','a lot of',
   'a few','numerous','appropriate','adequate','sufficient','significant','substantial'];
+
+// ── Suggested rewrites ──
+// Only rules that can't change the meaning get a rewrite a person can apply in one click:
+// plain words for listed jargon, "1 in N" for simple percentages, and splitting a long
+// sentence where it already has a natural break (", and", ", but", ", so" or ";").
+// Each fixer returns edits on the sentence: [{ a, b, text }] replaces sentence[a..b) with text.
+const FIX_SOURCES = {
+  split:   { name:'Federal Plain Language Guidelines: write short sentences', url:'https://digital.gov/guides/plain-language' },
+  jargon:  { name:'PEMAT-P items 3–4: everyday words; define medical terms (AHRQ)', url:'https://www.ahrq.gov/health-literacy/patient-education/pemat-p.html' },
+  percent: { name:'Gigerenzer & Hoffrage (1995): “1 in N” is easier to grasp than a percentage', url:'https://doi.org/10.1037/0033-295X.102.4.684' },
+};
+const fixWordCount = t => (t.match(/\b\w+\b/g) || []).length;
+const fixEsc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+function fixDropOverlaps(edits){
+  const out = [];
+  edits.sort((x, y) => x.a - y.a).forEach(e => { if(!out.length || e.a >= out[out.length - 1].b) out.push(e); });
+  return out;
+}
+function fixJargon(src){
+  const edits = [];
+  JARGON_KEYS.forEach(k => {
+    const re = new RegExp('\\b' + fixEsc(k) + '\\b', 'gi');
+    let m;
+    while((m = re.exec(src))){
+      let a = m.index, text = JARGON[k];
+      if(/^[A-Z]/.test(m[0])) text = text[0].toUpperCase() + text.slice(1);
+      // "an anticoagulant" → "a blood thinner"
+      const art = src.slice(0, a).match(/\b(a|an) $/i);
+      if(art){
+        const want = /^[aeiou]/i.test(text) ? 'an' : 'a';
+        if(art[1].toLowerCase() !== want){ a -= art[0].length; text = (art[1][0] === 'A' ? want[0].toUpperCase() + want.slice(1) : want) + ' ' + text; }
+      }
+      edits.push({ a, b:m.index + m[0].length, text });
+    }
+  });
+  return fixDropOverlaps(edits);
+}
+function fixPercent(src){
+  // "25%" → "1 in 4"; "25% of (the) readings" → "1 in 4 readings". "25% of the time" gets no rewrite.
+  const oneIn = { 50:2, 33:3, 25:4, 20:5, 10:10, 5:20, 1:100 };
+  const m = src.match(/(\d+(?:\.\d+)?)\s*%(?:(\s+of(?:\s+the)?\s+)(\w+))?/);
+  if(!m || !oneIn[parseFloat(m[1])]) return [];
+  const n = oneIn[parseFloat(m[1])];
+  if(m[2] && !/s$/i.test(m[3])) return [];
+  if(!m[2] && /^\s+of\b/i.test(src.slice(m.index + m[0].length))) return [];
+  const end = m.index + m[0].length - (m[3] ? m[3].length : 0);
+  return [{ a:m.index, b:end, text:'1 in ' + n + (m[2] ? ' ' : '') }];
+}
+function fixSplit(src){
+  const total = fixWordCount(src);
+  if(total <= 18) return [];
+  const re = /(?:,\s+(and|but|so)\s+|;\s+)(\w)/gi;
+  let m, best = null;
+  while((m = re.exec(src))){
+    const before = fixWordCount(src.slice(0, m.index)), after = total - before - (m[1] ? 1 : 0);
+    if(before < 4 || after < 4) { re.lastIndex = m.index + 1; continue; }
+    const d = Math.abs(before - after);
+    if(!best || d < best.d) best = { m, d };
+    re.lastIndex = m.index + 1;
+  }
+  if(!best) return [];
+  const conj = (best.m[1] || '').toLowerCase();
+  // "and" is dropped; "but" and "so" carry meaning, so they start the new sentence
+  const lead = conj === 'but' || conj === 'so' ? conj[0].toUpperCase() + conj.slice(1) + ' ' + best.m[2] : best.m[2].toUpperCase();
+  return [{ a:best.m.index, b:best.m.index + best.m[0].length, text:'. ' + lead }];
+}
+const FIXERS = { split:fixSplit, jargon:fixJargon, percent:fixPercent };
+function applyEditsToText(src, edits){
+  let out = src;
+  [...edits].sort((x, y) => y.a - x.a).forEach(e => { out = out.slice(0, e.a) + e.text + out.slice(e.b); });
+  return out;
+}
+// Card preview. A sentence-level change shows the whole new sentence; a word-level change shows
+// only the changed words with a few words either side.
+function fixPreviewHtml(issue){
+  const src = issue.src, eds = [...issue.fix].sort((x, y) => x.a - y.a);
+  if(issue.fixKind === 'split'){
+    let h = '', at = 0;
+    eds.forEach(e => { h += escapeHtml(src.slice(at, e.a)) + '<ins>' + escapeHtml(e.text) + '</ins>'; at = e.b; });
+    return '“' + h + escapeHtml(src.slice(at)) + '”';
+  }
+  const ctx = 4;
+  return eds.map(e => {
+    const pre = src.slice(0, e.a).split(/(?<=\s)/), post = src.slice(e.b).split(/(?=\s)/);
+    const left = pre.slice(-ctx).join(''), right = post.slice(0, ctx).join('');
+    return (pre.length > ctx ? '…' : '') + escapeHtml(left)
+      + '<del>' + escapeHtml(src.slice(e.a, e.b).trim()) + '</del> <ins>' + escapeHtml(e.text.trim()) + '</ins>' + (/\s$/.test(src.slice(e.a, e.b)) ? ' ' : '')
+      + escapeHtml(right) + (post.length > ctx ? '…' : '');
+  }).join('<br>');
+}
 
 // ── Text engines ──
 function syllables(word){
@@ -1489,12 +1601,12 @@ function scanIssues(text){
     // marks: the words the highlighter marks in the document. Sentence-level findings (long
     // sentences, passive voice) mark nothing: they would paint whole paragraphs.
     if(words.length > 25)
-      issues.push({sev:'error',lbl:'Long sentence',msg:words.length+' words. Split it at “and”, “but” or “so”.',snip,src:sentence,marks:[]});
+      issues.push({sev:'error',lbl:'Long sentence',msg:words.length+' words. Split it at “and”, “but” or “so”.',snip,src:sentence,marks:[],fixKind:'split'});
     else if(words.length > 18)
-      issues.push({sev:'warn',lbl:'Longish sentence',msg:words.length+' words. Aim for 15 or less.',snip,src:sentence,marks:[]});
+      issues.push({sev:'warn',lbl:'Longish sentence',msg:words.length+' words. Aim for 15 or less.',snip,src:sentence,marks:[],fixKind:'split'});
     const found = JARGON_KEYS.filter(j => sentence.toLowerCase().includes(j));
     if(found.length)
-      issues.push({sev:'error',lbl:'Jargon',msg:found.slice(0,3).map(j=>'Say “'+JARGON[j]+'” instead of “'+j+'”.').join(' '),snip,src:sentence,term:found[0],marks:found});
+      issues.push({sev:'error',lbl:'Jargon',msg:found.slice(0,3).map(j=>'Say “'+JARGON[j]+'” instead of “'+j+'”.').join(' '),snip,src:sentence,term:found[0],marks:found,fixKind:'jargon'});
     if(/\b(is|are|was|were|been|being)\s+\w+(ed|en)\b/i.test(sentence))
       issues.push({sev:'warn',lbl:'Passive voice',msg:'Say who does it: “Your doctor will…”, not “…will be done”.',snip,src:sentence,marks:[]});
     const pm = sentence.match(/(\d+(?:\.\d+)?)\s*%/);
@@ -1503,7 +1615,7 @@ function scanIssues(text){
       const n = parseFloat(pm[1]), oneIn = { 50:2, 33:3, 25:4, 20:5, 10:10, 5:20, 1:100 }[n];
       issues.push({sev:'warn',lbl:'Bare percentage',
         msg: oneIn ? 'Say “1 in '+oneIn+'”, not “'+pm[1]+'%”. It is easier to grasp.' : 'Say “1 in 10”, not “10%”. It is easier to grasp.',
-        snip,src:sentence,marks:[pm[0]]});
+        snip,src:sentence,marks:[pm[0]],fixKind:'percent'});
     }
     const vague = VAGUE.find(v => new RegExp('\\b'+v+'\\b','i').test(sentence));
     if(vague)
@@ -1511,6 +1623,12 @@ function scanIssues(text){
     const acr = (sentence.match(/\b[A-Z]{2,}\b/g) || []).filter(a => !['US','UK','HIV','AIDS','CPR','ER','ICU','COVID','DNA','GP','NHS','BMI','BP'].includes(a));
     if(acr.length)
       issues.push({sev:'warn',lbl:'Acronym',msg:[...new Set(acr)].join(', ')+': spell it out the first time.',snip,src:sentence,marks:[...new Set(acr)],markCase:true});
+  });
+  // a rewrite only where the rule found one that differs from the sentence
+  issues.forEach(i => {
+    if(!i.fixKind) return;
+    const eds = FIXERS[i.fixKind](i.src);
+    if(eds.length && applyEditsToText(i.src, eds) !== i.src) i.fix = eds; else delete i.fixKind;
   });
   return issues;
 }
@@ -2096,6 +2214,10 @@ function analyze(){
   $('scan-ok').innerHTML = cleanSents+'<small>'+(cleanSents === 1 ? 'sentence fine' : 'sentences fine')+'</small>';
   const list = $('scan-list');
   window._issues = issues.slice(0, 30);
+  window._fixable = visualOn ? [] : issues.filter(i => i.fix);
+  const fa = $('scan-fixall');
+  fa.hidden = !window._fixable.length;
+  $('scan-fixall-n').textContent = window._fixable.length === 1 ? '1 suggested change' : window._fixable.length + ' suggested changes';
   markFlags(empty || visualOn ? [] : issues);
   if(!issues.length){
     list.innerHTML = '<div class="mod-note">'+(empty
@@ -2105,12 +2227,25 @@ function analyze(){
     const order = {error:0, warn:1};
     issues.sort((x,y) => order[x.sev]-order[y.sev]);
     window._issues = issues.slice(0, 30);
+    // A card finds its words in the document; one with a rewrite also shows it, its source and Apply.
+    // The original sentence isn't repeated: clicking the card highlights it in the document.
+    // A word-level rewrite shows only the changed words in context, not the whole sentence.
+    const canFix = i => i.fix && !visualOn;
     list.innerHTML = window._issues.map((i,idx) =>
-      '<div class="issue" role="button" tabindex="0" onclick="jumpTo('+idx+')">'+
-        '<span class="issue-lbl">'+escapeHtml(i.lbl)+'</span>'+
-        '<span class="issue-sev '+i.sev+'">'+(i.sev==='error'?'Fix':'Review')+'</span>'+
-        '<div class="issue-msg">'+escapeHtml(i.msg)+'</div>'+
-        '<span class="issue-snip">“'+escapeHtml(i.src)+'”</span>'+
+      '<div class="issue">'+
+        '<button type="button" class="issue-main" onclick="jumpTo('+idx+')">'+
+          '<span class="issue-lbl">'+escapeHtml(i.lbl)+'</span>'+
+          '<span class="issue-sev '+i.sev+'">'+(i.sev==='error'?'Fix':'Review')+'</span>'+
+          '<span class="issue-msg">'+escapeHtml(i.msg)+'</span>'+
+          (canFix(i) ? '' : '<span class="issue-snip">“'+escapeHtml(i.src)+'”</span>')+
+        '</button>'+
+        (canFix(i) ?
+          '<div class="issue-fix">'+
+            '<span class="issue-fix-lbl">Suggested</span>'+
+            '<p class="issue-fix-txt">'+fixPreviewHtml(i)+'</p>'+
+            '<p class="issue-fix-src">Source: <a href="'+FIX_SOURCES[i.fixKind].url+'" target="_blank" rel="noopener">'+escapeHtml(FIX_SOURCES[i.fixKind].name)+'</a></p>'+
+            '<button type="button" class="btn btn-secondary issue-apply" onclick="applyFix('+idx+')">Apply</button>'+
+          '</div>' : '')+
       '</div>').join('');
   }
 
@@ -3408,7 +3543,7 @@ function vmHlFromCaret(e){
   }
   const list = $('scan-list');
   if(list) list.addEventListener('keydown', e => {
-    const it = e.target.closest && e.target.closest('.issue');
+    const it = e.target.closest && e.target.closest('.issue[role="button"]');
     if(it && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); it.click(); }
   });
 })();
@@ -3658,6 +3793,63 @@ function jumpTo(idx){
   markFocus(hlMarkRanges(ix, issue, at));
 }
 
+// ── Apply a suggested rewrite ──
+// Edits go in through the editor's own undo stack (Ctrl/⌘+Z undoes each one), last edit first so
+// earlier offsets stay right. Formatting around the changed words is kept.
+function applyFixToDoc(src, edits){
+  const at = hlIndex().text.indexOf(src);
+  if(at === -1) return false;
+  editor.focus();
+  const sel = window.getSelection();
+  let done = false;
+  [...edits].sort((x, y) => y.a - x.a).forEach(e => {
+    const r = hlRange(hlIndex(), at + e.a, at + e.b, true);
+    if(!r) return;
+    sel.removeAllRanges(); sel.addRange(r);
+    document.execCommand('insertText', false, e.text);
+    done = true;
+  });
+  return done;
+}
+// The document as it was before a suggestion, so the log can always go back to it
+function saveBaseline(){
+  if(!versions.length || versions[0].html !== editor.innerHTML) saveVersion('Before suggestions');
+}
+function applyFix(idx){
+  const issue = (window._issues || [])[idx];
+  if(!issue || !issue.fix || visualOn) return;
+  const preview = fixPreviewHtml(issue);
+  saveBaseline();
+  if(!applyFixToDoc(issue.src, issue.fix)){ flashHint('Couldn’t find that sentence. It may have changed. Edit it by hand.'); return; }
+  analyze();
+  saveVersion('Applied: ' + issue.lbl, preview);
+  flashHint('Applied. Undo it with Ctrl/⌘+Z, or from Versions.');
+}
+// Every suggested change, sentence by sentence. Words first, then the split, each worked out again
+// on the sentence as it now reads. A version is saved first so all of it can be restored at once.
+function applyAllFixes(){
+  const list = (window._fixable || []).slice();
+  if(!list.length || visualOn) return;
+  saveBaseline();
+  const order = ['jargon', 'percent', 'split'];
+  const shown = [];
+  const bySrc = new Map();
+  list.forEach(i => { if(!bySrc.has(i.src)) bySrc.set(i.src, new Set()); bySrc.get(i.src).add(i.fixKind); });
+  let n = 0;
+  bySrc.forEach((kinds, src) => {
+    let cur = src;
+    order.filter(k => kinds.has(k)).forEach(k => {
+      const eds = FIXERS[k](cur);
+      const preview = eds.length ? fixPreviewHtml({ src:cur, fix:eds, fixKind:k }) : '';
+      if(eds.length && applyFixToDoc(cur, eds)){ cur = applyEditsToText(cur, eds); n++; shown.push(preview); }
+    });
+  });
+  analyze();
+  if(n) saveVersion('Applied all: ' + n + (n === 1 ? ' change' : ' changes'),
+    shown.slice(0, 5).join('<br>') + (shown.length > 5 ? '<br>and ' + (shown.length - 5) + ' more' : ''));
+  flashHint(n ? 'Applied ' + n + (n === 1 ? ' change' : ' changes') + '. Undo them all at once from Versions.' : 'Nothing changed. The text may have been edited.');
+}
+
 // ════════════════════════════════════════
 // HIGHLIGHTER — flagged words marked in the document with the CSS Custom Highlight API.
 // The document is never changed: the marks are Ranges over its text, recomputed after each
@@ -3900,7 +4092,7 @@ function toggleTrack(){
 }
 function currentWords(){ return countWords(readStructure().text); }
 
-function saveVersion(label){
+function saveVersion(label, change){
   const words = currentWords();
   const cciNow = scoreItems(CCI_ITEMS).pct || 0;
   const prev = versions[0];
@@ -3915,7 +4107,7 @@ function saveVersion(label){
   versions.unshift({
     id:'v'+Date.now()+Math.random().toString(36).slice(2,4),
     when:new Date(), label:label||null, note,
-    html:editor.innerHTML, words, cci:cciNow,
+    html:editor.innerHTML, words, cci:cciNow, change:change || null,
     dCci: prev ? cciNow - prev.cci : 0,
   });
   if(versions.length > 60) versions.pop();
@@ -3925,6 +4117,8 @@ function saveVersion(label){
 }
 function renderVersions(){
   const list = $('ver-list');
+  const ub = $('ver-undo');
+  if(ub) ub.disabled = !undoTarget();
   if(!versions.length){
     list.innerHTML = '<div class="empty-note">No versions yet. Use Save version above (or Ctrl/⌘+S), or switch on Track changes to record them automatically.</div>';
     return;
@@ -3933,9 +4127,10 @@ function renderVersions(){
     '<div class="ver-item">'+
       '<span class="ver-when">'+v.when.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'})+'</span>'+
       '<span class="ver-what">'+(v.label ? '<b>'+escapeHtml(v.label)+'</b>: ' : '')+escapeHtml(v.note)+
-        '. <span class="ver-meta">'+v.words+' words, CCI '+v.cci+'</span></span>'+
+        '. <span class="ver-meta">'+v.words+' words, CCI '+v.cci+'</span>'+
+        (v.change ? '<span class="ver-change">'+v.change+'</span>' : '')+'</span>'+
       (v.dCci ? '<span class="ver-delta '+(v.dCci>0?'up':'down')+'">'+(v.dCci>0?'+':'')+v.dCci+' CCI</span>' : '')+
-      (i===0 ? '<span class="ver-delta current">Current</span>'
+      (i===0 && v.html === editor.innerHTML ? '<span class="ver-delta current">Current</span>'
              : '<button type="button" class="btn btn-secondary" onclick="restoreVersion(\''+v.id+'\')">Restore</button>')+
     '</div>'
   ).join('');
@@ -3943,12 +4138,25 @@ function renderVersions(){
 function restoreVersion(id){
   const v = versions.find(x => x.id === id);
   if(!v) return;
-  saveVersion('Before restore');
+  if(!versions.length || versions[0].html !== editor.innerHTML) saveVersion('Before restore');
   editor.innerHTML = v.html;
   exitVisual();
   analyze();
   saveVersion('Restored '+v.when.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+' version');
   flashHint('Restored — the version you left is still in the list');
+}
+function undoTarget(){
+  if(!versions.length) return null;
+  return versions[0].html !== editor.innerHTML ? versions[0] : (versions[1] || null);
+}
+function undoLastChange(){
+  const v = undoTarget();
+  if(!v) return;
+  editor.innerHTML = v.html;
+  exitVisual();
+  analyze();
+  saveVersion('Undid last change');
+  flashHint('Undone. Every version is still in the list, so you can go forward again with Restore.');
 }
 function toggleVersions(){
   const p = $('ver-panel');
