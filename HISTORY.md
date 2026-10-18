@@ -4,6 +4,28 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Empty Material panel: option C, neater
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- Feedback: the upload section still looked bad. Three options were built as a demo
+  (`demos/upload-options.html`, not committed), critiqued, and reviewed by the reader-advocate
+  agent. The user picked C, "but neater".
+- The panel now has:
+  - one 48px **Open a file** button. It says "Open", not "Upload": to people handling patient
+    materials, "upload" sounds like the file is sent to a server.
+  - one line: "Or drop it here, or paste or type text".
+  - the file types.
+  - a privacy line with a lock: "Nothing is sent anywhere. PRISM reads it in this browser."
+  - after a hairline, "No file? Try a sample", with the handout and the poster shown as small
+    pictures (labelled Word file and Image).
+- The dashed box, the large icon and the Checks/Edit/Save notes are gone. Everything starts on
+  the panel's text edge (measured: 37px, the same as the panel title).
+- While the panel is empty, dragging a file over it shows "Drop to open it" across the panel.
+  Ctrl+V with no field focused pastes into the editor.
+- Checked on localhost: 1440×900, 375px phone (no sideways scroll), dark mode, drop overlay,
+  paste, and the sample buttons.
+
 ## 2026-10-17 — Empty Material panel: simpler and bigger
 
 Branch: `refresh-and-fixes` · Vercel: Preview (pushed 60d4d1a)
