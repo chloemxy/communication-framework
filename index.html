@@ -218,7 +218,12 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 /* File and version drawers */
 #file-history,#ver-panel{flex-shrink:0;max-height:210px;overflow-y:auto;background:var(--sheet-2);border-bottom:1px solid var(--rule)}
-#ver-panel{order:98;border-bottom:none;border-top:1px solid var(--rule)}  /* sits directly above the footer */
+/* Version history: a side panel over the right edge of the page, hidden until opened from the footer */
+#ver-panel{position:fixed;top:0;right:0;bottom:0;z-index:700;width:min(400px,100vw);max-height:none;
+  background:var(--sheet);border-bottom:none;border-left:1px solid var(--rule);box-shadow:var(--shadow-float)}
+#ver-panel .fh-hdr{padding:var(--sp-3) var(--sp-2) var(--sp-3) var(--inset);background:var(--sheet);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
+#ver-panel .ver-actions, #ver-panel .ver-help, #ver-panel .ver-item{padding-left:var(--inset);padding-right:var(--inset)}
+#ver-panel .ver-item{padding-top:var(--sp-2);padding-bottom:var(--sp-2)}
 .fh-hdr{position:sticky;top:0;z-index:1;display:flex;align-items:center;padding:var(--sp-1) var(--sp-1) var(--sp-1) var(--sp-3);
   background:var(--sheet-2);border-bottom:1px solid var(--rule);font-size:var(--fs-xs);font-weight:600;color:var(--ink-2)}
 .fh-hdr .btn{margin-left:auto}
@@ -445,8 +450,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .issue-fix-txt{margin:0;font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
 .issue-fix-txt del{color:var(--ink-2);text-decoration:line-through}
 .issue-fix-txt ins{font-weight:600;text-decoration:underline 2px var(--pass);text-underline-offset:3px}
-.issue-fix-src{margin:0;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.issue-fix-src a{color:var(--form-blue)}
+.issue-fix-head{display:flex;align-items:baseline;gap:var(--sp-2)}
+.issue-fix-src{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);text-decoration:underline;text-underline-offset:2px}
+.issue-fix-src:hover{color:var(--form-blue)}
 .issue-apply{margin-top:var(--sp-1)}
 .scan-fixall{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);margin-bottom:var(--sp-2);padding:var(--sp-2) 0;
   border-bottom:1px solid var(--rule);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
@@ -945,8 +951,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
     </div>
 
     <!-- version / change log drawer: Save version and Track changes live here -->
-    <div id="ver-panel" style="display:none">
-      <div class="fh-hdr">Version history &amp; changes<button type="button" class="btn btn-quiet btn-icon" onclick="toggleVersions()" aria-label="Close version history" title="Close">✕</button></div>
+    <div id="ver-panel" style="display:none" role="dialog" aria-labelledby="ver-title">
+      <div class="fh-hdr"><span id="ver-title">Version history</span><button type="button" class="btn btn-quiet btn-icon" id="ver-close" onclick="toggleVersions()" aria-label="Close version history" title="Close (Esc)" style="margin-left:auto">✕</button></div>
       <div class="ver-actions">
         <button type="button" class="btn btn-secondary" id="ver-undo" onclick="undoLastChange()" disabled title="Go back to the version before the last change">Undo last change</button>
         <button type="button" class="btn btn-secondary" onclick="saveVersion()" title="Save a named version you can return to">Save version</button>
@@ -1366,6 +1372,14 @@ const FIX_SOURCES = {
   split:   { name:'Federal Plain Language Guidelines: write short sentences', url:'https://digital.gov/guides/plain-language' },
   jargon:  { name:'PEMAT-P items 3–4: everyday words; define medical terms (AHRQ)', url:'https://www.ahrq.gov/health-literacy/patient-education/pemat-p.html' },
   percent: { name:'Gigerenzer & Hoffrage (1995): “1 in N” is easier to grasp than a percentage', url:'https://doi.org/10.1037/0033-295X.102.4.684' },
+  wordy:   { name:'Federal Plain Language Guidelines: use simple words and phrases', url:'https://digital.gov/guides/plain-language' },
+};
+// Plainer words for some vague or wordy phrases. "various" is dropped: the examples that follow it
+// say more. Words like "often" or "some" need a real number only the writer knows: no rewrite.
+const PLAIN_SWAPS = {
+  'in an appropriate manner':'properly', 'a significant period of time':'a long time',
+  'adequately':'well', 'adequate':'enough', 'sufficient':'enough', 'substantial':'large',
+  'numerous':'many', 'various':'',
 };
 const fixWordCount = t => (t.match(/\b\w+\b/g) || []).length;
 const fixEsc = t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1404,6 +1418,26 @@ function fixPercent(src){
   const end = m.index + m[0].length - (m[3] ? m[3].length : 0);
   return [{ a:m.index, b:end, text:'1 in ' + n + (m[2] ? ' ' : '') }];
 }
+function fixWordy(src){
+  const edits = [];
+  Object.keys(PLAIN_SWAPS).sort((x, y) => y.length - x.length).forEach(k => {
+    const re = new RegExp('\\b' + fixEsc(k) + '\\b', 'gi');
+    let m;
+    while((m = re.exec(src))){
+      let a = m.index, b = a + m[0].length, text = PLAIN_SWAPS[k];
+      if(text){
+        if(/^[A-Z]/.test(m[0])) text = text[0].toUpperCase() + text.slice(1);
+      } else {
+        const sp = src.slice(b).match(/^\s+/);
+        b += sp ? sp[0].length : 0;
+        // dropped at the start of the sentence: the next word takes the capital
+        if(/^[A-Z]/.test(m[0]) && /\w/.test(src[b] || '')){ text = src[b].toUpperCase(); b += 1; }
+      }
+      edits.push({ a, b, text });
+    }
+  });
+  return fixDropOverlaps(edits);
+}
 function fixSplit(src){
   const total = fixWordCount(src);
   if(total <= 18) return [];
@@ -1422,7 +1456,7 @@ function fixSplit(src){
   const lead = conj === 'but' || conj === 'so' ? conj[0].toUpperCase() + conj.slice(1) + ' ' + best.m[2] : best.m[2].toUpperCase();
   return [{ a:best.m.index, b:best.m.index + best.m[0].length, text:'. ' + lead }];
 }
-const FIXERS = { split:fixSplit, jargon:fixJargon, percent:fixPercent };
+const FIXERS = { split:fixSplit, jargon:fixJargon, percent:fixPercent, wordy:fixWordy };
 function applyEditsToText(src, edits){
   let out = src;
   [...edits].sort((x, y) => y.a - x.a).forEach(e => { out = out.slice(0, e.a) + e.text + out.slice(e.b); });
@@ -1437,13 +1471,19 @@ function fixPreviewHtml(issue){
     eds.forEach(e => { h += escapeHtml(src.slice(at, e.a)) + '<ins>' + escapeHtml(e.text) + '</ins>'; at = e.b; });
     return '“' + h + escapeHtml(src.slice(at)) + '”';
   }
-  const ctx = 4;
-  return eds.map(e => {
-    const pre = src.slice(0, e.a).split(/(?<=\s)/), post = src.slice(e.b).split(/(?=\s)/);
-    const left = pre.slice(-ctx).join(''), right = post.slice(0, ctx).join('');
-    return (pre.length > ctx ? '…' : '') + escapeHtml(left)
-      + '<del>' + escapeHtml(src.slice(e.a, e.b).trim()) + '</del> <ins>' + escapeHtml(e.text.trim()) + '</ins>' + (/\s$/.test(src.slice(e.a, e.b)) ? ' ' : '')
-      + escapeHtml(right) + (post.length > ctx ? '…' : '');
+  // changes close together share one excerpt instead of repeating the words between them
+  const ctx = 4, groups = [];
+  eds.forEach(e => {
+    const g = groups[groups.length - 1];
+    if(g && fixWordCount(src.slice(g[g.length - 1].b, e.a)) <= ctx * 2) g.push(e); else groups.push([e]);
+  });
+  const part = e => '<del>' + escapeHtml(src.slice(e.a, e.b).trim()) + '</del>'
+    + (e.text.trim() ? ' <ins>' + escapeHtml(e.text.trim()) + '</ins>' : '') + (/\s$/.test(src.slice(e.a, e.b)) ? ' ' : '');
+  return groups.map(g => {
+    const pre = src.slice(0, g[0].a).split(/(?<=\s)/), post = src.slice(g[g.length - 1].b).split(/(?=\s)/);
+    const mid = g.map((e, i) => part(e) + (i < g.length - 1 ? escapeHtml(src.slice(e.b, g[i + 1].a)) : '')).join('');
+    return (pre.length > ctx ? '…' : '') + escapeHtml(pre.slice(-ctx).join('')) + mid
+      + escapeHtml(post.slice(0, ctx).join('')) + (post.length > ctx ? '…' : '');
   }).join('<br>');
 }
 
@@ -1620,6 +1660,10 @@ function scanIssues(text){
     const vague = VAGUE.find(v => new RegExp('\\b'+v+'\\b','i').test(sentence));
     if(vague)
       issues.push({sev:'warn',lbl:'Vague: "'+vague+'"',msg:'Use an exact number or time.',snip,src:sentence,marks:[vague]});
+    const wordy = fixWordy(sentence);
+    if(wordy.length)
+      issues.push({sev:'warn',lbl:'Wordy',msg:'Use simpler words.',snip,src:sentence,
+        marks:Object.keys(PLAIN_SWAPS).filter(k => new RegExp('\\b'+fixEsc(k)+'\\b','i').test(sentence)),fixKind:'wordy'});
     const acr = (sentence.match(/\b[A-Z]{2,}\b/g) || []).filter(a => !['US','UK','HIV','AIDS','CPR','ER','ICU','COVID','DNA','GP','NHS','BMI','BP'].includes(a));
     if(acr.length)
       issues.push({sev:'warn',lbl:'Acronym',msg:[...new Set(acr)].join(', ')+': spell it out the first time.',snip,src:sentence,marks:[...new Set(acr)],markCase:true});
@@ -2241,9 +2285,9 @@ function analyze(){
         '</button>'+
         (canFix(i) ?
           '<div class="issue-fix">'+
-            '<span class="issue-fix-lbl">Suggested</span>'+
+            '<span class="issue-fix-head"><span class="issue-fix-lbl">Suggested</span>'+
+              '<a class="issue-fix-src" href="'+FIX_SOURCES[i.fixKind].url+'" target="_blank" rel="noopener" title="'+escapeHtml(FIX_SOURCES[i.fixKind].name)+'" aria-label="Source: '+escapeHtml(FIX_SOURCES[i.fixKind].name)+' (opens in a new tab)">Source</a></span>'+
             '<p class="issue-fix-txt">'+fixPreviewHtml(i)+'</p>'+
-            '<p class="issue-fix-src">Source: <a href="'+FIX_SOURCES[i.fixKind].url+'" target="_blank" rel="noopener">'+escapeHtml(FIX_SOURCES[i.fixKind].name)+'</a></p>'+
             '<button type="button" class="btn btn-secondary issue-apply" onclick="applyFix('+idx+')">Apply</button>'+
           '</div>' : '')+
       '</div>').join('');
@@ -3823,7 +3867,7 @@ function applyFix(idx){
   if(!applyFixToDoc(issue.src, issue.fix)){ flashHint('Couldn’t find that sentence. It may have changed. Edit it by hand.'); return; }
   analyze();
   saveVersion('Applied: ' + issue.lbl, preview);
-  flashHint('Applied. Undo it with Ctrl/⌘+Z, or from Versions.');
+  flashHint('Applied. Undo it with Ctrl/⌘+Z, or in Version history.');
 }
 // Every suggested change, sentence by sentence. Words first, then the split, each worked out again
 // on the sentence as it now reads. A version is saved first so all of it can be restored at once.
@@ -3831,7 +3875,7 @@ function applyAllFixes(){
   const list = (window._fixable || []).slice();
   if(!list.length || visualOn) return;
   saveBaseline();
-  const order = ['jargon', 'percent', 'split'];
+  const order = ['jargon', 'percent', 'wordy', 'split'];
   const shown = [];
   const bySrc = new Map();
   list.forEach(i => { if(!bySrc.has(i.src)) bySrc.set(i.src, new Set()); bySrc.get(i.src).add(i.fixKind); });
@@ -3846,8 +3890,8 @@ function applyAllFixes(){
   });
   analyze();
   if(n) saveVersion('Applied all: ' + n + (n === 1 ? ' change' : ' changes'),
-    shown.slice(0, 5).join('<br>') + (shown.length > 5 ? '<br>and ' + (shown.length - 5) + ' more' : ''));
-  flashHint(n ? 'Applied ' + n + (n === 1 ? ' change' : ' changes') + '. Undo them all at once from Versions.' : 'Nothing changed. The text may have been edited.');
+    shown.slice(0, 2).join('<br>') + (shown.length > 2 ? '<br>and ' + (shown.length - 2) + ' more' : ''));
+  flashHint(n ? 'Applied ' + n + (n === 1 ? ' change' : ' changes') + '. Undo them all at once in Version history.' : 'Nothing changed. The text may have been edited.');
 }
 
 // ════════════════════════════════════════
@@ -4165,7 +4209,14 @@ function toggleVersions(){
   if(!open) renderVersions();
   syncDrawerButtons();
   pushNav();
+  // focus moves into the panel and back to the footer button that opened it
+  (open ? $('ver-btn') : $('ver-close')).focus();
 }
+// the side panel lives at page level so it sits above the top bars
+document.body.appendChild($('ver-panel'));
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && $('ver-panel').style.display !== 'none'){ e.preventDefault(); toggleVersions(); }
+});
 
 // ── Input plumbing ──
 editor.addEventListener('input', () => {

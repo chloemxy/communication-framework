@@ -4,6 +4,31 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-17 — Quieter sources; version history side panel; Wordy rewrites
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Sources take less space.** Each suggestion shows a small "Source" link beside "Suggested". The
+  full citation appears on hover and opens in a new tab.
+- **Version history is tucked away.** It is now a side panel over the right edge of the page,
+  hidden until you open it from "N versions" in the Material footer.
+  - It no longer takes room inside the Material panel.
+  - ✕ or Esc closes it, and focus returns to the button.
+- **Review items can be applied too.** Any card with a recommendation gets Apply, whether it is
+  marked Fix or Review. The writer decides.
+- **New: Wordy card.** Plainer words where a clear swap exists:
+  - "in an appropriate manner" → "properly"
+  - "a significant period of time" → "a long time"
+  - "adequately" → "well"; "adequate" or "sufficient" → "enough"
+  - "substantial" → "large"; "numerous" → "many"
+  - "various" is dropped (the examples after it say more)
+  - Source: Federal Plain Language Guidelines (use simple words and phrases).
+- Still no automatic rewrite for passive voice, acronyms, or vague words such as "often" and
+  "some". Only the writer knows the agent, the full name or the number.
+- **Previews:** changes close together share one excerpt instead of repeating the words between
+  them.
+- **Change log:** an Apply all entry lists 2 changes, then "and N more".
+
 ## 2026-10-17 — Suggested rewrites with Apply; change log with Undo
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
