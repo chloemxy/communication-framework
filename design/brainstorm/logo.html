@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PRISM Logo Brainstorm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:wght@400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#ECEEF0; --sheet:#FFFFFF; --sheet-2:#F6F7F8; --rule:#D5D9DE;
+  --ink:#16181D; --ink-2:#4A5059; --form-blue:#1D4F91; --selected:#E6EEF8;
+  --hl:#FFE066; --hl-ink:#16181D;
+  --d-desk:#121417; --d-sheet:#1B1E22; --d-rule:#343A41; --d-ink:#E9EBEE; --d-ink-2:#B4BAC2; --d-selected:#1F2C3F;
+  --pass:#1E6B3A; --warn:#8A5300; --fail:#B3261E;
+  --sans:'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --inset:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--desk)}
+body{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink);background:var(--desk);-webkit-font-smoothing:antialiased}
+b{font-weight:600}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 16px 64px}
+h1{font-size:24px;font-weight:600;line-height:1.25}
+h2{font-size:17px;font-weight:600;line-height:1.35}
+.lede{max-width:68ch;margin-top:8px;color:var(--ink-2)}
+.lede + .lede{margin-top:4px}
+.concept{margin-top:24px;background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:var(--inset)}
+.concept-head{display:flex;gap:12px;align-items:baseline}
+.num{font-variant-numeric:tabular-nums;color:var(--ink-2);font-weight:600;min-width:1.5em}
+.notes{margin-top:8px;display:grid;grid-template-columns:7.5em 1fr;gap:4px 12px;max-width:80ch}
+.notes dt{font-size:13px;font-weight:600;color:var(--ink-2)}
+.notes dd{font-size:14px}
+.risk{margin-top:12px;padding:8px 12px;border-left:3px solid var(--rule);font-size:13px;max-width:80ch}
+.risk b.low{color:var(--pass)} .risk b.medium{color:var(--warn)} .risk b.high{color:var(--fail)}
+.demos{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px}
+.tile{border:1px solid var(--rule);border-radius:6px;padding:12px;background:var(--sheet)}
+.tile-lbl{font-size:13px;color:var(--ink-2);margin-bottom:8px}
+.tile.dark{background:var(--d-desk);border-color:var(--d-rule);color:var(--d-ink)}
+.tile.dark .tile-lbl{color:var(--d-ink-2)}
+.big{width:160px;height:160px;display:block}
+.word-big{font-size:40px;font-weight:600;line-height:1;display:flex;align-items:center;min-height:160px}
+.favs{display:flex;align-items:flex-end;gap:16px}
+.fav32,.fav16{display:block}
+.fav32{width:32px;height:32px}.fav16{width:16px;height:16px}
+.tab{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border:1px solid var(--rule);border-bottom:none;border-radius:6px 6px 0 0;background:var(--sheet-2);font-size:13px}
+.tile.dark .tab{background:var(--d-sheet);border-color:var(--d-rule)}
+.favs-col{display:flex;flex-direction:column;gap:12px}
+/* mock site bar */
+.bar{margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;min-height:48px;padding:8px 16px;background:var(--sheet);border:1px solid var(--rule);border-radius:6px}
+.bar.dark{background:var(--d-sheet);border-color:var(--d-rule);color:var(--d-ink)}
+.brand{display:inline-flex;align-items:center;gap:8px;font-size:17px;font-weight:600;line-height:1.35;white-space:nowrap}
+.brand svg.m{width:24px;height:24px;flex:none}
+.nav{display:flex;flex-wrap:wrap;gap:4px;margin-left:auto}
+.nav span{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:4px;font-size:14px;color:var(--ink-2)}
+.nav span.cur{background:var(--selected);color:var(--ink)}
+.bar.dark .nav span{color:var(--d-ink-2)} .bar.dark .nav span.cur{background:var(--d-selected);color:var(--d-ink)}
+/* concept-specific lettering */
+.hl-i{position:relative;display:inline-block;padding:0 .14em;margin:0 .02em;color:var(--hl-ink);isolation:isolate}
+.hl-i::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--hl);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
+.pil{display:inline-block;height:.72em;width:auto;vertical-align:baseline;margin-right:.05em}
+.wm{display:inline-flex;align-items:baseline}
+.foot{margin-top:32px;color:var(--ink-2);font-size:13px;max-width:80ch}
+@media (max-width:600px){
+  .notes{grid-template-columns:1fr}
+  .notes dd{margin-bottom:6px}
+  .big{width:120px;height:120px}
+  .word-big{min-height:120px;font-size:32px}
+  .nav span{padding:0 8px;font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<!-- Hand-drawn marks, 32-unit grid: 2 units = 1px at 16px, so strokes land on whole pixels. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="m1" viewBox="0 0 32 32"><g fill="currentColor"><rect x="6" y="4" width="4" height="24"/><path d="M12 4 H19 L26 9 V13 L19 18 H12 Z"/></g></symbol>
+    <symbol id="m2" viewBox="0 0 32 32"><g fill="none" stroke="currentColor"><path d="M5 23 L16 5 L27 23" stroke-width="4" stroke-linejoin="miter"/><path d="M1 27 H10 M22 27 H31" stroke-width="2"/></g></symbol>
+    <symbol id="m3" viewBox="0 0 32 32"><clipPath id="m3band"><path d="M3 24 L7 8 H29 L25 24 Z"/></clipPath><path d="M3 24 L7 8 H29 L25 24 Z" fill="#FFE066"/><rect x="14" y="4" width="4" height="24" fill="currentColor"/><rect x="14" y="4" width="4" height="24" fill="#16181D" clip-path="url(#m3band)"/></symbol>
+    <symbol id="m3i" viewBox="0 0 32 32"><path d="M4.3 23 L7.8 9 H27.7 L24.2 23 Z" fill="none" stroke="currentColor" stroke-width="2"/><rect x="14" y="4" width="4" height="24" fill="currentColor"/></symbol>
+    <symbol id="m4" viewBox="0 0 32 32"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20 V5 H16 A6 6 0 0 1 16 17 H8"/><path d="M8 20 C8 26 11 28.5 15 28.5 C20 28.5 22.5 25 20.5 22.5 C18.5 20 14.5 21.5 15.5 24.5 C16.5 27.5 21 28.5 29 27.5"/></g></symbol>
+    <symbol id="m5" viewBox="0 0 32 32"><g fill="none" stroke="currentColor"><path d="M1 16 H11" stroke-width="4"/><path d="M15 2 V30" stroke-width="2"/><path d="M19 5 H31 M19 10.5 H27 M19 16 H31 M19 21.5 H25 M19 27 H29" stroke-width="2"/></g></symbol>
+    <symbol id="m6" viewBox="0 0 32 32"><g fill="currentColor"><rect x="6" y="4" width="4" height="24"/><rect x="12" y="4" width="4" height="24"/><rect x="6" y="4" width="10" height="3"/><path d="M16 4 H19 A7 7 0 0 1 19 18 H16 Z"/></g></symbol>
+    <!-- the pilcrow P cropped to cap height, for setting inside the wordmark -->
+    <symbol id="m6w" viewBox="6 4 20 24"><g fill="currentColor"><rect x="6" y="4" width="4" height="24"/><rect x="12" y="4" width="4" height="24"/><rect x="6" y="4" width="10" height="3"/><path d="M16 4 H19 A7 7 0 0 1 19 18 H16 Z"/></g></symbol>
+  </defs>
+</svg>
+
+<main class="wrap">
+  <h1>PRISM logo brainstorm</h1>
+  <p class="lede">Six concepts and the current wordmark. Each is shown at 160px, in the 48px site bar, as a 32px and 16px favicon, and on the dark desk. All marks are one colour (ink, using currentColor) except concept 3, which carries the highlighter yellow.</p>
+  <p class="lede">The risk line under each concept is a design-similarity scan against logos found online. It is not a legal trademark clearance.</p>
+  <div id="list"></div>
+  <p class="foot">Before adopting any mark, run a proper trademark search (CIPO in Canada, USPTO, WIPO Global Brand Database). The name itself needs checking: "PRISM" is already used in health literacy by the Program for Readability In Science &amp; Medicine at Kaiser Permanente Washington Health Research Institute, and in health by Prism Health (Portland) and Prisma Health (South Carolina).</p>
+</main>
+
+<script>
+const C = [
+  {n:0, name:'Plain wordmark (current)', mark:null,
+   idea:'The name set in Public Sans 600, with no mark.',
+   fit:'Honest and quiet, and it matches the contract exactly.',
+   risks:'No character, nothing to recognise in a browser tab, and no favicon (the browser shows its default icon).',
+   risk:['low','Generic type, no shape to confuse. The name-level conflicts listed at the foot of the page still apply.']},
+  {n:1, name:'Facet P', mark:'m1',
+   idea:'A P whose bowl is cut like a facet of glass: flat top and bottom, chamfered corners, set slightly apart from a straight stem.',
+   fit:'A compact monogram that works as a favicon. The facets nod to the name without any spectrum or triangle, and the solid ink reads like a form stamp.',
+   risks:'Geometric P monograms are common, so it is the least ownable. It says nothing about proofing.',
+   risk:['medium','The first draft (a triangle bowl) looked like stock "flag P" logos and echoed Prisma’s triangular prism. Tweak made: the bowl is now a chamfered facet with a gap from the stem, but geometric P monograms remain common.']},
+  {n:2, name:'Caret', mark:'m2',
+   idea:'The proofreader’s insertion caret standing on a broken line of text. The caret is a prism with its base removed.',
+   fit:'The studio’s job is to show where a handout needs something. It is a real editorial sign, a quiet pun on the name, and the simplest shape here at 16px.',
+   risks:'Without the broken baseline it is an "up" chevron (scroll to top, upload). Health communicators may not know proof marks, though the shape still holds.',
+   risk:['medium','Up-chevrons are common in UI and in logos generally, and Prisma’s mark is also triangular. Tweak made: the broken baseline is part of the mark at every size, which no chevron logo we found has.']},
+  {n:3, name:'Flagged I', mark:'m3', markInk:'m3i', word:'hl',
+   idea:'The I in PRISM gets the same highlighter swipe the studio puts on flagged words.',
+   fit:'It uses the product’s one signature. The I is also the reader. It has the most character of the set.',
+   risks:'It breaks the "yellow only marks flagged words" rule. Solid yellow is the brightest thing in the dark bar. In the bar it could look like a flag on chrome.',
+   yellow:'Proposed rule change: "Highlighter yellow marks flagged words in the document, and appears in one fixed place in chrome: the logo." The logo’s swipe is a slanted chisel shape that the document never uses, so it cannot be confused with a real flag. If that is too much, the ink outline version (shown in the 16px dark tab and in the SVG folder) keeps the bar yellow-free and uses yellow only in the favicon.',
+   risk:['low','Highlighted-word logos exist as a general device, but we found no brand built on a highlighted single I with a chisel swipe.']},
+  {n:4, name:'Dele P', mark:'m4',
+   idea:'A monoline P whose stem ends in the looped "delete" mark editors draw in margins.',
+   fit:'Hand-drawn proof mark plus the initial: it brings a human editor’s hand to an otherwise strict, printed system.',
+   risks:'The loop is the hardest detail at 16px. A drawn mark sits apart from the rest of the strict, printed interface.',
+   replaced:'Replaces the earlier "Score sheet" concept (a ruled sheet with a margin and a tick), which was rated high: it was indistinguishable from stock form and document icons such as Google Forms and Microsoft Forms.',
+   risk:['medium','Cursive or looped P marks exist (Pinterest’s P has a descending tail, in a circle). Ours is monoline, uncircled, with a closed loop at the foot.']},
+  {n:5, name:'Readings', mark:'m5',
+   idea:'One thick line meets a hairline lens and leaves as five lines of text of different lengths: one handout, five frameworks’ readings.',
+   fit:'It is the product idea itself. The prism metaphor with no triangle and no colour, and the outgoing beams are lines of text.',
+   risks:'At 16px the five lines can blur into grey. It can read as an "align left" or menu icon, and the lens needs explaining.',
+   risk:['low','Light-splitting is also the concept behind Prisma Health’s brand, and the Pink Floyd prism, but this has no triangle, no fan and no spectrum. The nearest look-alikes are generic text-alignment icons, not logos.']},
+  {n:6, name:'Pilcrow P', mark:'m6', word:'pil',
+   idea:'The P drawn as a reversed pilcrow (double stem, solid bowl), so the wordmark reads PRISM with an editor’s paragraph mark at the front.',
+   fit:'One typographic quirk that keeps the name readable. The pilcrow is the mark people see under "show formatting", and it suits a desk for checking text.',
+   risks:'Some may read it as an odd P, which is partly the point. The glyph has to be drawn to match Public Sans weight exactly.',
+   risk:['medium','Penguin Press (Pentagram) uses two Ps that read as a reversed pilcrow, in publishing. PayPal uses a doubled P. Ours differs: one heavy, solid bowl on two joined upright stems, set inside a wordmark.']}
+];
+const use = (id, cls) => `<svg class="${cls}" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;
+function wordmark(c){
+  if(c.word==='hl') return `<span class="wm">PR<span class="hl-i">I</span>SM</span>`;
+  if(c.word==='pil') return `<span class="wm"><svg class="pil" viewBox="6 4 20 24" aria-hidden="true" focusable="false"><use href="#m6w"/></svg>RISM</span>`;
+  return 'PRISM';
+}
+function brand(c){
+  const mark = c.mark && !c.word ? use(c.mark,'m') : (c.word==='hl' ? '' : '');
+  return `<span class="brand" role="img" aria-label="PRISM">${mark}${wordmark(c)}</span>`;
+}
+function bar(c, dark){
+  return `<div class="bar${dark?' dark':''}">${brand(c)}<div class="nav"><span class="cur">Studio</span><span>Framework Compass</span><span>About</span></div></div>`;
+}
+function fav(c, dark){
+  if(!c.mark) return `<div class="tile${dark?' dark':''}"><p class="tile-lbl">Favicon</p><p style="font-size:13px;max-width:16ch">None: the browser shows its default icon.</p></div>`;
+  const m16 = dark && c.markInk ? c.markInk : c.mark;
+  return `<div class="tile${dark?' dark':''}"><p class="tile-lbl">Favicon 32 and 16${dark && c.markInk ? ' (16: ink version)' : ''}</p>
+    <div class="favs-col"><div class="favs">${use(c.mark,'fav32')}${use(m16,'fav16')}</div>
+    <span class="tab">${use(m16,'fav16')}PRISM Studio</span></div></div>`;
+}
+document.getElementById('list').innerHTML = C.map(c => `
+<section class="concept" aria-labelledby="c${c.n}">
+  <div class="concept-head"><span class="num">${c.n}</span><h2 id="c${c.n}">${c.name}</h2></div>
+  <dl class="notes">
+    <dt>Idea</dt><dd>${c.idea}</dd>
+    <dt>Why it fits</dt><dd>${c.fit}</dd>
+    <dt>Risks</dt><dd>${c.risks}</dd>
+    ${c.yellow ? `<dt>Yellow rule</dt><dd>${c.yellow}</dd>` : ''}
+    ${c.replaced ? `<dt>Note</dt><dd>${c.replaced}</dd>` : ''}
+  </dl>
+  <p class="risk">Similarity risk: <b class="${c.risk[0]}">${c.risk[0]}</b>. ${c.risk[1]}</p>
+  <div class="demos">
+    <div class="tile"><p class="tile-lbl">${c.mark ? 'Mark, 160px' : 'Wordmark'}</p>${c.mark ? use(c.mark,'big') : '<div class="word-big">PRISM</div>'}</div>
+    ${c.word ? `<div class="tile"><p class="tile-lbl">Wordmark</p><div class="word-big">${wordmark(c)}</div></div>` : ''}
+    ${fav(c,false)}
+    <div class="tile dark"><p class="tile-lbl">Dark desk</p>${c.mark ? use(c.mark,'big') : '<div class="word-big">PRISM</div>'}</div>
+    ${fav(c,true)}
+  </div>
+  ${bar(c,false)}
+  ${bar(c,true)}
+</section>`).join('');
+</script>
+</body>
+</html>

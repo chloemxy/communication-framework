@@ -1,0 +1,341 @@
+/* avoid-ai-design-ignore: SD2 (the scanner reports this rule at line 1 for the whole file; see "Why" below)
+   ════════════════════════════════════════════════════════════════
+   PRISM — shared design system ("Proofing desk")
+   One stylesheet for every page (studio, Framework Compass, sub-pages). Contract: DESIGN.md.
+   Tokens live only here; page stylesheets use them and never redefine them.
+   Light and dark: the roles below are re-tuned for dark (not inverted). Dark applies when the
+   OS asks for it and the person has not chosen Light, or when the person chose Dark
+   (data-theme on <html>, set before first paint by the head snippet documented in theme-switch.js).
+
+   Why SD2 is ignored: the scanner reads both themes as one palette. It pairs the dark desk (#121417)
+   with the LIGHT-theme fail red (#B3261E), which never appears on the dark desk (dark fail is #F28B82,
+   a low-saturation salmon, and dark pass is a muted mint). Both reds are DESIGN.md status
+   roles, always paired with a word, never an accent.
+   ════════════════════════════════════════════════════════════════ */
+
+:root{
+  color-scheme: light;
+
+  /* ── Roles (DESIGN.md) ── */
+  --desk:#ECEEF0;          /* page background */
+  --sheet:#FFFFFF;         /* panels, cards, the document paper, floating surfaces */
+  --sheet-2:#F6F7F8;       /* quiet fills, headers inside a sheet, neutral tags, disabled fill */
+  --rule:#D5D9DE;          /* hairlines, score-sheet rules (decorative: never the only cue for a control) */
+  --ink:#16181D;           /* text; primary button fill */
+  --ink-2:#4A5059;         /* secondary text, item numbers, quiet-button text */
+  --form-blue:#1D4F91;     /* links, focus ring, selected state */
+  --highlighter:#FFE066;   /* flagged words in the document (::highlight, .flash-sel) */
+  --brand:#FFE066;         /* theme yellow in chrome: the logo's I, current page, chosen option. A fill, never text */
+  --on-brand:#16181D;      /* text and icons on the brand fill (both themes) */
+  --pass:#1E6B3A; --warn:#8A5300; --fail:#B3261E;   /* status text, tags, pressed rating borders */
+
+  /* ── Derived roles ── */
+  --pass-bg:#E5F1E9; --warn-bg:#FAEFD9; --fail-bg:#FBE8E6;   /* status tag / note fills */
+  --selected:#E6EDF7;      /* pressed/selected fill: always paired with a form-blue border or text */
+  --hover:#EEF0F2;         /* hover fill for quiet buttons, rows, menu items */
+  --form-blue-hover:#163D70;
+  --on-ink:#FFFFFF;        /* text and icons on the ink fill (primary button) */
+  --ink-hover:#2E333B;     /* primary button hover fill */
+  --ink-disabled:#5C636D;  /* disabled text, kept ≥ 4.5:1 */
+  --focus-ring:#1D4F91;    /* = form-blue; separate name so it can be tuned alone */
+  --control-border:#7A828C;/* borders that identify a control (inputs, selects, checkboxes): ≥ 3:1 */
+  --meter-track:#E1E4E8;
+  --meter-neutral:var(--ink-2);          /* meter fill when there is no verdict yet */
+  --tooltip-bg:var(--sheet);             /* tooltips are floating sheets */
+  --scrim:rgba(22,24,29,.40);            /* dialog ::backdrop */
+  --shadow-float:0 1px 2px rgba(22,24,29,.06), 0 8px 24px rgba(22,24,29,.14);   /* floating things only */
+  --scroll-thumb:#B9BFC6;
+  --checker-a:#FFFFFF; --checker-b:#E6E9EC;   /* transparent-artwork backdrop */
+  --checker:repeating-conic-gradient(var(--checker-a) 0 25%, var(--checker-b) 0 50%) 0 0 / 16px 16px;
+
+  /* Artwork text overlay: deliberately the same in both themes. It sits on the person's
+     artwork, which never changes with the theme. No fill (a tint lowered the contrast of the
+     artwork's own text): a near-black 2px ring inside a 2px white halo, so one of the two
+     rings stands out on any artwork, light or dark. */
+  --overlay-outline:#16181D;
+  --overlay-halo:#FFFFFF;
+
+  /* ── Type: Public Sans (interface) + Source Serif 4 (the document) ──
+     Seven treatments, nothing below 13px, weights 400 and 600 only,
+     no italics, uppercase or letter-spacing.
+     Display 24/600, Heading 17/600, Body 14/400, Body strong 14/600,
+     Caption 13/400, Caption strong 13/600, and Reading 15/400 in the serif (the document only). */
+  --sans:'Public Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --serif:'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --fs-xs:13px; --fs-sm:14px; --fs-md:15px; --fs-lg:17px; --fs-2xl:24px;
+
+  /* ── Space ── */
+  --inset:16px;   /* the one left edge for text inside bars, panels and cards */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:20px; --sp-6:24px; --sp-8:32px; --sp-12:48px;
+
+  /* ── Shape ── */
+  --radius-control:4px;   /* buttons, inputs, segmented controls, rating buttons, menus, tooltips */
+  --radius-sheet:6px;     /* sheets: panels, cards, dialogs, Brief/Frameworks bars and panels */
+  --radius-pill:999px;    /* status tags only */
+
+  /* ── Legacy aliases (temporary). They point at roles, so they flip in dark.
+     Declared once here: a custom property that references another resolves on :root after
+     the dark block has overridden the role, so the aliases need no dark copy. ── */
+  --page:var(--desk);
+  --white:var(--sheet);          /* SURFACES ONLY. Text on ink uses --on-ink. */
+  --dark:var(--ink);
+  --n900:var(--ink);  --n800:var(--ink);
+  --n700:var(--ink-2); --n600:var(--ink-2); --n500:var(--ink-2); --n400:var(--ink-2);
+  --n300:var(--rule);            /* control borders should move to --control-border */
+  --n200:var(--rule);
+  --n100:var(--sheet-2);         /* hairlines using n100 should move to --rule */
+  --n50:var(--sheet-2);
+  --blue:var(--form-blue); --blue-hov:var(--form-blue-hover); --blue-lt:var(--selected);
+  --teal:var(--pass); --teal-bg:var(--pass-bg);
+  --orange:var(--warn); --orange-bg:var(--warn-bg);
+  --red:var(--fail); --red-bg:var(--fail-bg);
+  --zone-clarity:var(--ink-2); --zone-process:var(--ink-2); --zone-behavior:var(--ink-2); --zone-outcomes:var(--ink-2);
+  --shadow-1:none; --shadow-2:none; --shadow-3:var(--shadow-float);
+  --focus:0 0 0 1px var(--focus-ring);   /* only for inputs that use border + shadow as their focus ring */
+  --radius-sm:var(--radius-control); --radius:var(--radius-sheet); --radius-lg:var(--radius-sheet);
+}
+
+/* ── Dark: only when the person turns it on (the site is light by default) ── */
+/* ── Dark: chosen explicitly (same values; keep the two blocks identical) ── */
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
+  --ink:#E9EBEE; --ink-2:#B4BAC2; --form-blue:#8DB4EC;
+  --highlighter:rgba(255,214,0,.28);
+  --brand:#F5CF4A; --on-brand:#16181D;
+  --pass:#7FD19B; --warn:#F0B357; --fail:#F28B82;
+  --pass-bg:#1B3325; --warn-bg:#3A2C12; --fail-bg:#3F2220;
+  --selected:#1F2C3F; --hover:#2A2F35; --form-blue-hover:#AECBF3;
+  --on-ink:#16181D; --ink-hover:#FFFFFF; --ink-disabled:#9EA5AE;
+  --focus-ring:#8DB4EC; --control-border:#717A85;
+  --meter-track:#2E3339;
+  --scrim:rgba(0,0,0,.60);
+  --shadow-float:0 1px 2px rgba(0,0,0,.40), 0 8px 24px rgba(0,0,0,.55);
+  --scroll-thumb:#474E57;
+  --checker-a:#2B3036; --checker-b:#22262B;
+}
+
+/* ── Base ── */
+*, *::before, *::after{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--desk);scrollbar-color:var(--scroll-thumb) transparent}
+body{font-family:var(--sans);font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink);background:var(--desk);-webkit-font-smoothing:antialiased}
+b, strong{font-weight:600}
+em, i, cite, address, dfn{font-style:normal}
+small{font-size:inherit}
+a{color:var(--form-blue);text-decoration:underline;text-underline-offset:2px}
+a:hover{color:var(--form-blue-hover)}
+button, input, select, textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+::selection{background:var(--selected);color:var(--ink)}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--scroll-thumb);border-radius:var(--radius-pill);border:2px solid transparent;background-clip:padding-box}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.num{font-variant-numeric:tabular-nums}
+
+/* ── Type treatments (exactly seven) ── */
+.t-display       {font-size:var(--fs-2xl);font-weight:600;line-height:1.25}
+.t-heading       {font-size:var(--fs-lg);font-weight:600;line-height:1.35}
+.t-body          {font-size:var(--fs-sm);font-weight:400}
+.t-body-strong   {font-size:var(--fs-sm);font-weight:600}
+.t-caption       {font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
+.t-caption-strong{font-size:var(--fs-xs);font-weight:600}
+.t-reading       {font-family:var(--serif);font-size:var(--fs-md);font-weight:400;line-height:1.7}
+h1{font-size:var(--fs-2xl);font-weight:600;line-height:1.25}
+h2, h3{font-size:var(--fs-lg);font-weight:600;line-height:1.35}
+h4, h5, h6{font-size:var(--fs-sm);font-weight:600}
+
+/* ── Surfaces: hairlines, not shadows. Only floating things get --shadow-float. ── */
+.sheet, .surface{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet)}
+.floating{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet);box-shadow:var(--shadow-float)}
+
+/* ── Button: one component, three variants, one size (32px), Caption strong ──
+   Primary   ink fill; the single most important action in a region (at most one per region)
+   Secondary sheet + hairline border; normal actions
+   Quiet     no border or fill until hover; utility and reversible actions
+   .btn-icon is the square glyph-only size (always with an aria-label).
+   Labels are verbs, no trailing arrows. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--sp-2);
+  min-height:32px;min-width:32px;padding:0 var(--sp-3);
+  border:1px solid transparent;border-radius:var(--radius-control);background:transparent;
+  font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1.2;color:var(--ink);
+  white-space:nowrap;text-decoration:none;cursor:pointer;user-select:none;flex-shrink:0;
+  transition:background-color .12s,border-color .12s,color .12s}
+.btn[hidden]{display:none}
+.btn:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.btn-primary{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.btn-primary:hover{background:var(--ink-hover);border-color:var(--ink-hover);color:var(--on-ink)}
+.btn-secondary{background:var(--sheet);border-color:var(--rule);color:var(--ink)}
+.btn-secondary:hover{background:var(--hover);border-color:var(--control-border);color:var(--ink)}
+.btn-quiet{color:var(--ink-2)}
+.btn-quiet:hover{background:var(--hover);color:var(--ink)}
+.btn-icon{width:32px;padding:0}
+/* toggle buttons (Track changes, Fit, B/I): pressed = selected */
+.btn.on, .btn[aria-pressed="true"]{background:var(--selected);border-color:var(--form-blue);color:var(--form-blue)}
+.btn:active:not(:disabled){background:var(--selected)}
+.btn-primary:active:not(:disabled){background:var(--ink-hover)}
+.btn:disabled, .btn[aria-disabled="true"]{cursor:not-allowed;background:var(--sheet-2);border-color:var(--rule);color:var(--ink-disabled)}
+.btn-quiet:disabled, .btn-quiet[aria-disabled="true"]{background:transparent;border-color:transparent}
+.btn b{font-weight:600;color:inherit}
+
+/* ── Form controls: the border identifies the control → --control-border (≥ 3:1).
+   :where() keeps specificity at zero so page rules for a specific control always win. ── */
+:where(.input, input[type=text], input[type=search], input[type=email], input[type=url], input[type=number], select, textarea){
+  min-height:32px;padding:0 var(--sp-2);border:1px solid var(--control-border);border-radius:var(--radius-control);
+  background:var(--sheet);color:var(--ink);font-family:inherit;font-size:var(--fs-sm)}
+:where(textarea){padding:var(--sp-2)}
+::placeholder{color:var(--ink-2);opacity:1}
+input[type=checkbox], input[type=radio], input[type=range], progress{accent-color:var(--form-blue)}
+
+/* ── Rating button (rateCtl): the one checklist control, same height/radius as .btn ──
+   pressed = 2px inset border in the status colour + its tint + the label word; never colour alone */
+.rate{display:flex;flex-wrap:wrap;gap:var(--sp-1)}
+.rate-b{min-height:32px;padding:0 var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);
+  background:var(--sheet);color:var(--ink);font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1;
+  white-space:nowrap;cursor:pointer;transition:background-color .12s,border-color .12s,color .12s}
+.rate-b:hover:not(:disabled){background:var(--hover);border-color:var(--control-border)}
+.rate-b:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.rate-b.on.pos{background:var(--pass-bg);border-color:var(--pass);box-shadow:inset 0 0 0 1px var(--pass);color:var(--pass)}
+.rate-b.on.neg{background:var(--fail-bg);border-color:var(--fail);box-shadow:inset 0 0 0 1px var(--fail);color:var(--fail)}
+.rate-b.on.neu{background:var(--sheet-2);border-color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--ink-2);color:var(--ink)}
+/* suggested by the tool, not yet confirmed: 1px dashed status border, no fill */
+.rate-b.sug{border-style:dashed}
+.rate-b.sug.pos{border-color:var(--pass);color:var(--pass)}
+.rate-b.sug.neg{border-color:var(--fail);color:var(--fail)}
+.rate-b.sug.neu{border-color:var(--ink-2)}
+.rate-b:disabled{cursor:default;background:var(--sheet-2);color:var(--ink-disabled)}
+.rate-b.on:disabled{opacity:1}
+.rate-b.on.pos:disabled{background:var(--pass-bg);color:var(--pass)}
+.rate-b.on.neg:disabled{background:var(--fail-bg);color:var(--fail)}
+.rate-b.on.neu:disabled{background:var(--sheet-2);color:var(--ink)}
+
+/* ── Segmented control: one exclusive choice (mode toggle, CVD, Brief chips, theme switch) ──
+   Markup: <div class="seg" role="group" aria-label="…"><button type="button" aria-pressed="true|false">…</button>…</div>
+   .seg-wrap lets options wrap (Brief audience/format); .seg-grid is the 2-column picker. */
+.seg{display:inline-flex;gap:2px;padding:2px;background:var(--sheet-2);border:1px solid var(--rule);border-radius:var(--radius-control)}
+.seg button{min-height:28px;padding:0 var(--sp-3);border:1px solid transparent;border-radius:3px;background:transparent;
+  font-family:var(--sans);font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.seg button:hover{background:var(--hover);color:var(--ink)}
+.seg button.on, .seg button[aria-pressed="true"]{background:var(--brand);border-color:var(--ink);color:var(--on-brand);font-weight:600}
+.seg button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:1px}
+.seg.seg-wrap{display:flex;flex-wrap:wrap}
+.seg.seg-grid{display:grid;grid-template-columns:1fr 1fr}
+.seg.seg-grid button{white-space:normal;min-height:32px}
+
+/* ── Dark toggle: one button in the site bar; wiring in theme-switch.js ── */
+.theme-toggle[hidden]{display:none}
+.theme-toggle{gap:var(--sp-1)}
+.theme-toggle[aria-pressed="true"]{background:var(--selected);color:var(--ink);border-color:var(--rule)}
+.bar-divider{flex:none;width:1px;height:24px;margin:0 var(--sp-2);background:var(--rule)}
+
+/* ── Status tags (pills allowed). Every tag carries its word or a glyph with sr-only text. ── */
+.tag{display:inline-flex;align-items:center;gap:var(--sp-1);padding:2px 10px;border-radius:var(--radius-pill);
+  font-size:var(--fs-xs);font-weight:600;line-height:1.4;white-space:nowrap;font-variant-numeric:tabular-nums;
+  background:var(--sheet-2);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--rule)}
+.tag-pass{background:var(--pass-bg);color:var(--pass);box-shadow:none}
+.tag-warn{background:var(--warn-bg);color:var(--warn);box-shadow:none}
+.tag-fail{background:var(--fail-bg);color:var(--fail);box-shadow:none}
+.tag-info{background:var(--selected);color:var(--form-blue);box-shadow:none}
+
+/* ── Status note (warn banner, "what this needs"): flat, ink text, status rule on the left ── */
+.note{padding:var(--sp-2) var(--sp-3);border-left:3px solid var(--rule);font-size:var(--fs-xs);line-height:1.5;color:var(--ink)}
+.note-warn{background:var(--warn-bg);border-left-color:var(--warn)}
+.note-fail{background:var(--fail-bg);border-left-color:var(--fail)}
+.note-pass{background:var(--pass-bg);border-left-color:var(--pass)}
+
+/* ── Meter: the verdict is always also in text (score + target, pill word) ── */
+.meter-track{height:8px;background:var(--meter-track);border-radius:2px;overflow:hidden}
+.meter-fill{height:100%;background:var(--meter-neutral);border-radius:2px}
+.meter-fill.is-pass{background:var(--pass)}
+.meter-fill.is-warn{background:var(--warn)}
+.meter-fill.is-fail{background:var(--fail)}
+
+/* ── Tooltip (a small floating sheet) ── */
+#tip{background:var(--tooltip-bg);color:var(--ink);border:1px solid var(--rule);border-radius:var(--radius-control);box-shadow:var(--shadow-float)}
+#tip b{color:var(--ink)}
+
+/* ── Dialog ── */
+dialog{background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:var(--radius-sheet);box-shadow:var(--shadow-float)}
+dialog::backdrop{background:var(--scrim)}
+
+/* ── Site top bar (shared by every page): one component, the same items on every page ──
+   Markup: <header class="site-bar"> .site-name, <div class="site-page"> (this page's own controls, optional),
+   <nav class="site-nav">
+   Studio / Framework Compass / About (current page: aria-current="page"), .bar-divider, .theme-toggle.
+   At 600px and below: row 1 = name + compact theme switch, row 2 = nav; page controls go last. */
+.site-bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-5);background:var(--sheet);border-bottom:1px solid var(--rule)}
+.site-bar .site-name{display:inline-flex;align-items:center;min-height:32px;margin:0;font-size:var(--fs-lg);font-weight:600;line-height:1.35;color:var(--ink);text-decoration:none}
+.site-bar a.site-name:hover{color:var(--ink);text-decoration:underline}
+.site-nav{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1);margin-left:auto}
+.site-nav a, .site-nav button{display:inline-flex;align-items:center;min-height:32px;padding:0 var(--sp-3);border:none;border-radius:var(--radius-control);background:none;
+  font-family:var(--sans);font-size:var(--fs-sm);font-weight:600;line-height:1.2;color:var(--ink-2);text-decoration:none;white-space:nowrap;cursor:pointer}
+.site-nav a:hover, .site-nav button:hover{background:var(--hover);color:var(--ink)}
+.site-nav a[aria-current="page"]{background:var(--brand);color:var(--on-brand)}
+.site-nav a[aria-current="page"]:hover{background:var(--brand);color:var(--on-brand);text-decoration:underline}
+/* Wordmark: PRISM with the I marked by the highlighter swipe (logo "Flagged I").
+   The slanted chisel shape is the logo's own; flags in the document are plain rectangles. */
+.site-name .hl-i{position:relative;display:inline-block;padding:0 .14em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
+.site-name .hl-i::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
+.site-nav a:focus-visible, .site-nav button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+/* theme switch: words on wide screens, icons (with the words kept as accessible names) on narrow ones */
+.theme-toggle .ts-ico{display:none;flex:none}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center}
+/* Mid widths: a page's own controls (e.g. the studio's mode toggle) move to a row of their own,
+   so the site items (name, nav, theme switch) stay together on the first row */
+.site-bar .site-page{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);min-width:0}
+@media (max-width:1100px){
+  .site-bar .site-page{order:3;flex:1 1 100%}
+}
+@media (max-width:600px){
+  .site-bar{padding:var(--sp-2) var(--sp-4)}
+  .site-bar .site-name{flex:1 1 0;min-width:0;order:0}
+  .site-bar .theme-toggle{order:1;margin-left:0}
+  .site-bar .site-nav{order:2;flex:1 1 100%;margin-left:calc(-1 * var(--sp-3))}
+  .site-bar .bar-divider{display:none}
+  .theme-toggle{min-width:32px;padding:0 var(--sp-1)}
+  .theme-toggle .ts-ico{display:block}
+  .theme-toggle .ts-lbl{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+}
+
+/* ── Skip link: hidden until it has keyboard focus ── */
+.skip-link{position:absolute;left:var(--sp-2);top:var(--sp-2);z-index:1000;padding:var(--sp-2) var(--sp-3);
+  background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:var(--radius-control);box-shadow:var(--shadow-float);
+  font-size:var(--fs-sm);font-weight:600;text-decoration:none;transform:translateY(calc(-100% - var(--sp-4)))}
+.skip-link:focus, .skip-link:focus-visible{transform:none;outline:2px solid var(--focus-ring);outline-offset:2px}
+
+/* ── Theme change: no cross-fade. theme-switch.js sets this for two frames whenever the theme flips. ── */
+.theme-switching, .theme-switching *, .theme-switching *::before, .theme-switching *::after{transition:none !important}
+
+/* ── Disclosure (collapsed details): CSS chevron, no glyph ── */
+details.disclose > summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:var(--sp-2);min-height:32px;
+  font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);border-radius:var(--radius-control)}
+details.disclose > summary::-webkit-details-marker{display:none}
+details.disclose > summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+  transform:rotate(-45deg);transition:transform .12s}
+details.disclose[open] > summary::before{transform:rotate(45deg)}
+details.disclose > summary:hover{color:var(--ink)}
+
+/* ── Highlighter: flagged words in the document (CSS Custom Highlight API; no DOM change).
+   Text under the mark is forced to ink: in dark, ink-2 on the mark is only 4.0:1.
+   The yellow alone is faint against the paper (1.3:1 light), so every mark also carries a 2px
+   ink-2 underline (a non-colour cue, >= 7:1 on the paper in both themes). The mark just clicked
+   (focus) gets a thicker ink underline. Offset: set on #editor (highlight pseudos inherit it). ── */
+::highlight(pea-flag){background-color:var(--highlighter);color:var(--ink);text-decoration-line:underline;text-decoration-thickness:2px;text-decoration-color:var(--ink-2)}
+::highlight(pea-flag-focus){background-color:var(--highlighter);color:var(--ink);text-decoration-line:underline;text-decoration-thickness:4px;text-decoration-color:var(--ink)}
+@keyframes flashSel{0%,100%{background-color:transparent}35%{background-color:var(--highlighter)}}
+.flash-sel{animation:flashSel 1.1s ease;color:var(--ink)}
+/* reduced motion: a steady mark instead of the flash; the page removes the class on a timer */
+@media (prefers-reduced-motion: reduce){ .flash-sel{animation:none;background-color:var(--highlighter)} }
+
+/* ── Artwork overlay (OCR / text-to-artwork) and backdrop: theme-independent overlay roles ── */
+.vm-hl{border:2px solid var(--overlay-outline);border-radius:2px;background:none;box-shadow:0 0 0 2px var(--overlay-halo), inset 0 0 0 1px var(--overlay-halo)}
+#vm-canvas{background:var(--checker)}     /* the canvas itself is never filtered, blended or recoloured */
+
+/* ── Document paper: author colours neutralised for display only.
+   Scoring reads text, not colour, so overriding pasted inline colours is safe. ── */
+#editor{background:var(--sheet);color:var(--ink);text-underline-offset:2px}
+#editor [style], #editor font{color:inherit !important;background-color:transparent !important}
+#editor a, #editor a[style], #editor a [style]{color:var(--form-blue) !important}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}

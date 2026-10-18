@@ -76,7 +76,7 @@ const FRAMEWORK_REGISTRY = {
     zone: 'clarity',
     scoringType: 'scored',
     formula: '(points earned / applicable items) × 100',
-    passThreshold: { pass: 90, unit: 'score', label: '90 or higher' },
+    passThreshold: { pass: 90, unit: 'score', label: '90 or higher', uiLabel: "90 or higher (points ÷ applicable items × 100)" },
     criteria: [
       // Part A: Core (items 1–11) — applies to all materials
       { id: 'CCI-1', domain: 'Core', part: 'A', text: 'The material contains one main message statement.' },
@@ -107,6 +107,7 @@ const FRAMEWORK_REGISTRY = {
       'Centers for Disease Control and Prevention. (2019). CDC Clear Communication Index: A Tool for Developing and Assessing CDC Public Communication Products. U.S. Department of Health and Human Services. https://www.cdc.gov/ccindex/',
       'Baur C, Prue C. (2014). The CDC Clear Communication Index is a new evidence-based tool to prepare and review health information. Health Promotion Practice, 15(5), 629–637. https://doi.org/10.1177/1524839914538969',
     ],
+    uiNote: "20 items in 4 parts: Core (1–11), Behavioral Recommendations (12–14), Numbers (15–17), Risk (18–20). Parts B–D are scored only when the material contains that content; items 19–20 can be N/A. Score = points ÷ applicable items × 100. Every item counts equally; below 90, revise.",  // plain-language note shown in the studio
     notes: 'Source: CDC Clear Communication Index score sheet (rev. July 2014). Parts B–D are scored only when the material contains that content; items 19–20 can be N/A. Score a point only when every instance of an item meets the criterion. Item 17 is asked as "Does the audience have to conduct mathematical calculations?" — a no earns the point. Every item counts equally; below 90, revise.',
   },
 
@@ -119,7 +120,7 @@ const FRAMEWORK_REGISTRY = {
     formula: 'Understandability % = (Σ agrees on U items / # applicable U items) × 100 | Actionability % = (Σ agrees on A items / # applicable A items) × 100',
     // AHRQ sets no cutoff ("The higher the score, the more understandable or actionable the
     // material" — User's Guide, Step 7). 70% is kept as this tool's working target only.
-    passThreshold: { pass: 70, unit: '%', official: false, label: 'No AHRQ cutoff (higher is better) — 70% used here as a working target' },
+    passThreshold: { pass: 70, unit: '%', official: false, label: 'No AHRQ cutoff (higher is better) — 70% used here as a working target', uiLabel: "No AHRQ pass mark (higher is better); 70% or higher on both is this tool’s working target" },
     criteria: [
       // Understandability — PEMAT-P items 1–12, 15–19 (17 items; 13–14 are audiovisual-only)
       { id: 'PEMAT-1', domain: 'Understandability / Content', text: 'The material makes its purpose completely evident.' },
@@ -134,7 +135,7 @@ const FRAMEWORK_REGISTRY = {
       { id: 'PEMAT-10', domain: 'Understandability / Organization', text: 'The material presents information in a logical sequence.' },
       { id: 'PEMAT-11', domain: 'Understandability / Organization', text: 'The material provides a summary.', naAllowed: true },
       { id: 'PEMAT-12', domain: 'Understandability / Layout & Design', text: 'The material uses visual cues (e.g., arrows, boxes, bullets, bold, larger font, highlighting) to draw attention to key points.' },
-      { id: 'PEMAT-15', domain: 'Understandability / Use of Visual Aids', text: 'The material uses visual aids whenever they could make content more easily understood.' },
+      { id: 'PEMAT-15', domain: 'Understandability / Use of Visual Aids', text: 'The material uses visual aids whenever they could make content more easily understood (e.g., illustration of healthy portion size).' },
       { id: 'PEMAT-16', domain: 'Understandability / Use of Visual Aids', text: 'The material\'s visual aids reinforce rather than distract from the content.', naAllowed: true },
       { id: 'PEMAT-17', domain: 'Understandability / Use of Visual Aids', text: 'The material\'s visual aids have clear titles or captions.', naAllowed: true },
       { id: 'PEMAT-18', domain: 'Understandability / Use of Visual Aids', text: 'The material uses illustrations and photographs that are clear and uncluttered.', naAllowed: true },
@@ -152,6 +153,7 @@ const FRAMEWORK_REGISTRY = {
       'Shoemaker SJ, Wolf MS, Brach C. (2014). Development of the Patient Education Materials Assessment Tool (PEMAT): A new measure of understandability and actionability for print and audiovisual patient information. Patient Education and Counseling, 96(3), 395–403. https://doi.org/10.1016/j.pec.2014.05.027',
       'Agency for Healthcare Research and Quality. PEMAT and User\'s Guide. https://www.ahrq.gov/health-literacy/patient-education/pemat.html',
     ],
+    uiNote: "PEMAT-P: 17 understandability items (1–12, 15–19) and 7 actionability items (20–26). Two separate scores, never combined. N/A items are left out. AHRQ sets no pass mark: higher is better. This tool uses 70% on each score as a working target. Video and animation use PEMAT-A/V.",  // plain-language note shown in the studio
     notes: 'PEMAT-P is for printable materials. It produces two separate scores — Understandability and Actionability — never combined. N/A items are excluded from the denominator. AHRQ publishes no pass mark; this tool treats 70% on each score as a working target, not an official threshold. Audiovisual materials use PEMAT_AV instead.',
   },
 
@@ -297,6 +299,7 @@ const FRAMEWORK_REGISTRY = {
       'Doak CC, Doak LG, Root JH. (1996). Teaching Patients with Low Literacy Skills (2nd ed.). J.B. Lippincott. (SAM instrument: pp. 41–59)',
       'Winslow EH. (2001). Patient education materials: Can patients read them, or are they ending up in the trash? American Journal of Nursing, 101(10), 33–38. https://doi.org/10.1097/00000446-200110000-00020',
     ],
+    uiNote: "Rate each factor 0, 1 or 2. A total of 70% or more is superior. 40–69% is adequate. Under 40% is not suitable.",  // plain-language note shown in the studio
     notes: 'A score of 0 (Not Suitable) on any Content factor (SAM-C1 through SAM-C6) should be treated as a blocker regardless of total score. SAM is the most granular content auditing tool in the library.',
   },
 
@@ -332,8 +335,9 @@ const FRAMEWORK_REGISTRY = {
     ],
     sources: [
       'Charnock D, Shepperd S, Needham G, Gann R. (1999). DISCERN: An instrument for judging the quality of written consumer health information on treatment choices. Journal of Epidemiology and Community Health, 53(2), 105–111. https://doi.org/10.1136/jech.53.2.105',
-      'DISCERN Online. University of Oxford & British Library. http://www.discern.org.uk',
+      'DISCERN Online. University of Oxford & British Library. https://www.ndph.ox.ac.uk/research/research-groups/applied-health-research-unit-ahru/discern',
     ],
+    uiNote: "16 questions, rated 1 to 5. There is no pass mark, so use it to compare versions. Question 16 is an overall rating.",  // plain-language note shown in the studio
     notes: 'No absolute pass/fail threshold. DISCERN scores are comparative — used against published benchmarks (peer-reviewed health leaflets average ~3.5–4/5 per question). Q16 is kept separate from Part 1 and Part 2 totals.',
   },
 
@@ -366,6 +370,7 @@ const FRAMEWORK_REGISTRY = {
     sources: [
       'Moult B, Franck LS, Brady H. (2004). Ensuring quality information for patients: Development and preliminary validation of a new instrument to improve the quality of written health care information. Health Expectations, 7(2), 165–175. https://doi.org/10.1111/j.1369-7625.2004.00273.x',
     ],
+    uiNote: "The first EQIP had 20 items. A 36-item version came later. There is no pass mark, so use it to compare versions.",  // plain-language note shown in the studio
     notes: 'EQIP uses 36 items across 8 sections in the full instrument. Separate section scores are useful for diagnostic targeting. No universal pass threshold — used normatively across document versions.',
   },
 
@@ -419,7 +424,7 @@ const FRAMEWORK_REGISTRY = {
       { id: 'PL-14', domain: 'Design to aid comprehension',   text: 'Adequate white space is present.' },
     ],
     sources: [
-      'Plain Language Action and Information Network (PLAIN). (2011). Federal Plain Language Guidelines. PlainLanguage.gov. https://www.plainlanguage.gov/guidelines/',
+      'Plain Language Action and Information Network (PLAIN). (2011). Federal Plain Language Guidelines. PlainLanguage.gov. https://digital.gov/guides/plain-language',
       'Plain Writing Act of 2010, Pub. L. 111-274, 124 Stat. 2861 (2010). https://www.govinfo.gov/content/pkg/PLAW-111publ274/pdf/PLAW-111publ274.pdf',
     ],
     notes: 'Plain Language is a prescriptive editing checklist, not a scoring rubric. Applied during drafting and revision, not as post-hoc auditing. No numerical score — compliance is qualitative.',
@@ -538,6 +543,92 @@ const FRAMEWORK_REGISTRY = {
     notes: 'CDC describes the Guiding Principles as "a starting point and an approach, not a mandate". No score: each principle is marked pass or flag. The term scan uses CDC\'s "Instead of this…" lists; a hit is a prompt to reconsider with the topic\'s "Try this…" options, and some terms suit specific contexts (e.g., "elderly" in a clinical context). The lists are not comprehensive, so a clean scan does not mean a principle is met. CDC recommends asking people from the community of focus which terms they prefer. The original CDC pages were removed; citations point to archived copies.',
   },
 
+  UPL: {
+    id: 'UPL',
+    name: 'Universal Patient Language (UPL) Best Practices',
+    abbr: 'UPL',
+    zone: 'clarity',
+    scoringType: 'checklist',
+    formula: null,
+    passThreshold: null, // UPL is guidance, not a scored instrument
+    // Items are the "Quick Reference Guide" checklist (pp. 4–6) of the UPL Guidance Document (2026), the current,
+    // validated source for all 9 best practices. Each item's rule names the page of its detailed guidance and, where
+    // one exists, the matching numbered rule in the earlier UPL Rules (2017, 7 principles), which upl.org still links.
+    criteria: [
+      { id: "UPL-1.1", domain: "1 Enable Patient Learning", check: 'text', text: "Treat every communication as an opportunity to teach patients new concepts", rule: "UPL Guidance Document (2026), Best Practice 1, detailed guidance from p. 7; UPL Rules (2017), Rule 1." },
+      { id: "UPL-1.2", domain: "1 Enable Patient Learning", check: 'text', text: "Ensure the content reflects and is relevant to patient and caregiver needs, and their stage in their healthcare journey", rule: "UPL Guidance Document (2026), Best Practice 1, detailed guidance from p. 7; UPL Rules (2017), Rule 4." },
+      { id: "UPL-1.3", domain: "1 Enable Patient Learning", check: 'text', text: "Make the purpose of the communication obvious", rule: "UPL Guidance Document (2026), Best Practice 1, detailed guidance from p. 7; UPL Rules (2017), Rule 2." },
+      { id: "UPL-1.4", domain: "1 Enable Patient Learning", check: 'text', text: "Present complex information in digestible chunks", rule: "UPL Guidance Document (2026), Best Practice 1, detailed guidance from p. 7; UPL Rules (2017), Rule 8." },
+      { id: "UPL-1.5", domain: "1 Enable Patient Learning", check: 'text', text: "Use analogies to explain complex concepts", rule: "UPL Guidance Document (2026), Best Practice 1, detailed guidance from p. 7." },
+      { id: "UPL-1.6", domain: "1 Enable Patient Learning", check: 'text', text: "Help patients and caregivers understand their roles and their healthcare team’s role in their care", rule: "UPL Guidance Document (2026), Best Practice 1, detailed guidance from p. 7; UPL Rules (2017), Rule 5." },
+      { id: "UPL-1.7", domain: "1 Enable Patient Learning", check: 'text', text: "Provide resources and contact info for follow-up questions", rule: "UPL Guidance Document (2026), Best Practice 1, detailed guidance from p. 7; UPL Rules (2017), Rule 7." },
+      { id: "UPL-2.1", domain: "2 Share Qualitative and Quantified Data", check: 'text', text: "Provide background information that helps explain why the data matters to patients and caregivers", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11; UPL Rules (2017), Rule 9." },
+      { id: "UPL-2.2", domain: "2 Share Qualitative and Quantified Data", check: 'text', text: "Define all statistical terms (e.g., mean, median, incidence, prevalence)", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11; UPL Rules (2017), Rule 13." },
+      { id: "UPL-2.3", domain: "2 Share Qualitative and Quantified Data", check: 'text', text: "Make head-to-head data comparisons easy (e.g., to “healthy/normal” ranges, means/medians)", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11; UPL Rules (2017), Rule 9." },
+      { id: "UPL-2.4", domain: "2 Share Qualitative and Quantified Data", check: 'text', text: "Make it easy for patients to understand risks and benefits when presenting side effect data", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11; UPL Rules (2017), Rule 10." },
+      { id: "UPL-2.5", domain: "2 Share Qualitative and Quantified Data", check: 'text', text: "Help patients interpret what “common” vs. “rare” likelihood means", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11." },
+      { id: "UPL-2.6", domain: "2 Share Qualitative and Quantified Data", check: 'text', text: "When providing percentages, also provide raw numbers used to calculate the percentage", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11; UPL Rules (2017), Rule 9." },
+      { id: "UPL-2.7", domain: "2 Share Qualitative and Quantified Data", check: 'visual', text: "Choose an appropriate format to visualize data (e.g., use graphs, charts, timelines, avoid 3D charts)", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11; UPL Rules (2017), Rule 11.", requiresVisual: true },
+      { id: "UPL-2.8", domain: "2 Share Qualitative and Quantified Data", check: 'visual', text: "Adhere to data visualization best practices (e.g., use consistent axes and scales)", rule: "UPL Guidance Document (2026), Best Practice 2, detailed guidance from p. 11; UPL Rules (2017), Rule 12.", requiresVisual: true },
+      { id: "UPL-3.1", domain: "3 Design for Digital", check: 'visual', text: "Incorporate a variety of engaging formats and content that support diverse ways of learning", rule: "UPL Guidance Document (2026), Best Practice 3, detailed guidance from p. 14; UPL Rules (2017), Rule 14.", requiresVisual: true },
+      { id: "UPL-3.2", domain: "3 Design for Digital", check: 'visual', text: "Include functionalities that make digital materials easy for patients to understand, use, and explore (e.g., links, QR codes)", rule: "UPL Guidance Document (2026), Best Practice 3, detailed guidance from p. 14; UPL Rules (2017), Rule 15.", requiresVisual: true },
+      { id: "UPL-3.3", domain: "3 Design for Digital", check: 'visual', text: "Optimize digital materials for a variety of platforms (e.g., web, mobile, tablet, EMR)", rule: "UPL Guidance Document (2026), Best Practice 3, detailed guidance from p. 14; UPL Rules (2017), Rule 14.", requiresVisual: true },
+      { id: "UPL-3.4", domain: "3 Design for Digital", check: 'process', text: "Think about how digital tools fit into the overall patient experience, online and offline", rule: "UPL Guidance Document (2026), Best Practice 3, detailed guidance from p. 14; UPL Rules (2017), Rule 18.", notAssessableFromDoc: true },
+      { id: "UPL-3.5", domain: "3 Design for Digital", check: 'visual', text: "Develop digital materials and tools that are accessible to a range of users (e.g., variable levels of ability, connectivity, technology)", rule: "UPL Guidance Document (2026), Best Practice 3, detailed guidance from p. 14; UPL Rules (2017), Rule 19.", requiresVisual: true },
+      { id: "UPL-3.6", domain: "3 Design for Digital", check: 'process', text: "Take an iterative approach to digital materials, improving them based on how people use them", rule: "UPL Guidance Document (2026), Best Practice 3, detailed guidance from p. 14; UPL Rules (2017), Rule 20.", notAssessableFromDoc: true },
+      { id: "UPL-3.7", domain: "3 Design for Digital", check: 'visual', text: "Ensure content can also work when printed", rule: "UPL Guidance Document (2026), Best Practice 3, detailed guidance from p. 14; UPL Rules (2017), Rule 21.", requiresVisual: true },
+      { id: "UPL-4.1", domain: "4 Demonstrate Empathy", check: 'text', text: "Be mindful of the overall patient journey, including state of mind; adjust tone accordingly", rule: "UPL Guidance Document (2026), Best Practice 4, detailed guidance from p. 17; UPL Rules (2017), Rule 24." },
+      { id: "UPL-4.2", domain: "4 Demonstrate Empathy", check: 'text', text: "Make communications feel like they come from a real human", rule: "UPL Guidance Document (2026), Best Practice 4, detailed guidance from p. 17; UPL Rules (2017), Rule 25." },
+      { id: "UPL-4.3", domain: "4 Demonstrate Empathy", check: 'text', text: "Use authentic stories to reflect patients’ and caregivers’ lived experiences", rule: "UPL Guidance Document (2026), Best Practice 4, detailed guidance from p. 17; UPL Rules (2017), Rule 4." },
+      { id: "UPL-4.4", domain: "4 Demonstrate Empathy", check: 'text', text: "Acknowledge and address the role of caregivers", rule: "UPL Guidance Document (2026), Best Practice 4, detailed guidance from p. 17." },
+      { id: "UPL-4.5", domain: "4 Demonstrate Empathy", check: 'text', text: "Consider different socio-cultural backgrounds and emotional impact when using words, concepts, and colors", rule: "UPL Guidance Document (2026), Best Practice 4, detailed guidance from p. 17; UPL Rules (2017), Rule 23." },
+      { id: "UPL-4.6", domain: "4 Demonstrate Empathy", check: 'visual', text: "Acknowledge and appropriately represent identity and diversity (e.g., age, gender, sexual orientation, ethnicity, disability)", rule: "UPL Guidance Document (2026), Best Practice 4, detailed guidance from p. 17; UPL Rules (2017), Rule 28.", requiresVisual: true },
+      { id: "UPL-5.1", domain: "5 Use Plain Language", check: 'text', text: "Use an approachable, conversational, down-to-earth tone", rule: "UPL Guidance Document (2026), Best Practice 5, detailed guidance from p. 20; UPL Rules (2017), Rule 29." },
+      { id: "UPL-5.2", domain: "5 Use Plain Language", check: 'text', text: "Address patients in second person (“you”), use first person (“I”) to reflect the patient voice, refer to organization in first person plural (“we,” “our”)", rule: "UPL Guidance Document (2026), Best Practice 5, detailed guidance from p. 20; UPL Rules (2017), Rule 29." },
+      { id: "UPL-5.3", domain: "5 Use Plain Language", check: 'text', text: "Use the simplest words possible to convey your message; few syllables per word, multiple short words in place of a single long word", rule: "UPL Guidance Document (2026), Best Practice 5, detailed guidance from p. 20; UPL Rules (2017), Rule 30." },
+      { id: "UPL-5.4", domain: "5 Use Plain Language", check: 'text', text: "Introduce acronyms properly before using them", rule: "UPL Guidance Document (2026), Best Practice 5, detailed guidance from p. 20; UPL Rules (2017), Rule 31." },
+      { id: "UPL-5.5", domain: "5 Use Plain Language", check: 'text', text: "Write short sentences with simple syntax", rule: "UPL Guidance Document (2026), Best Practice 5, detailed guidance from p. 20; UPL Rules (2017), Rule 32." },
+      { id: "UPL-5.6", domain: "5 Use Plain Language", check: 'text', text: "Use technical and medical terms sparingly for teaching purposes only; define them in simple terms", rule: "UPL Guidance Document (2026), Best Practice 5, detailed guidance from p. 20; UPL Rules (2017), Rule 33." },
+      { id: "UPL-5.7", domain: "5 Use Plain Language", check: 'text', text: "Avoid colloquialisms (e.g., “pushing liquids”)", rule: "UPL Guidance Document (2026), Best Practice 5, detailed guidance from p. 20; UPL Rules (2017), Rule 34." },
+      { id: "UPL-6.1", domain: "6 Communicate Visually", check: 'visual', text: "Repeat important, complex concepts in both words and pictures", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23; UPL Rules (2017), Rule 35.", requiresVisual: true },
+      { id: "UPL-6.2", domain: "6 Communicate Visually", check: 'visual', text: "Use color to connect words and visuals", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23; UPL Rules (2017), Rule 35.", requiresVisual: true },
+      { id: "UPL-6.3", domain: "6 Communicate Visually", check: 'visual', text: "Use images when explaining things that cannot be seen, such as how things work in the body", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23; UPL Rules (2017), Rule 36.", requiresVisual: true },
+      { id: "UPL-6.4", domain: "6 Communicate Visually", check: 'visual', text: "Provide context about where something is happening in the body, connecting to what patients can see and feel", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23.", requiresVisual: true },
+      { id: "UPL-6.5", domain: "6 Communicate Visually", check: 'visual', text: "Avoid a hyper-realistic visual style", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23.", requiresVisual: true },
+      { id: "UPL-6.6", domain: "6 Communicate Visually", check: 'visual', text: "Establish a consistent visual language, repeating shapes, elements, and colors", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23; UPL Rules (2017), Rule 37.", requiresVisual: true },
+      { id: "UPL-6.7", domain: "6 Communicate Visually", check: 'visual', text: "Use standard, recognizable shapes whenever possible", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23; UPL Rules (2017), Rule 38.", requiresVisual: true },
+      { id: "UPL-6.8", domain: "6 Communicate Visually", check: 'visual', text: "Use color with care to accommodate color blindness and to support understanding, limit to 5 colors", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23; UPL Rules (2017), Rule 39.", requiresVisual: true },
+      { id: "UPL-6.9", domain: "6 Communicate Visually", check: 'visual', text: "Use images of people to communicate about patients’ and caregivers’ lived experiences", rule: "UPL Guidance Document (2026), Best Practice 6, detailed guidance from p. 23.", requiresVisual: true },
+      { id: "UPL-7.1", domain: "7 Format Materials for Understanding", check: 'visual', text: "Maintain a coherent story across each screen or page without repeating copy multiple times", rule: "UPL Guidance Document (2026), Best Practice 7, detailed guidance from p. 28; UPL Rules (2017), Rule 40.", requiresVisual: true },
+      { id: "UPL-7.2", domain: "7 Format Materials for Understanding", check: 'visual', text: "Use hierarchy and emphasis to focus the reader’s attention and guide the sequence in which they read (e.g., use titles to categorize information, use size or color or bolding to emphasize, number sections for clarity)", rule: "UPL Guidance Document (2026), Best Practice 7, detailed guidance from p. 28; UPL Rules (2017), Rule 41.", requiresVisual: true },
+      { id: "UPL-7.3", domain: "7 Format Materials for Understanding", check: 'visual', text: "Format text to optimize the intake of information; avoid large blocks of text and use high contrast between text and its background", rule: "UPL Guidance Document (2026), Best Practice 7, detailed guidance from p. 28; UPL Rules (2017), Rule 42.", requiresVisual: true },
+      { id: "UPL-7.4", domain: "7 Format Materials for Understanding", check: 'visual', text: "Use white space generously and deliberately", rule: "UPL Guidance Document (2026), Best Practice 7, detailed guidance from p. 28; UPL Rules (2017), Rule 44.", requiresVisual: true },
+      { id: "UPL-7.5", domain: "7 Format Materials for Understanding", check: 'visual', text: "Design layouts to support how patients will use the information (e.g., checklists for actions, tabs to find appropriate section, etc.)", rule: "UPL Guidance Document (2026), Best Practice 7, detailed guidance from p. 28; UPL Rules (2017), Rule 45.", requiresVisual: true },
+      { id: "UPL-7.6", domain: "7 Format Materials for Understanding", check: 'visual', text: "Use logos as sparingly as possible, at a minimal size", rule: "UPL Guidance Document (2026), Best Practice 7, detailed guidance from p. 28; UPL Rules (2017), Rule 6.", requiresVisual: true },
+      { id: "UPL-8.1", domain: "8 Be Culturally Responsible", check: 'process', text: "Plan for cultural considerations from the start", rule: "UPL Guidance Document (2026), Best Practice 8, detailed guidance from p. 30.", notAssessableFromDoc: true },
+      { id: "UPL-8.2", domain: "8 Be Culturally Responsible", check: 'process', text: "Involve patients, caregivers, or community members throughout development whenever possible", rule: "UPL Guidance Document (2026), Best Practice 8, detailed guidance from p. 30.", notAssessableFromDoc: true },
+      { id: "UPL-8.3", domain: "8 Be Culturally Responsible", check: 'text', text: "Go beyond translation by adapting language, visuals, tone, and examples for understanding", rule: "UPL Guidance Document (2026), Best Practice 8, detailed guidance from p. 30." },
+      { id: "UPL-8.4", domain: "8 Be Culturally Responsible", check: 'text', text: "Recognize that language, dialect, and communication preferences vary across communities", rule: "UPL Guidance Document (2026), Best Practice 8, detailed guidance from p. 30." },
+      { id: "UPL-8.5", domain: "8 Be Culturally Responsible", check: 'visual', text: "Reflect the intended audience through authentic imagery and culturally appropriate design", rule: "UPL Guidance Document (2026), Best Practice 8, detailed guidance from p. 30.", requiresVisual: true },
+      { id: "UPL-8.6", domain: "8 Be Culturally Responsible", check: 'process', text: "Research cultural beliefs, trusted community members, and decision-making preferences", rule: "UPL Guidance Document (2026), Best Practice 8, detailed guidance from p. 30.", notAssessableFromDoc: true },
+      { id: "UPL-9.1", domain: "9 Empower Caregivers", check: 'text', text: "Address caregivers directly—not only as supporters of the patient", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+      { id: "UPL-9.2", domain: "9 Empower Caregivers", check: 'text', text: "Be mindful that caregivers may identify by different terms, such as care partners, carers, or loved ones, and reflect that language where appropriate.", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+      { id: "UPL-9.3", domain: "9 Empower Caregivers", check: 'text', text: "Provide practical, actionable information caregivers can use with confidence", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+      { id: "UPL-9.4", domain: "9 Empower Caregivers", check: 'text', text: "Recognize that caregiver needs change across different stages of the journey", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+      { id: "UPL-9.5", domain: "9 Empower Caregivers", check: 'text', text: "Acknowledge the emotional, physical, and practical realities of caregiving", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+      { id: "UPL-9.6", domain: "9 Empower Caregivers", check: 'text', text: "Help caregivers understand their role and what to expect", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+      { id: "UPL-9.7", domain: "9 Empower Caregivers", check: 'text', text: "Connect caregivers with additional resources and support when appropriate", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+      { id: "UPL-9.8", domain: "9 Empower Caregivers", check: 'text', text: "Encourage shared understanding between patients, caregivers, and healthcare teams", rule: "UPL Guidance Document (2026), Best Practice 9, detailed guidance from p. 36." },
+    ],
+    sources: [
+      'Bristol Myers Squibb. Universal Patient Language (UPL) Best Practices — UPL Guidance Document. © 2026 (NO-WW-2600011, 10/26). https://www.upl.org/assets/buildeasy/us-corp/be-upl/en/resources/UPL%20Guidance%20Document.pdf',
+      'Bristol Myers Squibb. UPL Rules (v06). © 2017. https://www.upl.org/assets/buildeasy/us-corp/be-upl/en/resources/UPL%20Rules_v06.pdf',
+      'Bristol Myers Squibb. How to Implement the UPL (9 best practices). https://www.upl.org/how-to-implement.html',
+    ],
+    uiNote: 'Bristol Myers Squibb’s 9 best practices for patient communication. A checklist, not a score. Visual items need the laid-out piece; planning items need records of how it was made.',
+    notes: 'UPL is guidance from Bristol Myers Squibb, not a validated scoring instrument; mark each item met, partly or not met. Use the principles that fit the piece — UPL says you don’t need every one every time. The current source is the UPL Guidance Document (2026, 9 best practices); the earlier UPL Rules (2017) cover best practices 1–7 with numbered rules and are cited per item where they match. Best practices 8 (Be Culturally Responsible) and 9 (Empower Caregivers) exist only in the Guidance Document.',
+  },
+
   NCI_PINK_BOOK: {
     id: 'NCI_PINK_BOOK',
     name: 'National Cancer Institute — Making Health Communication Programs Work',
@@ -587,6 +678,7 @@ const FRAMEWORK_REGISTRY = {
       'Schillinger D, Piette J, Grumbach K, et al. (2003). Closing the loop: Physician communication with diabetic patients who have low health literacy. Archives of Internal Medicine, 163(1), 83–90. https://doi.org/10.1001/archinte.163.1.83',
       'Pfizer. (n.d.). Ask Me 3: Good Questions for Your Good Health. National Patient Safety Foundation. https://www.npsf.org/page/askme3',
     ],
+    uiNote: "Teach-back happens face to face. A page can help by making the main points easy to say back. Can a reader answer all three Ask Me 3 questions?",  // plain-language note shown in the studio
     notes: 'Teach-Back is a live clinical interaction method. TB-1 through TB-3 can be partially assessed from written materials (are they written to support teach-back?). Ask Me 3 (AM3-1 to AM3-3) can be fully assessed from document content. If a patient cannot answer all three Ask Me 3 questions from the document alone, the material needs revision regardless of readability scores.',
   },
 
@@ -657,8 +749,9 @@ const FRAMEWORK_REGISTRY = {
     sources: [
       'Elwyn G, O\'Connor A, Stacey D, et al. (2006). Developing a quality criteria framework for patient decision aids: Online international Delphi consensus process. BMJ, 333(7565), 417. https://doi.org/10.1136/bmj.38926.629329.AE',
       'Stacey D, Légaré F, Pouliot S, Kryworuchko J, Dunn S. (2010). Shared decision making models to inform an interprofessional perspective on decision support for people facing health decisions. Patient Education and Counseling, 80(2), 164–172. https://doi.org/10.1016/j.pec.2009.10.015',
-      'IPDAS Collaboration. Patient Decision Aids. Ottawa Hospital Research Institute. https://ipdas.ohri.ca/',
+      'IPDAS Collaboration. Patient Decision Aids. Ottawa Hospital Research Institute. https://decisionaid.ohri.ca/ipdas.html',
     ],
+    uiNote: "A decision aid must meet all 6 of the first items. The rest are for full sign-off. Items about how it was made can’t be checked from the page.",  // plain-language note shown in the studio
     notes: 'Qualifying criteria are a gate — failing any one disqualifies the material as a patient decision aid. Certifying criteria are aspirational standards for formal certification. Development and process criteria (C12–C15) are typically NOT_ASSESSABLE from document content alone.',
   },
 
@@ -685,6 +778,7 @@ const FRAMEWORK_REGISTRY = {
       'Agency for Healthcare Research and Quality. (2015). Health Literacy Universal Precautions Toolkit (2nd ed.). AHRQ Publication No. 15-0023-EF. https://www.ahrq.gov/health-literacy/improve/precautions/index.html',
       'DeWalt DA, Callahan LF, Hawk VH, et al. (2010). Health literacy universal precautions toolkit. AHRQ Publication No. 10-0046-EF. Agency for Healthcare Research and Quality.',
     ],
+    uiNote: "This toolkit helps a practice improve. It is not a score for one page. Items about talking or office systems can’t be checked from text.",  // plain-language note shown in the studio
     notes: 'The Toolkit is a practice improvement framework, not a document scoring tool. Spoken communication and system criteria (AHRQ-1, AHRQ-2, AHRQ-8, AHRQ-9) are typically NOT_ASSESSABLE from written materials alone.',
   },
 
@@ -715,6 +809,7 @@ const FRAMEWORK_REGISTRY = {
       'O\'Connor AM, Tugwell P, Wells GA, et al. (1998). A decision aid for women considering hormone therapy after menopause. Patient Education and Counseling, 33(3), 267–279. https://doi.org/10.1016/S0738-3991(98)00026-3',
       'Ottawa Hospital Research Institute. Decision Support & Decision Aids. https://decisionaid.ohri.ca/',
     ],
+    uiNote: "This is a guide for design, not a score. The score comes from a patient survey (the Decisional Conflict Scale).",  // plain-language note shown in the studio
     notes: 'The DMSF is a design framework (not scored). The Decisional Conflict Scale (DCS) is the measurement instrument and requires a patient survey — criteria marked notAssessableFromDoc cannot be evaluated from document content alone.',
   },
 
@@ -734,9 +829,10 @@ const FRAMEWORK_REGISTRY = {
       { id: 'SHARE-E', domain: 'Evaluate the decision',        text: 'Follow-up and revisiting are planned; decisional regret is acknowledged as possible.' },
     ],
     sources: [
-      'Agency for Healthcare Research and Quality. (2014). The SHARE Approach — A Model for Shared Decision Making: A Resource for Clinicians. AHRQ Publication No. 14-0058-1-EF. https://www.ahrq.gov/health-literacy/professional-training/shared-decision/index.html',
+      'Agency for Healthcare Research and Quality. (2014). The SHARE Approach — A Model for Shared Decision Making: A Resource for Clinicians. AHRQ Publication No. 14-0058-1-EF. https://www.ahrq.gov/sdm/share-approach/index.html',
       'Elwyn G, Frosch D, Thomson R, et al. (2012). Shared decision making: A model for clinical practice. Journal of General Internal Medicine, 27(10), 1361–1367. https://doi.org/10.1007/s11606-012-2077-6',
     ],
+    uiNote: "Five steps for how clinicians talk with patients. The last two steps can’t be checked from a page.",  // plain-language note shown in the studio
     notes: 'SHARE is a clinician conversation model used for training and workflow design. Steps R and E (reaching a decision together, follow-up) are typically NOT_ASSESSABLE from written materials alone.',
   },
 
@@ -763,6 +859,7 @@ const FRAMEWORK_REGISTRY = {
       'Michie S, van Stralen MM, West R. (2011). The behaviour change wheel: A new method for characterising and designing behaviour change interventions. Implementation Science, 6(1), 42. https://doi.org/10.1186/1748-5908-6-42',
       'Michie S, Atkins L, West R. (2014). The Behaviour Change Wheel: A Guide to Designing Interventions. Silverback Publishing. ISBN 978-1-909567-00-4.',
     ],
+    uiNote: "COM-B finds what blocks a habit. First find the gap, then check if the page helps close it. It gives no score.",  // plain-language note shown in the studio
     notes: 'COM-B is a diagnostic framework — outputs are gap diagnoses and intervention maps, not scores. Assessment requires knowing which COM-B sub-component is the barrier before evaluating whether the document addresses it. COMB-BCW requires evaluator judgment about intervention match.',
   },
 
@@ -787,6 +884,7 @@ const FRAMEWORK_REGISTRY = {
       'Janz NK, Becker MH. (1984). The health belief model: A decade later. Health Education Quarterly, 11(1), 1–47. https://doi.org/10.1177/109019818401100101',
       'Champion VL, Skinner CS. (2008). The health belief model. In K Glanz, BK Rimer, K Viswanath (Eds.), Health Behavior and Health Education: Theory, Research, and Practice (4th ed., pp. 45–65). Jossey-Bass.',
     ],
+    uiNote: "Check all 6 parts. Talking about risk without what stops people, or how to act, can leave readers scared but stuck.",  // plain-language note shown in the studio
     notes: 'The most common HBM design error: addressing Susceptibility (HBM-1) and Severity (HBM-2) while neglecting Barriers (HBM-4) and Self-Efficacy (HBM-6) — fear without actionable path. All 6 constructs should be present for complete HBM compliance.',
   },
 
@@ -811,6 +909,7 @@ const FRAMEWORK_REGISTRY = {
       'Prochaska JO, DiClemente CC. (1983). Stages and processes of self-change of smoking: Toward an integrative model of change. Journal of Consulting and Clinical Psychology, 51(3), 390–395. https://doi.org/10.1037/0022-006X.51.3.390',
       'Prochaska JO, Velicer WF. (1997). The transtheoretical model of health behavior change. American Journal of Health Promotion, 12(1), 38–48. https://doi.org/10.4278/0890-1171-12.1.38',
     ],
+    uiNote: "You need to know what stage your readers are at. One page rarely fits every stage, so check the stage it aims at.",  // plain-language note shown in the studio
     notes: 'TTM stage assessment requires knowing the audience\'s current stage — this may be NOT_ASSESSABLE from document content alone without that context. A document cannot meet criteria for all 5 stages simultaneously; the assessment should focus on which stage(s) it targets.',
   },
 
@@ -833,6 +932,7 @@ const FRAMEWORK_REGISTRY = {
       'Witte K. (1992). Putting the fear back into fear appeals: The Extended Parallel Process Model. Communication Monographs, 59(4), 329–349. https://doi.org/10.1080/03637759209376276',
       'Witte K, Allen M. (2000). A meta-analysis of fear appeals: Implications for effective public health campaigns. Health Education & Behavior, 27(5), 591–615. https://doi.org/10.1177/109019810002700506',
     ],
+    uiNote: "Never raise fear without showing that the step works and that readers can do it.",  // plain-language note shown in the studio
     notes: 'Critical design rule: never raise perceived threat (EPPM-1, EPPM-2) without simultaneously and convincingly raising efficacy (EPPM-3, EPPM-4). Every fear appeal must pair the risk with what works and how to do it. EPPM-BALANCE requires evaluator judgment.',
   },
 
@@ -856,6 +956,7 @@ const FRAMEWORK_REGISTRY = {
       'World Health Organization. (2017). Communicating Risk in Public Health Emergencies: A WHO Guideline for Emergency Risk Communication (ERC) Policy and Practice. WHO. https://www.who.int/publications/i/item/9789241550208',
       'Covello VT, Peters RG, Wojtecki JG, Hyde RC. (2001). Risk communication, the West Nile Virus epidemic, and bioterrorism: Responding to the communication challenges posed by the intentional or unintentional release of a pathogen in an urban setting. Journal of Urban Health, 78(2), 382–391. https://doi.org/10.1093/jurban/78.2.382',
     ],
+    uiNote: "Made for health emergencies. Use it for outbreak or crisis material. Planning items can’t be checked from a page.",  // plain-language note shown in the studio
     notes: 'WHO Risk Communication Framework is designed for public health emergency communication. Apply to materials in crisis or outbreak contexts. Planning and coordination criteria (channel selection, spokesperson training) are typically NOT_ASSESSABLE from document content alone.',
   },
 
@@ -951,27 +1052,30 @@ const FRAMEWORK_REGISTRY = {
 
   PICKER: {
     id: 'PICKER',
-    name: 'Picker Institute — Principles of Patient-Centered Care',
+    name: 'Picker Principles of Person Centred Care',
     abbr: 'Picker Principles',
     zone: 'outcomes',
     scoringType: 'checklist',
     formula: null,
     passThreshold: null,
+    // Item text is the current principle name, verbatim from picker.org (checked 2026-10-16).
+    // The rule says what to look for when the principle is applied to written material — that part is this tool's reading.
     criteria: [
-      { id: 'PICKER-1', domain: 'Values & Preferences',          text: 'The document treats the patient as a person; their choices and dignity are honored.' },
-      { id: 'PICKER-2', domain: 'Coordination & Integration',    text: 'The document addresses coordination of care across services; care transitions are acknowledged.' },
-      { id: 'PICKER-3', domain: 'Information, Communication & Education', text: 'The document informs the patient about their condition and treatment; health literacy is supported.' },
-      { id: 'PICKER-4', domain: 'Physical Comfort',              text: 'Physical comfort needs (pain management, environment) are addressed.' },
-      { id: 'PICKER-5', domain: 'Emotional Support',             text: 'Emotional needs and fear/anxiety are acknowledged and addressed.' },
-      { id: 'PICKER-6', domain: 'Family & Friends Involvement',  text: 'Family or caregiver involvement is acknowledged and supported as appropriate.' },
-      { id: 'PICKER-7', domain: 'Continuity & Transition',       text: 'Discharge planning, follow-up, and community service coordination are addressed.' },
-      { id: 'PICKER-8', domain: 'Access to Care',                text: 'Access to care (appointments, after-hours, language/geographic access) is addressed.' },
+      { id: 'PICKER-1', domain: 'Picker Principles', text: 'Fast access to reliable healthcare advice', rule: 'In a document: says how and when to get help — appointments, after-hours, language or geographic access.' },
+      { id: 'PICKER-2', domain: 'Picker Principles', text: 'Effective treatment by trusted professionals', rule: 'In a document: shows who stands behind the advice (named team, reviewers, date) and supports trust in the care team.' },
+      { id: 'PICKER-3', domain: 'Picker Principles', text: 'Continuity of care and smooth transitions', rule: 'In a document: covers what happens next — discharge, follow-up, moving between services.' },
+      { id: 'PICKER-4', domain: 'Picker Principles', text: 'Involvement and support for family and carers', rule: 'In a document: speaks to family and carers and how they can help, as appropriate.' },
+      { id: 'PICKER-5', domain: 'Picker Principles', text: 'Clear information, communication and support for self-care', rule: 'In a document: explains the condition and treatment clearly and gives practical self-care steps.' },
+      { id: 'PICKER-6', domain: 'Picker Principles', text: 'Involvement in decisions and respect for preferences', rule: 'In a document: presents options and respects the person\'s choices and dignity.' },
+      { id: 'PICKER-7', domain: 'Picker Principles', text: 'Emotional support, empathy and respect', rule: 'In a document: acknowledges worry and fear and offers support.' },
+      { id: 'PICKER-8', domain: 'Picker Principles', text: 'Attention to physical and environmental needs', rule: 'In a document: addresses comfort needs such as pain and the care environment.' },
     ],
     sources: [
+      'Picker. Picker Principles of Person Centred Care. https://www.picker.org/about-picker/the-picker-principles-person-centred-care',
       'Gerteis M, Edgman-Levitan S, Daley J, Delbanco TL (Eds.). (1993). Through the Patient\'s Eyes: Understanding and Promoting Patient-Centered Care. Jossey-Bass. ISBN 978-1555425159.',
-      'Picker Institute. About Picker. https://www.picker.org/',
       'Jenkinson C, Coulter A, Bruster S. (2002). The Picker Patient Experience Questionnaire: Development and validation using data from in-patient surveys in five countries. International Journal for Quality in Health Care, 14(5), 353–358. https://doi.org/10.1093/intqhc/14.5.353',
     ],
+    uiNote: "Eight rules for person-centred care. Use them as checks when you design written material.",  // plain-language note shown in the studio
     notes: 'Picker Principles are an organizational and design standard. Separate Picker survey instruments measure how well each principle is being met by a care organization — those scores require patient surveys. The 8 principles can be assessed from written materials as design criteria.',
   },
 
@@ -1021,6 +1125,32 @@ const FRAMEWORK_REGISTRY = {
     notes: 'EBCD is a participatory design methodology requiring live patient and staff engagement across 6 phases. All criteria are NOT_ASSESSABLE from document content alone — EBCD produces qualitative outputs (implemented changes, patient/staff-reported improvement), not scores.',
   },
 
+  PCORI_FE: {
+    id: 'PCORI_FE',
+    name: 'PCORI Foundational Expectations for Partnerships in Research',
+    abbr: 'PCORI',
+    zone: 'outcomes',
+    scoringType: 'process-guide',
+    formula: null,
+    passThreshold: null, // PCORI: "There is no one-size-fits-all approach to addressing these expectations."
+    // Rates the research project and its partnerships, not the document: each expectation is the PCORI statement
+    // verbatim; its rule holds PCORI's "Questions to ask" for that expectation, also verbatim.
+    criteria: [
+      { id: "PCORI-1", domain: "Representative Involvement", check: 'process', text: "Projects should include partners, organizations, researchers and other team members who reflect the range of patients and communities affected by the research topic.", rule: "Questions to ask (PCORI, p. 3): How well do the partners and researchers on the team reflect the perspectives and experiences of the groups and communities that the project will benefit? What efforts have been made to intentionally include the range of partners and organizations whose perspectives and experiences have not been reflected in past research? To what extent does the team include patients with lived experience related to the research topic as partners versus asking researchers or other team members to describe the patient perspective?" },
+      { id: "PCORI-2", domain: "Early and Ongoing Engagement", check: 'process', text: "Projects should ensure that partners contribute early and throughout the study, including planning the study, conducting the study and disseminating study results.", rule: "Questions to ask (PCORI, p. 4): How will partners contribute to all phases of the project? How have partners and communities been engaged in developing the research topic, questions, approach and outcomes so that the research addresses their priorities, needs and experiences? How have partners helped to develop the engagement strategy, including defining their roles and responsibilities? How will partners be involved in refining their role as needed during the project? To what extent do partners’ roles and responsibilities reflect their skills, strengths, interests and preferences?" },
+      { id: "PCORI-3", domain: "Dedicated Funds for Engagement and Partner Compensation", check: 'process', text: "Projects should dedicate funds to support engaging with partners and compensate partners for their time, expertise and perspectives in a timely manner and in ways that reflect their preferences and roles.", rule: "Questions to ask (PCORI, p. 5): To what extent does the project budget compensate partners at an amount that reflects their expertise, role and contributions? To what extent is compensation fair for all partners? To what extent have partners been involved in determining the type, amount and frequency of compensation? To what extent does compensation account for out-of-pocket costs that may be barriers to participation, such as parking, transportation or child care? To what extent does the project budget include funds to support full partner participation such as engagement coordinators, interpreters, training and technology supports like tablets or screen readers?" },
+      { id: "PCORI-4", domain: "Build Capacity To Work as a Team", check: 'process', text: "Projects should identify skills, strengths and barriers to engagement and provide all team members with the information, training and support they need to work as a team.", rule: "Questions to ask (PCORI, p. 6): How will the team identify and build on partners’ skills and strengths? How have barriers that affect team members’ participation been identified and discussed? How can the team overcome barriers by offering supports or resources and building on partners’ skills and strengths? To what extent are researchers ready to engage with patients and other partners? How will researchers develop and strengthen skills to engage with partners who bring different perspectives? What information and supports will help partners contribute at different stages of the project? How will ongoing needs be identified and addressed to support participation?" },
+      { id: "PCORI-5", domain: "Meaningful Inclusion of Partners in Decision Making", check: 'process', text: "Projects should use engagement structures and processes that include partners in decision making throughout all phases of the project, with considerations for the project’s goals, scope and scale.", rule: "Questions to ask (PCORI, p. 7): How will decisions — from design to conduct to interpretation and dissemination of results — be made and communicated? How will the team work together to determine who is responsible for and involved in making decisions about different tasks and activities? How will patients and other partners influence decisions in all phases of the project? How do engagement structures support collaborative decision making between researchers, patients and other partners? How do engagement structures support the goals, purpose and scale of the project?" },
+      { id: "PCORI-6", domain: "Ongoing Review and Assessment of Engagement", check: 'process', text: "Projects should gather input and feedback throughout the project to identify what is working well and what could be improved, and then adjust engagement approaches as needed.", rule: "Questions to ask (PCORI, p. 8): How and at what points will teams gather input from all team members about the process and impact of engagement, including its effect on the project and team members’ relationships? What processes are in place to ensure that engagement-related issues and concerns are addressed respectfully and in a timely manner and that partners are involved in the process? What processes are in place to adjust existing engagement approaches based on assessments? How can these processes help strengthen partnerships and repair trust if needed?" },
+    ],
+    sources: [
+      'Patient-Centered Outcomes Research Institute (PCORI). Foundational Expectations for Partnerships in Research. Published February 2, 2024; updated March 2026. https://www.pcori.org/sites/default/files/PCORI-Foundational-Expectations-for-Partnerships-In-Research.pdf',
+      'PCORI. Foundational Expectations guidance and examples. https://www.pcori.org/Foundational-Expectations',
+    ],
+    uiNote: 'Six expectations for partnering with patients and others in research. It rates how the project was run, not the material itself, so you answer from what you know about the project.',
+    notes: 'The Foundational Expectations update PCORI’s 2014 Engagement Rubric. Researchers and partners should address each expectation when applying for funding, planning, and reflecting during a project. Meaningful engagement is an active partnership through planning, conducting and disseminating research; activities that only request input (surveys, focus groups) do not count as meaningful engagement for PCORI. Patient partners are not study participants. No score: mark each expectation met, partly or not met, using the questions as prompts.',
+  },
+
   SEIPS: {
     id: 'SEIPS',
     name: 'Systems Engineering Initiative for Patient Safety (SEIPS 2.0)',
@@ -1044,6 +1174,7 @@ const FRAMEWORK_REGISTRY = {
       'Carayon P, Schoofs Hundt A, Karsh BT, et al. (2006). Work system design for patient safety: The SEIPS model. Quality and Safety in Health Care, 15(Suppl 1), i50–i58. https://doi.org/10.1136/qshc.2005.015842',
       'Holden RJ, Carayon P, Gurses AP, et al. (2013). SEIPS 2.0: A human factors framework for studying and improving the work of healthcare professionals and patients. Ergonomics, 56(11), 1669–1686. https://doi.org/10.1080/00140139.2013.838643',
     ],
+    uiNote: "A way to look at the whole system around care. It gives ideas to fix it, not a score.",  // plain-language note shown in the studio
     notes: 'SEIPS is a systems analysis model for clinical workflow design. Use for evaluating clinical process documentation, care pathway materials, or patient safety tools. SEIPS assessment produces work system analyses and redesign recommendations, not numerical scores.',
   },
 
@@ -1072,6 +1203,7 @@ const FRAMEWORK_REGISTRY = {
       'Frampton SB, Gilpin L, Charmel PA (Eds.). (2003). Putting Patients First: Designing and Practicing Patient-Centered Care. Jossey-Bass. ISBN 978-0787964542.',
       'Stone S. (2008). A retrospective evaluation of the impact of the Planetree patient-centered model of care on inpatient quality outcomes. HERD: Health Environments Research & Design Journal, 1(4), 55–69. https://doi.org/10.1177/193758670800100406',
     ],
+    uiNote: "A plan for a whole site. Use the 10 parts as ideas. Many won’t apply to one handout.",  // plain-language note shown in the studio
     notes: 'Planetree is a whole-organization philosophy. Designation requires on-site review, patient/staff survey data, and evidence of culture change — not a numerical score. For written materials, apply the 10 components as design principles. PT-3 through PT-10 will often be NOT_APPLICABLE for clinical educational documents.',
   },
 
