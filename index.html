@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<script>try{if(localStorage.getItem('pea.theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<script>(function(){var t;try{t=localStorage.getItem('pea.theme')}catch(e){}if(t!=='light')document.documentElement.setAttribute('data-theme','dark')})()</script>
 <title>PRISM — Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261019e">
-<script src="theme-switch.js?v=20261019b" defer></script>
+<link rel="stylesheet" href="design-system.css?v=20261019g">
+<script src="theme-switch.js?v=20261019e" defer></script>
+<script src="motion.js?v=20261019f" defer></script>
 <link rel="stylesheet" href="intro.css?v=20261019c">
 <script src="intro.js?v=20261019f" defer></script>
 <script src="plan.js?v=20261019b" defer></script>
@@ -54,8 +55,20 @@ body > .site-bar{flex-shrink:0;position:relative;z-index:600}
 .compass-view iframe{flex:1;width:100%;height:100%;border:0;background:var(--desk)}
 body.on-compass > .stage{display:none}
 body.on-compass .site-page{visibility:hidden}
-.view-enter{animation:view-in .22s ease-out}
-@keyframes view-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.view-enter{animation:view-in var(--dur-slow) var(--ease-out)}
+.view-enter.from-right{--vx:20px}
+.view-enter.from-left{--vx:-20px}
+@keyframes view-in{from{opacity:0;transform:translateX(var(--vx, 0))}to{opacity:1;transform:none}}
+/* Plan: a new stage arrives in a short stagger, heading first */
+#plan-stage > *{animation:m-rise var(--dur-slow) var(--ease-out) both}
+#plan-stage > :nth-child(2){animation-delay:40ms} #plan-stage > :nth-child(3){animation-delay:80ms}
+#plan-stage > :nth-child(4){animation-delay:120ms} #plan-stage > :nth-child(n+5){animation-delay:160ms}
+/* Drawers and the files list slide in each time they open */
+#ver-panel{animation:m-slide-left var(--dur-slow) var(--ease-out)}
+#file-history{animation:m-drop var(--dur) var(--ease-out)}
+/* A suggestion box opening, and the empty Material prompts coming back */
+.sug-edit:not([hidden]){animation:m-rise var(--dur) var(--ease-out)}
+.canvas-empty{animation:m-fade var(--dur) var(--ease-out)}
 @media (prefers-reduced-motion:reduce){.view-enter{animation:none}}
 .stage:focus{outline:none}
 .mode-toggle{flex-shrink:0}
@@ -201,7 +214,7 @@ body.resizing{cursor:col-resize;user-select:none}
 /* Frameworks panel: rows grouped by use case (default), area, or a flat sorted list */
 .fw-zone-h{display:flex;align-items:baseline;gap:var(--sp-2);padding:var(--sp-4) 0 var(--sp-2);font-size:var(--fs-xs);font-weight:600;color:var(--ink);border-bottom:1px solid var(--rule)}
 .fw-zone-h span{font-weight:400;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.fw-row{display:grid;grid-template-columns:16px minmax(0,1fr) max-content;grid-template-areas:"box main meta";column-gap:var(--sp-3);row-gap:var(--sp-1);
+.fw-row{position:relative;display:grid;grid-template-columns:16px minmax(0,1fr);grid-template-areas:"box main";column-gap:var(--sp-3);row-gap:var(--sp-1);
   align-items:start;margin:0 calc(-1 * var(--inset));padding:var(--sp-2) var(--inset);border-bottom:1px solid var(--rule);cursor:pointer;transition:background-color .12s}
 .fw-row:hover{background:var(--hover)}
 .fw-row:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px;border-radius:var(--radius-control)}
@@ -214,18 +227,19 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .fw-row .name[data-tip]{display:inline-block;border-bottom:1px dotted var(--ink-2);cursor:help}
 .fw-row .name[data-tip]:hover{border-bottom-style:solid}
+.fw-src{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;margin:-4px 0 -4px var(--sp-1);vertical-align:middle;
+  border-radius:var(--radius-control);color:var(--ink-2)}
+.fw-src:hover{background:var(--hover);color:var(--form-blue)}
+.fw-src:focus-visible{outline:2px solid var(--focus-ring);outline-offset:0}
 .fwc-tags{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1);margin-left:-7px}   /* pill text (6px padding + 1px border in) lines up with the name */
 .fw-utag{font-size:var(--fs-xs);font-weight:400;line-height:1.4;padding:0 6px;border:1px solid var(--rule);border-radius:var(--radius-control);color:var(--ink-2);background:var(--sheet)}
 .fw-utag.hit{border-color:var(--form-blue);color:var(--ink);font-weight:600;background:var(--selected)}
 .fw-row .name-full{display:block;font-size:var(--fs-sm);font-weight:400;color:var(--ink)}
 .fw-row .full{display:block;margin-top:2px;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
-.fwc-meta{grid-area:meta;display:flex;flex-direction:row;align-items:baseline;gap:var(--sp-3);text-align:left;font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
+/* output type and how it is scored: on row 1, right-aligned, on the abbreviation's line */
+.fwc-meta{position:absolute;top:var(--sp-2);right:var(--inset);display:flex;align-items:baseline;gap:var(--sp-3);font-size:var(--fs-xs);font-weight:400;line-height:calc(var(--fs-sm) * 1.5);color:var(--ink-2);white-space:nowrap}
 .fwc-out{font-weight:600;color:var(--ink)}                                  /* output type: strong, on the text edge */
 .fwc-how{color:var(--ink-2);padding-left:var(--sp-3);border-left:1px solid var(--rule)}   /* how it is scored: plain, after a hairline */
-@container fwpanel (max-width: 520px){
-  .fw-row{grid-template-columns:16px minmax(0,1fr);grid-template-areas:"box main" ". meta"}
-  .fwc-meta{flex-direction:row;flex-wrap:wrap;gap:var(--sp-1) var(--sp-3);align-items:center;text-align:left}
-}
 .fw-top-panel-inner{container:fwpanel / inline-size}
 
 /* Filter menu (floating) and the chip that names the active filter */
@@ -253,6 +267,10 @@ body.resizing{cursor:col-resize;user-select:none}
 .ck-tag{margin-left:var(--sp-1);padding:0 var(--sp-2);background:var(--selected);color:var(--form-blue)}
 .ck-tag.ck-pass{background:var(--pass-bg);color:var(--pass)}
 .ck-tag.ck-fail{background:var(--fail-bg);color:var(--fail)}
+/* checklist row: the question, then its tags on one line, then the reasons */
+.fwo-q{display:block}
+.fwo-tags{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin:var(--sp-1) 0 0 calc(-1 * var(--sp-2))}   /* tag text lines up with the question (8px pill padding) */
+.fwo-tags .ck-tag{margin-left:0}
 
 /* ── Material panel: the sheet the document sits on ── */
 .canvas{grid-column:1;grid-row:2;position:relative;min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden;
@@ -585,7 +603,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .ck-item:last-child, .fwo-row:last-child{border-bottom:none}
 .ck-n{grid-area:n;text-align:right;font-size:var(--fs-xs);font-weight:400;line-height:calc(var(--fs-sm) * 1.45);color:var(--ink-2);font-variant-numeric:tabular-nums}
 .ck-text, .fwo-row .t{grid-area:t;min-width:0;font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink)}
-.ck-item .rate, .fwo-row .rate{grid-area:r;justify-content:flex-end}
+.ck-item .rate, .fwo-row .rate{grid-area:r;align-self:start;justify-content:flex-end}
 .ck-item.auto .ck-text{color:var(--ink-2)}
 .ck-item.na .ck-text{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--ink-2)}
 /* tick-box rows (sign-off): the box sits in the margin column */
@@ -1412,7 +1430,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
 
-<script src="frameworks.js?v=20261019b"></script>
+<script src="frameworks.js?v=20261019c"></script>
 <script>
 'use strict';
 // ════════════════════════════════════════
@@ -1959,11 +1977,17 @@ const FORMAT_SPEC = {
 };
 
 // Frameworks the brief switches on by itself. A manual untick in the Frameworks bar still wins.
+// Every use case in frameworks.js whose Brief rule matches (format or audience) brings its
+// frameworks: e.g. Handout → CCI, PEMAT-P, Readability, Plain Language, UPL, EQIP;
+// Video → PEMAT-A/V instead of PEMAT-P; Low literacy or IDD → SAM, AHRQ toolkit, Teach-Back…
+// A manual untick in the Frameworks bar still wins.
 function briefFrameworks(){
-  const out = [];
-  if(brief.format === 'video') out.push('pematav');
-  if(brief.audience === 'idd') out.push('cdcidd');
-  return out;
+  const out = new Set();
+  if(brief.format === 'video') out.add('pematav');
+  if(brief.audience === 'idd') out.add('cdcidd');
+  ((window.PEA_FRAMEWORKS || {}).SITUATIONS || []).forEach(s => { if(situationMatchesBrief(s)) s.fws.forEach(f => out.add(f)); });
+  if(brief.format === 'video') out.delete('pemat');     // the audiovisual PEMAT replaces the printable one
+  return [...out];
 }
 
 // Requirements / restrictions the designer confirms per project
@@ -2153,7 +2177,7 @@ function buildChecklist(items){
     const lockedNow = autoScored || gateFail || autoNA;
     return '<div class="ck-item'+(lockedNow?' auto':'')+(st==='na'?' na':'')+'">'+
       '<span class="ck-n" id="n-'+it.id+'"><span class="sr-only">Item </span>'+it.n+'</span>'+
-      '<div class="ck-text" id="lbl-'+it.id+'">'+it.text+tag+'</div>'+
+      '<div class="ck-text" id="lbl-'+it.id+'"><span class="fwo-q">'+it.text+'</span>'+(tag ? '<span class="fwo-tags">'+tag+'</span>' : '')+'</div>'+
       rateCtl(opts, v, "rateItem('"+it.id+"','%v')", { locked: lockedNow, labelledby: 'n-'+it.id+' lbl-'+it.id, key: 'ck:'+it.id })+
     '</div>';
   }).join('');
@@ -5351,10 +5375,11 @@ function fwSuggestedBody(key){
     const m = c[3] || {}, e = eff[i];
     if(c[0] !== lastDom){ h += '<div class="fwo-dom">' + escapeHtml(c[0]) + '</div>'; lastDom = c[0]; }
     const nid = 'fwn-' + key + '-' + i, num = fwItemNo(nid, c, i);
-    const label = escapeHtml(c[1])
-      + (FW_CHECK_LABEL[m.ck] ? ' <span class="ck-tag" title="Can\'t be judged from the text alone">' + FW_CHECK_LABEL[m.ck] + '</span>' : '')
-      + (e.src === 'auto' ? ' <span class="ck-tag ' + (e.v === 'n' || e.v === '0' || e.v === 'flag' ? 'ck-fail' : 'ck-pass') + '">Auto ' + FW_VAL_LABEL[e.v] + '</span>' : '')
-      + (e.src === 'rule' ? ' <span class="ck-tag">set by score sheet</span>' : '');
+    // the question on its own; its tags on a line underneath
+    const tags = (FW_CHECK_LABEL[m.ck] ? '<span class="ck-tag" title="Can\'t be judged from the text alone">' + FW_CHECK_LABEL[m.ck] + '</span>' : '')
+      + (e.src === 'auto' ? '<span class="ck-tag ' + (e.v === 'n' || e.v === '0' || e.v === 'flag' ? 'ck-fail' : 'ck-pass') + '">Auto ' + FW_VAL_LABEL[e.v] + '</span>' : '')
+      + (e.src === 'rule' ? '<span class="ck-tag">set by score sheet</span>' : '');
+    const label = '<span class="fwo-q">' + escapeHtml(c[1]) + '</span>' + (tags ? '<span class="fwo-tags">' + tags + '</span>' : '');
     let sub = '';
     if(e.why) sub += '<div class="fwo-sub why">' + escapeHtml(e.why) + '</div>';
     else if(e.autoWhy) sub += '<div class="fwo-sub">Tool suggestion: ' + escapeHtml(e.autoWhy) + '</div>';
@@ -5599,6 +5624,14 @@ function fwSortedGroups(shown){
   }
   return P.ZONES.map(z => ({ name: z.name, items: shown.filter(f => FW_ZONE[f] === z.key) })).filter(g => g.items.length);
 }
+// The framework itself, at the same link the Framework Compass uses (frameworks.js source)
+const FW_SOURCE_INFO = Object.fromEntries(PEA_FW.filter(f => f.source && f.source.url).map(f => [f.key, f.source]));
+function fwSourceLink(f){
+  const src = FW_SOURCE_INFO[f]; if(!src) return '';
+  return '<a class="fw-src" href="' + escapeHtml(fwSourceUrl(f)) + '" target="_blank" rel="noopener" title="Open ' + escapeHtml(FW_LABEL[f]) + ': ' + escapeHtml(src.label) + '">'
+    + '<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><path d="M8 2.5h3.5V6M11.5 2.5 6.5 7.5M10 8.5v2.5a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5v-6a.5.5 0 0 1 .5-.5H6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    + '<span class="sr-only">Open ' + escapeHtml(FW_LABEL[f]) + ' (' + escapeHtml(src.label) + ', opens in a new tab)</span></a>';
+}
 function fwPickRow(f){
   const isSel = selectedFrameworks().includes(f);
   const bd = FW_BADGE[FW_LEVEL[f]];
@@ -5607,7 +5640,7 @@ function fwPickRow(f){
   return '<div class="fw-row' + (isSel ? ' match' : '') + '" role="checkbox" tabindex="0" aria-checked="' + isSel + '" data-f="' + f + '" aria-describedby="fwd-' + f + '">'
     + '<span class="fwc-box" aria-hidden="true"></span>'
     // row 1 abbreviation · row 2 full name · then what it checks
-    + '<span class="fwc-main"><span class="name" data-tip="' + escapeHtml(FW_FULL[f]) + '">' + FW_LABEL[f] + '</span>'
+    + '<span class="fwc-main"><span class="name" data-tip="' + escapeHtml(FW_FULL[f]) + '">' + FW_LABEL[f] + '</span>' + fwSourceLink(f)
     + '<span class="sr-only" id="fwd-' + f + '">' + escapeHtml(FW_FULL[f]) + '</span>'
     + (fwFullName(f) ? '<span class="name-full">' + fwFullName(f) + '</span>' : '')
     + fwUseCaseTags(f)
@@ -5636,6 +5669,7 @@ function fwUseCaseTags(f){
   const grid = $('fw-top-grid');
   const pick = row => { if(row && FW_LABEL[row.dataset.f]) toggleFwManual(row.dataset.f); };
   grid.addEventListener('click', e => {
+    if(e.target.closest('.fw-src')) return;               // the source link opens the framework; it never ticks the row
     const n = e.target.closest('.name[data-tip]');
     if(n){ e.stopPropagation(); showTip(n); return; }   // the abbreviation shows its description; it never ticks the row
     pick(e.target.closest('.fw-row'));
@@ -5644,6 +5678,7 @@ function fwUseCaseTags(f){
   grid.addEventListener('mouseout', e => { const n = e.target.closest('.name[data-tip]'); if(n && !n.contains(e.relatedTarget) && tipOwner === n) hideTip(); });
   grid.addEventListener('keydown', e => {
     if(e.key !== ' ' && e.key !== 'Enter') return;
+    if(e.target.closest('.fw-src')) return;               // Enter on the link opens it
     const row = e.target.closest('.fw-row');
     if(!row) return;
     e.preventDefault();
@@ -5920,9 +5955,8 @@ function clearInputs(){
 }
 
 function toggleCollapse(id){
-  $(id).classList.toggle('collapsed');
-  syncFoldButtons();
-  touchLayout();
+  const card = $(id), apply = () => { card.classList.toggle('collapsed'); syncFoldButtons(); touchLayout(); };
+  if(window.PRISMMotion) PRISMMotion.fold(card, apply); else apply();
 }
 // Card header buttons say which card they act on, and the fold button says whether the card is open
 // A card body is capped at 640px until you drag its resize corner; then it can grow as tall as you pull it
@@ -6065,7 +6099,9 @@ function showView(v){
   $('nav-compass').removeAttribute('aria-current');
   $(compass ? 'nav-compass' : 'nav-studio').setAttribute('aria-current', 'page');
   document.title = compass ? 'PRISM — Framework Compass' : 'PRISM — Studio';
-  view.classList.remove('view-enter'); void view.offsetWidth; view.classList.add('view-enter');
+  // the Compass comes in from the right (it sits right of Studio in the nav); the Studio from the left
+  view.classList.remove('view-enter', 'from-left', 'from-right'); void view.offsetWidth;
+  view.classList.add('view-enter', compass ? 'from-right' : 'from-left');
   pushNav();
 }
 [['nav-studio', 'studio'], ['nav-compass', 'compass']].forEach(([id, v]) => {

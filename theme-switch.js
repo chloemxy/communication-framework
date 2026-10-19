@@ -1,12 +1,12 @@
 /* Dark mode toggle. Shared by every page; no dependencies.
  *
- * The site is light by default (it does not follow the OS setting). One "Dark" toggle in the
+ * The site is dark by default (it does not follow the OS setting). One theme button in the
  * site bar switches dark mode on and off; the choice is saved in localStorage 'pea.theme'.
  *
  * 1. Inline this snippet in <head> right after the two <meta> tags, BEFORE any stylesheet,
  *    so the first paint already has the chosen theme (no flash):
  *
- *    <script>try{if(localStorage.getItem('pea.theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+ *    <script>(function(){var t;try{t=localStorage.getItem('pea.theme')}catch(e){}if(t!=='light')document.documentElement.setAttribute('data-theme','dark')})()</script>
  *
  *    Then design-system.css, and <script src="theme-switch.js" defer></script>.
  *
@@ -55,18 +55,32 @@
     if(dark !== isDark()) suppressTransitions();
     if(dark) root.setAttribute('data-theme', 'dark'); else root.removeAttribute('data-theme');
     if(save){
-      try{ if(dark) localStorage.setItem(KEY, 'dark'); else localStorage.removeItem(KEY); }catch(e){ /* storage blocked: the choice lasts for this page only */ }
+      try{ localStorage.setItem(KEY, dark ? 'dark' : 'light'); }catch(e){ /* storage blocked: the choice lasts for this page only */ }
     }
     sync();
   }
 
   document.addEventListener('click', function(e){
     var b = e.target && e.target.closest ? e.target.closest('[data-theme-toggle]') : null;
-    if(b) apply(!isDark(), true);
+    if(!b) return;
+    var next = !isDark();
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!document.startViewTransition || reduce){ apply(next, true); return; }
+    // the new theme spreads out from the button in a circle
+    var r = b.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    var far = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.style.setProperty('--tx', x + 'px'); root.style.setProperty('--ty', y + 'px'); root.style.setProperty('--tr', far + 'px');
+    root.classList.add('theme-reveal');
+    var applied = false, once = function(){ if(!applied){ applied = true; apply(next, true); } };
+    var vt = document.startViewTransition(once);
+    var done = function(){ root.classList.remove('theme-reveal'); };
+    vt.finished.then(done, done);
+    // backstop: a page that isn't painting never runs the transition; switch at once instead
+    setTimeout(function(){ if(!applied){ try{ vt.skipTransition(); }catch(err){} once(); done(); } }, 150);
   });
 
   // Another tab or the other page changed the choice
-  window.addEventListener('storage', function(e){ if(e.key === KEY || e.key === null) apply(e.newValue === 'dark', false); });
+  window.addEventListener('storage', function(e){ if(e.key === KEY || e.key === null) apply(e.newValue !== 'light', false); });
 
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync);
   else sync();

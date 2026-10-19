@@ -65,7 +65,7 @@ alone on the swipe. The wordmark carries `PRISM` as screen-reader text.
   per region. Labels are verbs, no trailing arrows. External links may keep a small ↗.
 - Rating buttons: same height and radius as buttons; pressed state uses the status colour
   as a 2px inset border plus the word — never colour alone.
-- Theme: light by default (does not follow the OS). One theme button in the site bar names the mode it switches to (**Dark** with a moon in light mode, **Light** with a sun in dark mode); the
+- Theme: dark by default (does not follow the OS). One theme button in the site bar names the mode it switches to (**Dark** with a moon in light mode, **Light** with a sun in dark mode); the
   choice is saved in `localStorage` (`pea.theme`) and applied as `data-theme="dark"` on `<html>`
   before first paint (no flash).
 
@@ -89,6 +89,28 @@ alone on the swipe. The wordmark carries `PRISM` as screen-reader text.
   text, the samples). It is a single action area, not a list or form, so it centres as a unit.
 - Check by measuring where each text block starts inside each container: one edge, plus at
   most one row indent. Anything else is a defect.
+
+## Motion
+
+Motion explains where something came from and where it went. It never decorates.
+
+- **Tokens** (`design-system.css` → MOTION): quick 120ms (press, hover), base 200ms (menus,
+  tooltips, rows), slow 320ms (panels, dialogs, cards). Ease-out for things arriving, ease-in-out
+  for things moving between two places. No loops, no bounce.
+- **Smart animate** (`motion.js`):
+  - A selection glides from the old choice to the new one: segmented toggles, the site nav, and
+    the Plan steps.
+  - Cards rise in when they appear.
+  - Cards fold and unfold smoothly.
+- **Views and pages:**
+  - Moving between pages, the site bar holds still and the page cross-fades.
+  - Studio ⇄ Compass slides in the nav's direction: Compass from the right, Studio from the left.
+  - Plan stages arrive in a short stagger.
+  - The front door hands off into the Studio: the handout flies into the Material panel.
+- **Theme switch:** the new theme spreads from the theme button in a circle.
+- **Appearing:** menus, tooltips, dialogs, drawers and disclosures ease in each time they open.
+  Buttons give a little under the finger (scale .97).
+- **Reduced motion** switches every animation and transition off.
 
 ## Never
 

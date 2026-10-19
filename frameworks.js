@@ -99,7 +99,7 @@
     { key: 'common',    tag: 'Common',       name: 'Used often in our work', desc: 'The two frameworks our partners use most.',
       fws: ['upl', 'pcori'] },
     { key: 'print',     tag: 'Print & web',  name: 'Handout, poster or web page', desc: 'Clarity, understanding and reading level, in print or on screen.',
-      fws: ['cci', 'pemat', 'readability', 'plainlang', 'upl', 'eqip'], brief: { format: ['handout', 'poster', 'manual', 'digital'] } },
+      fws: ['cci', 'pemat', 'readability', 'plainlang', 'upl', 'eqip'], brief: { format: ['handout', 'poster', 'brochure', 'manual', 'digital'] } },
     { key: 'video',     tag: 'Video',        name: 'Video or animation', desc: 'The audiovisual PEMAT plus plain words.',
       fws: ['pematav', 'readability', 'plainlang', 'upl'], brief: { format: ['video'] } },
     { key: 'literacy',  tag: 'Low literacy', name: 'Low literacy or IDD', desc: 'For readers who find reading hard.',
