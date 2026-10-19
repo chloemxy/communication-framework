@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — History panel: save with a name, revert, export, delete
+
+Branch: `refresh-and-fixes` · Vercel: Preview (this push)
+
+- **Closes on an outside click**, as well as with ✕ or Esc.
+- **Save a version with a name.** The field and Save version button are at the top of the panel.
+  Ctrl/⌘+S still saves.
+- **Every version** has three actions:
+  - **Revert** (was "Restore"): the version you leave stays in History.
+  - **Export**: downloads that version as `<file>-edited-HHMMSS.html`, which opens in Word.
+  - **Delete**: asks first. The current text doesn't change.
+- The help line now says what each action does. The old line "nothing is deleted" is gone, since
+  Delete exists now.
+- Checked on localhost: named save, export filename, delete, revert, outside click.
+
 ## 2026-10-19 — Compass opens under the same bar; About wording and credit order
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed
