@@ -4,6 +4,27 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — Centred empty panel; History button; taller cards
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Empty Material panel is centred.** It holds:
+  - a 260px "Open a file" button
+  - a "Type or paste text" button of the same width (was a small underlined link)
+  - one line, "Or drop a file here. Ctrl/⌘+V pastes from anywhere."
+  - the file types and the privacy line
+  - the samples, also centred
+- DESIGN.md notes this as the one exception to the left-edge rule.
+- **History is easy to find.** A "History (N)" button with a clock icon sits in the Material header
+  beside Export. It opens the History side panel (saved versions and applied changes, with Undo
+  and Restore).
+  - The panel and the hints now say "History" everywhere.
+  - The footer count still opens it too. Focus returns to whichever button opened it.
+- **Score cards can be dragged taller.** The resize corner was capped by a 640px max height. Grabbing
+  the corner now lifts the cap. Checked: a drag took the CCI card from 640 to 665px.
+- Checked on localhost: 1440×900 and 375px (no sideways scroll), History open and Esc to close,
+  no console errors.
+
 ## 2026-10-18 — Flagged I logo; yellow becomes the theme colour
 
 Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)

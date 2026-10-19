@@ -222,7 +222,7 @@ function planSceneDel(k){ plan.scenes.splice(k, 1); planSave(); renderPlanStage(
 function planSendToEditor(html, label){
   const fl = planFlow();
   if(editor.innerText.trim()){
-    if(!confirm('Replace the text in the editor? What is there now is saved in Version history.')) return;
+    if(!confirm('Replace the text in the editor? What is there now is saved in History.')) return;
     saveVersion('Before ' + label);
   }
   fl.fws.forEach(k => { fwManual[k] = true; });

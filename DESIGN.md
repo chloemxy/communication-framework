@@ -85,6 +85,8 @@ alone on the swipe. The wordmark carries `PRISM` as screen-reader text.
 - A panel that opens under a bar uses the bar's edge, so the panel's first line sits
   directly under the bar title.
 - Content shown as a document (a page preview) keeps its own page margins.
+- One exception: the empty Material panel is a centred drop target (Open a file, Type or paste
+  text, the samples). It is a single action area, not a list or form, so it centres as a unit.
 - Check by measuring where each text block starts inside each container: one edge, plus at
   most one row indent. Anything else is a defect.
 
