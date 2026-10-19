@@ -4,6 +4,53 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — Logo animation: Scan is live
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Scan (number 2) is now the site's logo animation.** A thin yellow reading line sweeps across
+  PRISM, and the I is highlighted as the line passes it (about 1.2 s).
+- **Where:** it plays on page load (Studio, Compass, front door) and again on hover.
+- **Code:** CSS only (`design-system.css`). The line is the word's `::after`, so no page's markup
+  changed.
+- **Preview page:** "live on the site" moved to Scan. Its cards keep their own versions, so the
+  site's line doesn't double up there.
+- **Checked:** Studio and front-door logos sit in exactly the same place. At the end the line is
+  gone and the I is highlighted.
+
+## 2026-10-19 — Five logo animations to compare
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- `design/brainstorm/logo-animation.html` now shows five animations side by side, each with
+  Replay, plus Replay all. Every one ends on the same logo.
+  1. **Swipe:** a highlighter stroke draws across the I (0.6 s). Live on the site.
+  2. **Scan:** a yellow reading line sweeps the word and leaves the I highlighted (1.2 s).
+  3. **Stamp:** the swipe drops onto the I and lands with a small settle (0.7 s).
+  4. **Type-on:** P R I S M types out behind a cursor, then the I gets flagged (1.3 s).
+  5. **Prism fan:** a thin beam at the I widens into the chisel (0.85 s).
+- Variants 2–5 live only on the preview page until one is chosen. Reduced motion shows the
+  finished logo for all of them.
+- **Checked:** each variant runs its own animations, has the right middle frame, and ends on the
+  exact logo (shape, colour, no leftover transform).
+
+## 2026-10-19 — Logo animation: the highlighter swipe
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **What it does:** the logo draws itself the way a highlighter marks a word.
+  - The yellow chisel swipe sweeps across the I from left to right.
+  - The I turns from ink to its dark on-yellow colour as the swipe passes.
+  - It lasts about 0.6 seconds, after a 0.18-second pause.
+- **Where it plays:** when any page loads (Studio, Compass, the front door), and again whenever
+  you hover the logo. With reduced motion, the finished logo shows straight away.
+- **Code:** CSS only, in `design-system.css` next to the logo styles. The front door sets the
+  starting letter colour for the dark cover.
+- **Preview:** `design/brainstorm/logo-animation.html` shows the logo large on dark and light, with
+  Replay. It's linked from the brainstorm index.
+- **Checked:** it plays on all three logos on the preview page, ends exactly on the original
+  shape and colour, Replay restarts it, and the middle frame looks right.
+
 ## 2026-10-19 — Privacy note always within reach
 
 Branch: `refresh-and-fixes` · Vercel: Production (pushed 4c18927, merged to master)
