@@ -4,6 +4,41 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — Privacy note always within reach
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Why:** the "Your work stays on this computer" note was only in the workspace guide, which
+  disappears once score cards fill the panel.
+- **What:** a 🔒 **Private** button now sits in the Studio's site bar, next to About, on every
+  screen and view.
+  - Pressing it opens a small panel with the same four lines: nothing is uploaded; it's still here
+    after a refresh; it's gone if you clear site data or switch browser or computer; Clear removes
+    it now.
+  - Escape or a click elsewhere closes the panel, and Escape returns focus to the button.
+  - On phones it shows just the lock. Screen readers hear "Private: your work stays on this
+    computer".
+- The guide keeps its own copy of the note for first-time visitors.
+
+## 2026-10-19 — Clear works for Frameworks; Clear added to the Brief
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Frameworks Clear now clears.**
+  - Before: it removed your ticks, but the Brief's picks (e.g. 10 of 23 for a low-literacy
+    handout) came straight back, so nothing seemed to happen.
+  - Now: everything selected is unticked, including the Brief's picks and the automatic scoring
+    cards. The bar shows "None selected". Things stay off until you tick them again.
+- **Brief Clear (new).** A Clear button sits on the Brief bar whenever an audience, format or
+  notes are set, in the same place and style as the Frameworks one.
+  - It empties the Brief, and the frameworks the Brief had picked drop out with it.
+  - Frameworks you ticked or cleared yourself stay as you left them.
+  - Your document is untouched.
+- **Checked:**
+  - Handout + low literacy: 10 frameworks → Clear → 0.
+  - Clearing the Brief keeps a hand-ticked framework.
+  - Brief Clear hides once the Brief is empty.
+
 ## 2026-10-19 — Motion system: smart animate across the site
 
 Branch: `refresh-and-fixes` · Vercel: Production (pushed 35c2d67, merged to master)
