@@ -4,6 +4,27 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — Compass opens under the same bar; About wording and credit order
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Studio ⇄ Framework Compass without reloading the bar.** Clicking Framework Compass now shows it
+  inside the studio, below the same site bar, with a short fade (none with reduced motion).
+  - It used to open in a new tab, so studio work wouldn't be lost. That work now stays in memory
+    across the switch (checked: the document text is identical after Compass → Studio).
+  - Back and Forward move between the two views. Ctrl/⌘-click still opens the Compass in a new
+    tab.
+  - Embedded, the Compass hides its own bar (`?embed`) and follows the studio's Dark setting.
+  - The Evaluate/Plan switch is hidden while the Compass is showing.
+- Visiting the pages directly (for example the Compass's own Studio link): `design-system.css` now
+  asks the browser for a cross-document view transition. The bar holds still and the page under
+  it cross-fades, in browsers that support it.
+- Shared files re-versioned to `?v=20261019a`.
+- **About:** the note is now two plain lines: "PRISM scores your writing but leaves the writing to
+  you" and "Every check links to its source, and anything you haven't rated stays out of the
+  score". It replaces "It grades your work; it doesn't write it…".
+- **Credits:** Chloe Ma is listed first, for the larger contribution.
+
 ## 2026-10-19 — Centred empty panel; History button; taller cards
 
 Branch: `refresh-and-fixes` (local) · Vercel: not deployed

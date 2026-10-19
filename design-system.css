@@ -262,6 +262,11 @@ dialog::backdrop{background:var(--scrim)}
    <nav class="site-nav">
    Studio / Framework Compass / About (current page: aria-current="page"), .bar-divider, .theme-toggle.
    At 600px and below: row 1 = name + compact theme switch, row 2 = nav; page controls go last. */
+/* Moving between pages (Studio, Compass): the bar holds still, the page under it cross-fades */
+@view-transition{navigation:auto}
+.site-bar{view-transition-name:site-bar}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.2s}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
 .site-bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);min-height:56px;padding:var(--sp-2) var(--sp-5);background:var(--sheet);border-bottom:1px solid var(--rule)}
 .site-bar .site-name{display:inline-flex;align-items:center;min-height:32px;margin:0;font-size:var(--fs-lg);font-weight:600;line-height:1.35;color:var(--ink);text-decoration:none}
 .site-bar a.site-name:hover{color:var(--ink);text-decoration:underline}

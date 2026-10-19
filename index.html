@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261018a">
-<script src="theme-switch.js?v=20261017e" defer></script>
+<link rel="stylesheet" href="design-system.css?v=20261019a">
+<script src="theme-switch.js?v=20261019a" defer></script>
 <script src="plan.js?v=20261017f" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -46,6 +46,15 @@ h4,h5,h6{font-size:var(--fs-sm);font-weight:600}
 
 /* ── Site bar: the shared .site-bar component (design-system.css); the mode toggle is this page's control ── */
 body > .site-bar{flex-shrink:0;position:relative;z-index:600}
+/* Studio ⇄ Compass: the bar stays put; the view below fades up (no motion if reduced) */
+.compass-view{flex:1;min-height:0;display:flex}
+.compass-view[hidden]{display:none}
+.compass-view iframe{flex:1;width:100%;height:100%;border:0;background:var(--desk)}
+body.on-compass > .stage{display:none}
+body.on-compass .site-page{visibility:hidden}
+.view-enter{animation:view-in .22s ease-out}
+@keyframes view-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.view-enter{animation:none}}
 .stage:focus{outline:none}
 .mode-toggle{flex-shrink:0}
 .dock{display:flex;align-items:center;gap:var(--sp-2)}
@@ -751,9 +760,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
     </div>
   </div>
   <nav class="site-nav" aria-label="Site">
-    <a href="index.html" aria-current="page">Studio</a>
-    <!-- opens in a new tab on purpose: the studio keeps the material and ratings in this page only, so leaving it would lose them -->
-    <a href="framework-compass.html" target="_blank" rel="noopener" title="Every framework the studio uses, with its sources and how it's scored. Opens in a new tab, so your work here stays open.">Framework Compass<span class="sr-only"> (opens in a new tab)</span></a>
+    <a href="index.html" id="nav-studio" aria-current="page">Studio</a>
+    <!-- shown inside the studio (below the same bar), so the material and ratings in this page stay -->
+    <a href="framework-compass.html" id="nav-compass" title="Every framework the studio uses, with its sources and how it's scored">Framework Compass</a>
     <button type="button" id="about-btn" onclick="openAbout()" aria-haspopup="dialog">About</button>
   </nav>
   <span class="bar-divider" aria-hidden="true"></span>
@@ -1296,6 +1305,11 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 </main><!-- /stage -->
 
+<!-- Framework Compass, shown in place of the studio (the bar stays); loaded the first time it's opened -->
+<section class="compass-view" id="compass-view" aria-label="Framework Compass" hidden>
+  <iframe id="compass-frame" title="Framework Compass"></iframe>
+</section>
+
 <div id="tip" role="status" aria-live="polite"></div>
 
 <dialog class="about" id="about" aria-labelledby="about-title" aria-describedby="about-lead">
@@ -1313,7 +1327,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
         <li><span class="about-n" aria-hidden="true">2</span><span><b>Add your draft.</b> Type, paste, or upload a file or image.</span></li>
         <li><span class="about-n" aria-hidden="true">3</span><span><b>Pick frameworks.</b> The tool scores what it can measure. You rate the rest.</span></li>
       </ol>
-      <p class="about-note">It grades your work; it doesn’t write it. Every check links to its source, and items you haven’t reviewed never count against you.</p>
+      <p class="about-note">PRISM scores your writing but leaves the writing to you<br>
+        Every check links to its source, and anything you haven’t rated stays out of the score</p>
     </section>
 
     <section aria-labelledby="about-why">
@@ -1324,8 +1339,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
     <section aria-labelledby="about-who">
       <h3 id="about-who">Made by</h3>
       <ul class="about-people">
-        <li><span class="about-person">Sonia Seto</span><span class="about-org">Sonia Seto Studios</span></li>
         <li><span class="about-person">Chloe Ma</span><span class="about-org">GoInvo</span></li>
+        <li><span class="about-person">Sonia Seto</span><span class="about-org">Sonia Seto Studios</span></li>
       </ul>
       <p class="about-note">Claude helped build and test the code. A work in progress.</p>
     </section>
@@ -1344,7 +1359,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
 
-<script src="frameworks.js?v=20261017e"></script>
+<script src="frameworks.js?v=20261019a"></script>
 <script>
 'use strict';
 // ════════════════════════════════════════
@@ -5821,16 +5836,58 @@ function navState(){
             : $('ver-panel').style.display    !== 'none' ? 'versions' : null,
     audience: brief.audience,
     format:   brief.format,
+    view:     currentView,
   };
 }
 
 function sameNav(a, b){
   if(!a || !b) return false;
-  return ['layout','fileId','visual','page','vtype','cvd','drawer','audience','format']
+  return ['layout','fileId','visual','page','vtype','cvd','drawer','audience','format','view']
     .every(k => a[k] === b[k]);
 }
 
 // Record a step. Called after anything that changes what's on screen.
+// ── Studio ⇄ Framework Compass in one page: the site bar never reloads ──
+let currentView = 'studio';
+function showView(v){
+  if(v === currentView) return;
+  currentView = v;
+  const compass = v === 'compass', view = compass ? $('compass-view') : $('stage');
+  const frame = $('compass-frame');
+  if(compass && !frame.getAttribute('src')) frame.setAttribute('src', 'framework-compass.html?embed=1');
+  document.body.classList.toggle('on-compass', compass);
+  $('compass-view').hidden = !compass;
+  $('nav-studio').removeAttribute('aria-current');
+  $('nav-compass').removeAttribute('aria-current');
+  $(compass ? 'nav-compass' : 'nav-studio').setAttribute('aria-current', 'page');
+  document.title = compass ? 'PRISM — Framework Compass' : 'PRISM — Studio';
+  view.classList.remove('view-enter'); void view.offsetWidth; view.classList.add('view-enter');
+  pushNav();
+}
+[['nav-studio', 'studio'], ['nav-compass', 'compass']].forEach(([id, v]) => {
+  $(id).addEventListener('click', e => {
+    if(e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;   // new tab/window still works
+    e.preventDefault();
+    showView(v);
+  });
+});
+// the logo goes back to the studio view too
+document.querySelectorAll('.site-bar .site-name[href]').forEach(a => a.addEventListener('click', e => {
+  if(e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+  e.preventDefault(); showView('studio');
+}));
+// the mode buttons belong to the studio: using one brings the studio back
+document.querySelectorAll('#mode-toggle button').forEach(b => b.addEventListener('click', () => showView('studio')));
+// the frame follows the studio's Dark setting
+new MutationObserver(() => {
+  try {
+    const d = $('compass-frame').contentDocument;
+    if(!d) return;
+    if(document.documentElement.getAttribute('data-theme') === 'dark') d.documentElement.setAttribute('data-theme', 'dark');
+    else d.documentElement.removeAttribute('data-theme');
+  } catch(e){}
+}).observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
+
 function pushNav(){
   if(navRestoring || !navReady) return;
   const s = navState();
@@ -5842,6 +5899,7 @@ function applyNav(s){
   if(!s || !s.pea) return;
   navRestoring = true;
   try {
+    showView(s.view === 'compass' ? 'compass' : 'studio');
     if(s.layout && s.layout !== currentLayout && allLayouts()[s.layout]) applyLayout(s.layout, true);
 
     if(s.audience !== brief.audience){
