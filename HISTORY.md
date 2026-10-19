@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — One privacy note, aligned
+
+Branch: `refresh-and-fixes` · Vercel: Production (pushed f8b4fed, merged to master)
+
+- The lock line in the empty Material panel ("Nothing is sent anywhere…") is removed. The
+  privacy note in the workspace guide now says it once.
+- That note is now plain text after a hairline, with no box and no bullets. Its heading and lines
+  start on the same left edge as "How to check your material", so no space is wasted on the
+  left.
+- Fixed a double line above the note: the last step's hairline is now the only divider.
+- The note's lines start where the heading's words start (after the lock icon).
+- The empty Material panel now names the formats it reads: "Word (.docx), PDF, text (.txt, .md,
+  .html) or an image (.png, .jpg, .webp)". Each format stays together on one line. (`.doc` is
+  still accepted only to explain that it should be resaved as .docx.)
+
 ## 2026-10-19 — Work survives a refresh; privacy note; front door hand-off; no orphans
 
 Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
