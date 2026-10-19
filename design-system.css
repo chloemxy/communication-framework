@@ -95,7 +95,7 @@
   --radius-sm:var(--radius-control); --radius:var(--radius-sheet); --radius-lg:var(--radius-sheet);
 }
 
-/* ── Dark: only when the person turns it on (the site is light by default) ── */
+/* ── Dark: the default; light only when the person picks Light (see theme-switch.js) ── */
 /* ── Dark: chosen explicitly (same values; keep the two blocks identical) ── */
 :root[data-theme="dark"]{
   color-scheme: dark;
@@ -194,7 +194,7 @@ input[type=checkbox], input[type=radio], input[type=range], progress{accent-colo
 
 /* ── Rating button (rateCtl): the one checklist control, same height/radius as .btn ──
    pressed = 2px inset border in the status colour + its tint + the label word; never colour alone */
-.rate{display:flex;flex-wrap:wrap;gap:var(--sp-1)}
+.rate{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--sp-1)}   /* buttons keep one size, however tall the row */
 .rate-b{min-height:32px;padding:0 var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);
   background:var(--sheet);color:var(--ink);font-family:var(--sans);font-size:var(--fs-xs);font-weight:600;line-height:1;
   white-space:nowrap;cursor:pointer;transition:background-color .12s,border-color .12s,color .12s}
@@ -352,4 +352,46 @@ details.disclose > summary:hover{color:var(--ink)}
 
 @media (prefers-reduced-motion: reduce){
   *, *::before, *::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MOTION — one system for every page (motion.js does the "smart animate" parts)
+   Durations: quick 120ms (press, hover) · base 200ms (menus, tooltips, rows) ·
+   slow 320ms (panels, dialogs, cards). One curve for things arriving (ease-out),
+   one for things moving between two places (ease-in-out). Nothing loops or bounces.
+   Reduced motion: everything below is switched off at the end of this section.
+   ════════════════════════════════════════════════════════════════ */
+:root{
+  --dur-quick:120ms; --dur:200ms; --dur-slow:320ms;
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-move:cubic-bezier(.4,0,.2,1);
+}
+@keyframes m-fade{from{opacity:0}}
+@keyframes m-rise{from{opacity:0;transform:translateY(6px)}}
+@keyframes m-drop{from{opacity:0;transform:translateY(-4px) scale(.98)}}
+@keyframes m-pop{from{opacity:0;transform:scale(.96)}}
+@keyframes m-slide-left{from{opacity:.4;transform:translateX(24px)}}
+
+/* Press: buttons give a little under the finger */
+.btn, .rate-b, .seg button, .site-nav a, .site-nav button{transition:background-color var(--dur-quick),border-color var(--dur-quick),color var(--dur-quick),transform var(--dur-quick) var(--ease-out)}
+.btn:active:not(:disabled), .rate-b:active:not(:disabled), .seg button:active, .site-nav a:active{transform:scale(.97)}
+
+/* Things that appear: they replay each time they go from hidden to shown */
+#tip.on{animation:m-fade var(--dur) var(--ease-out)}
+[role="menu"]:not([hidden]){animation:m-drop var(--dur) var(--ease-out);transform-origin:top right}
+dialog[open]{animation:m-pop var(--dur-slow) var(--ease-out)}
+dialog[open]::backdrop{animation:m-fade var(--dur-slow) var(--ease-out)}
+/* Disclosures (Compass "How it's scored", "All references"): the contents rise in as they open */
+details[open] > :not(summary){animation:m-rise var(--dur) var(--ease-out)}
+details > summary{transition:color var(--dur-quick)}
+
+/* Theme switch: the new theme spreads from the button in a circle (theme-switch.js) */
+::view-transition-old(root), ::view-transition-new(root){mix-blend-mode:normal}
+.theme-reveal::view-transition-old(root){animation:none}
+.theme-reveal::view-transition-new(root){animation:m-theme var(--dur-slow) var(--ease-move) both}
+@keyframes m-theme{from{clip-path:circle(0 at var(--tx, 100%) var(--ty, 0))}to{clip-path:circle(var(--tr, 150vmax) at var(--tx, 100%) var(--ty, 0))}}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
+  .btn:active, .rate-b:active, .seg button:active, .site-nav a:active{transform:none}
 }

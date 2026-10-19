@@ -4,6 +4,83 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — Motion system: smart animate across the site
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **One motion system.**
+  - Tokens (quick 120ms, base 200ms, slow 320ms) and two curves in `design-system.css` → MOTION.
+  - A new shared `motion.js` on the Studio and Compass pages.
+  - DESIGN.md has a new Motion section.
+- **Smart animate:**
+  - **Selections glide.** In the mode toggle, Brief chips, colour-vision picker, site nav (Studio ⇄
+    Framework Compass) and Plan steps, the highlight moves from the old choice to the new one
+    instead of jumping.
+  - **Theme switch.** The new theme spreads out in a circle from the theme button (View
+    Transitions).
+  - **Studio ⇄ Compass.** The Compass slides in from the right and the Studio from the left,
+    matching their order in the nav.
+  - **Cards.** They fold and unfold smoothly, by clicking the header bar or ▾. Quick double
+    clicks stay in step. Cards fade up when they appear.
+  - **Plan.** Stage content arrives in a short stagger, heading first.
+- **Things that open ease in:** menus (Export, Filter), tooltips, the About dialog and its
+  backdrop, the History drawer (slides from the right), the Files list, a suggestion's Edit box,
+  the empty Material prompts, and Compass disclosures ("How it's scored", "All references").
+- **Press:** buttons, rating buttons, toggles and nav links scale to .97 when pressed.
+- **Reduced motion:** every animation and transition is switched off, site-wide.
+- **Robustness:** every animation tidies up on a timer as well as on its finish event, so a
+  background tab never leaves a half-finished state.
+- **Checked** in the browser: correct glide paths, folds ending in the right state (including
+  double clicks), theme switching, the Compass loading the motion layer, no errors. The browser
+  pane wasn't on screen, so the motion itself couldn't be watched; check it live.
+
+## 2026-10-19 — Checklist rows: even buttons, tidier layout
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **Even buttons.** Rating buttons (Yes / No / N/A, Met / Not met) keep one size, 32px.
+  - The bug: in a tall row, the button group stretched to the row height. The plain buttons
+    grew to 44px while a suggested one (dashed) stayed 32px.
+  - Now the group sits at the top of the row. Checked: all 110 checklist rows use 32px buttons.
+- **Tidier rows.** In every checklist (CCI, PEMAT and the framework checklists) the question stands
+  on its own line. Its tags ("needs the layout", "set by score sheet", "Auto ✓") sit on a line
+  underneath, then the reasons ("Item 3 is no…", "N/A if…"). Before, tags wrapped at the end of
+  the question. Tag text lines up with the question's left edge.
+
+## 2026-10-19 — Dark by default
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **First visit:** the site opens in dark mode on every page (Studio, Compass, brainstorm and demo
+  pages). It's set before the first paint, so there's no flash.
+- **Choosing Light:** the theme button (it says **Light** while dark) saves the choice, and it's
+  remembered after a refresh. Picking Dark again saves that too. Only an explicit Light choice
+  keeps the site light.
+- **Docs:** `theme-switch.js`, `design-system.css` and DESIGN.md now say dark is the default.
+- **Checked:** a first visit opens dark; Light stays Light after a reload; switching back works.
+
+## 2026-10-19 — Brief picks more frameworks; each framework links to its source
+
+Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+
+- **The Brief now selects frameworks.** Each use case in `frameworks.js` that matches the Brief
+  brings its frameworks. Before, only Video and IDD added one each.
+  - **Format Poster, Brochure, Handout, Digital/web or Manual:** CCI, PEMAT-P, Readability,
+    Plain Language, UPL and EQIP. Brochure was added to this use case.
+  - **Format Video / animation:** PEMAT-A/V (instead of PEMAT-P), Readability, Plain Language
+    and UPL.
+  - **Audience Low literacy or IDD:** CDC IDD/ELL, SAM, Readability, Plain Language, the AHRQ
+    toolkit and Teach-Back.
+  - **Audiences Patients, Caregivers and Clinicians** don't add frameworks on their own.
+  - Unticking a framework in the Frameworks bar still wins.
+- **Source link on every framework row.** A small external-link icon next to the abbreviation
+  opens the framework itself in a new tab. It uses the same link as the Framework Compass
+  (`frameworks.js` source), and all 23 frameworks have one. Clicking or pressing Enter on the
+  icon opens the link without ticking the row.
+- **Score type on row 1.** The output type and how it's scored ("Partial score | Self-rated") now
+  sit on the abbreviation's line, right-aligned, at every panel width. The full name below gets
+  the whole width. Checked: no row overlaps.
+
 ## 2026-10-19 — One privacy note, aligned
 
 Branch: `refresh-and-fixes` · Vercel: Production (pushed f8b4fed, merged to master)
