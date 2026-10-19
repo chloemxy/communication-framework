@@ -379,10 +379,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .ce-start{display:flex;flex-direction:column;align-items:center;gap:var(--sp-1);margin-top:auto;cursor:default}
 .ce-open{min-height:48px;width:260px;max-width:100%;padding:0 var(--sp-6);font-size:var(--fs-lg);gap:var(--sp-3)}
 .ce-type{min-height:44px;width:260px;max-width:100%;margin:var(--sp-2) 0 var(--sp-3);font-size:var(--fs-sm);gap:var(--sp-2)}
-.ce-line{margin:0;font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink)}
+.ce-line{margin:0;font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink);text-wrap:balance}
+.ce-line .nw{white-space:nowrap}   /* a format and its extensions stay on one line */
 .ce-quiet{color:var(--ink-2)}
-.ce-private{display:flex;align-items:flex-start;justify-content:center;gap:var(--sp-2)}
-.ce-private svg{flex-shrink:0;margin-top:.25em}
 .ce-samples{width:100%;max-width:360px;margin-bottom:auto;padding-top:var(--sp-5);border-top:1px solid var(--rule);cursor:default}
 .ce-h{margin:0 0 var(--sp-3);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .ce-thumbs{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--sp-6)}
@@ -714,10 +713,10 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .guide-step.done .guide-h{color:var(--ink-2)}
 .guide-body p{margin:var(--sp-1) 0 var(--sp-2);font-size:var(--fs-sm);font-weight:400;color:var(--ink-2)}
 .guide-body p:last-child{margin-bottom:0}
-/* Privacy note under the steps: same left edge as the step text */
-.guide-private{margin:var(--sp-4) 0 0 calc(4ch + var(--sp-3));padding:var(--sp-3) var(--sp-4);border-radius:var(--radius-sheet);background:var(--sheet-2)}
+/* Privacy note under the steps: the lock sits on the guide title's left edge; the lines start with the heading's words */
+.guide-private{padding-top:var(--sp-4)}   /* the last step's hairline is the divider */
 .guide-private .guide-h{display:flex;align-items:center;gap:var(--sp-2)}
-.guide-private ul{margin:var(--sp-2) 0 0;padding-left:1.1em;font-size:var(--fs-xs);color:var(--ink-2)}
+.guide-private ul{margin:var(--sp-1) 0 0;padding:0 0 0 calc(14px + var(--sp-2));list-style:none;font-size:var(--fs-xs);color:var(--ink-2)}
 .guide-private li{margin-top:var(--sp-1)}
 .guide-private b{color:var(--ink);font-weight:600}
 
@@ -1034,8 +1033,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
             Type or paste text
           </button>
           <p class="ce-line">Or drop a file here. Ctrl/⌘+V pastes from anywhere.</p>
-          <p class="ce-line ce-quiet">Word, PDF, plain text or an image.</p>
-          <p class="ce-line ce-quiet ce-private"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>Nothing is sent anywhere. PRISM reads it in this browser.</p>
+          <p class="ce-line ce-quiet"><span class="nw">Word (.docx),</span> <span class="nw">PDF,</span> <span class="nw">text (.txt, .md, .html)</span> <span class="nw">or an image (.png, .jpg, .webp).</span></p>
         </div>
         <section class="ce-samples" aria-labelledby="ce-try">
           <h3 class="ce-h" id="ce-try">No file? Try a sample</h3>
