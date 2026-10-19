@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-19 — Logo animation: Scan is live
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed b52c1a4, merged to master)
 
 - **Scan (number 2) is now the site's logo animation.** A thin yellow reading line sweeps across
   PRISM, and the I is highlighted as the line passes it (about 1.2 s).
@@ -20,7 +20,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Five logo animations to compare
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed b52c1a4, merged to master)
 
 - `design/brainstorm/logo-animation.html` now shows five animations side by side, each with
   Replay, plus Replay all. Every one ends on the same logo.
@@ -36,7 +36,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Logo animation: the highlighter swipe
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed b52c1a4, merged to master)
 
 - **What it does:** the logo draws itself the way a highlighter marks a word.
   - The yellow chisel swipe sweeps across the I from left to right.
