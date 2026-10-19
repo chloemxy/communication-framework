@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-19 — Privacy note always within reach
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed 4c18927, merged to master)
 
 - **Why:** the "Your work stays on this computer" note was only in the workspace guide, which
   disappears once score cards fill the panel.
@@ -22,7 +22,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Clear works for Frameworks; Clear added to the Brief
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed 4c18927, merged to master)
 
 - **Frameworks Clear now clears.**
   - Before: it removed your ticks, but the Brief's picks (e.g. 10 of 23 for a low-literacy
