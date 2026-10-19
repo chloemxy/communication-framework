@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-19 — Motion system: smart animate across the site
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed 35c2d67, merged to master)
 
 - **One motion system.**
   - Tokens (quick 120ms, base 200ms, slow 320ms) and two curves in `design-system.css` → MOTION.
@@ -36,7 +36,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Checklist rows: even buttons, tidier layout
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed 35c2d67, merged to master)
 
 - **Even buttons.** Rating buttons (Yes / No / N/A, Met / Not met) keep one size, 32px.
   - The bug: in a tall row, the button group stretched to the row height. The plain buttons
@@ -49,7 +49,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Dark by default
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed 35c2d67, merged to master)
 
 - **First visit:** the site opens in dark mode on every page (Studio, Compass, brainstorm and demo
   pages). It's set before the first paint, so there's no flash.
@@ -61,7 +61,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Brief picks more frameworks; each framework links to its source
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed 35c2d67, merged to master)
 
 - **The Brief now selects frameworks.** Each use case in `frameworks.js` that matches the Brief
   brings its frameworks. Before, only Video and IDD added one each.
