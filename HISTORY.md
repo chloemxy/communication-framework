@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-19 — One privacy note, aligned
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Production (pushed f8b4fed, merged to master)
 
 - The lock line in the empty Material panel ("Nothing is sent anywhere…") is removed. The
   privacy note in the workspace guide now says it once.
