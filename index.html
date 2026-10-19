@@ -9,9 +9,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261019a">
-<script src="theme-switch.js?v=20261019a" defer></script>
-<script src="plan.js?v=20261017f" defer></script>
+<link rel="stylesheet" href="design-system.css?v=20261019e">
+<script src="theme-switch.js?v=20261019b" defer></script>
+<link rel="stylesheet" href="intro.css?v=20261019c">
+<script src="intro.js?v=20261019f" defer></script>
+<script src="plan.js?v=20261019b" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -63,6 +65,7 @@ body.on-compass .site-page{visibility:hidden}
 
 /* ── Plan from an idea: replaces the workspace (canvas, divider, score rails) in Plan mode ── */
 .stage.is-plan > :not(.top-bars):not(.plan){display:none !important}
+.stage.is-plan.plan-early > .top-bars{display:none}   /* Outline: no Brief or Frameworks yet (plan.js) */
 .plan{grid-column:1 / -1;grid-row:2;min-height:0;overflow-y:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet)}
 .plan[hidden]{display:none}
 .plan-head{padding:var(--sp-6) var(--inset) var(--sp-5);border-bottom:1px solid var(--rule)}
@@ -211,7 +214,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .fw-row .name{display:block;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .fw-row .name[data-tip]{display:inline-block;border-bottom:1px dotted var(--ink-2);cursor:help}
 .fw-row .name[data-tip]:hover{border-bottom-style:solid}
-.fwc-tags{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1)}
+.fwc-tags{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin-top:var(--sp-1);margin-left:-7px}   /* pill text (6px padding + 1px border in) lines up with the name */
 .fw-utag{font-size:var(--fs-xs);font-weight:400;line-height:1.4;padding:0 6px;border:1px solid var(--rule);border-radius:var(--radius-control);color:var(--ink-2);background:var(--sheet)}
 .fw-utag.hit{border-color:var(--form-blue);color:var(--ink);font-weight:600;background:var(--selected)}
 .fw-row .name-full{display:block;font-size:var(--fs-sm);font-weight:400;color:var(--ink)}
@@ -449,7 +452,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .mod-name{font-size:var(--fs-sm);font-weight:600;color:var(--ink);white-space:nowrap}
 .mod-fold{transition:transform .15s}
 .mod.collapsed .mod-fold{transform:rotate(-90deg)}
-.mod-body{padding:var(--sp-3) var(--inset) var(--sp-4);overflow-y:auto;scrollbar-gutter:stable;min-height:90px;max-height:640px;resize:vertical;container-type:inline-size}
+.mod-body{padding:var(--sp-3) var(--inset) var(--sp-4);overflow-y:auto;scrollbar-width:thin;min-height:90px;max-height:640px;resize:vertical;container-type:inline-size}
 .mod-note{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2)}
 .status-line{margin-bottom:var(--sp-2);font-size:var(--fs-xs);font-weight:600}
 .status-line:empty{display:none}
@@ -477,8 +480,15 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .score-why{margin-bottom:var(--sp-3);padding-bottom:var(--sp-3);border-bottom:1px solid var(--rule);font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink)}
 .score-why:empty{display:none}
 .score-why b{font-weight:600}
-.why-do{display:block;margin-top:var(--sp-1)}
-.why-do-lbl{font-weight:600}
+.score-why p{margin:0}
+.why-head{font-size:var(--fs-md);line-height:1.4;font-variant-numeric:tabular-nums}
+.why-aside{font-size:var(--fs-xs);color:var(--ink-2)}
+.why-pts{margin:var(--sp-1) 0 0;padding-left:1.1em;font-size:var(--fs-xs);color:var(--ink-2)}
+.why-pts li{margin-top:2px}
+.why-pts b{color:var(--ink)}
+/* Next step: a small theme-yellow tag (fill under ink text), then the action */
+.score-why .why-do{display:flex;align-items:baseline;gap:var(--sp-2);margin-top:var(--sp-2)}
+.why-do-lbl{flex:none;padding:0 6px;border-radius:var(--radius-control);background:var(--brand);color:var(--on-brand);font-size:var(--fs-xs);font-weight:600;line-height:20px}
 
 /* Meters: ink fill on a quiet track, a tick at the target; the number and the words carry the verdict */
 .meter-lbl{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-3);margin-bottom:var(--sp-1)}
@@ -528,6 +538,23 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .issue-fix-txt del{color:var(--ink-2);text-decoration:line-through}
 .issue-fix-txt ins{font-weight:600;text-decoration:underline 2px var(--pass);text-underline-offset:3px}
 .issue-fix-head{display:flex;align-items:baseline;gap:var(--sp-2)}
+/* Now / New: two rows with a fixed label column; old words struck, new words underlined in pass green */
+.sug{display:grid;gap:var(--sp-1);margin:0 var(--sp-1) var(--sp-3);padding:var(--sp-2) var(--sp-3);border-radius:var(--radius-control);background:var(--sheet-2)}
+.sug-row{display:grid;grid-template-columns:36px minmax(0,1fr);gap:var(--sp-2);align-items:baseline}
+.sug-k{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2)}
+.sug-t{margin:0;font-size:var(--fs-sm);line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
+.sug-now{color:var(--ink-2)}
+.sug-t del{color:var(--fail);text-decoration:line-through 1.5px}
+.sug-t ins{font-weight:600;color:var(--ink);text-decoration:underline 2px var(--pass);text-underline-offset:3px}
+.sug-t mark{background:var(--highlighter);color:var(--ink);padding:0 1px}
+.sug-edit{display:grid;gap:var(--sp-1)}
+.sug-edit[hidden]{display:none}
+.sug-edit textarea{width:100%;min-height:64px;padding:var(--sp-2);border:1px solid var(--control-border);border-radius:var(--radius-control);
+  background:var(--sheet);color:var(--ink);font:inherit;font-size:var(--fs-sm);line-height:1.5;resize:vertical}
+.sug.editing .sug-row:nth-child(2){display:none}
+.sug-foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--sp-1) var(--sp-2);margin-top:var(--sp-1)}
+.sug-note{font-size:var(--fs-xs);color:var(--ink-2)}
+.sug-btns{display:flex;gap:var(--sp-1);margin-left:auto}
 .issue-fix-src{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);text-decoration:underline;text-underline-offset:2px}
 .issue-fix-src:hover{color:var(--form-blue)}
 .issue-apply{margin-top:var(--sp-1)}
@@ -687,6 +714,12 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .guide-step.done .guide-h{color:var(--ink-2)}
 .guide-body p{margin:var(--sp-1) 0 var(--sp-2);font-size:var(--fs-sm);font-weight:400;color:var(--ink-2)}
 .guide-body p:last-child{margin-bottom:0}
+/* Privacy note under the steps: same left edge as the step text */
+.guide-private{margin:var(--sp-4) 0 0 calc(4ch + var(--sp-3));padding:var(--sp-3) var(--sp-4);border-radius:var(--radius-sheet);background:var(--sheet-2)}
+.guide-private .guide-h{display:flex;align-items:center;gap:var(--sp-2)}
+.guide-private ul{margin:var(--sp-2) 0 0;padding-left:1.1em;font-size:var(--fs-xs);color:var(--ink-2)}
+.guide-private li{margin-top:var(--sp-1)}
+.guide-private b{color:var(--ink);font-weight:600}
 
 /* ── About dialog (floating sheet) ── */
 /* About dialog — centred in the viewport (the global margin:0 reset had cancelled <dialog>'s auto-centring) */
@@ -759,7 +792,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 <a class="skip-link" href="#stage">Skip to main content</a>
 <header class="site-bar">
-  <h1 class="site-name"><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></h1>
+  <h1 class="site-name"><a href="./?intro" data-front-door title="PRISM front door"><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></a></h1>
   <div class="site-page">
     <div class="seg mode-toggle" id="mode-toggle" role="group" aria-label="Mode">
       <button type="button" class="on" aria-pressed="true" data-m="evaluate" onclick="setMode('evaluate',this)" title="Upload a draft and score it against frameworks">Evaluate a draft</button>
@@ -1107,6 +1140,15 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
         </div>
       </li>
     </ol>
+    <div class="guide-private" role="note" aria-labelledby="guide-private-h">
+      <div class="guide-h" id="guide-private-h"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" focusable="false"><rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>Your work stays on this computer</div>
+      <ul>
+        <li><b>Nothing is uploaded.</b> Your files and text are saved only in this browser. No one else can see them.</li>
+        <li><b>Refresh or come back later:</b> your work is still here.</li>
+        <li><b>It’s gone</b> if you clear this site’s data, or switch to another browser or computer.</li>
+        <li><b>Clear</b> in the Material panel removes it now.</li>
+      </ul>
+    </div>
   </section>
   <div class="mod-rail mod-rail-right" id="rail-right">
 
@@ -1273,7 +1315,10 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
         </div>
         <div class="scan-fixall" id="scan-fixall" hidden>
           <span id="scan-fixall-n">0 suggested changes</span>
-          <button type="button" class="btn btn-secondary" onclick="applyAllFixes()">Apply all</button>
+          <span class="sug-btns">
+            <button type="button" class="btn btn-quiet" id="scan-save" onclick="saveChangesToFile()" title="Download the document with your changes" hidden>Save file</button>
+            <button type="button" class="btn btn-secondary" id="scan-applyall" onclick="applyAllFixes()">Apply all</button>
+          </span>
         </div>
         <div id="scan-list"><div class="mod-note">Issues appear here as you write.</div></div>
       </div>
@@ -1369,7 +1414,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 <input type="file" id="file-doc" accept=".doc,.docx,.txt,.html,.htm,.md,.pdf,image/*" style="display:none">
 <input type="file" id="file-img" accept="image/*" style="display:none">
 
-<script src="frameworks.js?v=20261019a"></script>
+<script src="frameworks.js?v=20261019b"></script>
 <script>
 'use strict';
 // ════════════════════════════════════════
@@ -1479,10 +1524,10 @@ const VAGUE = ['some','many','often','sometimes','various','several','a number o
 // sentence where it already has a natural break (", and", ", but", ", so" or ";").
 // Each fixer returns edits on the sentence: [{ a, b, text }] replaces sentence[a..b) with text.
 const FIX_SOURCES = {
-  split:   { name:'Federal Plain Language Guidelines: write short sentences', url:'https://digital.gov/guides/plain-language' },
-  jargon:  { name:'PEMAT-P items 3–4: everyday words; define medical terms (AHRQ)', url:'https://www.ahrq.gov/health-literacy/patient-education/pemat-p.html' },
-  percent: { name:'Gigerenzer & Hoffrage (1995): “1 in N” is easier to grasp than a percentage', url:'https://doi.org/10.1037/0033-295X.102.4.684' },
-  wordy:   { name:'Federal Plain Language Guidelines: use simple words and phrases', url:'https://digital.gov/guides/plain-language' },
+  split:   { short:'Plain Language Guidelines', name:'Federal Plain Language Guidelines: write short sentences', url:'https://digital.gov/guides/plain-language' },
+  jargon:  { short:'PEMAT-P, AHRQ', name:'PEMAT-P items 3–4: everyday words; define medical terms (AHRQ)', url:'https://www.ahrq.gov/health-literacy/patient-education/pemat-p.html' },
+  percent: { short:'Gigerenzer & Hoffrage, 1995', name:'Gigerenzer & Hoffrage (1995): “1 in N” is easier to grasp than a percentage', url:'https://doi.org/10.1037/0033-295X.102.4.684' },
+  wordy:   { short:'Plain Language Guidelines', name:'Federal Plain Language Guidelines: use simple words and phrases', url:'https://digital.gov/guides/plain-language' },
 };
 // Plainer words for some vague or wordy phrases. "various" is dropped: the examples that follow it
 // say more. Words like "often" or "some" need a real number only the writer knows: no rewrite.
@@ -1571,6 +1616,98 @@ function applyEditsToText(src, edits){
   let out = src;
   [...edits].sort((x, y) => y.a - x.a).forEach(e => { out = out.slice(0, e.a) + e.text + out.slice(e.b); });
   return out;
+}
+// Card rows: the same excerpt twice, old words struck through in "Now", new words underlined in
+// "New". A split shows the whole sentence; word changes show a few words either side.
+function fixBeforeAfter(issue){
+  const src = issue.src, eds = [...issue.fix].sort((x, y) => x.a - y.a);
+  if(issue.fixKind === 'split'){
+    let b = '', n = '', at = 0;
+    eds.forEach(e => {
+      const pre = escapeHtml(src.slice(at, e.a));
+      b += pre + '<del>' + escapeHtml(src.slice(e.a, e.b)) + '</del>';
+      n += pre + '<ins>' + escapeHtml(e.text) + '</ins>';
+      at = e.b;
+    });
+    return { before: b + escapeHtml(src.slice(at)), after: n + escapeHtml(src.slice(at)) };
+  }
+  const ctx = 5, groups = [];
+  eds.forEach(e => {
+    const g = groups[groups.length - 1];
+    if(g && fixWordCount(src.slice(g[g.length - 1].b, e.a)) <= ctx * 2) g.push(e); else groups.push([e]);
+  });
+  const build = mark => groups.map(g => {
+    const pre = src.slice(0, g[0].a).split(/(?<=\s)/), post = src.slice(g[g.length - 1].b).split(/(?=\s)/);
+    const mid = g.map((e, i) => mark(e) + (i < g.length - 1 ? escapeHtml(src.slice(e.b, g[i + 1].a)) : '')).join('');
+    return (pre.length > ctx ? '…' : '') + escapeHtml(pre.slice(-ctx).join('')) + mid
+      + escapeHtml(post.slice(0, ctx).join('')) + (post.length > ctx ? '…' : '');
+  }).join('<br>');
+  return {
+    before: build(e => '<del>' + escapeHtml(src.slice(e.a, e.b).trim()) + '</del>' + (/\s$/.test(src.slice(e.a, e.b)) ? ' ' : '')),
+    after:  build(e => e.text.trim() ? '<ins>' + escapeHtml(e.text.trim()) + '</ins>' + (/\s$/.test(e.text) || /\s$/.test(src.slice(e.a, e.b)) ? ' ' : '') : '')
+  };
+}
+// A card with no rewrite shows its sentence with the flagged words marked, as in the document
+function markedSentenceHtml(issue){
+  let h = escapeHtml(issue.src);
+  (issue.marks || []).forEach(m => {
+    const re = new RegExp('(?<![\\w])' + fixEsc(escapeHtml(m)) + '(?![\\w])', issue.markCase ? 'g' : 'gi');
+    h = h.replace(re, x => '<mark>' + x + '</mark>');
+  });
+  return h;
+}
+// Edit opens a box with the new sentence (or the sentence as it is) to change by hand
+function sugEdit(idx){
+  const issue = (window._issues || [])[idx]; if(!issue) return;
+  const box = $('sug-' + idx), ed = box.querySelector('.sug-edit'), ta = $('sug-ta-' + idx);
+  const opening = ed.hidden;
+  ed.hidden = !opening;
+  box.classList.toggle('editing', opening);
+  if(opening){
+    ta.value = issue.fix ? applyEditsToText(issue.src, issue.fix) : issue.src;
+    $('sug-apply-' + idx).hidden = false;
+    ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length);
+  } else if(!issue.fix) $('sug-apply-' + idx).hidden = true;
+}
+// Apply: the edited sentence if the box is open, otherwise the suggested rewrite
+function sugApply(idx){
+  const issue = (window._issues || [])[idx]; if(!issue) return;
+  const ed = $('sug-' + idx).querySelector('.sug-edit');
+  if(!ed.hidden){
+    const val = $('sug-ta-' + idx).value.trim();
+    if(!val || val === issue.src){ flashHint('No change to apply.'); return; }
+    commitEdits(issue, [{ a:0, b:issue.src.length, text:val }], 'Edited: ' + issue.lbl,
+      '<del>' + escapeHtml(issue.src) + '</del> <ins>' + escapeHtml(val) + '</ins>');
+  } else if(issue.fix) applyFix(idx);
+}
+// Into the document; on a poster, into the text the tool read from the artwork
+function commitEdits(issue, edits, label, preview){
+  if(visualOn){
+    const ta = $('vm-transcript'), v = ta.value, at = v.indexOf(issue.src);
+    if(at === -1){ flashHint('Couldn’t find that line in the text. Edit it in “Text the tool read”.'); return; }
+    ta.value = v.slice(0, at) + applyEditsToText(issue.src, edits) + v.slice(at + issue.src.length);
+    ta.dispatchEvent(new Event('input', { bubbles:true }));
+    sugApplied();
+    flashHint('Changed in “Text the tool read”. The artwork itself isn’t edited.');
+    return;
+  }
+  saveBaseline();
+  if(!applyFixToDoc(issue.src, edits)){ flashHint('Couldn’t find that sentence. It may have changed. Edit it by hand.'); return; }
+  analyze();
+  saveVersion(label, preview);
+  sugApplied();
+  flashHint('Applied. Undo it with Ctrl/⌘+Z, or in History. Save file keeps it.');
+}
+// After a change, the bar above the list offers Save file
+function sugApplied(){ window._sugApplied = (window._sugApplied || 0) + 1; const b = $('scan-save'); if(b) b.hidden = false; }
+function saveChangesToFile(){
+  if(visualOn){
+    const name = exportBaseName(), blob = new Blob([$('vm-transcript').value], { type:'text/plain' });
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = name + '-text.txt'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    flashHint('Downloaded the corrected text.');
+  } else exportMaterial('html');
 }
 // Card preview. A sentence-level change shows the whole new sentence; a word-level change shows
 // only the changed words with a few words either side.
@@ -2161,11 +2298,16 @@ function syncGuide(){
 // ════════════════════════════════════════
 // WHAT THE SCORES MEAN — plain reading of every number
 // ════════════════════════════════════════
+// A note is a headline with the key number, up to two short points, and one next step.
+// text: a string (headline only) or [headline, point, point]
 function why(id, tone, text, action){
   const el = $(id);
   if(!el) return;
+  const [head, ...pts] = Array.isArray(text) ? text : [text];
   el.className = 'score-why' + (tone ? ' ' + tone : '');
-  el.innerHTML = text + (action ? '<span class="why-do"><span class="why-do-lbl">Next step:</span> ' + action + '</span>' : '');
+  el.innerHTML = '<p class="why-head">' + head + '</p>'
+    + (pts.length ? '<ul class="why-pts">' + pts.map(p => '<li>' + p + '</li>').join('') + '</ul>' : '')
+    + (action ? '<p class="why-do"><span class="why-do-lbl">Next</span><span>' + action + '</span></p>' : '');
 }
 
 const GRADE_AUDIENCE = g =>
@@ -2183,28 +2325,28 @@ function explainScores(stats, empty){
     return;
   }
   const t = targets();
+  const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
 
   // ── Readability ──
   if(stats){
     const over = Math.round((stats.grade - t.grade) * 10) / 10;
     // until an audience is picked the goal is a default, not something the user set
-    const goal = brief.audience ? 'your goal of grade '+t.grade : 'the default goal for patients (grade '+t.grade+')';
+    const goal = brief.audience ? 'goal: grade ' + t.grade : 'default goal: grade ' + t.grade;
+    const gradeHead = stats.grade < 1 ? 'Reads <b>below grade 1</b>' : 'Reads at <b>grade ' + gradeText(stats.grade) + '</b>';
     if(visualOn && !readStructure().prose){
       // grade formulas need running sentences; poster lines are too short to trust them either way
-      why('read-why','',
-        (stats.grade < 1 ? 'Reads <b>below grade 1</b>' : 'Reads at about <b>grade '+stats.grade+'</b>')+'. Short poster lines make reading-level formulas unreliable.',
+      why('read-why', '', [gradeHead + ' <span class="why-aside">(rough)</span>', 'Poster lines are too short for reading-level formulas.'],
         'Read it aloud instead.');
     } else if(stats.grade <= t.grade){
-      why('read-why','good',
-        (stats.grade < 1 ? 'Reads <b>below grade 1</b>' : 'Reads at <b>grade '+stats.grade+'</b>')+'. That suits '+GRADE_AUDIENCE(stats.grade)+'. It meets '+goal+'.',
-        'Keep your sentences this short as you edit.');
+      why('read-why', 'good', [gradeHead + ' <span class="why-aside">· meets ' + goal + '</span>', 'Suits ' + GRADE_AUDIENCE(stats.grade) + '.'],
+        'Keep sentences this short as you edit.');
     } else {
-      const yrs = over >= 1 ? Math.round(over) + ' year' + (Math.round(over)===1?'':'s') : 'under a year';
+      const yrs = over >= 1 ? plural(Math.round(over), 'grade') : 'under a grade';
       why('read-why', over > 2 ? 'bad' : 'mid',
-        'Reads at <b>grade '+gradeText(stats.grade)+'</b>. That is about '+yrs+' above '+goal+'. It suits '+GRADE_AUDIENCE(stats.grade)+'.',
+        [gradeHead + ' <span class="why-aside">· ' + yrs + ' above ' + goal + '</span>', 'Suits ' + GRADE_AUDIENCE(stats.grade) + '.'],
         stats.avgSentLen > t.sentLen
-          ? 'Sentences have '+stats.avgSentLen+' words on average. Split them at “and”, “but” or “so” to get under '+t.sentLen+'.'
-          : 'Your sentences are short enough. Swap long medical words for everyday ones.');
+          ? 'Split sentences at “and”, “but” or “so”: <b>' + stats.avgSentLen + '</b> words on average, aim for ' + t.sentLen + ' or fewer.'
+          : 'Swap long medical words for everyday ones. Sentence length is fine.');
     }
   }
 
@@ -2212,17 +2354,16 @@ function explainScores(stats, empty){
   const cci = scoreItems(CCI_ITEMS);
   const cciNA = CCI_ITEMS.length - cci.applicable;
   if(cci.pct !== null){
-    const counts = '<b>'+cci.met+' met</b>, '+cci.not+' not met, '+cci.open+' to review'+
-      (cciNA ? ' ('+cciNA+' don’t apply)' : '')+'.';
+    const counts = '<b>' + cci.met + ' met</b> · ' + cci.not + ' not met · ' + cci.open + ' to review' + (cciNA ? ' · ' + cciNA + ' don’t apply' : '');
     if(cci.done)
-      why('cci-why', cci.pct>=CCI_PASS ? 'good' : cci.pct>=70 ? 'mid' : 'bad',
-        'Score <b>'+cci.pct+'</b>: '+cci.met+' of '+cci.applicable+' met. CDC passes 90 or more.',
+      why('cci-why', cci.pct >= CCI_PASS ? 'good' : cci.pct >= 70 ? 'mid' : 'bad',
+        ['Score <b>' + cci.pct + '</b> <span class="why-aside">· CDC passes at 90</span>', cci.met + ' of ' + cci.applicable + ' items met.'],
         cci.pct >= CCI_PASS ? 'Check again after you edit.' : 'Fix the items marked not met.');
     else if(cci.best < CCI_PASS)
-      why('cci-why','bad', counts+' Even if every open item is met, the most it can reach is '+cci.best+'. CDC passes 90 or more.',
+      why('cci-why', 'bad', ['<b>Can’t reach 90 yet</b> <span class="why-aside">· best possible ' + cci.best + '</span>', counts],
         'Fix the items marked not met first.');
     else
-      why('cci-why','', counts+' Items you haven’t reviewed don’t count against you.',
+      why('cci-why', '', [counts, 'Items you haven’t rated don’t count against you.'],
         'Rate the rest. No steps, numbers or risks? Mark that part “Doesn’t apply”.');
   }
 
@@ -2230,61 +2371,44 @@ function explainScores(stats, empty){
   const PU = scoreItems(PEMAT_U), PA = scoreItems(PEMAT_A);
   const u = PU.pct || 0;
   const a = PA.pct || 0;
-  let pemMsg, pemTone, pemDo;
-  if(!PU.done || !PA.done){
-    pemTone='';
-    pemMsg='<b>'+(PU.open+PA.open)+'</b> items still to rate. Percentages show once all are rated; unrated items never count as fails.';
-    pemDo='';
-  } else if(u >= PEMAT_PASS && a >= PEMAT_PASS){
-    pemTone='good';
-    pemMsg='<b>Understand: '+u+'%</b> and <b>Act: '+a+'%</b>. Both meet the 70% working target.';
-    pemDo='';
-  } else if(u >= PEMAT_PASS){
-    pemTone='mid';
-    pemMsg='Patients can <b>understand</b> it ('+u+'%), but may not know what to <b>do</b> ('+a+'%).';
-    pemDo='Name one clear step. Talk to the reader as “you”. Break the step into small parts.';
-  } else if(a >= PEMAT_PASS){
-    pemTone='mid';
-    pemMsg='The steps are clear (<b>'+a+'%</b>), but the text is hard to follow (<b>'+u+'%</b>).';
-    pemDo='Use plain words. Explain medical words. Split the text under clear headings. Add a summary.';
-  } else {
-    pemTone='bad';
-    pemMsg='<b>Understand: '+u+'%</b>, <b>Act: '+a+'%</b>. Both are under this tool’s 70% working target.';
-    pemDo='Start with the one thing you want them to do. Then explain it in plain words.';
-  }
-  why('pemat-why', pemTone, pemMsg, pemDo);
+  const pemHead = 'Understand <b>' + u + '%</b> · Act <b>' + a + '%</b> <span class="why-aside">· target 70%</span>';
+  if(!PU.done || !PA.done)
+    why('pemat-why', '', ['<b>' + plural(PU.open + PA.open, 'item') + '</b> left to rate', 'Scores show once all are rated. Unrated items never count as fails.'], '');
+  else if(u >= PEMAT_PASS && a >= PEMAT_PASS)
+    why('pemat-why', 'good', [pemHead, 'Both meet the target.'], '');
+  else if(u >= PEMAT_PASS)
+    why('pemat-why', 'mid', [pemHead, 'Readers <b>understand</b> it but may not know what to <b>do</b>.'],
+      'Name one clear step, and talk to the reader as “you”.');
+  else if(a >= PEMAT_PASS)
+    why('pemat-why', 'mid', [pemHead, 'The steps are clear, but the text is <b>hard to follow</b>.'],
+      'Use plain words, explain medical words, and add headings.');
+  else
+    why('pemat-why', 'bad', [pemHead, 'Both are under the target.'],
+      'Start with the one thing to do, in plain words.');
 
   // ── Accessibility ──
   const a11yPill = ($('a11y-pill').textContent || '');
-  const a11yFails = parseInt(a11yPill, 10);
-  if(a11yPill.includes('to fix')){
-    why('a11y-why','bad',
-      '<b>'+a11yFails+' problem'+(a11yFails===1?'':'s')+' to fix.</b> These would fail a WCAG 2.2 AA check and the Adobe test.',
-      'Fix the red items first. They block people who use screen readers.');
-  } else if(a11yPill.includes('to check')){
-    why('a11y-why','mid',
-      'Nothing fails, but <b>'+parseInt(a11yPill,10)+' item'+(parseInt(a11yPill,10)===1?'':'s')+'</b> can’t be checked from text. Look at the colours in the design.',
-      'Check the amber items. Then run the Adobe test on the final file.');
-  } else {
-    why('a11y-why','good','All the checks we can run here pass AA.',
+  const a11yN = parseInt(a11yPill, 10);
+  if(a11yPill.includes('to fix'))
+    why('a11y-why', 'bad', ['<b>' + plural(a11yN, 'problem') + '</b> to fix', 'Would fail WCAG 2.2 AA and the Adobe check.'],
+      'Fix the red items first. They block screen-reader users.');
+  else if(a11yPill.includes('to check'))
+    why('a11y-why', 'mid', ['Nothing fails · <b>' + plural(a11yN, 'item') + '</b> to check', 'Colours can’t be checked from text.'],
+      'Check the amber items, then run the Adobe check on the final file.');
+  else
+    why('a11y-why', 'good', ['<b>All checks pass</b> <span class="why-aside">· WCAG 2.2 AA</span>'],
       'Still check the colours in the design file.');
-  }
 
   // ── Content accuracy ──
   const accFails = [...document.querySelectorAll('#acc-list .find-ico.fail')].length;
   const signed = ACC_SIGNOFF.filter(s => manual[s.id]).length;
-  if(accFails){
-    why('acc-why','bad',
-      '<b>'+accFails+' item'+(accFails===1?'':'s')+'</b> a health reviewer would send back.',
-      'Fix these before sign-off.');
-  } else if(signed < ACC_SIGNOFF.length){
-    why('acc-why','mid',
-      'Nothing fails, but only <b>'+signed+' of '+ACC_SIGNOFF.length+'</b> checks are signed off. Software can’t tell if the facts are right.',
+  if(accFails)
+    why('acc-why', 'bad', ['<b>' + plural(accFails, 'item') + '</b> a reviewer would send back'], 'Fix these before sign-off.');
+  else if(signed < ACC_SIGNOFF.length)
+    why('acc-why', 'mid', ['Nothing fails · <b>' + signed + ' of ' + ACC_SIGNOFF.length + '</b> signed off', 'Software can’t tell if the facts are right.'],
       'Ask a named reviewer to check the rest.');
-  } else {
-    why('acc-why','good','All checks pass and all four are signed off.',
-      'Write down who checked it and when.');
-  }
+  else
+    why('acc-why', 'good', ['<b>All pass</b> · ' + ACC_SIGNOFF.length + ' of ' + ACC_SIGNOFF.length + ' signed off'], 'Note who checked it and when.');
 }
 
 // ── Main analysis loop ──
@@ -2370,7 +2494,8 @@ function analyze(){
   window._issues = issues.slice(0, 30);
   window._fixable = visualOn ? [] : issues.filter(i => i.fix);
   const fa = $('scan-fixall');
-  fa.hidden = !window._fixable.length;
+  fa.hidden = !window._fixable.length && !window._sugApplied;
+  $('scan-applyall').hidden = !window._fixable.length;
   $('scan-fixall-n').textContent = window._fixable.length === 1 ? '1 suggested change' : window._fixable.length + ' suggested changes';
   markFlags(empty || visualOn ? [] : issues);
   if(!issues.length){
@@ -2384,23 +2509,33 @@ function analyze(){
     // A card finds its words in the document; one with a rewrite also shows it, its source and Apply.
     // The original sentence isn't repeated: clicking the card highlights it in the document.
     // A word-level rewrite shows only the changed words in context, not the whole sentence.
-    const canFix = i => i.fix && !visualOn;
-    list.innerHTML = window._issues.map((i,idx) =>
-      '<div class="issue">'+
+    // Each card: the advice, then the words as they are now and, when a rule can rewrite safely,
+    // the new words. Edit lets you write your own fix; Apply puts it into the document, or into
+    // the text read from the artwork when this is a poster.
+    list.innerHTML = window._issues.map((i,idx) => {
+      const ba = i.fix ? fixBeforeAfter(i) : { before: markedSentenceHtml(i), after: '' };
+      const src = i.fix ? FIX_SOURCES[i.fixKind] : null;
+      return '<div class="issue">'+
         '<button type="button" class="issue-main" onclick="jumpTo('+idx+')">'+
           '<span class="issue-lbl">'+escapeHtml(i.lbl)+'</span>'+
           '<span class="issue-sev '+i.sev+'">'+(i.sev==='error'?'Fix':'Review')+'</span>'+
           '<span class="issue-msg">'+escapeHtml(i.msg)+'</span>'+
-          (canFix(i) ? '' : '<span class="issue-snip">“'+escapeHtml(i.src)+'”</span>')+
         '</button>'+
-        (canFix(i) ?
-          '<div class="issue-fix">'+
-            '<span class="issue-fix-head"><span class="issue-fix-lbl">Suggested</span>'+
-              '<a class="issue-fix-src" href="'+FIX_SOURCES[i.fixKind].url+'" target="_blank" rel="noopener" title="'+escapeHtml(FIX_SOURCES[i.fixKind].name)+'" aria-label="Source: '+escapeHtml(FIX_SOURCES[i.fixKind].name)+' (opens in a new tab)">Source</a></span>'+
-            '<p class="issue-fix-txt">'+fixPreviewHtml(i)+'</p>'+
-            '<button type="button" class="btn btn-secondary issue-apply" onclick="applyFix('+idx+')">Apply</button>'+
-          '</div>' : '')+
-      '</div>').join('');
+        '<div class="sug" id="sug-'+idx+'">'+
+          '<div class="sug-row"><span class="sug-k">Now</span><p class="sug-t sug-now">'+ba.before+'</p></div>'+
+          (ba.after ? '<div class="sug-row"><span class="sug-k">New</span><p class="sug-t sug-new">'+ba.after+'</p></div>' : '')+
+          '<div class="sug-edit" hidden><label class="sug-k" for="sug-ta-'+idx+'">Your fix</label>'+
+            '<textarea id="sug-ta-'+idx+'" rows="3"></textarea></div>'+
+          '<div class="sug-foot">'+
+            (src ? '<a class="issue-fix-src" href="'+src.url+'" target="_blank" rel="noopener" title="'+escapeHtml(src.name)+'">Source: '+escapeHtml(src.short || src.name)+'<span class="sr-only"> (opens in a new tab)</span></a>' : '<span class="sug-note">No safe automatic rewrite. Write your own.</span>')+
+            '<span class="sug-btns">'+
+              '<button type="button" class="btn btn-quiet" onclick="sugEdit('+idx+')" aria-controls="sug-ta-'+idx+'">Edit</button>'+
+              '<button type="button" class="btn btn-secondary" id="sug-apply-'+idx+'" onclick="sugApply('+idx+')"'+(i.fix ? '' : ' hidden')+'>Apply</button>'+
+            '</span>'+
+          '</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
   }
 
   // brief-driven modules
@@ -3971,13 +4106,8 @@ function saveBaseline(){
 }
 function applyFix(idx){
   const issue = (window._issues || [])[idx];
-  if(!issue || !issue.fix || visualOn) return;
-  const preview = fixPreviewHtml(issue);
-  saveBaseline();
-  if(!applyFixToDoc(issue.src, issue.fix)){ flashHint('Couldn’t find that sentence. It may have changed. Edit it by hand.'); return; }
-  analyze();
-  saveVersion('Applied: ' + issue.lbl, preview);
-  flashHint('Applied. Undo it with Ctrl/⌘+Z, or in History.');
+  if(!issue || !issue.fix) return;
+  commitEdits(issue, issue.fix, 'Applied: ' + issue.lbl, fixPreviewHtml(issue));
 }
 // Every suggested change, sentence by sentence. Words first, then the split, each worked out again
 // on the sentence as it now reads. A version is saved first so all of it can be restored at once.
@@ -3999,6 +4129,7 @@ function applyAllFixes(){
     });
   });
   analyze();
+  if(n) sugApplied();
   if(n) saveVersion('Applied all: ' + n + (n === 1 ? ' change' : ' changes'),
     shown.slice(0, 2).join('<br>') + (shown.length > 2 ? '<br>and ' + (shown.length - 2) + ' more' : ''));
   flashHint(n ? 'Applied ' + n + (n === 1 ? ' change' : ' changes') + '. Undo them all at once in History.' : 'Nothing changed. The text may have been edited.');
@@ -4388,6 +4519,13 @@ editor.addEventListener('paste', () => setTimeout(scheduleAnalysis, 30));
 
 function focusEditor(){ editor.focus(); $('canvas-empty').style.display = 'none'; }
 $('canvas-empty').addEventListener('click', e => { if(!e.target.closest('button, a')) focusEditor(); });
+// Nothing typed or pasted and the focus moves away: the start prompts and guides come back
+editor.addEventListener('blur', () => {
+  setTimeout(() => {
+    if(document.activeElement === editor || visualOn) return;
+    if(!editorText().trim() && !editor.querySelector('img')) setCanvasEmpty(true);
+  }, 150);   // lets a toolbar click (Style, B, I) keep the editor open
+});
 // ── Export: copy the edited text, or download it (.html opens in Word; .txt is plain text).
 // Everything happens in the browser; the original file is never changed.
 function exportBaseName(){
@@ -5799,6 +5937,22 @@ document.addEventListener('pointerdown', e => {
     body.style.maxHeight = 'none';
   }
 });
+// Clicking anywhere on a card's header bar folds or unfolds it, like its ▾ button. Its own
+// controls (name tip, pills, buttons, links) keep their job, and a drag to move the card is not a click.
+let hdrDown = null;
+document.addEventListener('pointerdown', e => {
+  const h = e.target.closest && e.target.closest('.mod-hdr');
+  hdrDown = h ? { h, x:e.clientX, y:e.clientY } : null;
+}, true);
+document.addEventListener('click', e => {
+  const h = e.target.closest && e.target.closest('.mod-hdr');
+  if(!h || !hdrDown || hdrDown.h !== h) return;
+  if(Math.abs(e.clientX - hdrDown.x) > 4 || Math.abs(e.clientY - hdrDown.y) > 4) return;   // that was a drag
+  const ctl = e.target.closest('button, a, input, select, label, [role="button"], [tabindex], .pill');
+  if(ctl && ctl !== h && h.contains(ctl)) return;
+  const mod = h.closest('.mod');
+  if(mod && mod.id) toggleCollapse(mod.id);
+});
 function syncFoldButtons(){
   MODS.forEach(id => {
     const m = $(id); if(!m) return;
@@ -6124,6 +6278,96 @@ analyze();
 // browser history: seed the first entry, then record every move from here on
 try { history.replaceState(navState(), ''); } catch(e){ /* file:// can block this */ }
 navReady = true;
+
+// ════════════════════════════════════════
+// KEEP WORK ON REFRESH — saved in this browser only (IndexedDB), never uploaded
+// The material and every opened file, History versions, the Brief and checklist ratings are
+// saved a moment after each change and put back when the page opens. Clearing site data,
+// another browser or another computer starts empty. Clear (Material header) removes it too.
+// ════════════════════════════════════════
+const workStore = (() => {
+  const DB = 'prism-studio', STORE = 'work', KEY = 'current';
+  let dbP = null, saveT = null, restoring = false;
+  const db = () => dbP || (dbP = new Promise((res, rej) => {
+    if(!window.indexedDB) return rej(new Error('no indexedDB'));
+    const r = indexedDB.open(DB, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(STORE);
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  }));
+  const tx = (mode, fn) => db().then(d => new Promise((res, rej) => {
+    const t = d.transaction(STORE, mode), req = fn(t.objectStore(STORE));
+    t.oncomplete = () => res(req && req.result);
+    t.onerror = () => rej(t.error);
+  }));
+  function snapshot(){
+    stashActive();
+    return {
+      v: 1,
+      fileHistory: fileHistory.map(f => Object.assign({}, f, { when: +f.when })),
+      activeFileId,
+      draftHtml: activeFileId ? '' : editor.innerHTML,     // typed or pasted text with no file
+      versions: versions.map(x => Object.assign({}, x, { when: +x.when })),
+      brief: { audience: brief.audience, format: brief.format, notes: brief.notes || '' },
+      manual: Object.assign({}, manual)
+    };
+  }
+  function save(now){
+    if(restoring) return;
+    clearTimeout(saveT);
+    const put = () => { try { tx('readwrite', s => s.put(snapshot(), KEY)).catch(() => {}); } catch(e){} };
+    if(now === true) put(); else saveT = setTimeout(put, 600);
+  }
+  function wipe(){ clearTimeout(saveT); return tx('readwrite', s => s.delete(KEY)).catch(() => {}); }
+  async function restore(){
+    let w = null;
+    try { w = await tx('readonly', s => s.get(KEY)); } catch(e){ return; }
+    if(!w || w.v !== 1) return;
+    restoring = true;
+    try {
+      (w.fileHistory || []).forEach(f => { f.when = new Date(f.when); fileHistory.push(f); });
+      (w.versions || []).forEach(x => { x.when = new Date(x.when); versions.push(x); });
+      Object.assign(manual, w.manual || {});
+      ['audience', 'format'].forEach(k => {
+        const v = w.brief && w.brief[k];
+        const b = v && document.querySelector('#brief-top-panel button[data-v="' + v + '"][onclick*="setBrief(\'' + k + '\'"]');
+        if(b) setBrief(k, v, b);
+      });
+      if(w.brief && w.brief.notes){ brief.notes = w.brief.notes; $('brief-notes').value = w.brief.notes; }
+      if(w.activeFileId && fileHistory.some(f => f.id === w.activeFileId)){ activeFileId = null; reopenFile(w.activeFileId); }
+      else if(w.draftHtml){ editor.innerHTML = w.draftHtml; setCanvasEmpty(false); analyze(); }
+      renderFileHistory();
+      if(typeof renderVersions === 'function') renderVersions();
+      renderCci(); renderPemat(); refreshScores();
+    } catch(e){ /* a bad save never blocks the Studio */ }
+    restoring = false;
+  }
+  return { save, wipe, restore };
+})();
+// any edit, click or rating schedules a save; leaving the page saves at once
+['input', 'change', 'click', 'paste', 'drop'].forEach(ev => document.addEventListener(ev, () => workStore.save(), true));
+window.addEventListener('pagehide', () => workStore.save(true));
+// a file that finishes loading after the click (samples, PDFs, OCR) is saved once it is analysed
+{ const _analyze = analyze; analyze = function(){ const r = _analyze.apply(this, arguments); workStore.save(); return r; }; }
+// Clear removes the saved copy too
+{ const _clear = clearEditor; clearEditor = function(){ _clear.apply(this, arguments); fileHistory.length = 0; versions.length = 0;
+    renderFileHistory(); if(typeof renderVersions === 'function') renderVersions(); workStore.wipe(); }; }
+workStore.restore();
+
+// Double-click a resize grip (bottom-right corner of anything with CSS resize) to fit it to its
+// content: score cards, text boxes, the canvas. Dragging the grip still works as before.
+document.addEventListener('dblclick', e => {
+  for(let el = e.target; el && el !== document.body; el = el.parentElement){
+    if(getComputedStyle(el).resize === 'none') continue;
+    const r = el.getBoundingClientRect();
+    if(r.right - e.clientX > 18 || r.bottom - e.clientY > 18) return;   // not on the grip
+    e.preventDefault();
+    el.style.maxHeight = 'none';
+    el.style.height = 'auto';
+    if(el.tagName === 'TEXTAREA') el.style.height = (el.scrollHeight + el.offsetHeight - el.clientHeight) + 'px';
+    return;
+  }
+});
 </script>
 </body>
 </html>

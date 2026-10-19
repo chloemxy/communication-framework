@@ -127,6 +127,9 @@ function renderPlan(){
 }
 function renderPlanSteps(){
   const fl = planFlow();
+  // Brief and Frameworks only matter once PRISM checks words: hide them at the early stages
+  const cur = fl.stages.find(s => s.key === plan.stage) || fl.stages[0];
+  $('stage').classList.toggle('plan-early', !cur.prism);
   $('plan-steps').innerHTML = fl.stages.map((st, i) =>
     '<li><button type="button" class="plan-step' + (plan.stage === st.key ? ' on' : '') + '"' + (plan.stage === st.key ? ' aria-current="step"' : '') + ' onclick="planGo(\'' + st.key + '\')">' +
       '<span class="plan-n">' + (i + 1) + '</span><span class="plan-sname">' + st.name + '</span>' +

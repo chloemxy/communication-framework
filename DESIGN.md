@@ -65,7 +65,7 @@ alone on the swipe. The wordmark carries `PRISM` as screen-reader text.
   per region. Labels are verbs, no trailing arrows. External links may keep a small ↗.
 - Rating buttons: same height and radius as buttons; pressed state uses the status colour
   as a 2px inset border plus the word — never colour alone.
-- Theme: light by default (does not follow the OS). One **Dark** toggle in the site bar; the
+- Theme: light by default (does not follow the OS). One theme button in the site bar names the mode it switches to (**Dark** with a moon in light mode, **Light** with a sun in dark mode); the
   choice is saved in `localStorage` (`pea.theme`) and applied as `data-theme="dark"` on `<html>`
   before first paint (no flash).
 
