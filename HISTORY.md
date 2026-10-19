@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-19 — Work survives a refresh; privacy note; front door hand-off; no orphans
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
 
 - **Your work is kept on refresh.**
   - Saved in this browser only (IndexedDB, not cookies), a moment after each change and again
@@ -35,7 +35,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Studio fixes: suggestion cards, notes, Plan, small polish
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
 
 - **Suggestion cards (Plain language).**
   - Every card shows **Now** (old words struck through in red) and, where a rule can rewrite
@@ -75,7 +75,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Logo opens the front door
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
 
 - **Studio:** clicking the PRISM logo brings the Studio view back underneath, with the work in it
   kept, and opens the front door over it. After the countdown, or Skip, you're back in the Studio.
@@ -87,7 +87,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Front door: one dark screen, handout and slider merged
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
 
 - **Why:** the user wanted both concepts on a dark background, merged and tighter, in one screen
   with no scrolling.
@@ -108,7 +108,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Front door: editorial mockup (serif headlines)
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
 
 - **Why:** to make the site feel more professional and editorial: classic magazine restraint,
   black, white and one yellow.
@@ -126,7 +126,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Front door: intro over the Studio
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
 
 - **Why:** the site needed a front door for health communicators and interested members of the
   public. It shows briefly, then hands over to the Studio.
