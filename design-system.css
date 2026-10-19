@@ -289,6 +289,25 @@ dialog::backdrop{background:var(--scrim)}
    The slanted chisel shape is the logo's own; flags in the document are plain rectangles. */
 .site-name .hl-i{position:relative;display:inline-block;padding:0 .14em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
 .site-name .hl-i::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
+/* Logo animation, "Scan": a thin yellow reading line sweeps across the word, and the I is
+   highlighted as the line passes it (the swipe draws left to right while the letter turns dark).
+   Plays when a page loads and again on hover. CSS only: the line is the word's ::after.
+   Reduced motion shows the finished logo (MOTION section switches it off). */
+.site-name{--logo-ink:var(--ink)}
+.site-name [aria-hidden="true"]:has(> .hl-i){position:relative;display:inline-block}
+.site-name [aria-hidden="true"]:has(> .hl-i)::after{content:"";position:absolute;top:-10%;bottom:-10%;left:0;width:2px;border-radius:1px;
+  background:var(--brand);pointer-events:none;animation:logo-scan 1100ms cubic-bezier(.4,0,.2,1) 150ms both}
+.site-name .hl-i::before{animation:logo-swipe 260ms cubic-bezier(.6,0,.2,1) 480ms both}
+.site-name .hl-i{animation:logo-ink 260ms cubic-bezier(.6,0,.2,1) 480ms both}
+.site-name:hover [aria-hidden="true"]:has(> .hl-i)::after{animation-name:logo-scan-again}
+.site-name:hover .hl-i::before{animation-name:logo-swipe-again}
+.site-name:hover .hl-i{animation-name:logo-ink-again}
+@keyframes logo-scan{0%{left:-4%;opacity:0}8%{opacity:1}85%{opacity:1}100%{left:102%;opacity:0}}
+@keyframes logo-scan-again{0%{left:-4%;opacity:0}8%{opacity:1}85%{opacity:1}100%{left:102%;opacity:0}}
+@keyframes logo-swipe{from{clip-path:polygon(18% 0,18% 0,0 100%,0 100%)}to{clip-path:polygon(18% 0,100% 0,82% 100%,0 100%)}}
+@keyframes logo-swipe-again{from{clip-path:polygon(18% 0,18% 0,0 100%,0 100%)}to{clip-path:polygon(18% 0,100% 0,82% 100%,0 100%)}}
+@keyframes logo-ink{0%,35%{color:var(--logo-ink)}70%,100%{color:var(--on-brand)}}
+@keyframes logo-ink-again{0%,35%{color:var(--logo-ink)}70%,100%{color:var(--on-brand)}}
 .site-nav a:focus-visible, .site-nav button:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 /* theme switch: words on wide screens, icons (with the words kept as accessible names) on narrow ones */
 .theme-toggle .ts-ico{display:none;flex:none}

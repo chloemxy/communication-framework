@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){var t;try{t=localStorage.getItem('pea.theme')}catch(e){}if(t!=='light')document.documentElement.setAttribute('data-theme','dark')})()</script>
+<title>PRISM Logo Animations</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../design-system.css?v=20261019i">
+<script src="../../theme-switch.js?v=20261019e" defer></script>
+<style>
+/* Five logo animations to compare. Variant 2 (Scan) is the one in design-system.css today;
+   the others override it here only. The cards draw their own scan line, so the site's one is off here. Page layout and the variants; tokens from design-system.css. */
+main{max-width:1080px;margin:0 auto;padding:var(--sp-8) var(--sp-4) var(--sp-12)}
+.lead{color:var(--ink-2);max-width:66ch;margin-top:var(--sp-2)}
+.top-actions{display:flex;gap:var(--sp-2);margin-top:var(--sp-4)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:var(--sp-4);margin-top:var(--sp-6)}
+.card{display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:var(--radius-sheet);background:var(--sheet);overflow:hidden}
+.stage-box{position:relative;display:flex;align-items:center;justify-content:center;min-height:180px;background:#16181D}
+.card:nth-child(even) .stage-box{background:#FFFFFF}
+.stage-box .site-name{position:relative;font-size:64px;font-weight:600;line-height:1;color:#E9EBEE;--logo-ink:#E9EBEE;pointer-events:none}
+.card:nth-child(even) .stage-box .site-name{color:#16181D;--logo-ink:#16181D}
+.card-body{display:grid;gap:var(--sp-1);padding:var(--sp-3) var(--inset) var(--sp-4)}
+.card-h{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2)}
+.card-h h2{font-size:var(--fs-lg)}
+.card-body p{font-size:var(--fs-xs);color:var(--ink-2)}
+.n{color:var(--ink-2);font-variant-numeric:tabular-nums;margin-right:var(--sp-2)}
+
+/* the site's scan line (design-system.css) is off in the cards; card 2 has its own */
+.stage-box .site-name [aria-hidden="true"]::after{display:none}
+/* 1 · Swipe: the stroke draws across the I */
+.v-swipe .site-name .hl-i::before{animation:logo-swipe 560ms cubic-bezier(.6,0,.2,1) 180ms both}
+.v-swipe .site-name .hl-i{animation:logo-ink 560ms cubic-bezier(.6,0,.2,1) 180ms both}
+/* shared end state: the logo's chisel shape */
+.stage-box .hl-i::before{clip-path:polygon(18% 0,100% 0,82% 100%,0 100%)}
+
+/* 2 · Scan: a reading line sweeps the word; the highlight lands on the I as the line passes it */
+.v-scan .site-name .hl-i::before{animation:logo-swipe 260ms cubic-bezier(.6,0,.2,1) 480ms both}
+.v-scan .site-name .hl-i{animation:logo-ink 260ms cubic-bezier(.6,0,.2,1) 480ms both}
+.v-scan .scan{position:absolute;top:-10%;bottom:-10%;left:0;width:3px;background:var(--brand);border-radius:2px;
+  animation:scan-move 1100ms cubic-bezier(.4,0,.2,1) 150ms both}
+@keyframes scan-move{0%{left:-4%;opacity:0}8%{opacity:1}85%{opacity:1}100%{left:102%;opacity:0}}
+
+/* 3 · Stamp: the swipe drops onto the I and lands, a reviewer's mark */
+.v-stamp .site-name .hl-i::before{animation:stamp 520ms cubic-bezier(.3,.7,.2,1) 200ms both}
+.v-stamp .site-name .hl-i{animation:logo-ink 520ms linear 200ms both}
+@keyframes stamp{0%{opacity:0;transform:translateY(-70%) rotate(-10deg) scale(1.25)}55%{opacity:1;transform:translateY(5%) rotate(0) scale(.97)}75%{transform:translateY(-2%) scale(1.01)}100%{opacity:1;transform:none}}
+
+/* 4 · Type-on: the word types out letter by letter, then the I gets flagged */
+.v-type .site-name > [aria-hidden]:not(.caret){display:inline-block;animation:type-on 600ms steps(5, end) 150ms both}
+.v-type .site-name .hl-i::before{animation:logo-swipe 380ms cubic-bezier(.6,0,.2,1) 850ms both}
+.v-type .site-name .hl-i{animation:logo-ink 380ms cubic-bezier(.6,0,.2,1) 850ms both}
+.v-type .caret{position:absolute;top:4%;bottom:4%;width:3px;background:var(--logo-ink);animation:caret 1300ms linear 0ms both}
+@keyframes type-on{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes caret{0%{left:0;opacity:1}11%{left:0}57%{left:100%;opacity:1}64%{opacity:0}72%{opacity:1}80%{opacity:0}88%{opacity:1}100%{left:100%;opacity:0}}
+
+/* 5 · Prism fan: a thin beam at the I widens into the chisel, like light through a prism */
+.v-fan .site-name .hl-i::before{transform-origin:50% 50%;animation:fan 640ms cubic-bezier(.2,.8,.2,1) 200ms both}
+.v-fan .site-name .hl-i{animation:logo-ink 640ms linear 200ms both}
+@keyframes fan{0%{opacity:0;transform:scaleX(.06) scaleY(1.3)}35%{opacity:1;transform:scaleX(.06) scaleY(1.15)}100%{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<header class="site-bar">
+  <a class="site-name" href="../../index.html"><span><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span></a>
+  <nav class="site-nav" aria-label="Brainstorm">
+    <a href="index.html">Brainstorm</a>
+    <a href="logo-animation.html" aria-current="page">Logo animation</a>
+  </nav>
+  <span class="bar-divider" aria-hidden="true"></span>
+  <button type="button" class="btn btn-quiet theme-toggle" data-theme-toggle title="Switch theme"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"></svg><span class="ts-lbl">Dark</span></button>
+</header>
+<main>
+  <h1>Logo animation: five ways</h1>
+  <p class="lead">Each one ends on the same logo. Number 2, Scan, is live on the site now (on page load and hover). Press Replay on a card, or Replay all, and pick the one that feels most like PRISM. With reduced motion, every one shows the finished logo straight away.</p>
+  <div class="top-actions"><button type="button" class="btn btn-primary" id="replay-all">Replay all</button></div>
+
+  <div class="grid">
+    <section class="card v-swipe" aria-labelledby="h1">
+      <div class="stage-box"><span class="site-name"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span></div>
+      <div class="card-body">
+        <div class="card-h"><h2 id="h1"><span class="n">1</span>Swipe</h2><button type="button" class="btn btn-secondary" data-replay>Replay</button></div>
+        <p>A highlighter stroke draws across the I, left to right. Quick and quiet: 0.6 s.</p>
+      </div>
+    </section>
+    <section class="card v-scan" aria-labelledby="h2">
+      <div class="stage-box"><span class="site-name"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span><span class="scan" aria-hidden="true"></span></span></div>
+      <div class="card-body">
+        <div class="card-h"><h2 id="h2"><span class="n">2</span>Scan</h2><button type="button" class="btn btn-secondary" data-replay>Replay</button></div>
+        <p>A reading line sweeps across the word and leaves the I highlighted: the tool checking a line. 1.2 s. Live on the site now.</p>
+      </div>
+    </section>
+    <section class="card v-stamp" aria-labelledby="h3">
+      <div class="stage-box"><span class="site-name"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span></div>
+      <div class="card-body">
+        <div class="card-h"><h2 id="h3"><span class="n">3</span>Stamp</h2><button type="button" class="btn btn-secondary" data-replay>Replay</button></div>
+        <p>The swipe drops onto the I and lands with a small settle, like a reviewer's mark. 0.7 s.</p>
+      </div>
+    </section>
+    <section class="card v-type" aria-labelledby="h4">
+      <div class="stage-box"><span class="site-name"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span><span class="caret" aria-hidden="true"></span></span></div>
+      <div class="card-body">
+        <div class="card-h"><h2 id="h4"><span class="n">4</span>Type-on</h2><button type="button" class="btn btn-secondary" data-replay>Replay</button></div>
+        <p>P R I S M types out behind a cursor, then the I gets flagged: writing, then proofing. 1.3 s.</p>
+      </div>
+    </section>
+    <section class="card v-fan" aria-labelledby="h5">
+      <div class="stage-box"><span class="site-name"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span></div>
+      <div class="card-body">
+        <div class="card-h"><h2 id="h5"><span class="n">5</span>Prism fan</h2><button type="button" class="btn btn-secondary" data-replay>Replay</button></div>
+        <p>A thin beam at the I widens into the chisel, like light spreading through a prism. 0.85 s.</p>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+// Replay: swap in a fresh copy of the logo so its animations start again
+function replay(card){ var el = card.querySelector('.stage-box .site-name'); var c = el.cloneNode(true); el.replaceWith(c); }
+document.querySelectorAll('[data-replay]').forEach(function(b){ b.addEventListener('click', function(){ replay(b.closest('.card')); }); });
+document.getElementById('replay-all').addEventListener('click', function(){ document.querySelectorAll('.card').forEach(replay); });
+</script>
+</body>
+</html>
