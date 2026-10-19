@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-10-19 — History panel: save with a name, revert, export, delete
 
-Branch: `refresh-and-fixes` · Vercel: Preview (this push)
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 91f55ba)
 
 - **Closes on an outside click**, as well as with ✕ or Esc.
 - **Save a version with a name.** The field and Save version button are at the top of the panel.
@@ -21,7 +21,7 @@ Branch: `refresh-and-fixes` · Vercel: Preview (this push)
 
 ## 2026-10-19 — Compass opens under the same bar; About wording and credit order
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 91f55ba)
 
 - **Studio ⇄ Framework Compass without reloading the bar.** Clicking Framework Compass now shows it
   inside the studio, below the same site bar, with a short fade (none with reduced motion).
@@ -42,7 +42,7 @@ Branch: `refresh-and-fixes` (local) · Vercel: not deployed
 
 ## 2026-10-19 — Centred empty panel; History button; taller cards
 
-Branch: `refresh-and-fixes` (local) · Vercel: not deployed
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 91f55ba)
 
 - **Empty Material panel is centred.** It holds:
   - a 260px "Open a file" button
