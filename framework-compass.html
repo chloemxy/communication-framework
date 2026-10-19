@@ -4,14 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add('embed')</script>
 <script>try{if(localStorage.getItem('pea.theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
 <title>Framework Compass — PRISM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261018a">
-<script src="theme-switch.js?v=20261017e" defer></script>
+<link rel="stylesheet" href="design-system.css?v=20261019e">
+<script src="theme-switch.js?v=20261019b" defer></script>
 <style>
+/* Inside the studio (?embed): the studio's bar is the bar */
+.embed .site-bar, .embed .skip-link{display:none}
+
   /* Page layout only: colours, type, controls and the theme switch come from design-system.css */
   .compass:focus { outline: none; }
   .compass { max-width: 960px; margin: 0 auto; padding: var(--sp-8) var(--sp-5) var(--sp-12); }
@@ -88,7 +92,7 @@
 
 <a class="skip-link" href="#main">Skip to main content</a>
 <header class="site-bar">
-  <a class="site-name" href="index.html"><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></a>
+  <a class="site-name" href="index.html?intro" title="PRISM front door"><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></a>
   <nav class="site-nav" aria-label="Site">
     <a href="index.html">Studio</a>
     <a href="framework-compass.html" aria-current="page">Framework Compass</a>
@@ -116,8 +120,8 @@
   <p class="empty" id="empty" hidden>No frameworks match.</p>
 </main>
 
-<script src="analysis-engine.js?v=20261017e"></script>
-<script src="frameworks.js?v=20261017e"></script>
+<script src="analysis-engine.js?v=20261019a"></script>
+<script src="frameworks.js?v=20261019b"></script>
 <script>
 'use strict';
 // Built from frameworks.js (what the studio uses) and the engine registry (full references),

@@ -26,11 +26,19 @@
 
   function isDark(){ return root.getAttribute('data-theme') === 'dark'; }
 
+  // The button names the mode it switches to: "Light" while dark, "Dark" while light (moon / sun icon)
+  var MOON = '<path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>';
+  var SUN = '<circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/>'
+    + '<path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>';
   function sync(){
-    var btns = document.querySelectorAll('[data-theme-toggle]');
+    var dark = isDark(), btns = document.querySelectorAll('[data-theme-toggle]');
     for(var i = 0; i < btns.length; i++){
-      btns[i].hidden = false;
-      btns[i].setAttribute('aria-pressed', String(isDark()));
+      var b = btns[i], lbl = b.querySelector('.ts-lbl'), ico = b.querySelector('.ts-ico');
+      b.hidden = false;
+      b.removeAttribute('aria-pressed');
+      b.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+      if(lbl) lbl.textContent = dark ? 'Light' : 'Dark';
+      if(ico) ico.innerHTML = dark ? SUN : MOON;
     }
   }
 

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>try{if(localStorage.getItem('pea.theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}</script>
+<title>PRISM Landing Ideas</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../design-system.css?v=20261019a">
+<script src="../../theme-switch.js?v=20261019b" defer></script>
+<style>
+/* Brainstorm page: six landing-page hero mockups. Uses design-system.css tokens only.
+   One exception for the mockups: a 40px landing display size (the app's largest is 24px). */
+html,body{min-height:100%}
+.intro{max-width:1120px;margin:0 auto;padding:var(--sp-8) var(--sp-4) var(--sp-4)}
+.intro p{color:var(--ink-2);max-width:68ch;margin-top:var(--sp-2)}
+.intro-bar{display:flex;flex-wrap:wrap;gap:var(--sp-3);align-items:center;justify-content:space-between}
+.concept{max-width:1120px;margin:0 auto;padding:var(--sp-6) var(--sp-4)}
+.c-head{display:flex;flex-wrap:wrap;gap:var(--sp-2) var(--sp-4);align-items:baseline;margin-bottom:var(--sp-3)}
+.c-head h2 .n{color:var(--ink-2);font-variant-numeric:tabular-nums;margin-right:var(--sp-2)}
+.c-head p{color:var(--ink-2);font-size:var(--fs-xs);flex:1 1 320px}
+.pick{display:inline-block;padding:0 var(--sp-2);border-radius:var(--radius-pill);background:var(--brand);color:var(--on-brand);font-size:var(--fs-xs);font-weight:600;line-height:22px}
+
+/* Browser frame around each mockup */
+.frame{border:1px solid var(--rule);border-radius:var(--radius-sheet);overflow:hidden;background:var(--sheet);box-shadow:var(--shadow-float)}
+.chrome{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3);background:var(--sheet-2);border-bottom:1px solid var(--rule);font-size:var(--fs-xs);color:var(--ink-2)}
+.chrome i{width:10px;height:10px;border-radius:50%;background:var(--rule);display:inline-block}
+.chrome .url{margin-left:var(--sp-2);padding:0 var(--sp-2);background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-control);flex:1;max-width:340px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lp-nav{display:flex;align-items:center;gap:var(--sp-4);padding:var(--sp-3) var(--sp-6);border-bottom:1px solid var(--rule);font-size:var(--fs-sm);font-weight:600}
+.lp-nav .links{margin-left:auto;display:flex;gap:var(--sp-4);color:var(--ink-2)}
+.wm .hl-i{position:relative;display:inline-block;padding:0 .14em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
+.wm .hl-i::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
+.wm{font-size:var(--fs-lg);font-weight:600}
+
+.display{font-size:40px;font-weight:600;line-height:1.12;letter-spacing:0;max-width:16ch}
+.lede{font-size:var(--fs-md);color:var(--ink-2);max-width:46ch;margin-top:var(--sp-3)}
+.ctas{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-5)}
+.ctas .btn{min-height:40px;padding:0 var(--sp-4);font-size:var(--fs-sm)}
+.fine{font-size:var(--fs-xs);color:var(--ink-2);margin-top:var(--sp-3)}
+.desk{background:var(--desk)}
+
+/* Flag marks: the same look as the studio's ::highlight(pea-flag) */
+mark.f{background:var(--highlighter);color:var(--ink);text-decoration:underline 2px var(--ink-2);text-underline-offset:2px;padding:0 1px}
+.reading{font-family:var(--serif);font-size:var(--fs-md);line-height:1.7}
+sup.k{font-family:var(--sans);font-size:11px;font-weight:600;color:var(--ink-2);margin-left:1px}
+
+/* 1 · Marked-up handout */
+.h1-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:var(--sp-8);padding:var(--sp-12) var(--sp-6);align-items:center}
+.handout{position:relative;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet);padding:var(--sp-6);box-shadow:var(--shadow-float)}
+.handout h3{font-family:var(--sans);margin-bottom:var(--sp-2)}
+.notes{display:grid;gap:var(--sp-2);margin-top:var(--sp-4)}
+.note{display:grid;grid-template-columns:24px 1fr;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);background:var(--sheet-2);font-size:var(--fs-xs)}
+.note b{display:block}
+.note .src{color:var(--ink-2)}
+.note .k{font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.note ins{text-decoration:underline;text-decoration-color:var(--pass);text-decoration-thickness:2px}
+.note del{color:var(--ink-2)}
+.note{opacity:0;transform:translateY(6px);transition:opacity .4s,transform .4s}
+.notes.show .note{opacity:1;transform:none}
+.notes.show .note:nth-child(2){transition-delay:.25s}
+.notes.show .note:nth-child(3){transition-delay:.5s}
+
+/* 2 · Lenses */
+.h2-wrap{padding:var(--sp-12) var(--sp-6);text-align:center}
+.h2-wrap .display, .h2-wrap .lede{margin-left:auto;margin-right:auto}
+.lens-svg{display:block;width:100%;max-width:880px;height:auto;margin:var(--sp-8) auto 0;color:var(--ink)}
+.lens-svg .lbl{font-family:var(--sans);font-size:13px;font-weight:600;fill:var(--ink)}
+.lens-svg .sub{font-family:var(--sans);font-size:13px;fill:var(--ink-2)}
+
+/* 3 · Score sheet */
+.h3-wrap{padding:var(--sp-12) var(--sp-6);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--sp-8)}
+.sheet-form{border:1px solid var(--rule);border-radius:var(--radius-sheet);background:var(--sheet)}
+.sheet-form header{padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--rule);background:var(--sheet-2);font-size:var(--fs-xs);font-weight:600;display:flex;justify-content:space-between}
+.row{display:grid;grid-template-columns:32px 1fr auto;gap:var(--sp-3);align-items:center;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--rule)}
+.row:last-child{border-bottom:0}
+.row .num{color:var(--ink-2);font-weight:600}
+.row label{display:flex;gap:var(--sp-2);align-items:center;cursor:pointer}
+.row input{width:18px;height:18px}
+.answer{margin-top:var(--sp-4);padding:var(--sp-4);border-left:4px solid var(--brand);background:var(--sheet-2);border-radius:0 var(--radius-control) var(--radius-control) 0;min-height:88px}
+.answer b{display:block;margin-bottom:var(--sp-1)}
+
+/* 4 · Slider */
+.h4-wrap{padding:var(--sp-12) var(--sp-6);max-width:860px;margin:0 auto}
+.slide-card{margin-top:var(--sp-6);border:1px solid var(--rule);border-radius:var(--radius-sheet);padding:var(--sp-6);background:var(--sheet)}
+.slide-card .reading{font-size:20px;min-height:3.4em}
+.slide-row{display:flex;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);font-size:var(--fs-xs);color:var(--ink-2)}
+.slide-row input{flex:1}
+.why{margin-top:var(--sp-3);font-size:var(--fs-xs);color:var(--ink-2);min-height:2.6em}
+.meter{display:flex;gap:var(--sp-4);margin-top:var(--sp-3);font-size:var(--fs-xs)}
+.meter b{font-variant-numeric:tabular-nums}
+
+/* 5 · Two doors */
+.h5-wrap{padding:var(--sp-12) var(--sp-6)}
+.h5-wrap .display{max-width:none;text-align:center}
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4);margin-top:var(--sp-8)}
+.door{border:1px solid var(--rule);border-radius:var(--radius-sheet);padding:var(--sp-6);background:var(--sheet)}
+.door .tag-y{display:inline-block;padding:0 var(--sp-2);background:var(--brand);color:var(--on-brand);font-size:var(--fs-xs);font-weight:600;border-radius:var(--radius-control)}
+.door h3{font-size:24px;margin:var(--sp-3) 0 var(--sp-1)}
+.door p{color:var(--ink-2)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2);margin:var(--sp-5) 0}
+.step{border:1px solid var(--rule);border-radius:var(--radius-control);background:var(--sheet-2);padding:var(--sp-2);font-size:var(--fs-xs);min-height:92px}
+.step .k{display:block;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--rule);margin-top:6px}
+.bar.y{background:var(--brand)}
+.bar.s{width:60%}
+
+/* 6 · Evidence-first */
+.h6-wrap{padding:var(--sp-12) var(--sp-6);display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:var(--sp-8)}
+.h6-wrap .display{font-family:var(--serif);font-weight:600;max-width:18ch}
+.h6-wrap .reading{color:var(--ink-2);margin-top:var(--sp-4);max-width:52ch}
+.fn{border-top:1px solid var(--rule);padding-top:var(--sp-3);margin-top:var(--sp-6);font-size:var(--fs-xs);color:var(--ink-2);display:grid;gap:var(--sp-1)}
+.facts{display:grid;gap:0;border-top:1px solid var(--rule)}
+.fact{padding:var(--sp-4) 0;border-bottom:1px solid var(--rule)}
+.fact .big{font-size:40px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.fact p{color:var(--ink-2);margin-top:var(--sp-1)}
+
+@media (max-width:800px){
+  .h1-grid,.h3-wrap,.h6-wrap,.doors{grid-template-columns:1fr}
+  .h1-grid,.h2-wrap,.h3-wrap,.h4-wrap,.h5-wrap,.h6-wrap{padding:var(--sp-8) var(--sp-4)}
+  .display{font-size:30px}
+  .lp-nav{padding:var(--sp-3) var(--sp-4)}
+  .lp-nav .links{display:none}
+  .steps{grid-template-columns:1fr 1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){.note{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="site-bar">
+  <a class="site-name" href="../../index.html"><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></a>
+  <nav class="site-nav" aria-label="Brainstorm">
+    <a href="index.html">Brainstorm</a>
+    <a href="landing.html" aria-current="page">Landing ideas</a>
+  </nav>
+  <span class="bar-divider" aria-hidden="true"></span>
+  <button type="button" class="btn btn-quiet theme-toggle" data-theme-toggle aria-pressed="false" title="Dark mode"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><span class="ts-lbl">Dark</span></button>
+</header>
+
+<main>
+<div class="intro">
+  <h1>Landing page: six hero mockups</h1>
+  <p>Each mockup shows only the first screen of the page. All six use the current tokens, the Flagged I logo and the yellow theme colour. The 40px headline size is used only on these mockups; the app's largest size is 24px. Numbers in the score mockups are made-up examples.</p>
+</div>
+
+<!-- 1 -->
+<section class="concept" aria-labelledby="c1">
+  <div class="c-head"><h2 id="c1"><span class="n">1</span>The marked-up handout</h2><span class="pick">Pick</span>
+    <p>The product doing its job in five seconds: real handout text, yellow flags, margin notes with fixes and sources.</p></div>
+  <div class="frame">
+    <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">prism.example / </span></div>
+    <div class="lp-nav"><span class="wm">PR<span class="hl-i">I</span>SM</span><span class="links"><span>How it works</span><span>Frameworks</span><span>About</span></span></div>
+    <div class="h1-grid desk">
+      <div>
+        <h3 class="display">See your handout the way your readers will.</h3>
+        <p class="lede">PRISM checks patient materials against 23 published health-literacy standards, marks what will trip readers up, and suggests a fix with its source.</p>
+        <div class="ctas"><a class="btn btn-primary" href="#">Check a draft</a><a class="btn btn-secondary" href="#">Plan from an idea</a></div>
+        <p class="fine">Your file stays in your browser. Nothing is uploaded.</p>
+      </div>
+      <div class="handout">
+        <h3>Taking your water pill</h3>
+        <p class="reading">Your doctor prescribed a <mark class="f">diuretic</mark><sup class="k">1</sup> to lower fluid build-up. <mark class="f">Patients should take the medication in the morning with food, and they should monitor their weight daily, and report a gain of more than 2 pounds in a day.</mark><sup class="k">2</sup> About <mark class="f">25%</mark><sup class="k">3</sup> of people feel dizzy at first.</p>
+        <div class="notes" id="notes">
+          <div class="note"><span class="k">1</span><span><b>Jargon: try “water pill”</b><span class="src">PEMAT-P items 3–4 (AHRQ)</span></span></div>
+          <div class="note"><span class="k">2</span><span><b>Long sentence: split at “, and”</b><span class="src">Federal Plain Language Guidelines</span></span></div>
+          <div class="note"><span class="k">3</span><span><b><del>25%</del> → <ins>1 in 4</ins></b><span class="src">Gigerenzer &amp; Hoffrage, 1995</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="concept" aria-labelledby="c2">
+  <div class="c-head"><h2 id="c2"><span class="n">2</span>One handout, many lenses</h2>
+    <p>Explains the name. Ink lines only, no spectrum: one draft goes in, five score sheets come out.</p></div>
+  <div class="frame">
+    <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">prism.example / </span></div>
+    <div class="lp-nav"><span class="wm">PR<span class="hl-i">I</span>SM</span><span class="links"><span>How it works</span><span>Frameworks</span><span>About</span></span></div>
+    <div class="h2-wrap desk">
+      <h3 class="display">One draft. Twenty-three published standards.</h3>
+      <p class="lede">Read your material through every lens that matters to patients, in one pass.</p>
+      <div class="ctas" style="justify-content:center"><a class="btn btn-primary" href="#">Check a draft</a><a class="btn btn-secondary" href="#">See the frameworks</a></div>
+      <svg class="lens-svg" viewBox="0 0 880 300" role="img" aria-label="One document passes through a lens and splits into five framework scores">
+        <rect x="20" y="70" width="150" height="190" rx="6" fill="var(--sheet)" stroke="var(--rule)"/>
+        <g fill="var(--rule)"><rect x="40" y="96" width="90" height="8" rx="2"/><rect x="40" y="118" width="110" height="6" rx="2"/><rect x="40" y="134" width="100" height="6" rx="2"/><rect x="40" y="150" width="110" height="6" rx="2"/><rect x="40" y="166" width="70" height="6" rx="2"/><rect x="40" y="190" width="105" height="6" rx="2"/><rect x="40" y="206" width="95" height="6" rx="2"/></g>
+        <rect x="40" y="148" width="58" height="10" fill="var(--brand)"/>
+        <path d="M170 165 H380" stroke="currentColor" stroke-width="6"/>
+        <path d="M368 40 L392 40 L392 290 L368 290 Z" fill="var(--brand)"/>
+        <rect x="377" y="30" width="6" height="270" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="1.5" fill="none">
+          <path d="M392 165 C 480 165, 520 50, 600 50"/><path d="M392 165 C 480 165, 520 107, 600 107"/><path d="M392 165 H600"/><path d="M392 165 C 480 165, 520 223, 600 223"/><path d="M392 165 C 480 165, 520 280, 600 280"/>
+        </g>
+        <g>
+          <text class="lbl" x="612" y="46">PEMAT-P understandability</text><text class="sub" x="612" y="62">78% · example</text>
+          <text class="lbl" x="612" y="103">CDC Clear Communication Index</text><text class="sub" x="612" y="119">16 of 20</text>
+          <text class="lbl" x="612" y="161">Plain language</text><text class="sub" x="612" y="177">3 long sentences</text>
+          <text class="lbl" x="612" y="219">Accessibility</text><text class="sub" x="612" y="235">2 images need alt text</text>
+          <text class="lbl" x="612" y="276">Numbers</text><text class="sub" x="612" y="292">1 percentage to reframe</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="concept" aria-labelledby="c3">
+  <div class="c-head"><h2 id="c3"><span class="n">3</span>Score sheet as the page</h2>
+    <p>The page is a printed form. Tick a box and the panel beside it changes to suit you. Try it.</p></div>
+  <div class="frame">
+    <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">prism.example / </span></div>
+    <div class="lp-nav"><span class="wm">PR<span class="hl-i">I</span>SM</span><span class="links"><span>How it works</span><span>Frameworks</span><span>About</span></span></div>
+    <div class="h3-wrap desk">
+      <div>
+        <h3 class="display">Before patients read it, score it.</h3>
+        <p class="lede">The checks health-literacy researchers use, laid out as the score sheets they were published as.</p>
+        <div class="answer" id="answer" aria-live="polite"><b>Tick what fits you.</b>PRISM will show you where to start.</div>
+      </div>
+      <div class="sheet-form" role="group" aria-label="About you">
+        <header><span>About you</span><span class="num">Items 1–4</span></header>
+        <div class="row"><span class="num">1.</span><label><input type="checkbox" data-a="write"> I write patient handouts or web pages.</label></div>
+        <div class="row"><span class="num">2.</span><label><input type="checkbox" data-a="review"> I review materials before they go out.</label></div>
+        <div class="row"><span class="num">3.</span><label><input type="checkbox" data-a="idea"> I have an idea but no draft yet.</label></div>
+        <div class="row"><span class="num">4.</span><label><input type="checkbox" data-a="cite"> I need to cite the standard I checked against.</label></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="concept" aria-labelledby="c4">
+  <div class="c-head"><h2 id="c4"><span class="n">4</span>“Would your reader get this?”</h2>
+    <p>An interactive sentence. Drag the slider to apply PRISM's rewrites one at a time, each with its source.</p></div>
+  <div class="frame">
+    <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">prism.example / </span></div>
+    <div class="lp-nav"><span class="wm">PR<span class="hl-i">I</span>SM</span><span class="links"><span>How it works</span><span>Frameworks</span><span>About</span></span></div>
+    <div class="desk"><div class="h4-wrap">
+      <h3 class="display">Would your reader get this?</h3>
+      <div class="slide-card">
+        <p class="reading" id="s-text"></p>
+        <div class="slide-row"><span>As written</span><input type="range" id="s-range" min="0" max="3" value="0" step="1" aria-label="Rewrite step"><span>Plain language</span></div>
+        <p class="why" id="s-why"></p>
+        <div class="meter"><span>Grade level <b id="s-grade"></b></span><span>Flags <b id="s-flags"></b></span></div>
+      </div>
+      <div class="ctas"><a class="btn btn-primary" href="#">Try it on your draft</a></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="concept" aria-labelledby="c5">
+  <div class="c-head"><h2 id="c5"><span class="n">5</span>Two doors</h2>
+    <p>The most practical: the two modes side by side from the first screen, each with its three steps.</p></div>
+  <div class="frame">
+    <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">prism.example / </span></div>
+    <div class="lp-nav"><span class="wm">PR<span class="hl-i">I</span>SM</span><span class="links"><span>How it works</span><span>Frameworks</span><span>About</span></span></div>
+    <div class="h5-wrap desk">
+      <h3 class="display">Clear patient materials, from idea to final check.</h3>
+      <div class="doors">
+        <div class="door">
+          <span class="tag-y">Have a draft</span>
+          <h3>Evaluate a draft</h3>
+          <p>Drop in a Word file, PDF or picture. See every flag, apply fixes, export.</p>
+          <div class="steps" aria-hidden="true">
+            <div class="step"><span class="k">1</span>Open a file<div class="bar"></div><div class="bar s"></div></div>
+            <div class="step"><span class="k">2</span>See the flags<div class="bar y"></div><div class="bar s"></div></div>
+            <div class="step"><span class="k">3</span>Apply fixes<div class="bar"></div><div class="bar y s"></div></div>
+          </div>
+          <a class="btn btn-primary" href="#">Check a draft</a>
+        </div>
+        <div class="door">
+          <span class="tag-y">Starting out</span>
+          <h3>Plan from an idea</h3>
+          <p>Pick your audience and format. Get an outline with the checks that matter at each stage.</p>
+          <div class="steps" aria-hidden="true">
+            <div class="step"><span class="k">1</span>Brief<div class="bar"></div><div class="bar s"></div></div>
+            <div class="step"><span class="k">2</span>Outline<div class="bar"></div><div class="bar"></div></div>
+            <div class="step"><span class="k">3</span>Final check<div class="bar y"></div><div class="bar s"></div></div>
+          </div>
+          <a class="btn btn-secondary" href="#">Start a plan</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="concept" aria-labelledby="c6">
+  <div class="c-head"><h2 id="c6"><span class="n">6</span>Evidence-first</h2>
+    <p>Editorial and footnoted, for clinicians, researchers and funders. Serif headline, real sources.</p></div>
+  <div class="frame">
+    <div class="chrome" aria-hidden="true"><i></i><i></i><i></i><span class="url">prism.example / </span></div>
+    <div class="lp-nav"><span class="wm">PR<span class="hl-i">I</span>SM</span><span class="links"><span>Method</span><span>Frameworks</span><span>About</span></span></div>
+    <div class="h6-wrap desk">
+      <div>
+        <h3 class="display">Most adults find health information hard to use.<sup class="k">1</sup></h3>
+        <p class="reading">PRISM is a free studio for checking patient materials against published, peer-reviewed standards. Every flag names the item it comes from, so your review can be cited.</p>
+        <div class="ctas"><a class="btn btn-primary" href="#">Check a draft</a><a class="btn btn-secondary" href="#">Read the method</a></div>
+        <div class="fn"><span>1. Canadian Council on Learning, <i>Health Literacy in Canada</i> (2008): 60% of adults lack adequate health literacy.</span><span>2. Shoemaker et al., PEMAT, AHRQ (2014).</span></div>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="big">60%</div><p>of Canadian adults lack adequate health literacy.<sup class="k">1</sup></p></div>
+        <div class="fact"><div class="big">23</div><p>published frameworks, each linked to its source.</p></div>
+        <div class="fact"><div class="big">0</div><p>files uploaded. Checks run in your browser.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+// 1: show margin notes when the handout scrolls into view
+(function(){
+  var n=document.getElementById('notes');
+  if(!('IntersectionObserver' in window)){n.classList.add('show');return}
+  new IntersectionObserver(function(es,o){es.forEach(function(e){if(e.isIntersecting){n.classList.add('show');o.disconnect()}})},{threshold:.4}).observe(n);
+})();
+// 3: the answer panel follows the ticked boxes
+(function(){
+  var msg={
+    write:['Start with Evaluate a draft.','Open your file; flags and fixes appear beside the text.'],
+    review:['Use the score sheets.','Rate each PEMAT or CDC item; PRISM suggests a rating you can confirm.'],
+    idea:['Start with Plan from an idea.','Set the audience and format, then follow the outline stages.'],
+    cite:['Open the Framework Compass.','Every check links to the published item it comes from.']
+  };
+  var box=document.getElementById('answer');
+  document.querySelectorAll('[data-a]').forEach(function(c){c.addEventListener('change',function(){
+    var on=[].filter.call(document.querySelectorAll('[data-a]'),function(x){return x.checked});
+    if(!on.length){box.innerHTML='<b>Tick what fits you.</b>PRISM will show you where to start.';return}
+    var m=msg[on[on.length-1].dataset.a];box.innerHTML='<b>'+m[0]+'</b>'+m[1];
+  })});
+})();
+// 4: rewrite steps
+(function(){
+  var steps=[
+    {t:'Patients with <mark class="f">asymptomatic</mark> <mark class="f">hypertension</mark> should <mark class="f">titrate</mark> their medication as directed and <mark class="f">monitor</mark> readings, and 25% will need a second agent.',w:'As written: 4 jargon words, a 30-word sentence and a bare percentage.',g:'14',f:'6'},
+    {t:'People with high blood pressure who feel fine should change their medicine dose as directed and <mark class="f">monitor</mark> readings, and 25% will need a second agent.',w:'Jargon swapped for everyday words. Source: PEMAT-P items 3–4 (AHRQ).',g:'11',f:'3'},
+    {t:'People with high blood pressure who feel fine should change their medicine dose as directed. Check your readings. 25% will need a second medicine.',w:'Long sentence split. Source: Federal Plain Language Guidelines.',g:'7',f:'1'},
+    {t:'People with high blood pressure who feel fine should change their medicine dose as directed. Check your readings. About 1 in 4 people will need a second medicine.',w:'Percentage reframed as a natural frequency. Source: Gigerenzer &amp; Hoffrage (1995).',g:'6',f:'0'}
+  ];
+  var r=document.getElementById('s-range');
+  function draw(){var s=steps[+r.value];document.getElementById('s-text').innerHTML=s.t;document.getElementById('s-why').innerHTML=s.w;document.getElementById('s-grade').textContent=s.g;document.getElementById('s-flags').textContent=s.f}
+  r.addEventListener('input',draw);draw();
+})();
+</script>
+</body>
+</html>

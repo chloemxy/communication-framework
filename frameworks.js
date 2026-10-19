@@ -8,16 +8,16 @@
 (function (root) {
   const FRAMEWORKS = [
     // ── Clarity & content ──
-    { key: 'cci',         id: 'CCI',            zone: 'clarity',  label: 'CCI',                 name: 'CDC Clear Communication Index',
+    { key: 'cci',         id: 'CCI',            zone: 'clarity',  label: 'CCI',                 name: 'Centers for Disease Control and Prevention Clear Communication Index',
       desc: 'CDC’s 20-item check for clear public health materials.', output: 'score',
       source: { label: 'CDC Clear Communication Index', url: 'https://www.cdc.gov/ccindex/' } },
-    { key: 'pemat',       id: 'PEMAT',          zone: 'clarity',  label: 'PEMAT',               name: 'Patient Education Materials Assessment Tool — printable (PEMAT-P)',
+    { key: 'pemat',       id: 'PEMAT',          zone: 'clarity',  label: 'PEMAT-P',             name: 'Patient Education Materials Assessment Tool, printable',
       desc: 'AHRQ: can readers understand it and act on it? For print and printable digital: PDFs and web page text.', output: 'score',
       source: { label: 'AHRQ PEMAT-P', url: 'https://www.ahrq.gov/health-literacy/patient-education/pemat-p.html' } },
     { key: 'pematav',     id: 'PEMAT_AV',       zone: 'clarity',  label: 'PEMAT-A/V',           name: 'PEMAT for audiovisual materials',
       desc: 'The same AHRQ check for video, animation and multimedia, including interactive content.', output: 'score',
       source: { label: 'AHRQ PEMAT-A/V', url: 'https://www.ahrq.gov/health-literacy/patient-education/pemat-av.html' } },
-    { key: 'cdcidd',      id: 'CDC_IDD',        zone: 'clarity',  label: 'CDC IDD/ELL',         name: 'CDC tool for adults with intellectual disability or extreme low literacy',
+    { key: 'cdcidd',      id: 'CDC_IDD',        zone: 'clarity',  label: 'CDC IDD/ELL',         name: 'Centers for Disease Control and Prevention tool for adults with intellectual disability or extreme low literacy',
       desc: 'CDC’s 27-item score sheet for readers with IDD or very low literacy.', output: 'score',
       source: { label: 'CDC Stacks (PDF)', url: 'https://stacks.cdc.gov/view/cdc/129950' } },
     { key: 'sam',         id: 'SAM',            zone: 'clarity',  label: 'SAM',                 name: 'Suitability Assessment of Materials',
@@ -35,7 +35,7 @@
     { key: 'plainlang',   id: 'PLAIN_LANGUAGE', zone: 'clarity',  label: 'Plain Language',      name: 'Federal Plain Language Guidelines',
       desc: 'The U.S. government’s guide to plain writing.', output: 'checklist',
       source: { label: 'Digital.gov plain language guide', url: 'https://digital.gov/guides/plain-language' } },
-    { key: 'cdceq',       id: 'CDC_EQUITY',     zone: 'clarity',  label: 'CDC Inclusive Comms', name: 'CDC Health Equity Guiding Principles for Inclusive Communication',
+    { key: 'cdceq',       id: 'CDC_EQUITY',     zone: 'clarity',  label: 'CDC Inclusive Comms', name: 'Centers for Disease Control and Prevention Health Equity Guiding Principles for Inclusive Communication',
       desc: 'CDC’s principles and preferred terms for respectful, inclusive language.', output: 'checklist',
       source: { label: 'Calanan et al., Preventing Chronic Disease (2023)', url: 'https://www.cdc.gov/pcd/issues/2023/23_0061.htm' } },
     { key: 'upl',         id: 'UPL',            zone: 'clarity',  label: 'UPL',                 name: 'Universal Patient Language Best Practices',

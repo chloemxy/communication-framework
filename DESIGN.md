@@ -65,7 +65,7 @@ alone on the swipe. The wordmark carries `PRISM` as screen-reader text.
   per region. Labels are verbs, no trailing arrows. External links may keep a small ↗.
 - Rating buttons: same height and radius as buttons; pressed state uses the status colour
   as a 2px inset border plus the word — never colour alone.
-- Theme: light by default (does not follow the OS). One **Dark** toggle in the site bar; the
+- Theme: light by default (does not follow the OS). One theme button in the site bar names the mode it switches to (**Dark** with a moon in light mode, **Light** with a sun in dark mode); the
   choice is saved in `localStorage` (`pea.theme`) and applied as `data-theme="dark"` on `<html>`
   before first paint (no flash).
 
@@ -85,6 +85,8 @@ alone on the swipe. The wordmark carries `PRISM` as screen-reader text.
 - A panel that opens under a bar uses the bar's edge, so the panel's first line sits
   directly under the bar title.
 - Content shown as a document (a page preview) keeps its own page margins.
+- One exception: the empty Material panel is a centred drop target (Open a file, Type or paste
+  text, the samples). It is a single action area, not a list or form, so it centres as a unit.
 - Check by measuring where each text block starts inside each container: one edge, plus at
   most one row indent. Anything else is a defect.
 

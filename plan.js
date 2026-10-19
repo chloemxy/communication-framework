@@ -127,6 +127,9 @@ function renderPlan(){
 }
 function renderPlanSteps(){
   const fl = planFlow();
+  // Brief and Frameworks only matter once PRISM checks words: hide them at the early stages
+  const cur = fl.stages.find(s => s.key === plan.stage) || fl.stages[0];
+  $('stage').classList.toggle('plan-early', !cur.prism);
   $('plan-steps').innerHTML = fl.stages.map((st, i) =>
     '<li><button type="button" class="plan-step' + (plan.stage === st.key ? ' on' : '') + '"' + (plan.stage === st.key ? ' aria-current="step"' : '') + ' onclick="planGo(\'' + st.key + '\')">' +
       '<span class="plan-n">' + (i + 1) + '</span><span class="plan-sname">' + st.name + '</span>' +
@@ -222,7 +225,7 @@ function planSceneDel(k){ plan.scenes.splice(k, 1); planSave(); renderPlanStage(
 function planSendToEditor(html, label){
   const fl = planFlow();
   if(editor.innerText.trim()){
-    if(!confirm('Replace the text in the editor? What is there now is saved in Version history.')) return;
+    if(!confirm('Replace the text in the editor? What is there now is saved in History.')) return;
     saveVersion('Before ' + label);
   }
   fl.fws.forEach(k => { fwManual[k] = true; });

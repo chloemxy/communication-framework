@@ -4,6 +4,206 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-19 — Work survives a refresh; privacy note; front door hand-off; no orphans
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
+
+- **Your work is kept on refresh.**
+  - Saved in this browser only (IndexedDB, not cookies), a moment after each change and again
+    when you leave the page. Nothing is uploaded.
+  - Saved: the material and every opened file (images and PDFs too), History versions, the
+    Brief (audience, format, notes) and checklist ratings.
+  - Not saved yet: the Frameworks selection.
+  - Checked: the sample handout with an applied fix and the sample poster both come back after
+    a refresh.
+  - **Clear** (Material header) now also empties the file list and History and deletes the
+    saved copy.
+- **Workspace guide:** a new note, "Your work stays on this computer":
+  - Nothing is uploaded.
+  - Your work is still here after a refresh.
+  - It's gone if you clear site data or switch browser or computer.
+  - Clear removes it now.
+- **Front door → Studio:** the hand-off is now one movement, about 0.8 seconds.
+  - The handout paper flies into the Material panel (or into the Plan after "Plan from an
+    idea"), and its words fade as it lands.
+  - The yellow countdown line gathers into the yellow "Studio" tab.
+  - The headline lifts away and the dark cover dissolves to show the Studio.
+  - With reduced motion, the intro simply closes.
+- **No orphan words:** headings and captions balance their lines (`text-wrap: balance`), and
+  paragraphs and list items avoid a lone last word (`text-wrap: pretty`). This applies site-wide
+  in `design-system.css`.
+
+## 2026-10-19 — Studio fixes: suggestion cards, notes, Plan, small polish
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
+
+- **Suggestion cards (Plain language).**
+  - Every card shows **Now** (old words struck through in red) and, where a rule can rewrite
+    safely, **New** (new words underlined in green). Cards without a rewrite show their sentence
+    with the flagged words highlighted.
+  - The source is named in the card ("Source: PEMAT-P, AHRQ").
+  - **Edit** opens a box to write your own fix, even on cards with no automatic rewrite.
+    **Apply** puts it into the document and records it in History.
+  - On a poster, Apply changes "Text the tool read" (the artwork isn't edited).
+  - After a change, **Save file** appears beside Apply all. It downloads the edited document
+    (.html for Word), or the corrected text for a poster.
+- **Score notes.** Each note is now a headline with the key number, one or two short points,
+  and a yellow **Next** tag with one step. This applies to Readability, Clear Communication Index,
+  PEMAT, Accessibility and Accuracy.
+- **Plan from an idea.** Brief and Frameworks are hidden at Outline. They appear from Draft on
+  (the stages marked "PRISM checks").
+- **Cards.**
+  - Clicking anywhere on a header bar folds or unfolds the card. Its own buttons and the name
+    tooltip still work, and dragging still moves the card.
+  - Double-clicking a resize grip fits the box to its content.
+  - Card content now reaches the right padding: no reserved scrollbar gutter, and a thin
+    scrollbar when a card scrolls.
+- **Frameworks list.**
+  - "PEMAT" is now **PEMAT-P**, with the full name no longer repeating it.
+  - CDC is spelled out in full names ("Centers for Disease Control and Prevention …").
+  - Use-case pill text lines up with the name above it.
+- **Smaller fixes.**
+  - Colour-vision picker buttons are tighter.
+  - Dropdown options use theme colours, so they no longer look greyed out in dark mode.
+  - The empty Material panel: if nothing is typed or pasted, clicking away brings back the
+    prompts and guides.
+- **Theme button** names the mode it switches to: **Light** (sun) in dark mode, **Dark** (moon)
+  in light mode. DESIGN.md updated.
+- **Front door.**
+  - The logo stays the same size and position when the intro opens.
+  - Simpler wording: "Make your health handout easy to read."
+
+## 2026-10-19 — Logo opens the front door
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
+
+- **Studio:** clicking the PRISM logo brings the Studio view back underneath, with the work in it
+  kept, and opens the front door over it. After the countdown, or Skip, you're back in the Studio.
+  The logo is now a link (`./?intro`, so Ctrl/⌘-click and new tab still work).
+- **Compass page:** the logo goes to `index.html?intro`. `?intro` always shows the front door, even
+  if it was seen this session, and is then removed from the address.
+- **Code:** `intro.js` can now show the intro more than once (`window.PRISMIntro.show()`). The logo
+  link has no underline on hover; it dims instead.
+
+## 2026-10-19 — Front door: one dark screen, handout and slider merged
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
+
+- **Why:** the user wanted both concepts on a dark background, merged and tighter, in one screen
+  with no scrolling.
+- **Layout:** one dark screen.
+  - Left: the kicker, the serif headline, the lede and the two buttons.
+  - Right: the handout as a paper plate, with reading grade and flag count in its header and a
+    slider underneath.
+  - The slider now fixes the handout itself:
+    - "diuretic" becomes "water pill" (PEMAT-P, AHRQ).
+    - The long sentence is split into three (Federal Plain Language Guidelines).
+    - "25%" becomes "1 in 4" (Gigerenzer & Hoffrage).
+    - Each fix shows briefly in green, and its source appears under the slider.
+- **Timing:** the countdown is 9 seconds, and the three fixes apply by themselves at 2, 4 and 6
+  seconds. Touching anything pauses it.
+- **Fit:** sizes scale with the screen height. Checked with no scroll at 1440×900, 1280×680,
+  1024×768 and 375×812 (phone), in light and dark.
+- **Removed:** the separate slider section and the sources footer. Sources now appear in the plate.
+
+## 2026-10-19 — Front door: editorial mockup (serif headlines)
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
+
+- **Why:** to make the site feel more professional and editorial: classic magazine restraint,
+  black, white and one yellow.
+- **Cover:** the front door now opens on a dark cover (ink in light mode, the dark desk in dark
+  mode).
+  - A short yellow-rule kicker, then a large **Newsreader** serif headline and a serif lede.
+  - The main button is yellow with ink text.
+  - The handout is shown as a captioned plate. Its margin notes are ruled rows.
+- **Slider:** the section is laid out as a feature. A serif heading and deck sit beside the slider,
+  with large serif figures for reading grade and flags.
+- **Sources:** a sources line at the foot, with titles of cited sources in italic.
+- **Type:** Public Sans stays for the interface, buttons, kickers and captions.
+- **Scope:** front door only (`intro.css`, `intro.js`). The Studio and Compass are unchanged
+  until this is approved.
+
+## 2026-10-19 — Front door: intro over the Studio
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 44eb366)
+
+- **Why:** the site needed a front door for health communicators and interested members of the
+  public. It shows briefly, then hands over to the Studio.
+- **What:** at `/`, an intro layer covers the Studio (`intro.css`, `intro.js`; two lines added to
+  the `index.html` head).
+  - Hero: "See your handout the way your readers will." A patient handout with yellow flags,
+    and margin notes that give each fix and its source.
+  - Below: "Would your reader get this?" A slider applies the suggestions one at a time, with
+    the reading grade and the number of flags.
+- **Timing:** after 8 seconds the intro slides away into the Studio, and focus moves to the Studio.
+  - A yellow progress line and "Opening the Studio in N s" show the countdown.
+  - Any click, key, scroll or slider move pauses it. **Pause** / **Resume** and **Skip to the
+    Studio** are always there.
+- **Buttons:** **Check a draft** opens the Studio's file picker. **Plan from an idea** switches the
+  Studio to Plan mode.
+- **When it's skipped:** the intro shows once per browser tab session, so reloading while
+  working goes straight to the Studio. It's also skipped for `#about`, any other hash, `?studio`,
+  or the Compass view.
+- `design/brainstorm/landing.html`: six hero mockups this was chosen from.
+
+## 2026-10-19 — History panel: save with a name, revert, export, delete
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 91f55ba)
+
+- **Closes on an outside click**, as well as with ✕ or Esc.
+- **Save a version with a name.** The field and Save version button are at the top of the panel.
+  Ctrl/⌘+S still saves.
+- **Every version** has three actions:
+  - **Revert** (was "Restore"): the version you leave stays in History.
+  - **Export**: downloads that version as `<file>-edited-HHMMSS.html`, which opens in Word.
+  - **Delete**: asks first. The current text doesn't change.
+- The help line now says what each action does. The old line "nothing is deleted" is gone, since
+  Delete exists now.
+- Checked on localhost: named save, export filename, delete, revert, outside click.
+
+## 2026-10-19 — Compass opens under the same bar; About wording and credit order
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 91f55ba)
+
+- **Studio ⇄ Framework Compass without reloading the bar.** Clicking Framework Compass now shows it
+  inside the studio, below the same site bar, with a short fade (none with reduced motion).
+  - It used to open in a new tab, so studio work wouldn't be lost. That work now stays in memory
+    across the switch (checked: the document text is identical after Compass → Studio).
+  - Back and Forward move between the two views. Ctrl/⌘-click still opens the Compass in a new
+    tab.
+  - Embedded, the Compass hides its own bar (`?embed`) and follows the studio's Dark setting.
+  - The Evaluate/Plan switch is hidden while the Compass is showing.
+- Visiting the pages directly (for example the Compass's own Studio link): `design-system.css` now
+  asks the browser for a cross-document view transition. The bar holds still and the page under
+  it cross-fades, in browsers that support it.
+- Shared files re-versioned to `?v=20261019a`.
+- **About:** the note is now two plain lines: "PRISM scores your writing but leaves the writing to
+  you" and "Every check links to its source, and anything you haven't rated stays out of the
+  score". It replaces "It grades your work; it doesn't write it…".
+- **Credits:** Chloe Ma is listed first, for the larger contribution.
+
+## 2026-10-19 — Centred empty panel; History button; taller cards
+
+Branch: `refresh-and-fixes` · Vercel: Preview (pushed 91f55ba)
+
+- **Empty Material panel is centred.** It holds:
+  - a 260px "Open a file" button
+  - a "Type or paste text" button of the same width (was a small underlined link)
+  - one line, "Or drop a file here. Ctrl/⌘+V pastes from anywhere."
+  - the file types and the privacy line
+  - the samples, also centred
+- DESIGN.md notes this as the one exception to the left-edge rule.
+- **History is easy to find.** A "History (N)" button with a clock icon sits in the Material header
+  beside Export. It opens the History side panel (saved versions and applied changes, with Undo
+  and Restore).
+  - The panel and the hints now say "History" everywhere.
+  - The footer count still opens it too. Focus returns to whichever button opened it.
+- **Score cards can be dragged taller.** The resize corner was capped by a 640px max height. Grabbing
+  the corner now lifts the cap. Checked: a drag took the CCI card from 640 to 665px.
+- Checked on localhost: 1440×900 and 375px (no sideways scroll), History open and Esc to close,
+  no console errors.
+
 ## 2026-10-18 — Flagged I logo; yellow becomes the theme colour
 
 Branch: `refresh-and-fixes` · Vercel: Preview (pushed 73b8d7a)

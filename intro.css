@@ -1,0 +1,97 @@
+/* Front door: the intro layer shown over the Studio at "/" (intro.js). Editorial, one screen.
+   One dark screen with no scrolling at common sizes: the headline and actions on the left, the
+   handout on the right as a paper plate whose slider applies PRISM's fixes. After a short
+   countdown it slides away into the Studio. Sizes scale with the viewport height so the whole
+   thing fits; very short or narrow screens fall back to scrolling.
+   Type: Newsreader (serif) for headlines and the handout; Public Sans for the interface,
+   kickers and captions. Italic only for titles of cited sources.
+   The cover is dark in both themes: ink in light mode, the dark desk in dark mode. */
+.intro{--serif-ed:'Newsreader', Georgia, 'Times New Roman', serif;
+  --cover:var(--ink); --on-cover:var(--on-ink);
+  position:fixed;inset:0;z-index:1000;display:flex;flex-direction:column;overflow:auto;
+  background:var(--cover);color:var(--on-cover);
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),opacity .45s}
+:root[data-theme="dark"] .intro{--cover:var(--desk); --on-cover:var(--ink)}
+.intro.leaving{transform:translateY(-24px);opacity:0;pointer-events:none}
+.intro[hidden]{display:none}
+.intro cite{font-style:italic}
+
+/* Top bar */
+.intro-bar{position:relative;flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);
+  min-height:56px;padding:var(--sp-2) var(--sp-5);border-bottom:1px solid color-mix(in srgb, var(--on-cover) 16%, transparent)}
+/* same size and place as the Studio's logo, so it doesn't jump when the intro opens */
+.intro-bar .site-name{display:inline-flex;align-items:center;min-height:32px;margin:0 auto 0 0;font-size:var(--fs-lg);font-weight:600;line-height:1.35;color:var(--on-cover)}
+.intro-count{font-size:var(--fs-xs);opacity:.75;font-variant-numeric:tabular-nums}
+.intro-bar .btn-quiet{color:var(--on-cover)}
+.intro-bar .btn-quiet:hover{background:color-mix(in srgb, var(--on-cover) 12%, transparent);color:var(--on-cover)}
+.intro-bar .btn[aria-pressed="true"]{background:transparent;border-color:color-mix(in srgb, var(--on-cover) 50%, transparent);color:var(--on-cover)}
+#intro-skip{background:var(--on-cover);border-color:var(--on-cover);color:var(--cover)}
+#intro-skip:hover{background:color-mix(in srgb, var(--on-cover) 85%, var(--cover));color:var(--cover)}
+.intro-progress{position:absolute;left:0;bottom:-1px;height:3px;width:100%;background:var(--brand);transform-origin:left;transform:scaleX(0)}
+.intro .btn:focus-visible{outline-color:var(--brand)}
+
+/* One screen: copy left, plate right */
+.intro-hero{flex:1 0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(32px,5vw,72px);align-items:center;align-content:center;
+  width:100%;max-width:1200px;margin:0 auto;padding:clamp(20px,4vh,48px) var(--sp-6)}
+
+.intro-kicker{display:flex;align-items:center;gap:var(--sp-2);font-size:var(--fs-xs);font-weight:600}
+.intro-kicker::before{content:"";width:24px;height:3px;background:var(--brand);flex:none}
+.intro-display{margin-top:clamp(8px,1.6vh,16px);font-family:var(--serif-ed);font-variation-settings:'opsz' 72;
+  font-size:clamp(34px,min(6.4vh,4.6vw),60px);font-weight:600;line-height:1.04;max-width:13ch}
+.intro-lede{margin-top:clamp(10px,2vh,20px);font-family:var(--serif-ed);font-size:clamp(16px,2.2vh,20px);line-height:1.5;max-width:40ch;opacity:.86}
+.intro-ctas{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:clamp(16px,3.4vh,32px)}
+.intro-ctas .btn{min-height:44px;padding:0 var(--sp-5);font-size:var(--fs-sm)}
+.intro-cta-main{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.intro-cta-main:hover{background:var(--brand);border-color:var(--on-cover);color:var(--on-brand)}
+.intro-cta-alt{background:transparent;border-color:color-mix(in srgb, var(--on-cover) 55%, transparent);color:var(--on-cover)}
+.intro-cta-alt:hover{background:color-mix(in srgb, var(--on-cover) 10%, transparent);border-color:var(--on-cover);color:var(--on-cover)}
+.intro-fine{font-size:var(--fs-xs);margin-top:var(--sp-3);opacity:.7}
+
+/* The plate: paper stays paper in both themes, so its colours are fixed */
+.intro-plate{margin:0}
+.intro-handout{background:#FFFFFF;color:#16181D;border-radius:2px;padding:clamp(16px,3vh,32px) clamp(18px,2.6vw,32px);
+  box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.intro-plate-head{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--sp-4);
+  padding-bottom:clamp(8px,1.4vh,12px);border-bottom:1px solid #D5D9DE}
+.intro-handout h2{font-family:var(--serif-ed);font-size:clamp(20px,2.8vh,26px);font-weight:600;line-height:1.2}
+.intro-figs{display:flex;gap:var(--sp-5);margin:0}
+.intro-figs div{display:flex;flex-direction:column-reverse;align-items:flex-end}
+.intro-figs dt{font-size:var(--fs-xs);color:#4A5059;white-space:nowrap}
+.intro-figs dd{margin:0;font-family:var(--serif-ed);font-variation-settings:'opsz' 72;font-size:clamp(26px,4vh,38px);font-weight:600;line-height:1;
+  font-variant-numeric:tabular-nums lining-nums}
+.intro-reading{margin-top:clamp(10px,1.8vh,16px);font-family:var(--serif-ed);font-size:clamp(16px,2.3vh,20px);line-height:1.6;
+  min-height:calc(5 * 1.6em)}
+.intro mark.f{background:#FFE066;color:#16181D;text-decoration:underline 2px #4A5059;text-underline-offset:2px;padding:0 1px}
+.intro ins.fix{text-decoration:underline 2px #1E6B3A;text-underline-offset:3px;animation:introFix .9s ease-out}
+@keyframes introFix{from{background:#E5F1E9}to{background:transparent}}
+.intro-slide{display:flex;align-items:center;gap:var(--sp-3);margin-top:clamp(10px,2vh,18px);font-size:var(--fs-xs);color:#4A5059}
+.intro-slide input{flex:1;min-width:0;accent-color:#16181D}
+.intro-why{margin-top:var(--sp-2);font-size:var(--fs-xs);color:#16181D;min-height:2.6em}
+.intro-why .src{display:block;color:#4A5059}
+.intro-caption{display:flex;gap:var(--sp-2);margin-top:var(--sp-3);font-size:var(--fs-xs);opacity:.78}
+.intro-caption::before{content:"";width:12px;height:3px;margin-top:.6em;background:var(--brand);flex:none}
+
+/* Narrow screens: stack and scroll */
+@media (max-width:860px){
+  .intro-hero{grid-template-columns:1fr;gap:var(--sp-8);align-items:start;padding:var(--sp-8) var(--sp-4) var(--sp-8)}
+  .intro-display{font-size:40px}
+}
+@media (max-width:600px){ .intro-bar{padding:var(--sp-2) var(--sp-4)} }
+@media (max-width:420px){
+  .intro-count{display:none}
+  .intro-hero{gap:var(--sp-5);padding:var(--sp-5) var(--sp-4)}
+  .intro-display{font-size:30px;margin-top:var(--sp-2)}
+  .intro-lede{font-size:15px;margin-top:var(--sp-2)}
+  .intro-ctas{margin-top:var(--sp-4)}
+  .intro-ctas .btn{min-height:40px;padding:0 var(--sp-4)}
+  .intro-fine, .intro-caption{display:none}
+  .intro-handout{padding:var(--sp-4)}
+  .intro-handout h2{font-size:19px}
+  .intro-figs dd{font-size:26px}
+  .intro-reading{font-size:15px;min-height:calc(6 * 1.6em)}
+}
+@media (prefers-reduced-motion:reduce){
+  .intro{transition:none}
+  .intro ins.fix{animation:none}
+  .intro-progress{display:none}
+}
