@@ -14,7 +14,7 @@
 <script src="motion.js?v=20261019f" defer></script>
 <link rel="stylesheet" href="intro.css?v=20261021a">
 <script src="intro.js?v=20261021a" defer></script>
-<script src="plan.js?v=20261021a" defer></script>
+<script src="plan.js?v=20261021c" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -77,9 +77,13 @@ body.on-compass .site-page{visibility:hidden}
 .mod-hide{display:none !important}   /* removing a card needs the hidden Workspace bar to undo */
 
 /* ── Plan from an idea: replaces the workspace (canvas, divider, score rails) in Plan mode ── */
-.stage.is-plan > :not(.top-bars):not(.plan){display:none !important}
+/* From the stages PRISM checks, the plan takes the document column and the score cards stay on the right,
+   the same layout as Evaluate a draft. The Outline stage has nothing to score, so it uses the full width. */
+.stage.is-plan > .canvas{display:none !important}
+.stage.is-plan.plan-early > :not(.top-bars):not(.plan){display:none !important}
 .stage.is-plan.plan-early > .top-bars{display:none}   /* Outline: no Brief or Frameworks yet (plan.js) */
-.plan{grid-column:1 / -1;grid-row:2;min-height:0;overflow-y:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet)}
+.stage.is-plan.plan-early > .plan{grid-column:1 / -1}
+.plan{grid-column:1;grid-row:2;min-height:0;overflow-y:auto;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--radius-sheet)}
 .plan[hidden]{display:none}
 .plan-head{padding:var(--sp-6) var(--inset) var(--sp-5);border-bottom:1px solid var(--rule)}
 .plan-title-row{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3)}
@@ -100,7 +104,7 @@ body.on-compass .site-page{visibility:hidden}
 .plan-sname{grid-area:name;font-size:var(--fs-sm);font-weight:600}
 .plan-stat{grid-area:stat;font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);font-variant-numeric:tabular-nums}
 .plan-prism{grid-area:tag;justify-self:start;font-size:var(--fs-xs);font-weight:600;color:var(--form-blue)}
-.plan-stage{padding:var(--sp-5) var(--inset) var(--sp-8);max-width:760px}
+.plan-stage{--ps-x:var(--inset);padding:var(--sp-5) var(--ps-x) var(--sp-8);max-width:760px}
 .plan-stage-h{margin:0 0 var(--sp-1);font-size:var(--fs-lg);font-weight:600;color:var(--ink);outline:none}
 .plan-line,.plan-p{margin:0 0 var(--sp-4);font-size:var(--fs-sm);line-height:1.5;color:var(--ink)}
 .plan-line{color:var(--ink-2)}
@@ -134,7 +138,26 @@ body.on-compass .site-page{visibility:hidden}
 .plan-scene-os{grid-area:c;align-self:end}
 .plan-scene-shown textarea{height:100%;min-height:120px;background:var(--sheet-2);border-style:dashed}
 .plan-scene .plan-f>span{font-weight:400;color:var(--ink-2);font-size:var(--fs-xs)}
-.plan-next{padding-top:var(--sp-4);border-top:1px solid var(--rule)}
+/* Next: pinned to the bottom of the plan's scroll area, full width of the stage column */
+.plan-next{position:sticky;bottom:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);
+  margin:var(--sp-6) calc(-1 * var(--ps-x)) calc(-1 * var(--sp-8));padding:var(--sp-3) var(--ps-x);
+  background:var(--sheet);border-top:1px solid var(--rule);box-shadow:0 -6px 12px -10px rgba(0,0,0,.25)}
+.plan-next-pos{font-size:var(--fs-sm);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.plan-next-btn{min-height:44px;padding:0 var(--sp-5);font-size:var(--fs-sm);font-weight:600}
+.plan-live{margin-top:calc(-1 * var(--sp-3));color:var(--ink-2)}
+/* Beside the score cards the plan is half width: the stages become a row across the top */
+.plan{container-type:inline-size}
+@container (max-width:720px){
+  .plan-body{grid-template-columns:1fr}
+  .plan-nav{border-right:0;border-bottom:1px solid var(--rule);padding:var(--sp-2) 0}
+  .plan-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}
+  .plan-step.on{box-shadow:inset 0 -3px 0 var(--form-blue)}
+  .plan-stage{--ps-x:var(--sp-4)}
+}
+@container (max-width:520px){
+  .plan-scene{grid-template-columns:1fr;grid-template-areas:"hd" "a" "b" "c"}
+  .plan-scene-shown textarea{min-height:88px}
+}
 @media (max-width:760px){
   .plan{overflow:visible;min-height:max-content}
   .plan-body{grid-template-columns:1fr}
@@ -797,6 +820,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
   .canvas.is-visual{height:calc(70vh + 168px);height:calc(70svh + 168px);max-height:100svh;min-height:360px}
   .vm-preview{padding:var(--sp-2)}
   .rail-scroll{grid-column:1;grid-row:3;overflow:visible;padding:0;min-height:auto}
+  /* stacked above the score cards; min-height:auto so its row grows to fit it (max-content collapses the row) */
+  .plan{grid-column:1;overflow:visible;min-height:auto}
   .mod-rail{column-width:auto;columns:1;min-height:0}
 }
 @media (max-width: 600px){
@@ -5871,7 +5896,7 @@ function setMode(m, btn){
   $('stage').classList.toggle('is-plan', planning);
   $('plan').hidden = !planning;
   if(planning){ if(typeof renderPlan === 'function') renderPlan(); }
-  else applyLayout('everything', true);
+  else { if(typeof planBoardStop === 'function') planBoardStop(); applyLayout('everything', true); }
   if(typeof planBackSync === 'function') planBackSync();
 }
 
