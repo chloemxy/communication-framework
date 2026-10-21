@@ -173,11 +173,12 @@ function renderPlanStage(){
     if(!plan.scenes.length) plan.scenes = planStarterScenes();
     const hasScript = !!editor.innerText.trim();
     h += '<div class="plan-scenes" role="list">' + plan.scenes.map((sc, k) =>
-      '<div class="plan-scene" role="listitem"><span class="plan-scene-n">Scene ' + (k + 1) + '</span>' +
-        '<label class="plan-f"><span>Shown</span><input type="text" value="' + pEsc(sc.shown) + '" oninput="planScene(' + k + ',\'shown\',this.value)" placeholder="e.g. A person at a table with a cuff on"></label>' +
-        '<label class="plan-f"><span>Said</span><textarea rows="2" oninput="planScene(' + k + ',\'said\',this.value)">' + pEsc(sc.said) + '</textarea></label>' +
-        '<label class="plan-f"><span>Words on screen</span><input type="text" value="' + pEsc(sc.onscreen) + '" oninput="planScene(' + k + ',\'onscreen\',this.value)"></label>' +
-        '<button type="button" class="btn btn-quiet plan-scene-x" onclick="planSceneDel(' + k + ')" aria-label="Remove scene ' + (k + 1) + '">Remove</button>' +
+      '<div class="plan-scene" role="listitem">' +
+        '<div class="plan-scene-hd"><span class="plan-scene-n">Scene ' + (k + 1) + '</span>' +
+          '<button type="button" class="btn btn-quiet plan-scene-x" onclick="planSceneDel(' + k + ')" aria-label="Remove scene ' + (k + 1) + '">Remove</button></div>' +
+        '<label class="plan-f plan-scene-shown"><span>Shown</span><textarea rows="4" oninput="planScene(' + k + ',\'shown\',this.value)" placeholder="What the viewer sees, e.g. a person at a table with a blood pressure cuff on">' + pEsc(sc.shown) + '</textarea></label>' +
+        '<label class="plan-f plan-scene-said"><span>Said</span><textarea rows="2" oninput="planScene(' + k + ',\'said\',this.value)" placeholder="Narration or dialogue">' + pEsc(sc.said) + '</textarea></label>' +
+        '<label class="plan-f plan-scene-os"><span>Words on screen</span><input type="text" value="' + pEsc(sc.onscreen) + '" oninput="planScene(' + k + ',\'onscreen\',this.value)" placeholder="Caption or title, if any"></label>' +
       '</div>').join('') + '</div>' +
       '<div class="plan-actions"><button type="button" class="btn btn-secondary" onclick="planSceneAdd()">Add a scene</button>' +
       (hasScript ? '<button type="button" class="btn btn-secondary" onclick="planScenesFromScript()">Fill scenes from the script</button>' : '') +

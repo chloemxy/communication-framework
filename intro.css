@@ -95,3 +95,21 @@
   .intro ins.fix{animation:none}
   .intro-progress{display:none}
 }
+
+/* ── Opening (intro.js → opening): the logo large in the middle, then into the corner ── */
+.intro-big{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.intro-big .site-name{display:inline-block;font-size:clamp(56px, 13vw, 168px);font-weight:600;line-height:1.35;
+  color:var(--on-cover);--logo-ink:var(--on-cover);will-change:transform}
+.intro-big .site-name [aria-hidden="true"]::after{width:4px;border-radius:2px}   /* the scan line, sized for the big word */
+/* while it plays: the corner logo waits, the page waits */
+.intro-hold-logo .intro-bar .site-name{visibility:hidden}
+.intro-hold-page .intro-hero, .intro-hold-page .intro-bar > :not(.site-name):not(.intro-progress){opacity:0}
+.intro-hold-page .intro-progress{visibility:hidden}
+/* then the page rises in, a beat at a time */
+.intro-reveal .intro-copy > *, .intro-reveal .intro-plate{animation:m-rise var(--dur-slow) var(--ease-out) both}
+.intro-reveal .intro-copy > :nth-child(2){animation-delay:60ms}
+.intro-reveal .intro-copy > :nth-child(3){animation-delay:120ms}
+.intro-reveal .intro-copy > :nth-child(4){animation-delay:180ms}
+.intro-reveal .intro-copy > :nth-child(n+5){animation-delay:240ms}
+.intro-reveal .intro-plate{animation-delay:200ms}
+.intro-reveal .intro-bar > :not(.site-name):not(.intro-progress){animation:m-fade var(--dur-slow) var(--ease-out) 250ms both}

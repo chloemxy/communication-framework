@@ -4,6 +4,40 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-21 — Storyboard scenes laid out as frames
+
+Branch: `refresh-and-fixes` · Vercel: Production (pushed, merged to master)
+
+- **Each scene is now a card laid out like a storyboard frame.** "Shown" is a tall, dashed
+  picture panel on the left. "Said" and "Words on screen" are stacked beside it. The scene
+  number and Remove share a header line.
+- **Why:** the three fields used to sit in one row at different heights. "Shown" was a
+  one-line input that cut off its placeholder, and Remove floated on its own line.
+- **Fields:** "Shown" is now a multi-line box. All three fields have short placeholders.
+  The saved data is unchanged (`shown`, `said`, `onscreen`).
+- **Phones (≤760px):** the fields stack in order: Shown, Said, Words on screen.
+- **Code:** `plan.js` (scene markup) and `index.html` (`.plan-scene*` CSS). The `plan.js`
+  cache-bust is now `v=20261021a`.
+
+## 2026-10-21 — Front door opens with the big logo
+
+Branch: `refresh-and-fixes` · Vercel: Production (pushed, merged to master)
+
+- **The opening:** the front door now starts on the dark screen with the PRISM logo large in the
+  middle (up to 168px). It plays its Scan there: the yellow reading line sweeps across and the I
+  is highlighted.
+- **The glide:** after about 1.35 seconds the logo shrinks and glides into its place in the top-left
+  corner (0.72 seconds). It lands exactly on the corner logo, so the hand-over is invisible.
+- **The page:** while the logo travels, the page rises in a beat at a time: kicker, headline,
+  lede, buttons, then the handout. The bar's controls fade in. The 9-second countdown starts
+  only after the logo has landed.
+- **Skipping it:** any click or key during the opening jumps to the finished page. With reduced
+  motion, the page shows straight away with no opening.
+- **Checked:**
+  - During the opening, the page and corner logo wait and the countdown hasn't started.
+  - The glide ends exactly on the corner logo's position and size.
+  - Afterwards the page rises in and the corner logo shows.
+
 ## 2026-10-19 — Logo animation: Scan is live
 
 Branch: `refresh-and-fixes` · Vercel: Production (pushed b52c1a4, merged to master)

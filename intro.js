@@ -69,6 +69,7 @@
     '</div>';
 
   var box = null, others = [], left = SECONDS, paused = false, timer = null, start = 0, done = true;
+  var splashing = false, splashEnd = null;
 
   function $(id){ return document.getElementById(id); }
   function reduced(){ return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }
@@ -96,6 +97,7 @@
 
   function leave(then){
     if (done) return;
+    if (splashing && splashEnd) splashEnd();
     done = true; cancelAnimationFrame(timer); markSeen();
     others.forEach(function(el){ el.inert = false; });
     if (then) then();
@@ -224,6 +226,7 @@
     // Anyone engaging with the intro gets as long as they want
     ['pointerdown','keydown','wheel','touchstart'].forEach(function(ev){
       box.addEventListener(ev, function(e){
+        if (splashing) { splashEnd(); return; }     // during the opening: jump to the finished page
         if (e.target.closest && e.target.closest('#intro-skip, #intro-pause, [data-go]')) return;
         pause();
       }, { passive:true });
@@ -232,8 +235,45 @@
 
     $('intro-skip').focus({ preventScroll:true });
     drawCount();
-    start = performance.now();
-    timer = requestAnimationFrame(tick);
+    var countdown = function(){ start = performance.now(); timer = requestAnimationFrame(tick); };
+    if (reduced() || !box.animate) countdown(); else opening(countdown);
+  }
+
+  // The opening: the logo plays its Scan large in the middle of the dark screen, then glides
+  // and shrinks into its place in the top-left corner. The page rises in as it travels, and the
+  // countdown starts once it has landed. Any click or key jumps to the finished page.
+  function opening(next){
+    var HOLD = 1350, GLIDE = 720;
+    splashing = true;
+    box.classList.add('intro-hold-logo', 'intro-hold-page');
+    var big = document.createElement('div');
+    big.className = 'intro-big';
+    big.setAttribute('aria-hidden', 'true');
+    big.innerHTML = '<span class="site-name"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span>';
+    box.appendChild(big);
+    var word = big.querySelector('.site-name'), timers = [], ended = false;
+    var end = function(){
+      if (ended) return; ended = true; splashing = false; splashEnd = null;
+      timers.forEach(clearTimeout);
+      big.remove();
+      box.classList.remove('intro-hold-logo', 'intro-hold-page');
+      box.classList.add('intro-reveal');
+      next();
+    };
+    splashEnd = end;
+    timers.push(setTimeout(function(){
+      // glide from the big word to the corner word (same markup, so one scale fits)
+      var bar = box.querySelector('.intro-bar .site-name [aria-hidden]');
+      var from = word.querySelector('[aria-hidden]').getBoundingClientRect(), to = bar.getBoundingClientRect();
+      var k = to.height / from.height, dx = to.left - from.left, dy = to.top - from.top;
+      word.style.transformOrigin = from.left - word.getBoundingClientRect().left + 'px ' + (from.top - word.getBoundingClientRect().top) + 'px';
+      word.animate([{ transform: 'none' }, { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(' + k + ')' }],
+        { duration: GLIDE, easing: 'cubic-bezier(.65,0,.25,1)', fill: 'forwards' });
+      // the page rises in while the logo travels
+      box.classList.remove('intro-hold-page');
+      box.classList.add('intro-reveal');
+      timers.push(setTimeout(end, GLIDE + 20));
+    }, HOLD));
   }
 
   // The logo opens the front door again: Studio view underneath, then the intro over it
