@@ -12,9 +12,9 @@
 <link rel="stylesheet" href="design-system.css?v=20261019i">
 <script src="theme-switch.js?v=20261019e" defer></script>
 <script src="motion.js?v=20261019f" defer></script>
-<link rel="stylesheet" href="intro.css?v=20261019d">
-<script src="intro.js?v=20261019f" defer></script>
-<script src="plan.js?v=20261019b" defer></script>
+<link rel="stylesheet" href="intro.css?v=20261021a">
+<script src="intro.js?v=20261021a" defer></script>
+<script src="plan.js?v=20261021a" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
@@ -122,20 +122,25 @@ body.on-compass .site-page{visibility:hidden}
 .plan-src:hover{color:var(--form-blue)}
 .plan-actions{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-bottom:var(--sp-5)}
 .plan-cta{min-height:40px;padding:0 var(--sp-5);font-size:var(--fs-sm)}
-.plan-scenes{display:grid;gap:0;margin-bottom:var(--sp-3);border-top:1px solid var(--rule)}
-.plan-scene{display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto;grid-template-areas:"n n n x" "a b c c";gap:var(--sp-2) var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--rule)}
-.plan-scene-n{grid-area:n;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.plan-scene-x{grid-area:x;justify-self:end;min-height:28px}
-.plan-scene .plan-f:nth-of-type(1){grid-area:a}
-.plan-scene .plan-f:nth-of-type(2){grid-area:b}
-.plan-scene .plan-f:nth-of-type(3){grid-area:c}
+.plan-scenes{display:grid;gap:var(--sp-3);margin-bottom:var(--sp-3)}
+/* A storyboard frame: the picture panel on the left, what's heard and read beside it */
+.plan-scene{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);grid-template-areas:"hd hd" "a b" "a c";
+  gap:var(--sp-2) var(--sp-3);padding:var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);background:var(--sheet)}
+.plan-scene-hd{grid-area:hd;display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2)}
+.plan-scene-n{font-size:var(--fs-sm);font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.plan-scene-x{min-height:28px}
+.plan-scene-shown{grid-area:a;grid-template-rows:auto 1fr}
+.plan-scene-said{grid-area:b}
+.plan-scene-os{grid-area:c;align-self:end}
+.plan-scene-shown textarea{height:100%;min-height:120px;background:var(--sheet-2);border-style:dashed}
 .plan-scene .plan-f>span{font-weight:400;color:var(--ink-2);font-size:var(--fs-xs)}
 .plan-next{padding-top:var(--sp-4);border-top:1px solid var(--rule)}
 @media (max-width:760px){
   .plan{overflow:visible;min-height:max-content}
   .plan-body{grid-template-columns:1fr}
   .plan-nav{border-right:0;border-bottom:1px solid var(--rule)}
-  .plan-scene{grid-template-columns:1fr auto;grid-template-areas:"n x" "a a" "b b" "c c"}
+  .plan-scene{grid-template-columns:1fr;grid-template-areas:"hd" "a" "b" "c"}
+  .plan-scene-shown textarea{min-height:88px}
 }
 
 /* ── Stage: Brief + Frameworks bars on top; the document column and the score area below ── */
