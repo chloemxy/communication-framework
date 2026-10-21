@@ -4,6 +4,43 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-21 — Plan: Next button pinned to the bottom
+
+Branch: `refresh-and-fixes` · Vercel: Production (pushed, merged to master)
+
+- **The Next button is now in a bar pinned to the bottom of the plan.** It stays in the same
+  place whether the stage is short or long, and you no longer scroll to find it.
+- **It is a primary button** ("Next: Script →"), 44px tall, and the bar shows where you are
+  ("Stage 1 of 4"). The last stage has no Next, so there is no bar there.
+- **Code:** `plan.js` (Next markup) and `index.html` (`.plan-next` CSS; the stage side padding
+  is now the `--ps-x` variable, so the bar spans the column). The `plan.js` cache-bust is now
+  `v=20261021c`.
+
+## 2026-10-21 — Plan from an idea uses the Evaluate layout
+
+Branch: `refresh-and-fixes` · Vercel: Production (pushed, merged to master)
+
+- **The score cards stay on the right in Plan mode.** From Script onwards, the plan takes the
+  document column and the score cards sit on the right, as in Evaluate a draft. Outline has
+  nothing to score yet, so it stays full width with no Brief or Frameworks bars.
+- **"Check the storyboard words" scores in place.** It turns on the video frameworks (PEMAT-A/V,
+  CCI, Readability, Plain language), and their cards appear on the right. You stay in Plan.
+  - Before this, the button jumped to Evaluate a draft.
+  - Once checking has started, the cards re-score as you edit, add or remove scenes.
+  - Checking stops when you leave the stage, change the format or switch mode, so a later
+    scene edit never overwrites the editor without asking.
+- **Script safety:** the script in the editor is saved to History first ("Before storyboard
+  words"), as before.
+- **"Score the final script"** (Animation stage) also scores in place now.
+- **Half-width plan:** when the plan column is narrow, the stage list becomes a row across the
+  top, and scene cards stack their fields below 520px. This uses a container query, so it
+  follows the column width, not the window.
+- **Fix:** on phones the plan's row collapsed (`min-height:max-content`) and overlapped the
+  cards. The plan now sizes to its content above them.
+- **Code:** `plan.js` (`planScoreHere`, `planBoardResync`, `planBoardStop`) and `index.html`
+  (Plan CSS, `setMode`). The `plan.js` cache-bust is now `v=20261021b`.
+- `.claude/launch.json` gains `studio-alt` (port 5175) for a second preview while 5173 is in use.
+
 ## 2026-10-21 — Storyboard scenes laid out as frames
 
 Branch: `refresh-and-fixes` · Vercel: Production (pushed, merged to master)

@@ -137,10 +137,11 @@ function renderPlanSteps(){
       '<span class="plan-stat">' + planStatus(st) + '</span>' +
     '</button></li>').join('');
 }
-function planGo(key){ plan.stage = key; planSave(); renderPlanSteps(); renderPlanStage(); const h = $('plan-stage-h'); if(h) h.focus(); }
+function planGo(key){ if(key !== plan.stage) planBoardStop(); plan.stage = key; planSave(); renderPlanSteps(); renderPlanStage(); const h = $('plan-stage-h'); if(h) h.focus(); }
 function planFormat(v){
   if(brief.format === v) return;
   const btn = document.querySelector('#brief-top-panel [data-v="' + v + '"]');
+  planBoardStop();
   setBrief('format', v, btn || null);
   plan.format = v; planSave();
   renderPlan();
@@ -182,7 +183,9 @@ function renderPlanStage(){
       '</div>').join('') + '</div>' +
       '<div class="plan-actions"><button type="button" class="btn btn-secondary" onclick="planSceneAdd()">Add a scene</button>' +
       (hasScript ? '<button type="button" class="btn btn-secondary" onclick="planScenesFromScript()">Fill scenes from the script</button>' : '') +
-      '<button type="button" class="btn btn-secondary" onclick="planBoardToEditor()">Check the storyboard words</button></div>' +
+      (planBoardLive
+        ? '</div><p class="plan-p plan-live" role="status">Scoring the storyboard words. The cards on the right update as you edit the scenes.</p>'
+        : '<button type="button" class="btn btn-secondary" onclick="planBoardToEditor()">Check the storyboard words</button></div>') +
       '<p class="plan-sub">Check each scene</p>' + planChecks('board', st.checks);
   }
   else if(st.key === 'board'){
@@ -198,7 +201,9 @@ function renderPlanStage(){
         (fl === PLAN_FLOWS.video ? 'Score the final script' : 'Open the finished file') + '</button></div>' +
       '<p class="plan-sub">Before it goes out</p>' + planChecks('final', st.checks);
   }
-  if(next) h += '<div class="plan-next"><button type="button" class="btn btn-secondary" onclick="planGo(\'' + next.key + '\')">Next: ' + next.name + '</button></div>';
+  // Pinned to the bottom of the plan so the way forward is always in the same place
+  if(next) h += '<div class="plan-next"><span class="plan-next-pos">Stage ' + (i + 1) + ' of ' + fl.stages.length + '</span>' +
+    '<button type="button" class="btn btn-primary plan-next-btn" onclick="planGo(\'' + next.key + '\')">Next: ' + next.name + ' <span aria-hidden="true">→</span></button></div>';
   $('plan-stage').innerHTML = h;
 }
 
@@ -218,9 +223,33 @@ function planScenesFromScript(){
   if(plan.scenes.some(sc => sc.shown || sc.onscreen) && !confirm('Replace these scenes with one scene per paragraph of the script?')) return;
   plan.scenes = []; plan.scenes = planStarterScenes(); planSave(); renderPlanStage();
 }
-function planScene(k, field, v){ plan.scenes[k][field] = v; planSave(); }
-function planSceneAdd(){ plan.scenes.push({ shown:'', said:'', onscreen:'' }); planSave(); renderPlanStage(); }
-function planSceneDel(k){ plan.scenes.splice(k, 1); planSave(); renderPlanStage(); }
+function planScene(k, field, v){ plan.scenes[k][field] = v; planSave(); planBoardResync(); }
+function planSceneAdd(){ plan.scenes.push({ shown:'', said:'', onscreen:'' }); planSave(); renderPlanStage(); planBoardResync(); }
+function planSceneDel(k){ plan.scenes.splice(k, 1); planSave(); renderPlanStage(); planBoardResync(); }
+
+// While the storyboard is being checked, the editor holds its words, so the score cards on the right
+// re-score as scenes change. Not saved: leaving the stage or the Plan ends it, so a later edit
+// never overwrites the editor without asking.
+let planBoardLive = false, planBoardT = null;
+function planBoardHtml(){
+  return plan.scenes.map(sc => [sc.said, sc.onscreen].filter(x => (x || '').trim()).map(x => '<p>' + pEsc(x) + '</p>').join('')).join('') || '<p></p>';
+}
+function planBoardResync(){
+  if(!planBoardLive) return;
+  clearTimeout(planBoardT);
+  planBoardT = setTimeout(() => { editor.innerHTML = planBoardHtml(); analyze(); }, 380);
+}
+function planBoardStop(){ planBoardLive = false; clearTimeout(planBoardT); }
+
+// Turn on the flow's frameworks and score what the editor holds, without leaving the Plan:
+// the cards are on the right, as in Evaluate a draft
+function planScoreHere(){
+  planFlow().fws.forEach(k => { fwManual[k] = true; });
+  renderFwTopBar();
+  analyze();
+  const rail = $('rail-scroll');
+  if(rail && window.matchMedia('(max-width: 1000px)').matches) rail.scrollIntoView({ behavior:'smooth', block:'start' });
+}
 
 // The words go to the editor, where the checks run. Anything already there is saved as a version first.
 function planSendToEditor(html, label){
@@ -252,6 +281,7 @@ function planOutlineHtml(){
 }
 // Into the editor, with a way back to the next stage of the Plan
 function planLeave(){
+  planBoardStop();
   const st = planFlow().stages, i = st.findIndex(s => s.key === plan.stage);
   plan.handoff = (st[i + 1] || st[i]).key; planSave();
   setMode('evaluate', document.querySelector('#mode-toggle [data-m="evaluate"]'));
@@ -270,20 +300,23 @@ function planBack(){
 }
 function planReset(){
   if(!confirm('Start over? This clears the outline, scenes and ticks. The editor text stays.')) return;
-  plan = PLAN_EMPTY(); planSave(); renderPlan();
+  planBoardStop(); plan = PLAN_EMPTY(); planSave(); renderPlan();
 }
 function planToEditor(finalCheck){
-  if(finalCheck && editor.innerText.trim()){
-    planFlow().fws.forEach(k => { fwManual[k] = true; });
-    planLeave();
-    renderFwTopBar(); analyze();
-    return;
-  }
+  if(finalCheck && editor.innerText.trim()){ planScoreHere(); return; }
   planSendToEditor(planOutlineHtml(), planFlow() === PLAN_FLOWS.video ? 'Script from outline' : 'Draft from outline');
 }
+// The storyboard's words (said + on screen) are scored in place; the script in the editor is saved as a version first
 function planBoardToEditor(){
-  const html = plan.scenes.map(sc => [sc.said, sc.onscreen].filter(x => (x || '').trim()).map(x => '<p>' + pEsc(x) + '</p>').join('')).join('') || '<p></p>';
-  planSendToEditor(html, 'Storyboard words');
+  if(!planBoardLive && editor.innerText.trim()){
+    if(!confirm('Score the storyboard words instead of the script? The script is saved in History first.')) return;
+    saveVersion('Before storyboard words');
+  }
+  editor.innerHTML = planBoardHtml();
+  planBoardLive = true;
+  saveVersion('Storyboard words');
+  planScoreHere();
+  renderPlanStage();
 }
 function planOpenFile(){
   planLeave();
