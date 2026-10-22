@@ -1,0 +1,10 @@
+{
+  "name": "prism-communication-framework",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PRISM: score patient-facing material against published health-communication instruments.",
+  "files": ["analysis-engine.js", "frameworks.js", "text-measures.js", "video-measures.js"],
+  "scripts": {
+    "test": "node --test tests/"
+  }
+}
