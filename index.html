@@ -1487,7 +1487,10 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 <input type="file" id="file-img" accept="image/*" style="display:none">
 
 <script src="frameworks.js?v=20261019c"></script>
+<script src="text-measures.js?v=20261022a"></script>
 <script>
+// Pure text checks (readability, sentences, jargon) live in text-measures.js, shared with Rendomat.
+const { syllables, countWords, computeFK, gradeText, splitSentences, ARTWORK_WRAP_CHARS, ARTWORK_PROSE_WORDS, artworkUnits, JARGON, JARGON_KEYS, VAGUE } = window.PRISM_TEXT;
 'use strict';
 // ════════════════════════════════════════
 // STUDIO — live analysis over an open canvas
@@ -1567,28 +1570,6 @@ const PEMAT_A = [
   { id:'pa26', n:26, text:'The material uses visual aids whenever they could make it easier to act on the instructions.' },
 ];
 const CCI_PASS = 90, PEMAT_PASS = 70;   // CDC: 90+ passes. PEMAT: AHRQ sets no cutoff; 70% is this tool's working target
-
-// ── Jargon / vague dictionaries (same as Classic) ──
-const JARGON = {
-  hypertension:'high blood pressure','myocardial infarction':'heart attack',
-  dyspnea:'shortness of breath',edema:'swelling',prophylactic:'preventive',
-  etiology:'cause',contraindication:'reason not to use this treatment',
-  comorbidity:'other health condition',prognosis:'likely outcome',
-  hemorrhage:'bleeding',tachycardia:'fast heart rate',bradycardia:'slow heart rate',
-  hyperlipidemia:'high cholesterol',glycemic:'blood sugar',exacerbation:'worsening',
-  pathology:'disease',sequelae:'after-effects',asymptomatic:'without symptoms',
-  bilateral:'on both sides',subcutaneous:'under the skin',intravenous:'into a vein',
-  intramuscular:'into a muscle',diuretic:'water pill',anticoagulant:'blood thinner',
-  carcinoma:'cancer',malignant:'cancerous',benign:'non-cancerous',
-  metastasis:'spread of cancer',lesion:'area of damage',stenosis:'narrowing',
-  thrombosis:'blood clot',embolism:'blockage',ischemia:'reduced blood flow',
-  necrosis:'tissue death',fibrosis:'scarring',sepsis:'severe infection',
-  anemia:'low blood count',hypertrophy:'enlargement',atrophy:'wasting away',
-  oncology:'cancer care',pharmaceutical:'medicine',
-};
-const JARGON_KEYS = Object.keys(JARGON);
-const VAGUE = ['some','many','often','sometimes','various','several','a number of','a lot of',
-  'a few','numerous','appropriate','adequate','sufficient','significant','substantial'];
 
 // ── Suggested rewrites ──
 // Only rules that can't change the meaning get a rewrite a person can apply in one click:
@@ -1806,40 +1787,6 @@ function fixPreviewHtml(issue){
   }).join('<br>');
 }
 
-// ── Text engines ──
-function syllables(word){
-  word = word.toLowerCase().replace(/[^a-z]/g,'');
-  if(!word) return 0;
-  if(word.length <= 3) return 1;
-  word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/,'').replace(/^y/,'');
-  const m = word.match(/[aeiouy]{1,2}/g);
-  return m ? m.length : 1;
-}
-// One word count and one sentence split for every module (footer, Readability, Plain language,
-// the text card, file history and versions), so their numbers always agree.
-function countWords(text){ return (String(text || '').match(/\b\w+\b/g) || []).length; }
-function computeFK(text){
-  const sentences = splitSentences(text);
-  const words = text.match(/\b\w+\b/g) || [];
-  if(!sentences.length || !words.length) return null;
-  const totalSyll = words.reduce((s,w) => s + syllables(w), 0);
-  const avgSentLen  = words.length / sentences.length;
-  const avgSyllWord = totalSyll / words.length;
-  return {
-    ease:  Math.round((206.835 - 1.015*avgSentLen - 84.6*avgSyllWord)*10)/10,
-    grade: Math.round((0.39*avgSentLen + 11.8*avgSyllWord - 15.59)*10)/10,
-    words: words.length, sentences: sentences.length,
-    avgSentLen: Math.round(avgSentLen*10)/10,
-    avgSyll: Math.round(avgSyllWord*100)/100,
-  };
-}
-// FK can dip below zero for very short, simple text; show that as "below 1" rather than a negative grade
-const gradeText = g => g < 1 ? 'below 1' : String(g);
-// A line break always ends a sentence (each heading, list item and paragraph is its own block);
-// inside a line, a full stop, ! or ? followed by a capital does.
-function splitSentences(text){
-  return String(text || '').split(/\n+|(?<=[.!?])\s+(?=[A-Z"'“‘])/).map(s => s.trim()).filter(s => /\w/.test(s));
-}
 // The editor's text with one line per block (heading, paragraph, list item, table cell), so blocks never
 // run together ("…at HomeThe most…"). Every module reads the material through this.
 const TEXT_BLOCKS = 'p,h1,h2,h3,h4,h5,h6,li,div,blockquote,pre,td,th,dt,dd,figcaption,caption,tr';
@@ -1848,29 +1795,6 @@ function editorText(){
   clone.querySelectorAll('br').forEach(b => b.replaceWith('\n'));
   clone.querySelectorAll(TEXT_BLOCKS).forEach(el => { el.append('\n'); });
   return (clone.textContent || '').replace(/[ \t ]*\n[ \t ]*/g, '\n').replace(/\n{2,}/g, '\n').trim();
-}
-
-// Artwork / PDF text arrives one printed line at a time. Rebuild it into units: a line that
-// doesn't end in . ! ? : runs on into the next when the next starts lowercase, or when the line
-// is long (wrapped prose). Short standalone lines (headlines, list items) stay their own unit.
-// prose = the text is mostly running sentences (median unit of 7+ words), not short poster lines.
-const ARTWORK_WRAP_CHARS = 45, ARTWORK_PROSE_WORDS = 7;
-function artworkUnits(raw){
-  const lines = String(raw || '').split('\n').map(l => l.trim().replace(/^([-*•]|\d+[.)])\s+/, ''));
-  const units = [];
-  let cur = '';
-  lines.forEach((l, i) => {
-    if(!l){ if(cur){ units.push(cur); cur = ''; } return; }      // a blank line ends a paragraph
-    cur = cur ? cur + ' ' + l : l;
-    const next = (lines[i + 1] || '');
-    const open = !/[.!?:]["”'’)]?$/.test(l);
-    const runsOn = open && next && (/^[a-z(“"‘']/.test(next) || (l.length > ARTWORK_WRAP_CHARS && /[\p{Ll},;\-–]$/u.test(l)));
-    if(!runsOn){ units.push(cur); cur = ''; }
-  });
-  if(cur) units.push(cur);
-  const counts = units.map(countWords).sort((a, b) => a - b);
-  const median = counts.length ? counts[Math.floor((counts.length - 1) / 2)] : 0;
-  return { units, prose: median >= ARTWORK_PROSE_WORDS, median };
 }
 
 // ── Structure signals from the live editor ──

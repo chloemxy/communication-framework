@@ -1416,15 +1416,28 @@ function buildMultiFrameworkPrompts(documentText, frameworkIds) {
 // RESPONSE VALIDATOR
 // ══════════════════════════════════════════════════════════════════════
 
+/** Whitespace, curly quotes and dash styles are not evidence; letters are. */
+function normalizeQuote(text) {
+  return String(text || '')
+    .replace(/[‘’‚′]/g, "'")
+    .replace(/[“”„″]/g, '"')
+    .replace(/[–—]/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 /**
  * Validates a parsed analysis response against the registry.
  * Catches cases where the LLM may have hallucinated criteria or sources.
  *
  * @param {Object} response     - Parsed JSON response from the LLM
  * @param {string} frameworkId  - Expected framework ID
+ * @param {string} [documentText] - The material that was analysed. When given, every
+ *                                  evidence_quote must appear in it (RULE 2 is checked, not trusted).
  * @returns {{ valid: boolean, violations: string[] }}
  */
-function validateAnalysisResponse(response, frameworkId) {
+function validateAnalysisResponse(response, frameworkId, documentText) {
   const violations = [];
   const fw = getFramework(frameworkId);
   const registeredCriterionIds = new Set(fw.criteria.map(c => c.id));
@@ -1450,6 +1463,18 @@ function validateAnalysisResponse(response, frameworkId) {
       if ((result.status === SCORE_STATUS.MET || result.status === SCORE_STATUS.PARTIAL)
           && !result.evidence_quote) {
         violations.push(`Criterion ${result.criterion_id} scored "${result.status}" but has no evidence_quote — violates RULE 2`);
+      }
+    });
+  }
+
+  // 3b. A quote must be the document's own words. A model asked for evidence will
+  //     paraphrase or invent it; only a string check against the material catches that.
+  //     Whitespace, quote marks and dashes are normalised; nothing else is.
+  if (typeof documentText === 'string' && Array.isArray(response.criteria_results)) {
+    const haystack = normalizeQuote(documentText);
+    response.criteria_results.forEach(result => {
+      if (result.evidence_quote && !haystack.includes(normalizeQuote(result.evidence_quote))) {
+        violations.push(`Criterion ${result.criterion_id}: evidence_quote is not in the document — "${String(result.evidence_quote).substring(0, 80)}"`);
       }
     });
   }

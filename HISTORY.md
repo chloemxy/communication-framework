@@ -4,6 +4,35 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-22 — Shared text measures, measured video checks, quote check
+
+Branch: `rendomat-video-measures` · Vercel: not deployed (local branch)
+
+- **The studio's text checks are now a module, `text-measures.js`.** Readability (Flesch Reading
+  Ease and Flesch-Kincaid grade), sentence splitting, word and syllable counts, artwork units, and
+  the jargon and vague-word lists moved out of `index.html` unchanged, so another tool (Rendomat's
+  video clarity report) computes the same numbers from the same code.
+  - Proven unchanged: the studio's computed values and its full rendered page text were captured
+    on three sample texts before the move and compared after; all identical, no console errors.
+    The comparison was checked to catch a one-constant change.
+- **New `video-measures.js`: measured evidence for PEMAT-A/V.** Given a timed storyboard (scenes
+  with narration, on-screen text with how long it shows, its size and contrast), it suggests
+  ratings for items 8, 9, 11, 12, 13 and 14 with the measurements behind them.
+  - Every suggestion is labelled *measured* and names the basis of each threshold. Most are
+    working thresholds, not part of PEMAT; contrast uses WCAG 2.2 (4.5:1).
+  - AHRQ's rules are kept: Agree only when a characteristic holds 80–100% of the time; N/A only
+    where the form offers it, including "very short" (under 1 minute or 6 or fewer screens).
+  - What a measurement can't settle (garbled audio, cluttered pictures, informative titles) is
+    left to a person and says so.
+- **The engine's validator can check quotes.** `validateAnalysisResponse(response, id, documentText)`
+  now refuses an evidence quote that is not the document's own words (spacing, quote marks and
+  dashes aside). Without the third argument it behaves as before.
+- **Tests:** `npm test` (Node's built-in runner, no dependencies) — 22 tests over the three modules.
+  `package.json` exists only to run them; the site still has no build step.
+- **Code:** `text-measures.js` (new), `video-measures.js` (new), `analysis-engine.js`
+  (`normalizeQuote`, check 3b), `index.html` (loads `text-measures.js?v=20261022a` and binds its
+  names at the top of the main script), `tests/`, `package.json`.
+
 ## 2026-10-21 — Plan: Next button pinned to the bottom
 
 Branch: `refresh-and-fixes` · Vercel: Production (pushed, merged to master)
