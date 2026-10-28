@@ -393,7 +393,7 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
 
   <section class="wrap wide" id="moments" aria-labelledby="mo-h">
     <div class="sec-head"><span class="no">Moments</span><div><h2 id="mo-h">Play it back, one moment at a time</h2></div>
-      <p>Eighteen moments in five phases. Each shows the draft from that commit, the version before it, where in the site it changed, and what PRISM could do by then.</p></div>
+      <p>Eighteen moments in five phases. Each shows the draft from that commit, the version before it, where in the site it changed, and what PRISM could do by then. Hours are rough: the time between commits, grouped into sittings, about 23 in all.</p></div>
     <nav aria-label="Phases">
     <div class="phases" id="phases"></div>
     <div class="ticks" id="ticks"></div>
@@ -907,71 +907,71 @@ var TREE=[
   {id:'about',label:'About',since:7}
 ];
 var M=[
- {d:'Summer',sub:'Archive',url:'framework-compass.html',img:'01-compass',title:'Framework Compass',
+ {d:'Summer',sub:'Archive',h:'Before',url:'framework-compass.html',img:'01-compass',title:'Framework Compass',
   desc:'A reference site across 26 frameworks, rubrics and models, sorted by what you need. It explained each instrument. It didn’t check anything.',
   at:['compass']},
- {d:'Jul 31',sub:'1f73cee',url:'index.html',img:'02-first-tool',title:'The first tool',
+ {d:'Jul 31',sub:'1f73cee',h:'Hour 1',url:'index.html',img:'02-first-tool',title:'The first tool',
   desc:'An upload box and three score cards: readability, the CDC Clear Communication Index and PEMAT. A Classic / Studio switch shows the shape wasn’t picked yet.',
   at:['studio','material','cards']},
- {d:'Aug 17',sub:'768f86d',url:'index.html · Patient Education Analyzer',img:'03-studio-aug',tp:1,title:'From a list to a desk',
+ {d:'Aug 17',sub:'768f86d',h:'Hour 1',url:'index.html · Patient Education Analyzer',img:'03-studio-aug',tp:1,title:'From a list to a desk',
   desc:'One studio view: Brief on the left, the material in the middle, scoring and accessibility on the right. The Compass becomes a reference behind the tool.',
   at:['studio','brief','material','cards']},
- {d:'Sep 15',sub:'c133e0c',url:'index.html · sonia-frameworks-v2',img:'04-sonia-sep',tp:2,by:'sonia',title:'Sonia’s prototype: two ways in',
+ {d:'Sep 15',sub:'c133e0c',h:'Hour 3',url:'index.html · sonia-frameworks-v2',img:'04-sonia-sep',tp:2,by:'sonia',title:'Sonia’s prototype: two ways in',
   desc:'Sonia moved Frameworks into a top bar with a live match count, made the Brief show its targets as you pick, and added a mode toggle: Evaluate a draft / Plan from an idea. Both canvases today come from it.',
   q:[['I’d like to incorporate my <mark>colleague’s branch edits</mark> to master, how do I do it?','Chloe, Sep 15']],
   at:['modes','frameworks','brief']},
- {d:'Oct 9',sub:'b5c2877',url:'index.html · Sonia’s fork',img:'05-sonia-oct',by:'sonia',title:'Frameworks by goal, stage and scoring',
+ {d:'Oct 9',sub:'b5c2877',h:'Hour 3',url:'index.html · Sonia’s fork',img:'05-sonia-oct',by:'sonia',title:'Frameworks by goal, stage and scoring',
   desc:'A 669-line rework from Sonia’s fork. Frameworks filter by goal, by stage and by whether they’re scored. A Framework checklists module arrives and Tune is retired.',
   q:[['<mark>Merge her fork</mark> with main.','Chloe, Oct 13']],
   at:['frameworks','cards']},
- {d:'Oct 13',sub:'8fde6c8',url:'docs/evidence-validation-report.md',img:'05-sonia-oct',same:true,tp:3,title:'Check the sources before the pixels',
+ {d:'Oct 13',sub:'8fde6c8',h:'Hour 5',url:'docs/evidence-validation-report.md',img:'05-sonia-oct',same:true,tp:3,title:'Check the sources before the pixels',
   desc:'Every item count, threshold, formula and citation was tested against the published instruments. Unconfirmed claims were marked unverified. CCI, PEMAT and the Decisional Conflict Scale were realigned. The screen barely changed; what it said did.',
   at:['cards','compass']},
- {d:'Oct 14',sub:'b55b386',url:'index.html',img:'06-grade6',title:'Below grade 6',
+ {d:'Oct 14',sub:'b55b386',h:'Hour 6',url:'index.html',img:'06-grade6',title:'Below grade 6',
   desc:'Interface text rewritten below a grade 6 reading level. Unexplained icons and zone colours removed; the Workspace bar hidden. A plain-language tool has to pass its own test.',
   at:['bar','brief','frameworks']},
- {d:'Oct 16',sub:'6b9e79b',url:'index.html',img:'07-refresh',title:'A refresh, and honest scores',
+ {d:'Oct 16',sub:'6b9e79b',h:'Hour 9',url:'index.html',img:'07-refresh',title:'A refresh, and honest scores',
   desc:'A 13px type floor and seven type treatments. Unreviewed items no longer count as failed, "can’t tell" replaces guesses, and controls that only pretended to edit a file were removed.',
   q:[['The smallest font size on the site should be <mark>bigger than 12px</mark>.','Chloe, Oct 16'],['Can we do something about it? <mark>If not, remove them.</mark>','Chloe, Oct 16']],
   at:['material','cards','about']},
- {d:'Oct 16',sub:'38ac90e',url:'framework-compass.html',img:'19-compass-oct16',before:'01-compass',beforeLabel:'Summer Compass',tp:4,title:'One framework list, everywhere',
+ {d:'Oct 16',sub:'38ac90e',h:'Hour 12',url:'framework-compass.html',img:'19-compass-oct16',before:'01-compass',beforeLabel:'Summer Compass',tp:4,title:'One framework list, everywhere',
   desc:'The Compass is rebuilt on the studio’s design system and reads the same list: 23 frameworks, each linked to its real source. The Classic page and the scoring-logic page are deleted.',
   q:[['<mark>What we show in the Compass is what we use in the main canvas.</mark>','Chloe, Oct 16']],
   at:['compass','frameworks']},
- {d:'Oct 16',sub:'a09cb07',url:'index.html',img:'08-proofing-desk',before:'07-refresh',tp:5,title:'The proofing desk',
+ {d:'Oct 16',sub:'a09cb07',h:'Hour 12',url:'index.html',img:'08-proofing-desk',before:'07-refresh',tp:5,title:'The proofing desk',
   desc:'A metaphor and a written contract. Paper on a cool grey desk, checks as printed score sheets, links in form blue, highlighter yellow only on flagged words. Dark mode designed, not inverted.',
   q:[['The whole design can use an upgrade: <mark>more taste, less AI look</mark>, light and dark mode.','Chloe, Oct 16']],
   at:['bar','brief','frameworks','material','cards']},
- {d:'Oct 17',sub:'624d6e5',url:'demos/upload-options.html',img:'10-upload-options',before:'08-proofing-desk',title:'A name, and an empty panel that helps',
+ {d:'Oct 17',sub:'624d6e5',h:'Hour 17',url:'demos/upload-options.html',img:'10-upload-options',before:'08-proofing-desk',title:'A name, and an empty panel that helps',
   desc:'The app becomes PRISM, with Sonia and Chloe credited as name cards in About. The empty Material panel gets three options, each critiqued before it was shown. C was built.',
   q:[['Give me some demo options to pick. <mark>Review and critique first</mark> before you show me.','Chloe, Oct 17'],['Build C but make it neater.','Chloe, Oct 17']],
   at:['material','about','bar']},
- {d:'Oct 17',sub:'adf4052',url:'index.html · suggestion card',mock:true,tp:6,title:'Flags become fixes',
+ {d:'Oct 17',sub:'adf4052',h:'Hour 17',url:'index.html · suggestion card',mock:true,tp:6,title:'Flags become fixes',
   desc:'A flagged sentence now comes with a suggested rewrite and the guideline behind it. Apply one or Apply all. Versions become a change log with Undo.',
   q:[['Not only highlight inline, but also <mark>show the recommended edited line</mark>, so users can commit changes quickly.','Chloe, Oct 17']],
   at:['material','cards','history']},
- {d:'Oct 18',sub:'73b8d7a',url:'index.html',img:'09-flagged-i',before:'08-proofing-desk',
+ {d:'Oct 18',sub:'73b8d7a',h:'Hour 18',url:'index.html',img:'09-flagged-i',before:'08-proofing-desk',
   drafts:[['11-logo-history','Every logo attempt'],['18-type-directions','Type directions']],title:'Seven marks, one I',
   desc:'Six marks and the plain wordmark, each tested at 160px, in the bar, as a 16px favicon and on the dark desk. The Flagged I borrows the product’s highlighter. Yellow becomes the theme colour.',
   q:[['The site needs <mark>more character</mark>.','Chloe, Oct 18'],['I like logo 3. <mark>Use the yellow as the theme color.</mark>','Chloe, Oct 18']],
   at:['bar']},
- {d:'Oct 19',sub:'44eb366',url:'/ · front door',img:'13-front-door',before:'12-landing-mockups',beforeLabel:'Six mockups',title:'Six front doors, then one',
+ {d:'Oct 19',sub:'44eb366',h:'Hour 20',url:'/ · front door',img:'13-front-door',before:'12-landing-mockups',beforeLabel:'Six mockups',title:'Six front doors, then one',
   desc:'Hero 1, the marked-up handout, merged with hero 4’s slider, made editorial, then folded into one dark screen. The slider fixes the handout as you drag, and shows each fix’s source.',
   q:[['Have the two concepts both on a dark background, tighter, <mark>just one screen height</mark>.','Chloe, Oct 19']],
   at:['frontdoor']},
- {d:'Oct 19',sub:'b52c1a4',url:'design/brainstorm/logo-animation.html',img:'14-logo-animation',title:'Five ways to move a logo',
+ {d:'Oct 19',sub:'b52c1a4',h:'Hour 22',url:'design/brainstorm/logo-animation.html',img:'14-logo-animation',title:'Five ways to move a logo',
   desc:'Swipe, Scan, Stamp, Type-on, Prism fan. Scan won: a reading line sweeps PRISM and highlights the I, the way the tool reads a handout.',
   q:[['<mark>Use 2</mark>, then push.','Chloe, Oct 19']],
   at:['bar','frontdoor']},
- {d:'Oct 21',sub:'deecb1a',url:'index.html · Plan from an idea',img:'15-plan-layout',noBefore:true,tp:7,by:'both',title:'Plan uses the Evaluate layout',
+ {d:'Oct 21',sub:'deecb1a',h:'Hour 23',url:'index.html · Plan from an idea',img:'15-plan-layout',noBefore:true,tp:7,by:'both',title:'Plan uses the Evaluate layout',
   desc:'Sonia’s mode toggle had grown into a separate guided path. Now both modes share one layout, so the relevant frameworks show up on the right while you plan.',
   q:[['So the relevant frameworks show up on the right panel <mark>without reinventing the wheel</mark>.','Chloe, Oct 21']],
   at:['modes','cards','frameworks']},
- {d:'Oct 27',sub:'not yet committed',url:'framework-compass.html',img:'17-compass-now',before:'19-compass-oct16',beforeLabel:'23 frameworks',tp:8,title:'The library review: 23 down to 11',
+ {d:'Oct 27',sub:'not yet committed',h:'Hour 23+',url:'framework-compass.html',img:'17-compass-now',before:'19-compass-oct16',beforeLabel:'23 frameworks',tp:8,title:'The library review: 23 down to 11',
   desc:'A spreadsheet review decided each framework. Anything that measures a care pathway, a program or the patient left the pick lists. Every cut stays in the Compass with its reason and when to revisit.',
   q:[['Keep or cut COM-B, Ottawa DSF and Teach-Back? <mark>Cut/hide for now.</mark>','Chloe, Oct 27'],['<mark>Leave PAM out.</mark>','Chloe, Oct 27']],
   at:['compass','frameworks']},
- {d:'Oct 28',sub:'today',url:'index.html',img:'16-studio-now-light',before:'03-studio-aug',beforeLabel:'Aug 17',title:'PRISM today',
+ {d:'Oct 28',sub:'today',h:'Today',url:'index.html',img:'16-studio-now-light',before:'03-studio-aug',beforeLabel:'Aug 17',title:'PRISM today',
   desc:'Plain language grounded in published guides, readability on its own row with its Flesch–Kincaid reference, and rewrites that show only the words that change.',
   q:[['Only the actual changed text gets rewritten or highlighted, <mark>no need to repeat the whole thing</mark>.','Chloe, Oct 27']],
   at:['material','cards','frameworks']}
@@ -1009,8 +1009,8 @@ var total=M.length;
 M.forEach(function(m,i){
   var t=document.createElement('button');t.className='tick'+(m.tp?' tp':'');
   t.style.left=((i+.5)/total*100)+'%';
-  t.innerHTML='<i></i><span>'+esc(m.d)+'</span>';
-  t.setAttribute('aria-label','Moment '+(i+1)+', '+m.d+': '+m.title);
+  t.innerHTML='<i></i><span>'+esc(m.h)+'</span>';
+  t.setAttribute('aria-label','Moment '+(i+1)+', '+m.h+', '+m.d+': '+m.title);
   t.onclick=function(){go(i)};tkEl.appendChild(t);m.tick=t;
   var d=document.createElement('button');d.className='dot'+(m.tp?' tp':'');d.setAttribute('aria-label','Moment '+(i+1)+': '+m.title);
   d.onclick=function(){go(i)};$('dots').appendChild(d);m.dot=d;
@@ -1056,7 +1056,7 @@ function mockHTML(){
 function render(){
   var m=M[cur], k=phaseOf(cur), p=PHASES[k], b=beforeOf(cur);
   if(!b)showBefore=false;
-  $('m-eyebrow').textContent=p.name+' · '+m.d;
+  $('m-eyebrow').textContent=p.name+' · '+m.h;
   $('m-title').textContent=m.title;
   $('m-desc').textContent=m.desc;
   var tags='';if(m.tp)tags+='<span class="tag tp">Turning point '+m.tp+'</span>';
