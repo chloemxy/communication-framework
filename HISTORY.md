@@ -4,6 +4,31 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-28 — Presentation page hosted on GitHub Pages
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: on, from `master`
+
+- **GitHub Pages turned on** for the repo, serving `master` from the root, so the talk page is also at
+  https://chloemxy.github.io/communication-framework/presentation/. Added an empty `.nojekyll` so
+  Pages serves the files as they are. Vercel still hosts the same site.
+
+## 2026-10-28 — Presentation page: Moments timeline in working hours
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
+
+- **Timeline ticks show rough working hours instead of dates** (`presentation/index.html`). The
+  dates bunched up (eight moments between Oct 16 and Oct 19) and jumped weeks elsewhere. Hours come
+  from commit times, with commits under 2 hours apart grouped into one sitting plus 30 minutes for
+  each sitting, about 23 hours in all. The panel still shows each moment's date and commit.
+
+## 2026-10-28 — Presentation page: wordmark fix
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
+
+- **Header wordmark reads as one word again** (`presentation/index.html`). The bar's flex gap was
+  splitting "PR", the highlighted "I" and "SM" into separate pieces. The word now sits in one span,
+  and the I uses the product's slanted highlighter shape.
+
 ## 2026-10-28 — Presentation page: PRISM design journey
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
