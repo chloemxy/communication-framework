@@ -1,0 +1,1107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PRISM Design Journey</title>
+<meta name="description" content="How PRISM got its shape: drafts, process quotes, turning points and the collaboration between Sonia Seto and Chloe Ma.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Public+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>
+/* Layout: the proofing desk. A cool grey desk, white sheets, score-sheet rows with dates in a
+   fixed left margin, highlighter yellow as the one signature (turning points, quoted words). */
+:root{
+  --desk:#ECEEF0; --sheet:#FFFFFF; --sheet-2:#F6F7F8; --rule:#D5D9DE;
+  --ink:#16181D; --ink-2:#4A5059; --blue:#1D4F91; --hl:#FFE066; --brand:#FFE066; --on-brand:#16181D;
+  --sonia:#1D4F91; --sonia-bg:#E4ECF7; --ink-3:#6B717A; --pass:#1E6B3A; --pass-bg:#E3F1E8;
+  --shadow:0 12px 40px rgba(22,24,29,.18);
+  --f-display:"Newsreader","Source Serif 4",Georgia,serif;
+  --f-ui:"Public Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-read:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --margin:112px; --r1:4px; --r2:6px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
+  --ink:#E9EBEE; --ink-2:#B4BAC2; --blue:#8DB4EC; --hl:rgba(255,214,0,.30); --brand:#F5CF4A; --on-brand:#16181D;
+  --sonia:#8DB4EC; --sonia-bg:#1F2A3A; --ink-3:#8E959E; --pass:#7FD19B; --pass-bg:#1C2E23; --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
+  --ink:#E9EBEE; --ink-2:#B4BAC2; --blue:#8DB4EC; --hl:rgba(255,214,0,.30); --brand:#F5CF4A; --on-brand:#16181D;
+  --sonia:#8DB4EC; --sonia-bg:#1F2A3A; --ink-3:#8E959E; --pass:#7FD19B; --pass-bg:#1C2E23; --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark }
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+body{background:var(--desk);color:var(--ink);font:400 15px/1.6 var(--f-ui);margin:0;
+  -webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sheet)}
+a{color:var(--blue);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{text-wrap:balance;margin:0}
+.num{font-variant-numeric:tabular-nums}
+mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+
+/* site bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--sheet);border-bottom:1px solid var(--rule)}
+.bar .wrap{display:flex;align-items:center;gap:24px;height:52px}
+.wordmark{display:flex;align-items:center;gap:10px;font:600 17px/1 var(--f-ui);color:var(--ink);text-decoration:none;letter-spacing:.02em}
+.wordmark .i{position:relative;display:inline-block}
+.wordmark .i::before{content:"";position:absolute;inset:-3px -1px;background:var(--brand);transform:skewX(-14deg);z-index:-1}
+.wordmark .i{color:var(--on-brand);z-index:0}
+.wordmark small{font:400 13px/1 var(--f-ui);color:var(--ink-2);letter-spacing:0}
+.bar nav{margin-left:auto;display:flex;gap:4px;overflow-x:auto}
+.bar nav a{font:600 13px/1 var(--f-ui);color:var(--ink-2);text-decoration:none;padding:8px 10px;border-radius:var(--r1);white-space:nowrap}
+.bar nav a:hover{color:var(--ink);background:var(--sheet-2)}
+@media (max-width:720px){.bar nav{display:none}}
+
+/* hero */
+.hero{padding-block:64px 40px}
+.kicker{font:600 13px/1.3 var(--f-ui);color:var(--ink-2);display:flex;align-items:center;gap:10px}
+.kicker::before{content:"";width:28px;height:4px;background:var(--brand)}
+.hero h1{font:500 clamp(40px,6.4vw,76px)/1.02 var(--f-display);margin-top:20px;max-width:14ch;letter-spacing:-.01em}
+.hero .lede{font:400 19px/1.55 var(--f-read);color:var(--ink-2);max-width:60ch;margin:24px 0 0}
+.tally{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:40px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r2)}
+.tally div{padding:16px 20px;border-left:1px solid var(--rule)}
+.tally div:first-child{border-left:0}
+.tally b{display:block;font:500 34px/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.tally span{font-size:13px;color:var(--ink-2)}
+@media (max-width:720px){.tally{grid-template-columns:repeat(2,minmax(0,1fr))}.tally div:nth-child(3){border-left:0}.tally div:nth-child(n+3){border-top:1px solid var(--rule)}}
+
+/* sheets & section heads */
+section{padding-block:40px}
+.sec-head{display:grid;grid-template-columns:var(--margin) minmax(0,1fr);gap:0 24px;align-items:baseline;margin-bottom:24px}
+.sec-head .no{font:600 13px/1 var(--f-ui);color:var(--ink-2)}
+.sec-head h2{font:500 clamp(28px,3.6vw,40px)/1.1 var(--f-display)}
+.sec-head p{grid-column:2;margin:12px 0 0;color:var(--ink-2);max-width:62ch}
+@media (max-width:720px){.sec-head{grid-template-columns:1fr}.sec-head p{grid-column:1}.sec-head .no{margin-bottom:8px}}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r2)}
+
+/* before / after */
+.compare{position:relative;overflow:hidden;border-radius:var(--r2);border:1px solid var(--rule);aspect-ratio:16/10;max-width:100%;background:var(--sheet-2)}
+.compare img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;display:block}
+.compare .after{clip-path:inset(0 0 0 var(--cut,50%))}
+.compare .handle{position:absolute;top:0;bottom:0;left:var(--cut,50%);width:2px;background:var(--brand);transform:translateX(-1px);pointer-events:none}
+.compare .handle::after{content:"⟷";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--brand);color:var(--on-brand);font:600 14px/1 var(--f-ui);padding:8px 10px;border-radius:var(--r1)}
+.compare .lab{position:absolute;bottom:12px;font:600 13px/1 var(--f-ui);background:var(--sheet);color:var(--ink);padding:6px 8px;border-radius:var(--r1);border:1px solid var(--rule)}
+.compare .lab.l{left:12px}.compare .lab.r{right:12px}
+.compare-ctl{display:flex;align-items:center;gap:16px;margin-top:12px;font-size:13px;color:var(--ink-2)}
+.compare-ctl input{flex:1;accent-color:var(--ink)}
+
+/* rhythm chart */
+.rhythm{padding:20px 20px 12px}
+.rhythm-scroll{overflow-x:auto}
+.rhythm svg{display:block;width:100%;min-width:640px;height:auto}
+.rhythm text{font-family:var(--f-ui);fill:var(--ink-2);font-size:12px}
+.rhythm .tp-dot{cursor:pointer}
+.rhythm .tp-dot:focus{outline:none}
+.rhythm .tp-dot:focus rect,.rhythm .tp-dot:hover rect{stroke:var(--ink);stroke-width:2}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-2);padding-top:8px;border-top:1px solid var(--rule);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:-1px}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px calc(var(--margin) + 24px)}
+@media (max-width:720px){.filters{margin-left:0}}
+.chip{font:600 13px/1 var(--f-ui);color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r1);padding:9px 12px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.chip:hover{border-color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.chip .c{font-weight:400;opacity:.8;font-variant-numeric:tabular-nums}
+
+/* journey rows: score-sheet style */
+.phase{display:grid;grid-template-columns:var(--margin) minmax(0,1fr);gap:0 24px;padding:28px 0 12px}
+.phase .when{font:600 13px/1.3 var(--f-ui);color:var(--ink-2);padding-top:6px}
+.phase h3{font:500 26px/1.2 var(--f-display)}
+.phase p{margin:4px 0 0;color:var(--ink-2);font-size:14px}
+.rows{list-style:none;margin:0;padding:0;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r2)}
+.row{display:grid;grid-template-columns:var(--margin) minmax(0,1fr);gap:0 24px;padding:20px 24px 22px 0;border-top:1px solid var(--rule);scroll-margin-top:72px}
+.row:first-child{border-top:0}
+.row[hidden]{display:none}
+.row .date{padding-left:20px;font:600 13px/1.5 var(--f-ui);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.row .date small{display:block;font-weight:400}
+.row .body{min-width:0}
+.row h4{font:600 17px/1.35 var(--f-ui);margin:0}
+.row p{margin:6px 0 0;max-width:66ch}
+.row.tp{background:linear-gradient(var(--sheet),var(--sheet))}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+.tag{font:600 12px/1 var(--f-ui);padding:5px 8px;border-radius:999px;border:1px solid var(--rule);color:var(--ink-2)}
+.tag.tp{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.tag.so{background:var(--sonia-bg);color:var(--sonia);border-color:transparent}
+.tag.ch{color:var(--ink-2)}
+@media (max-width:720px){.phase,.row{grid-template-columns:1fr}.row{padding:16px}.row .date{padding:0 0 6px}}
+
+blockquote{margin:14px 0 0;padding:12px 16px;background:var(--sheet-2);border-radius:var(--r1);font:400 16px/1.55 var(--f-read);max-width:66ch}
+blockquote cite{display:block;margin-top:6px;font:400 13px/1.4 var(--f-ui);color:var(--ink-2);font-style:normal}
+blockquote + blockquote{margin-top:8px}
+.arrow{font:400 13px/1.4 var(--f-ui);color:var(--ink-2);margin:8px 0 0 16px}
+
+.thumbs{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.thumb{all:unset;cursor:zoom-in;display:block;width:min(260px,100%);border-radius:var(--r1);overflow:hidden;border:1px solid var(--rule);background:var(--sheet-2)}
+.thumb:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.thumb img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top left;transition:transform .25s ease}
+.thumb:hover img{transform:scale(1.03)}
+.thumb span{display:block;padding:8px 10px;font:400 13px/1.35 var(--f-ui);color:var(--ink-2);border-top:1px solid var(--rule)}
+
+/* collaboration */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:720px){.duo{grid-template-columns:1fr}}
+.person{padding:24px}
+.person .mono{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:600 16px/1 var(--f-ui);margin-bottom:14px}
+.person.s .mono{background:var(--sonia-bg);color:var(--sonia)}
+.person.c .mono{background:var(--brand);color:var(--on-brand)}
+.person h3{font:500 26px/1.15 var(--f-display)}
+.person .org{font-size:13px;color:var(--ink-2);margin-top:2px}
+.person ul{margin:16px 0 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
+.person li{padding:10px 0;border-bottom:1px solid var(--rule);font-size:14px;display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px}
+.person li:last-child{border-bottom:0}
+.person li .num{color:var(--ink-2);font-size:13px}
+.lineage{margin-top:16px;padding:24px}
+.lineage h3{font:600 17px/1.3 var(--f-ui)}
+.lineage > p{margin:6px 0 0;color:var(--ink-2);font-size:14px;max-width:66ch}
+.chain{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:20px;counter-reset:step}
+.chain li{list-style:none;position:relative;padding:14px 20px 0 0;border-top:3px solid var(--rule)}
+.chain li.s{border-top-color:var(--sonia)}
+.chain li.c{border-top-color:var(--brand)}
+.chain li b{display:block;font:600 13px/1.3 var(--f-ui);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.chain li span{display:block;font-size:14px;margin-top:4px}
+.chain li em{font-style:normal;font:600 12px/1 var(--f-ui);color:var(--ink-2);display:block;margin-top:8px}
+@media (max-width:720px){.chain{grid-template-columns:1fr;gap:16px}.chain li{padding-right:0}}
+.chain{padding:0;margin-bottom:0}
+
+/* library bars */
+.lib{padding:24px}
+.lib-row{display:grid;grid-template-columns:150px minmax(0,1fr) 44px;gap:16px;align-items:center;padding:10px 0;border-top:1px solid var(--rule)}
+.lib-row:first-of-type{border-top:0}
+.lib-row .lbl{font-size:13px;color:var(--ink-2);line-height:1.35}
+.lib-row .lbl b{display:block;color:var(--ink);font-weight:600}
+.track{height:22px;background:var(--sheet-2);border-radius:2px;overflow:hidden;display:flex}
+.fill{height:100%;background:var(--ink-2)}
+.fill.now{background:var(--ink)}
+.lib-row .n{font:500 24px/1 var(--f-display);font-variant-numeric:tabular-nums;text-align:right}
+.cuts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+.cuts div{padding:14px 16px;background:var(--sheet-2);border-radius:var(--r1);font-size:14px}
+.cuts b{display:block;font-size:13px;margin-bottom:4px}
+@media (max-width:720px){.lib-row{grid-template-columns:96px minmax(0,1fr) 36px;gap:10px}.cuts{grid-template-columns:1fr}}
+
+/* marks */
+.marks{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0}
+.mark{padding:20px 12px 16px;border-left:1px solid var(--rule);text-align:center;position:relative}
+.mark:first-child{border-left:0}
+.mark svg{width:48px;height:48px;color:var(--ink)}
+.mark .wm{font:600 15px/1 var(--f-ui);height:48px;display:grid;place-items:center;letter-spacing:.02em}
+.mark b{display:block;font:600 13px/1.3 var(--f-ui);margin-top:12px}
+.mark small{display:block;font-size:12px;color:var(--ink-2);line-height:1.35;margin-top:4px}
+.mark.win{background:var(--sheet-2)}
+.mark.win::after{content:"Picked";position:absolute;top:8px;right:8px;font:600 11px/1 var(--f-ui);background:var(--brand);color:var(--on-brand);padding:4px 6px;border-radius:999px}
+@media (max-width:860px){.marks{grid-template-columns:repeat(4,minmax(0,1fr))}.mark:nth-child(4n+1){border-left:0}.mark:nth-child(n+5){border-top:1px solid var(--rule)}}
+@media (max-width:480px){.marks{grid-template-columns:repeat(2,minmax(0,1fr))}.mark{border-left:1px solid var(--rule)!important}.mark:nth-child(odd){border-left:0!important}.mark:nth-child(n+3){border-top:1px solid var(--rule)}}
+.note{padding:14px 20px;border-top:1px solid var(--rule);font-size:14px;color:var(--ink-2)}
+.note b{color:var(--ink)}
+
+/* talk */
+.talk{list-style:none;margin:0;padding:0}
+.talk li{display:grid;grid-template-columns:var(--margin) minmax(0,1fr) auto;gap:0 24px;padding:14px 20px 14px 0;border-top:1px solid var(--rule);align-items:baseline}
+.talk li:first-child{border-top:0}
+.talk .t{padding-left:20px;font:600 13px/1.4 var(--f-ui);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.talk b{font-weight:600}
+.talk a{font-size:13px;white-space:nowrap}
+@media (max-width:720px){.talk li{grid-template-columns:1fr;padding:14px 16px}.talk .t{padding:0}}
+
+footer{padding-block:40px 64px;color:var(--ink-2);font-size:13px}
+footer .wrap > div{border-top:1px solid var(--rule);padding-top:20px;max-width:none}
+footer p{margin:0 0 8px;max-width:80ch}
+
+/* lightbox */
+dialog{border:0;padding:0;background:var(--sheet);color:var(--ink);border-radius:var(--r2);box-shadow:var(--shadow);max-width:min(1200px,calc(100vw - 32px));width:100%}
+dialog::backdrop{background:rgba(10,11,13,.72)}
+.lb-img{display:block;width:100%;max-height:calc(100vh - 160px);object-fit:contain;object-position:top;background:var(--sheet-2)}
+.lb-bar{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--rule)}
+.lb-bar p{margin:0;flex:1;font-size:14px;min-width:0}
+.lb-bar p small{display:block;color:var(--ink-2);font-size:13px}
+.btn{font:600 13px/1 var(--f-ui);background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r1);padding:10px 12px;cursor:pointer}
+.btn:hover{border-color:var(--ink-2)}
+.btn.ink{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+/* Moments player (scoped) */
+.wrap.wide{max-width:1320px}
+#moments,section[id]{scroll-margin-top:64px}
+#moments button{font:inherit;color:inherit}
+#moments .mp-phases{display:flex;gap:4px}
+#moments .mp-phase{all:unset;cursor:pointer;flex:var(--n) 1 0;min-width:0;background:var(--ink);color:var(--sheet);border-radius:var(--r1);padding:7px 10px;font:600 12px/1.2 var(--f-ui);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.55}
+#moments .mp-phase:hover{opacity:.8}
+#moments .mp-phase[aria-current="true"]{opacity:1}
+#moments .mp-phase .k{font-weight:400;opacity:.75;margin-right:6px}
+#moments .mp-phase:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#moments .ticks{position:relative;height:40px;margin-top:2px}
+#moments .tick{all:unset;cursor:pointer;position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:2px;padding:2px 2px 0}
+#moments .tick i{display:block;width:1px;height:8px;background:var(--rule)}
+#moments .tick span{font:400 11px/1.2 var(--f-ui);color:var(--ink-3);white-space:nowrap}
+#moments .tick.tp i{width:3px;background:var(--brand);height:10px}
+#moments .tick[aria-current="true"] span{background:var(--ink);color:var(--sheet);padding:3px 7px;border-radius:999px;font-weight:600}
+#moments .tick:focus-visible{outline:2px solid var(--blue);border-radius:2px}
+@media (max-width:900px){#moments .tick span{display:none}
+#moments .tick[aria-current="true"] span{display:block}
+#moments .mp-phase .t{display:none}}
+#moments .stage{display:grid;grid-template-columns:300px minmax(0,1fr) 300px;gap:24px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r2);padding:24px;margin-top:4px}
+@media (max-width:1100px){#moments .stage{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+#moments .center{grid-column:1/-1;order:-1}}
+@media (max-width:640px){#moments .stage{grid-template-columns:minmax(0,1fr);padding:16px}}
+#moments .side{min-width:0}
+#moments .eyebrow{font:600 12px/1.3 var(--f-ui);color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase}
+#moments .side h2{font:500 30px/1.12 var(--f-display);margin:6px 0 8px;text-wrap:balance}
+#moments .side .desc{margin:0;color:var(--ink);max-width:60ch}
+#moments .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+#moments .tag{font:600 12px/1 var(--f-ui);padding:5px 8px;border-radius:999px;border:1px solid var(--rule);color:var(--ink-2)}
+#moments .tag.tp{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+#moments .tag.so{background:var(--sonia-bg);color:var(--sonia);border-color:transparent}
+#moments blockquote{margin:14px 0 0;padding:12px 14px;background:var(--sheet-2);border-radius:var(--r1);font:400 15px/1.5 var(--f-read)}
+#moments blockquote cite{display:block;margin-top:6px;font:400 12px/1.4 var(--f-ui);color:var(--ink-2);font-style:normal}
+#moments .block{border-top:1px solid var(--rule);margin-top:20px;padding-top:16px}
+#moments .block h3{font:600 12px/1.3 var(--f-ui);color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase;margin:0 0 12px;display:flex;justify-content:space-between;gap:8px}
+#moments .block h3 .num{letter-spacing:0;text-transform:none;font-weight:400}
+#moments .tree,#moments .tree ul{list-style:none;margin:0;padding:0}
+#moments .tree ul{margin-left:14px;padding-left:12px;border-left:1px solid var(--rule)}
+#moments .tree li{padding:3px 0}
+#moments .node{display:inline-block;font:400 13px/1.2 var(--f-ui);padding:5px 8px;border:1px solid var(--rule);border-radius:var(--r1);color:var(--ink-2);background:var(--sheet)}
+#moments .node.root{background:var(--ink);color:var(--sheet);border-color:var(--ink);font-weight:600}
+#moments .node.on{background:var(--brand);color:var(--on-brand);border-color:var(--brand);font-weight:600}
+#moments .node.later{border-style:dashed;color:var(--ink-3);background:transparent}
+#moments .node.later::after{content:" · " attr(data-when);font-size:11px}
+#moments .row-nodes{display:flex;flex-wrap:wrap;gap:4px}
+#moments .tree-key{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-2)}
+#moments .tree-key span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;border:1px solid var(--rule)}
+#moments .tree-key .k-on::before{background:var(--brand);border-color:var(--brand)}
+#moments .tree-key .k-later::before{border-style:dashed}
+#moments .center{min-width:0;display:flex;flex-direction:column;gap:12px}
+#moments .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+#moments .nav .when{font:600 14px/1.2 var(--f-ui);font-variant-numeric:tabular-nums;text-align:center;flex:1}
+#moments .nav .when small{display:block;font-weight:400;color:var(--ink-2);font-size:12px;margin-top:2px}
+#moments .circ{width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:var(--sheet);display:grid;place-items:center;cursor:pointer;flex:none}
+#moments .circ:hover:not(:disabled){border-color:var(--ink-2)}
+#moments .circ:disabled{opacity:.4;cursor:default}
+#moments .toggles{display:flex;gap:8px}
+#moments .tog{font:600 13px/1 var(--f-ui);background:var(--sheet);border:1px solid var(--rule);border-radius:999px;padding:9px 14px;cursor:pointer}
+#moments .tog:hover:not(:disabled){border-color:var(--ink-2)}
+#moments .tog[aria-pressed="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+#moments .tog:disabled{opacity:.45;cursor:default}
+#moments .frame{border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--sheet-2);box-shadow:var(--shadow)}
+#moments .chrome{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--sheet);border-bottom:1px solid var(--rule)}
+#moments .url{flex:1;min-width:0;font:400 12px/1 var(--f-ui);color:var(--ink-2);background:var(--sheet-2);border-radius:999px;padding:7px 12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#moments .ver{font:600 12px/1 var(--f-ui);color:var(--ink-2);white-space:nowrap}
+#moments .ver.before{background:var(--ink);color:var(--sheet);padding:5px 8px;border-radius:999px}
+#moments .screen{position:relative;aspect-ratio:16/10;max-width:100%;overflow:hidden;background:var(--sheet-2)}
+#moments .screen img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;transition:opacity .2s ease}
+#moments .screen .mock{position:absolute;inset:0;display:grid;place-items:center;padding:24px;background:var(--desk)}
+#moments .mock .paper{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r2);padding:24px 28px;max-width:520px;width:100%;font:400 16px/1.6 var(--f-read)}
+#moments .mock .paper h4{font:600 17px/1.3 var(--f-ui);margin:0 0 10px}
+#moments .mock .flag{background:var(--hl);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+#moments .mock .sug{margin-top:14px;border:1px solid var(--rule);border-radius:var(--r1);padding:12px 14px;font:400 13px/1.45 var(--f-ui);background:var(--sheet-2)}
+#moments .mock .sug b{font-weight:600}
+#moments .mock .sug .new{display:inline-block;background:var(--pass-bg);color:var(--pass);padding:1px 6px;border-radius:3px;font-weight:600}
+#moments .mock .sug .src{color:var(--ink-2);display:block;margin-top:4px}
+#moments .mock .sug .acts{display:flex;gap:8px;margin-top:10px}
+#moments .mock .sug .acts span{font:600 12px/1 var(--f-ui);border:1px solid var(--rule);border-radius:var(--r1);padding:7px 10px;background:var(--sheet)}
+#moments .mock .sug .acts span:first-child{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+#moments .mock .tagline{font:400 12px/1.3 var(--f-ui);color:var(--ink-2);margin-top:12px;text-align:center}
+#moments .drafts{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--ink-2)}
+#moments .dr{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;border:1px solid var(--rule);border-radius:var(--r1);padding:4px 8px 4px 4px;background:var(--sheet);font:600 12px/1.2 var(--f-ui);color:var(--ink)}
+#moments .dr img{width:56px;height:35px;object-fit:cover;object-position:top left;border-radius:2px;display:block}
+#moments .dr[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+#moments .dr:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#moments .scrub{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:4px}
+#moments .scrub .count{font:400 12px/1 var(--f-ui);color:var(--ink-2);text-align:center;margin-bottom:8px}
+#moments .dots{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;min-width:0}
+#moments .dot{all:unset;cursor:pointer;width:14px;height:8px;border-radius:4px;background:var(--rule)}
+#moments .dot.tp{background:color-mix(in srgb,var(--brand) 55%,var(--rule))}
+#moments .dot.seen{background:var(--ink-3)}
+#moments .dot[aria-current="true"]{background:var(--ink);width:24px}
+#moments .dot:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+#moments .feat{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+#moments .feat li{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:var(--r1);font-size:13px;line-height:1.35}
+#moments .feat li .nm{flex:1;min-width:0}
+#moments .feat li .by{font:600 11px/1 var(--f-ui);color:var(--sonia);background:var(--sonia-bg);padding:3px 6px;border-radius:999px}
+#moments .feat.avail li{background:var(--sheet-2)}
+#moments .feat.avail li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ink);flex:none}
+#moments .feat.avail li.new{background:color-mix(in srgb,var(--brand) 30%,var(--sheet))}
+#moments .feat li .newtag{font:600 11px/1 var(--f-ui);background:var(--ink);color:var(--sheet);padding:3px 7px;border-radius:999px}
+#moments .feat.locked li{color:var(--ink-2)}
+#moments .feat.locked li::before{content:"";width:7px;height:7px;border-radius:50%;border:1.5px solid var(--ink-3);flex:none}
+#moments .feat.locked .d,#moments .feat.gone .d{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+#moments .feat.gone li{color:var(--ink-3)}
+#moments .feat.gone li .nm{text-decoration:line-through;text-decoration-color:var(--ink-3)}
+#moments .feat.gone li::before{content:"×";font:600 12px/1 var(--f-ui);width:7px;flex:none;text-align:center}
+#moments .feat.gone li.new{background:var(--sheet-2);color:var(--ink-2)}
+#moments .empty{font-size:13px;color:var(--ink-3);margin:0}
+#moments .more[hidden]{display:none}
+#moments .more{all:unset;cursor:pointer;font:600 12px/1 var(--f-ui);color:var(--blue);margin-top:8px;display:inline-block}
+#moments .foot{margin-top:16px;font-size:12px;color:var(--ink-2);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+#moments kbd{font:600 11px/1 var(--f-ui);border:1px solid var(--rule);border-bottom-width:2px;border-radius:3px;padding:2px 5px;background:var(--sheet)}
+#moments .foot{margin-top:12px;font-size:12px;color:var(--ink-2)}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="PRISM design journey, back to top">PR<span class="i">I</span>SM <small>Design journey</small></a>
+    <nav aria-label="Sections">
+      <a href="#moments">Moments</a>
+      <a href="#journey">Journey</a>
+      <a href="#together">Sonia &amp; Chloe</a>
+      <a href="#library">Library</a>
+      <a href="#marks">Logo</a>
+      <a href="#talk">Talk</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div class="kicker">Drawing the Line · 7-minute talk companion</div>
+    <h1>How PRISM got its <mark>shape</mark></h1>
+    <p class="lede">PRISM is a free tool that checks patient handouts, posters and scripts against published health-literacy instruments. This is its design record: the drafts we threw away, the words we used while deciding, and the eight turning points that changed what it is.</p>
+    <div class="tally" role="list">
+      <div role="listitem"><b>89</b><span>commits, Jul 31 to Oct 21</span></div>
+      <div role="listitem"><b>2</b><span>designers, two studios</span></div>
+      <div role="listitem"><b>18</b><span>drafts recovered for this page</span></div>
+      <div role="listitem"><b>26 → 11</b><span>frameworks, after cutting</span></div>
+    </div>
+  </div>
+
+  <section class="wrap" aria-labelledby="ba-h">
+    <div class="sec-head"><span class="no">Before / after</span><div><h2 id="ba-h">August 17 against today</h2></div>
+      <p>Drag the handle. Left is the first studio view, still called the Patient Education Analyzer. Right is PRISM on October 28.</p></div>
+    <div class="compare" id="compare" style="--cut:50%">
+      <img src="img/03-studio-aug.jpg" alt="The August studio: a beige page with Brief, Material and Accessibility panels and many small controls.">
+      <img class="after" src="img/16-studio-now-light.jpg" alt="PRISM today in light mode: a white Material sheet on a grey desk, one Open a file button and four getting-started steps.">
+      <div class="handle" aria-hidden="true"></div>
+      <span class="lab l">Aug 17</span><span class="lab r">Oct 28</span>
+    </div>
+    <div class="compare-ctl"><label for="cut">Reveal</label><input id="cut" type="range" min="0" max="100" value="50" aria-label="Move the divider between the August and October versions"></div>
+  </section>
+
+  <section class="wrap" aria-labelledby="rh-h">
+    <div class="sec-head"><span class="no">Rhythm</span><div><h2 id="rh-h">Slow summer, fast October</h2></div>
+      <p>Each bar is one day's commits. Yellow tags are the turning points; select one to jump to it. Most of the shape arrived in the last two weeks, once the evidence was checked.</p></div>
+    <div class="sheet rhythm">
+      <div class="rhythm-scroll"><svg id="rhythm" viewBox="0 0 960 220" role="img" aria-label="Commits per day from July 31 to October 27, 2026. Quiet until October 13, then 31 commits on October 16, 18 on October 17 and 15 on October 19. Eight turning points are marked."></svg></div>
+      <div class="legend"><span><i style="background:var(--ink-2)"></i>Commits that day</span><span><i style="background:var(--sonia)"></i>Includes Sonia's work</span><span><i style="background:transparent;border:1.5px dashed var(--ink-2)"></i>Logged in HISTORY.md, not yet committed</span><span><i style="background:var(--brand)"></i>Turning point</span></div>
+    </div>
+  </section>
+
+
+  <section class="wrap wide" id="moments" aria-labelledby="mo-h">
+    <div class="sec-head"><span class="no">Moments</span><div><h2 id="mo-h">Play it back, one moment at a time</h2></div>
+      <p>Eighteen moments in five phases. Each shows the draft from that commit, the version before it, where in the site it changed, and what PRISM could do by then.</p></div>
+    <nav aria-label="Phases">
+    <div class="phases" id="phases"></div>
+    <div class="ticks" id="ticks"></div>
+  </nav>
+    <div class="stage" id="stage">
+    <section class="side" aria-labelledby="m-title">
+      <div class="eyebrow" id="m-eyebrow"></div>
+      <h2 id="m-title"></h2>
+      <p class="desc" id="m-desc"></p>
+      <div class="tags" id="m-tags"></div>
+      <div id="m-quotes"></div>
+      <div class="block">
+        <h3>Where it changed in the site</h3>
+        <ul class="tree" id="tree"></ul>
+        <div class="tree-key"><span class="k-on">Changed here</span><span class="k-later">Not built yet</span></div>
+      </div>
+    </section>
+
+    <section class="center" aria-label="The draft at this moment">
+      <div class="nav">
+        <button class="circ" id="prev" aria-label="Previous moment"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        <div class="when" id="m-when" aria-live="polite"></div>
+        <button class="circ" id="next" aria-label="Next moment"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+      </div>
+      <div class="toggles">
+        <button class="tog" id="t-before" aria-pressed="false">Show before</button>
+        <button class="tog" id="t-tp" aria-pressed="false">Turning points only</button>
+      </div>
+      <div class="frame">
+        <div class="chrome"><span class="url" id="url"></span><span class="ver" id="ver"></span></div>
+        <div class="screen" id="screen"></div>
+      </div>
+      <div class="drafts" id="drafts"></div>
+      <div>
+        <div class="scrub count" id="count"></div>
+        <div class="scrub">
+          <button class="circ" id="first" aria-label="First moment"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 3v10M12 3 7 8l5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+          <div class="dots" id="dots" role="group" aria-label="All moments"></div>
+          <button class="circ" id="last" aria-label="Last moment"><svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true"><path d="M12 3v10M4 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="side" aria-label="What PRISM can do at this moment">
+      <div class="block" style="border-top:0;margin-top:0;padding-top:0">
+        <h3>Available <span class="num" id="f-count"></span></h3>
+        <ul class="feat avail" id="f-avail"></ul>
+      </div>
+      <div class="block">
+        <h3>Coming later</h3>
+        <ul class="feat locked" id="f-locked"></ul>
+        <button class="more" id="f-more" hidden></button>
+      </div>
+      <div class="block" id="gone-block">
+        <h3>Retired so far</h3>
+        <ul class="feat gone" id="f-gone"></ul>
+      </div>
+    </section>
+  </div>
+    <div class="foot">Use <kbd>←</kbd> <kbd>→</kbd> to move between moments and <kbd>B</kbd> to show the version before.</div>
+  </section>
+  <section class="wrap" id="journey" aria-labelledby="j-h">
+    <div class="sec-head"><span class="no">Journey</span><div><h2 id="j-h">The design record</h2></div>
+      <p>Quotes are Chloe's own messages from build sessions with Claude, trimmed and with spelling fixed. Select a picture to see the draft full size.</p></div>
+    <div class="filters" role="group" aria-label="Filter the journey">
+      <button class="chip" data-f="all" aria-pressed="true">Everything <span class="c"></span></button>
+      <button class="chip" data-f="tp" aria-pressed="false">Turning points <span class="c"></span></button>
+      <button class="chip" data-f="sonia" aria-pressed="false">Sonia's work <span class="c"></span></button>
+      <button class="chip" data-f="draft" aria-pressed="false">Drafts <span class="c"></span></button>
+      <button class="chip" data-f="quote" aria-pressed="false">In our words <span class="c"></span></button>
+    </div>
+
+    <div class="phase" data-phase><span class="when">Jun – Jul</span><div><h3>A library</h3><p>A reading list of rubrics. Useful to read, no help on deadline.</p></div></div>
+    <ol class="rows">
+      <li class="row" data-t="draft">
+        <div class="date">Summer<small>Archive</small></div>
+        <div class="body">
+          <h4>Framework Compass</h4>
+          <p>A reference site "across 26 frameworks, rubrics, and models", organized by what you need: clarity, process, behaviour, outcomes. It explained each instrument. It didn't check anything.</p>
+          <div class="thumbs"><button class="thumb" data-img="img/01-compass.jpg" data-cap="Framework Compass, summer 2026|The original reference site, before any tool existed."><img src="img/01-compass.jpg" alt="The original Framework Compass: a white page titled Patient Education and Experience Frameworks with a filter and a long table." loading="lazy"><span>The original Compass</span></button></div>
+        </div>
+      </li>
+      <li class="row" data-t="draft">
+        <div class="date">Jul 31<small>1f73cee</small></div>
+        <div class="body">
+          <h4>First commit: a communication framework tool</h4>
+          <p>An upload box and three score cards: readability, the CDC Clear Communication Index and PEMAT. A Classic / Studio switch at the top shows we hadn't picked a shape yet.</p>
+          <div class="thumbs"><button class="thumb" data-img="img/02-first-tool.jpg" data-cap="First commit, July 31|An upload box, three score cards and a Classic / Studio switch."><img src="img/02-first-tool.jpg" alt="The first tool: a large upload box above Readability, CDC Clear Communication Index and PEMAT cards." loading="lazy"><span>First tool</span></button></div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="phase" data-phase><span class="when">Aug – Sep</span><div><h3>A studio</h3><p>The rubrics stop being reading and become checks you run on your own draft.</p></div></div>
+    <ol class="rows">
+      <li class="row tp" id="tp1" data-t="tp draft">
+        <div class="date">Aug 17<small>768f86d</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 1</span></div>
+          <h4>From a list to a desk</h4>
+          <p>Everything restyled into one studio view: Brief on the left, the Material in the middle, scoring and accessibility modules on the right. The Compass becomes a reference behind the tool, not the tool.</p>
+          <div class="thumbs"><button class="thumb" data-img="img/03-studio-aug.jpg" data-cap="The unified studio, August 17|Brief, Material and modules side by side; still called the Patient Education Analyzer."><img src="img/03-studio-aug.jpg" alt="The August studio with Brief, Material and Accessibility panels." loading="lazy"><span>Patient Education Analyzer</span></button></div>
+        </div>
+      </li>
+      <li class="row tp" id="tp2" data-t="tp sonia draft quote">
+        <div class="date">Sep 15<small>c133e0c</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 2</span><span class="tag so">Sonia</span></div>
+          <h4>Sonia's prototype: two ways in</h4>
+          <p>Working in her own branch, Sonia moved Frameworks into a collapsible top bar with a live match count, made the Brief show its scoring targets as you pick, and added a live preview for Tune. Her biggest idea was a <b>Mode toggle: Evaluate a draft / Plan from an idea</b>. Both canvases in PRISM today come from it.</p>
+          <blockquote>"I'd like to incorporate my <mark>colleague's branch edits</mark> to master, how do I do it?"<cite>Chloe, Sep 15, on merging pull request #1</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/04-sonia-sep.jpg" data-cap="Sonia's prototype, September 15|Frameworks top bar, live Brief targets, and the Evaluate / Plan mode toggle."><img src="img/04-sonia-sep.jpg" alt="Sonia's September version: a Frameworks top bar, Evaluate a draft and Plan from an idea toggle, and workspace controls." loading="lazy"><span>Sonia's top bar and mode toggle</span></button></div>
+        </div>
+      </li>
+      <li class="row" data-t="sonia draft quote">
+        <div class="date">Oct 9<small>b5c2877</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag so">Sonia</span></div>
+          <h4>Sonia's second pass: frameworks by goal, stage and scoring</h4>
+          <p>A 669-line rework uploaded from Sonia's fork. Frameworks can be filtered by goal, by stage, and by whether they're scored. A Framework checklists module appears, and Tune is retired. Chloe merged it four days later.</p>
+          <blockquote>"Sonia just made some push, is it updated to Vercel?"<cite>Chloe, Oct 13</cite></blockquote>
+          <blockquote>"<mark>merge her fork</mark> with main"<cite>Chloe, Oct 13</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/05-sonia-oct.jpg" data-cap="Sonia's second pass, October 9|Goal, Stage and Scored filters and the Framework checklists module."><img src="img/05-sonia-oct.jpg" alt="Sonia's October version: Frameworks bar with Goal, Stage and Scored filters and a Framework checklists panel." loading="lazy"><span>Goal, Stage, Scored</span></button></div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="phase" data-phase><span class="when">Oct 13 – 16</span><div><h3>Truth, then taste</h3><p>Check every claim against its source first. Then make it look like something.</p></div></div>
+    <ol class="rows">
+      <li class="row tp" id="tp3" data-t="tp">
+        <div class="date">Oct 13<small>8fde6c8</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 3</span></div>
+          <h4>Check the sources before the pixels</h4>
+          <p>An evidence check pulled every item count, threshold, formula and citation out of the site and tested it against the published instruments. Anything a search couldn't confirm was marked unverified, not assumed. CCI, PEMAT and the Decisional Conflict Scale were realigned to match. The next day, interviews with two practitioners turned into a list of framework gaps, starting with PEMAT for audiovisual work.</p>
+        </div>
+      </li>
+      <li class="row" data-t="draft">
+        <div class="date">Oct 14<small>b55b386</small></div>
+        <div class="body">
+          <h4>Write the app the way we ask others to write</h4>
+          <p>All interface text rewritten below a grade 6 reading level. Unexplained icons and zone colours removed, the Workspace bar hidden. A tool that grades plain language has to pass its own test.</p>
+          <div class="thumbs"><button class="thumb" data-img="img/06-grade6.jpg" data-cap="Grade 6 rewrite, October 14|Fewer icons and colours; shorter labels."><img src="img/06-grade6.jpg" alt="The October 14 studio with simplified Brief and Frameworks bars." loading="lazy"><span>Below grade 6</span></button></div>
+        </div>
+      </li>
+      <li class="row" data-t="quote">
+        <div class="date">Oct 16</div>
+        <div class="body">
+          <h4>Honest scores</h4>
+          <p>An item nobody has reviewed no longer counts as failed. When a transcript can't show headers or tables, the answer is "can't tell", not a guess. Controls that only pretended to change a file were removed.</p>
+          <blockquote>"These two don't do anything to the file. Changing text in the artwork won't actually edit the image, nor would adding alt text really add to the image. Can we do something about it? <mark>If not, remove them.</mark>"<cite>Chloe, Oct 16</cite></blockquote>
+          <p class="arrow">→ Alt text is now saved into the image file itself.</p>
+        </div>
+      </li>
+      <li class="row" data-t="quote draft">
+        <div class="date">Oct 16<small>6b9e79b</small></div>
+        <div class="body">
+          <h4>A big refresh: a 13px floor and seven type treatments</h4>
+          <blockquote>"The design layout style system about this site can use a big refreshment. The main canvas doesn't need to be this big. <mark>The smallest font size on the site should be bigger than 12px.</mark>"<cite>Chloe, Oct 16</cite></blockquote>
+          <blockquote>"Use a consistent checklist format, don't mix dropdown and checkbox. We should only use <mark>less than 8 treatments</mark> throughout."<cite>Chloe, Oct 16</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/07-refresh.jpg" data-cap="Design refresh, October 16|Tokens, a 13px type floor and a smaller canvas."><img src="img/07-refresh.jpg" alt="The refreshed studio with a smaller canvas and calmer panels." loading="lazy"><span>Refresh</span></button></div>
+        </div>
+      </li>
+      <li class="row tp" id="tp4" data-t="tp quote">
+        <div class="date">Oct 16<small>38ac90e</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 4</span></div>
+          <h4>One framework list, everywhere</h4>
+          <p>The Compass is rebuilt on the studio's design system and reads from the same framework list. Each framework links to its real source document; scoring rules fold into its Compass row. The Classic page and the separate scoring-logic page are deleted.</p>
+          <blockquote>"Remove the ones that are irrelevant or not credible. <mark>What we show in the Compass is what we use in the main canvas.</mark>"<cite>Chloe, Oct 16</cite></blockquote>
+          <blockquote>"Dig into the deep links to find the <mark>true source of each requirement</mark>."<cite>Chloe, Oct 16, adding UPL and PCORI</cite></blockquote>
+        </div>
+      </li>
+      <li class="row tp" id="tp5" data-t="tp quote draft">
+        <div class="date">Oct 16<small>a09cb07</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 5</span></div>
+          <h4>The proofing desk</h4>
+          <p>The look gets a metaphor and a written contract (DESIGN.md). The material is a sheet of paper on a cool grey desk. Checks look like printed score sheets, with item numbers in a margin. Links are the blue of government forms. Highlighter yellow marks flagged words and nothing else. Indigo and cream are gone; dark mode is designed, not inverted.</p>
+          <blockquote>"The whole design can use an upgrade: <mark>more taste, less AI look</mark>, light and dark mode."<cite>Chloe, Oct 16</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/08-proofing-desk.jpg" data-cap="Proofing desk, October 16|Public Sans and Source Serif 4, a cool desk, white sheets and score-sheet rows."><img src="img/08-proofing-desk.jpg" alt="The proofing desk studio: white Material sheet on a grey desk with numbered getting-started steps." loading="lazy"><span>Proofing desk</span></button></div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="phase" data-phase><span class="when">Oct 17 – 19</span><div><h3>Character</h3><p>A name, a mark, a front door. Each one picked from several drafts.</p></div></div>
+    <ol class="rows">
+      <li class="row" data-t="sonia">
+        <div class="date">Oct 17<small>ecb8113</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag so">Sonia &amp; Chloe</span></div>
+          <h4>It gets a name: PRISM</h4>
+          <p>"Patient Education Analyzer" becomes PRISM. The About dialog credits both makers as name cards: Sonia Seto, Sonia Seto Studios, and Chloe Ma, GoInvo, with a line noting Claude helped build and test the code.</p>
+        </div>
+      </li>
+      <li class="row" data-t="quote draft">
+        <div class="date">Oct 17<small>624d6e5</small></div>
+        <div class="body">
+          <h4>Three empty panels, critiqued before shown</h4>
+          <p>Options A (the blank page), B (two big choices) and C (upload first, samples as pictures), each with its idea, what it does well and its risk. "Upload" became "Open a file", because to people handling patient materials, upload sounds like the file leaves the computer.</p>
+          <blockquote>"I still think the upload section looks bad. Give me some demo options to pick. <mark>Review and critique first</mark> before you show me."<cite>Chloe, Oct 17</cite></blockquote>
+          <blockquote>"Build C but make it neater."<cite>Chloe, Oct 17</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/10-upload-options.jpg" data-cap="Empty Material panel: three options, October 17|A, B and C side by side. C was built."><img src="img/10-upload-options.jpg" alt="Three versions of the empty Material panel side by side, labelled A, B and C." loading="lazy"><span>Options A, B, C</span></button></div>
+        </div>
+      </li>
+      <li class="row tp" id="tp6" data-t="tp quote">
+        <div class="date">Oct 17<small>adf4052</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 6</span></div>
+          <h4>Flags become fixes</h4>
+          <p>A flagged sentence now comes with a suggested rewrite and the guideline behind it. Apply one, or Apply all. Versions turn into a change log with Undo.</p>
+          <blockquote>"These recommendations should not only highlight inline, but also <mark>show the recommended edited line</mark>, so users can commit changes quickly if they want. Apply to all applicable."<cite>Chloe, Oct 17</cite></blockquote>
+        </div>
+      </li>
+      <li class="row" data-t="quote draft">
+        <div class="date">Oct 18<small>73b8d7a</small></div>
+        <div class="body">
+          <h4>Seven marks, one I</h4>
+          <p>A logo and type brainstorm: six marks and the plain wordmark, each tested at 160px, in the site bar, as a 16px favicon and on the dark desk. The pick borrows the product's own signature, the highlighter on a flagged word. The similarity check also found another health literacy program called PRISM.</p>
+          <blockquote>"The site needs <mark>more character</mark>."<cite>Chloe, Oct 18</cite></blockquote>
+          <blockquote>"Make sure it doesn't conflict or look similar with any logo currently used online."<cite>Chloe, Oct 18</cite></blockquote>
+          <blockquote>"I like logo 3. Implement it, and <mark>use the yellow as the theme color</mark>."<cite>Chloe, Oct 18</cite></blockquote>
+          <div class="thumbs">
+            <button class="thumb" data-img="img/11-logo-history.jpg" data-cap="Logo history|From the plain wordmark to six concepts to the Flagged I."><img src="img/11-logo-history.jpg" alt="The logo history page: plain wordmark, then six concepts with Flagged I picked." loading="lazy"><span>Every logo attempt</span></button>
+            <button class="thumb" data-img="img/18-type-directions.jpg" data-cap="Type directions, October 18|Four type directions tried; the current Public Sans and Source Serif pairing stayed."><img src="img/18-type-directions.jpg" alt="Type directions page comparing four font pairings on a sample handout." loading="lazy"><span>Type directions</span></button>
+            <button class="thumb" data-img="img/09-flagged-i.jpg" data-cap="Flagged I in the site bar, October 18|Yellow becomes the theme colour."><img src="img/09-flagged-i.jpg" alt="The studio with the new PRISM wordmark and yellow Evaluate a draft button." loading="lazy"><span>Flagged I, live</span></button>
+          </div>
+        </div>
+      </li>
+      <li class="row" data-t="quote draft">
+        <div class="date">Oct 19<small>44eb366</small></div>
+        <div class="body">
+          <h4>Six front doors, then one</h4>
+          <p>Six hero mockups. Hero 1, the marked-up handout, was merged with hero 4's slider, then made editorial, then folded into one dark screen. The slider fixes the handout as you drag: "diuretic" becomes "water pill", a long sentence splits in three, "25%" becomes "1 in 4". Each fix shows its source.</p>
+          <blockquote>"Build the front door from <mark>hero 1</mark> (marked-up handout) with the <mark>hero 4 slider</mark> below it."<cite>Chloe, Oct 19</cite></blockquote>
+          <blockquote>"Go editorial with serif headlines."<cite>Chloe, Oct 19</cite></blockquote>
+          <blockquote>"Have the two concepts both on a dark background, more merged together, tighter, <mark>just one screen height</mark> without scrolling."<cite>Chloe, Oct 19</cite></blockquote>
+          <div class="thumbs">
+            <button class="thumb" data-img="img/12-landing-mockups.jpg" data-cap="Landing page: six hero mockups, October 19|Hero 1, the marked-up handout, at the top."><img src="img/12-landing-mockups.jpg" alt="The landing ideas page showing the first of six hero mockups, a marked-up handout." loading="lazy"><span>Six hero mockups</span></button>
+            <button class="thumb" data-img="img/13-front-door.jpg" data-cap="Front door, October 19|One dark screen: serif headline, handout plate and the fix-it slider."><img src="img/13-front-door.jpg" alt="The front door: 'Make your health handout easy to read' beside a handout with reading grade and flags." loading="lazy"><span>The front door</span></button>
+          </div>
+        </div>
+      </li>
+      <li class="row" data-t="quote">
+        <div class="date">Oct 19<small>f8b4fed</small></div>
+        <div class="body">
+          <h4>Privacy, said plainly</h4>
+          <p>One privacy note, always within reach: your work is saved only in this browser.</p>
+          <blockquote>"Also mention all uploaded files are only stored locally. <mark>Nothing's uploaded anywhere, others can't access your data.</mark>"<cite>Chloe, Oct 19</cite></blockquote>
+        </div>
+      </li>
+      <li class="row" data-t="quote draft">
+        <div class="date">Oct 19<small>b52c1a4</small></div>
+        <div class="body">
+          <h4>Five ways to move a logo</h4>
+          <p>Swipe, Scan, Stamp, Type-on, Prism fan. Scan won: a reading line sweeps PRISM and highlights the I, the same way the tool reads a handout.</p>
+          <blockquote>"Give me 5 types of animation on the logo."<cite>Chloe, Oct 19</cite></blockquote>
+          <blockquote>"<mark>Use 2</mark>, then push."<cite>Chloe, Oct 19</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/14-logo-animation.jpg" data-cap="Logo animation: five ways, October 19|Number 2, Scan, went live."><img src="img/14-logo-animation.jpg" alt="Five PRISM logo animations in a grid: Swipe, Scan, Stamp, Type-on and Prism fan." loading="lazy"><span>Five animations</span></button></div>
+        </div>
+      </li>
+    </ol>
+
+    <div class="phase" data-phase><span class="when">Oct 21 – 27</span><div><h3>Subtraction</h3><p>Reuse instead of reinvent. Hide what doesn't help. Cut the library in half.</p></div></div>
+    <ol class="rows">
+      <li class="row tp" id="tp7" data-t="tp sonia quote draft">
+        <div class="date">Oct 21<small>deecb1a</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 7</span><span class="tag so">Builds on Sonia</span></div>
+          <h4>Plan from an idea uses the Evaluate layout</h4>
+          <p>Sonia's mode toggle had grown into a separate guided path. Now both modes share one layout, so the relevant frameworks show up on the right while you plan, and storyboard scenes are laid out as frames.</p>
+          <blockquote>"Can we use the same layout as Evaluate a draft for Plan from an idea? So the relevant frameworks show up on the right panel <mark>without reinventing the wheel</mark>."<cite>Chloe, Oct 21</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/15-plan-layout.jpg" data-cap="One layout for both modes, October 21|Plan from an idea now sits in the Evaluate layout."><img src="img/15-plan-layout.jpg" alt="The studio in dark mode with Material on the left and How to check your material steps on the right." loading="lazy"><span>One layout, two modes</span></button></div>
+        </div>
+      </li>
+      <li class="row" data-t="quote">
+        <div class="date">Oct 21</div>
+        <div class="body">
+          <h4>Light and dark, one tool</h4>
+          <blockquote>"In light mode, make the grey background more similar to dark mode's colour theme. Right now light and dark <mark>look like two completely different tools</mark>."<cite>Chloe, Oct 21</cite></blockquote>
+        </div>
+      </li>
+      <li class="row" data-t="quote">
+        <div class="date">Oct 22</div>
+        <div class="body">
+          <h4>Hide what doesn't help</h4>
+          <p>The "Text the tool read" card goes. Highlights leave room for Grammarly.</p>
+          <blockquote>"<mark>This doesn't feel useful. Hide it for now.</mark> Text is being read directly and highlighted for the plain language tool, and that's enough."<cite>Chloe, Oct 22</cite></blockquote>
+        </div>
+      </li>
+      <li class="row tp" id="tp8" data-t="tp quote draft">
+        <div class="date">Oct 26–27<small>not yet committed</small></div>
+        <div class="body">
+          <div class="tags"><span class="tag tp">Turning point 8</span></div>
+          <h4>The library review: 23 down to 11</h4>
+          <p>A spreadsheet review decided each framework: keep, cut, or plan-only. The tool checks materials, so anything that measures a care pathway, a program or the patient themselves left the pick lists. Every cut stays visible in the Compass with its reason and when to revisit it.</p>
+          <blockquote>"Keep or cut COM-B, Ottawa DSF and Teach-Back? <mark>Cut/hide for now.</mark>"<cite>Chloe, Oct 27, answering the review's open questions</cite></blockquote>
+          <blockquote>"<mark>Leave PAM out.</mark>"<cite>Chloe, Oct 27</cite></blockquote>
+          <p class="arrow">→ <a href="#library">See the library numbers</a></p>
+          <div class="thumbs"><button class="thumb" data-img="img/17-compass-now.jpg" data-cap="Framework Compass today|The 14 frameworks the studio checks against, each linked to its original source."><img src="img/17-compass-now.jpg" alt="The Framework Compass today: a dark page listing 14 frameworks with source links." loading="lazy"><span>Compass, 14 frameworks</span></button></div>
+        </div>
+      </li>
+      <li class="row" data-t="quote draft">
+        <div class="date">Oct 27</div>
+        <div class="body">
+          <h4>Plain language gets its sources</h4>
+          <p>PRISM's own plain-language check is grounded in published guides, and readability gets its own row with the Flesch–Kincaid reference on the card. A rewrite shows only the words that change.</p>
+          <blockquote>"Is there a good framework we should use <mark>instead of PRISM's own check</mark> for plain language?"<cite>Chloe, Oct 27</cite></blockquote>
+          <blockquote>"Only the actual changed text gets rewritten or highlighted, <mark>no need to repeat the whole thing</mark> again."<cite>Chloe, Oct 27</cite></blockquote>
+          <div class="thumbs"><button class="thumb" data-img="img/16-studio-now.jpg" data-cap="PRISM, October 28|The studio as it stands today."><img src="img/16-studio-now.jpg" alt="PRISM today: dark studio with the Material sheet and four getting-started steps." loading="lazy"><span>PRISM today</span></button></div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <section class="wrap" id="together" aria-labelledby="t-h">
+    <div class="sec-head"><span class="no">Collaboration</span><div><h2 id="t-h">Two studios, one desk</h2></div>
+      <p>Sonia and Chloe worked in separate forks and merged into one site. Sonia made fewer, larger moves; Chloe made many small ones. The biggest structural idea in PRISM is Sonia's.</p></div>
+    <div class="duo">
+      <article class="sheet person s">
+        <div class="mono" aria-hidden="true">SS</div>
+        <h3>Sonia Seto</h3><div class="org">Sonia Seto Studios</div>
+        <ul>
+          <li><span class="num">Sep 15</span><span>Prototype branch: Frameworks top bar with live match count, live Brief targets, live Tune preview, workspace controls in one bar</span></li>
+          <li><span class="num">Sep 15</span><span><b>The mode toggle: Evaluate a draft / Plan from an idea</b></span></li>
+          <li><span class="num">Oct 9</span><span>Frameworks by goal, stage and scoring; the Framework checklists module; Tune retired (669 lines)</span></li>
+          <li><span class="num">Oct 17</span><span>Credited first in About</span></li>
+        </ul>
+      </article>
+      <article class="sheet person c">
+        <div class="mono" aria-hidden="true">CM</div>
+        <h3>Chloe Ma</h3><div class="org">GoInvo</div>
+        <ul>
+          <li><span class="num">Jul 31</span><span>First tool and the unified studio</span></li>
+          <li><span class="num">Oct 13</span><span>Merged Sonia's fork; evidence check against published instruments</span></li>
+          <li><span class="num">Oct 16–19</span><span>Proofing desk, one framework list, PRISM name, Flagged I, front door</span></li>
+          <li><span class="num">Oct 21–27</span><span>One layout for both modes; library review cuts</span></li>
+        </ul>
+      </article>
+    </div>
+    <div class="sheet lineage">
+      <h3>How one of Sonia's ideas grew</h3>
+      <p>The Evaluate / Plan toggle is the clearest line through the project, from her prototype to the two canvases people use now.</p>
+      <ol class="chain">
+        <li class="s"><b>Sep 15 · Sonia</b><span>Mode toggle switches between two workspace presets</span><em>c133e0c</em></li>
+        <li class="s"><b>Oct 9 · Sonia</b><span>Frameworks filtered by goal and stage, so planning has its own picks</span><em>b5c2877</em></li>
+        <li class="c"><b>Oct 17 · Chloe</b><span>Plan from an idea becomes a guided path: outline, draft, storyboard, final check</span><em>c2cc437</em></li>
+        <li class="c"><b>Oct 21 · Chloe</b><span>Plan and Evaluate share one layout; each offers only its own frameworks</span><em>deecb1a</em></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap" id="library" aria-labelledby="l-h">
+    <div class="sec-head"><span class="no">Library</span><div><h2 id="l-h">Cutting is the design</h2></div>
+      <p>How many frameworks the tool offered at each point. Bars share one scale, 0 to 26.</p></div>
+    <div class="sheet lib" id="libbars">
+      <div class="lib-row"><span class="lbl"><b>Summer</b>Framework Compass</span><div class="track"><div class="fill" data-n="26"></div></div><span class="n">26</span></div>
+      <div class="lib-row"><span class="lbl"><b>Oct 17</b>Studio dropdown</span><div class="track"><div class="fill" data-n="23"></div></div><span class="n">23</span></div>
+      <div class="lib-row"><span class="lbl"><b>Oct 26</b>After review v2</span><div class="track"><div class="fill" data-n="20"></div></div><span class="n">20</span></div>
+      <div class="lib-row"><span class="lbl"><b>Oct 27</b>In the library</span><div class="track"><div class="fill" data-n="14"></div></div><span class="n">14</span></div>
+      <div class="lib-row"><span class="lbl"><b>Today</b>Evaluate a draft</span><div class="track"><div class="fill now" data-n="11"></div></div><span class="n">11</span></div>
+      <div class="lib-row"><span class="lbl"><b>Today</b>Plan from an idea</span><div class="track"><div class="fill now" data-n="12"></div></div><span class="n">12</span></div>
+      <div class="cuts">
+        <div><b>Measures the patient, not the material</b>PAM is a licensed survey of the patient. It was never in the tool, and it stays out.</div>
+        <div><b>Lenses that can't check a document</b>COM-B, Ottawa DSF and Teach-Back are hidden for now.</div>
+        <div><b>About services, not materials</b>SHARE, the AHRQ Toolkit and Picker check care pathways and programs.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="marks" aria-labelledby="m-h">
+    <div class="sec-head"><span class="no">Logo</span><div><h2 id="m-h">Seven marks on a 32-unit grid</h2></div>
+      <p>Each mark was drawn so strokes land on whole pixels at 16px. Number 3 won because it borrows the highlighter from the product itself; its slant keeps it from being mistaken for a real flag.</p></div>
+    <div class="sheet">
+      <div class="marks">
+        <div class="mark"><div class="wm">PRISM</div><b>0 Plain</b><small>The wordmark alone</small></div>
+        <div class="mark"><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="24"/><path d="M12 4 H19 L26 9 V13 L19 18 H12 Z"/></svg><b>1 Facet P</b><small>A glass facet for a bowl</small></div>
+        <div class="mark"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" aria-hidden="true"><path d="M5 23 L16 5 L27 23" stroke-width="4"/><path d="M1 27 H10 M22 27 H31" stroke-width="2"/></svg><b>2 Caret</b><small>The proofreader's insert mark</small></div>
+        <div class="mark win"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><clipPath id="band"><path d="M3 24 L7 8 H29 L25 24 Z"/></clipPath></defs><path d="M3 24 L7 8 H29 L25 24 Z" fill="#FFE066"/><rect x="14" y="4" width="4" height="24" fill="currentColor"/><rect x="14" y="4" width="4" height="24" fill="#16181D" clip-path="url(#band)"/></svg><b>3 Flagged I</b><small>The studio's highlighter swipe</small></div>
+        <div class="mark"><svg viewBox="0 0 32 32" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20 V5 H16 A6 6 0 0 1 16 17 H8"/><path d="M8 20 C8 26 11 28.5 15 28.5 C20 28.5 22.5 25 20.5 22.5 C18.5 20 14.5 21.5 15.5 24.5 C16.5 27.5 21 28.5 29 27.5"/></g></svg><b>4 Dele P</b><small>The editor's delete loop</small></div>
+        <div class="mark"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" aria-hidden="true"><path d="M1 16 H11" stroke-width="4"/><path d="M15 2 V30" stroke-width="2"/><path d="M19 5 H31 M19 10.5 H27 M19 16 H31 M19 21.5 H25 M19 27 H29" stroke-width="2"/></svg><b>5 Readings</b><small>One line in, five lines out</small></div>
+        <div class="mark"><svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><rect x="6" y="4" width="4" height="24"/><rect x="12" y="4" width="4" height="24"/><rect x="6" y="4" width="10" height="3"/><path d="M16 4 H19 A7 7 0 0 1 19 18 H16 Z"/></svg><b>6 Pilcrow P</b><small>A reversed paragraph mark</small></div>
+      </div>
+      <div class="note"><b>Still open:</b> the similarity check found PRISM, the Program for Readability In Science &amp; Medicine at Kaiser Permanente Washington, a plain-language program in the same field. A proper trademark search is still to do.</div>
+    </div>
+  </section>
+
+  <section class="wrap" id="talk" aria-labelledby="k-h">
+    <div class="sec-head"><span class="no">Talk</span><div><h2 id="k-h">Seven minutes, in person</h2></div>
+      <p>The run of show this page supports. Each beat links to the part of the record it draws on.</p></div>
+    <ol class="sheet talk">
+      <li><span class="t">0:00</span><span><b>Show the result first.</b> The front door slider fixes a handout live.</span><a href="#tp6">Flags become fixes</a></li>
+      <li><span class="t">0:40</span><span><b>A library, not a tool.</b> 26 rubrics nobody could use on deadline.</span><a href="#tp1">Turning point 1</a></li>
+      <li><span class="t">1:40</span><span><b>Truth before polish.</b> Check every claim, then score honestly.</span><a href="#tp3">Turning point 3</a></li>
+      <li><span class="t">2:50</span><span><b>One metaphor, written down.</b> The proofing desk and DESIGN.md.</span><a href="#tp5">Turning point 5</a></li>
+      <li><span class="t">3:50</span><span><b>Subtract.</b> 26 to 11, every cut with a reason.</span><a href="#library">Library</a></li>
+      <li><span class="t">4:50</span><span><b>Two designers, one desk.</b> Sonia's mode toggle became both canvases.</span><a href="#together">Collaboration</a></li>
+      <li><span class="t">5:50</span><span><b>Explore wide, choose narrow.</b> Six front doors, seven marks, five animations.</span><a href="#marks">Logo</a></li>
+      <li><span class="t">6:30</span><span><b>Close.</b> Check the evidence first, write the design down, show your cuts.</span><a href="#top">Back to top</a></li>
+    </ol>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><div>
+    <p><b>Sources.</b> The PRISM git history (89 commits, Jul 31 to Oct 21, 2026), HISTORY.md, DESIGN.md, the logo brainstorm, and Chloe's messages in build sessions with Claude. Screenshots are the site as it stood at each commit, rendered from the repository; web fonts may differ slightly from the live site.</p>
+    <p>Made by Sonia Seto (Sonia Seto Studios) and Chloe Ma (GoInvo), with Claude.</p>
+  </div></div>
+</footer>
+
+<dialog id="lb" aria-labelledby="lb-cap">
+  <img class="lb-img" id="lb-img" alt="">
+  <div class="lb-bar">
+    <button class="btn" id="lb-prev" aria-label="Previous draft">←</button>
+    <p id="lb-cap"></p>
+    <button class="btn" id="lb-next" aria-label="Next draft">→</button>
+    <button class="btn ink" id="lb-close">Close</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  // before / after
+  var cmp=document.getElementById('compare'), cut=document.getElementById('cut');
+  function setCut(v){cmp.style.setProperty('--cut',v+'%')}
+  cut.addEventListener('input',function(){setCut(cut.value)});
+  var drag=false;
+  function fromPointer(e){var r=cmp.getBoundingClientRect();var v=Math.max(0,Math.min(100,(e.clientX-r.left)/r.width*100));cut.value=v;setCut(v)}
+  cmp.addEventListener('pointerdown',function(e){drag=true;cmp.setPointerCapture(e.pointerId);fromPointer(e)});
+  cmp.addEventListener('pointermove',function(e){if(drag)fromPointer(e)});
+  cmp.addEventListener('pointerup',function(){drag=false});
+  cmp.style.touchAction='pan-y';
+
+  // rhythm chart, drawn to one date scale
+  var commits=[["2026-07-31",1],["2026-08-17",3],["2026-09-15",2],["2026-10-09",1],["2026-10-13",3],["2026-10-14",11],["2026-10-16",31],["2026-10-17",18],["2026-10-18",2],["2026-10-19",15],["2026-10-21",2]];
+  var sonia={"2026-09-15":1,"2026-10-09":1};
+  var logged=["2026-10-26","2026-10-27"];
+  var tps=[["2026-08-17",1],["2026-09-15",2],["2026-10-13",3],["2026-10-16",4],["2026-10-16",5],["2026-10-18",6],["2026-10-21",7],["2026-10-27",8]];
+  var NS='http://www.w3.org/2000/svg', svg=document.getElementById('rhythm');
+  var d0=Date.parse('2026-07-28'), d1=Date.parse('2026-10-31'), L=36, R=944, top=56, base=180, maxC=31;
+  function x(d){return L+(Date.parse(d)-d0)/(d1-d0)*(R-L)}
+  function y(c){return base-(c/maxC)*(base-top)}
+  function el(n,a,p){var e=document.createElementNS(NS,n);for(var k in a)e.setAttribute(k,a[k]);(p||svg).appendChild(e);return e}
+  [0,10,20,30].forEach(function(t){el('line',{x1:L,x2:R,y1:y(t),y2:y(t),stroke:'var(--rule)','stroke-width':1});var tx=el('text',{x:L-8,y:y(t)+4,'text-anchor':'end'});tx.textContent=t});
+  ['2026-08-01','2026-09-01','2026-10-01'].forEach(function(m){var tx=el('text',{x:x(m),y:base+22,'text-anchor':'start'});tx.textContent=new Date(m+'T12:00').toLocaleString('en',{month:'short'});el('line',{x1:x(m),x2:x(m),y1:base,y2:base+8,stroke:'var(--ink-2)'})});
+  var bw=6;
+  commits.forEach(function(c){var r=el('rect',{x:x(c[0])-bw/2,y:y(c[1]),width:bw,height:base-y(c[1]),fill:sonia[c[0]]?'var(--sonia)':'var(--ink-2)'});var t=el('title',{},r);t.textContent=c[0]+': '+c[1]+' commit'+(c[1]>1?'s':'')+(sonia[c[0]]?', including Sonia\'s':'')});
+  logged.forEach(function(d){var r=el('rect',{x:x(d)-bw/2,y:y(4),width:bw,height:base-y(4),fill:'none',stroke:'var(--ink-2)','stroke-dasharray':'3 2','stroke-width':1.2});var t=el('title',{},r);t.textContent=d+': logged in HISTORY.md, not yet committed'});
+  el('line',{x1:L,x2:R,y1:base,y2:base,stroke:'var(--ink-2)'});
+  var peak=el('text',{x:x('2026-10-16')+8,y:y(31)+4});peak.textContent='31 on Oct 16';
+  // turning point tags, nudged apart where dates cluster
+  var prevPx=-99;
+  tps.forEach(function(t){
+    var cx=x(t[0]), ty=10, px=Math.max(cx,prevPx+24); prevPx=px;
+    var g=el('g',{class:'tp-dot',tabindex:0,role:'link','aria-label':'Turning point '+t[1]+', '+t[0]});
+    el('line',{x1:cx,x2:px,y1:ty+20,y2:top-4,stroke:'var(--brand)','stroke-width':1.5},g);
+    el('rect',{x:px-10,y:ty,width:20,height:20,rx:3,fill:'var(--brand)'},g);
+    var tx=el('text',{x:px,y:ty+14.5,'text-anchor':'middle',style:'fill:var(--on-brand);font-weight:600'},g);tx.textContent=t[1];
+    function go(){var target=document.getElementById('tp'+t[1]);setFilter('all');target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});target.focus({preventScroll:true})}
+    g.addEventListener('click',go);g.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}});
+  });
+
+  // library bars to scale
+  document.querySelectorAll('#libbars .fill').forEach(function(f){f.style.width=(f.dataset.n/26*100)+'%'});
+
+  // filters
+  var rows=[].slice.call(document.querySelectorAll('.row')), chips=[].slice.call(document.querySelectorAll('.chip'));
+  rows.forEach(function(r){r.tabIndex=-1});
+  chips.forEach(function(c){var f=c.dataset.f;c.querySelector('.c').textContent=f==='all'?rows.length:rows.filter(function(r){return r.dataset.t.split(' ').indexOf(f)>-1}).length});
+  function setFilter(f){
+    chips.forEach(function(c){c.setAttribute('aria-pressed',c.dataset.f===f)});
+    rows.forEach(function(r){r.hidden=!(f==='all'||r.dataset.t.split(' ').indexOf(f)>-1)});
+    document.querySelectorAll('.rows').forEach(function(list){var any=[].some.call(list.children,function(r){return !r.hidden});list.hidden=!any;list.previousElementSibling.hidden=!any});
+    try{localStorage.setItem('prism-journey-filter',f)}catch(e){}
+  }
+  chips.forEach(function(c){c.addEventListener('click',function(){setFilter(c.dataset.f)})});
+  try{var saved=localStorage.getItem('prism-journey-filter');if(saved&&chips.some(function(c){return c.dataset.f===saved}))setFilter(saved)}catch(e){}
+
+  // lightbox over visible drafts
+  var lb=document.getElementById('lb'), img=document.getElementById('lb-img'), cap=document.getElementById('lb-cap'), cur=0, list=[];
+  function show(i){cur=(i+list.length)%list.length;var b=list[cur],p=b.dataset.cap.split('|');img.src=b.dataset.img;img.alt=b.querySelector('img').alt;cap.innerHTML='';var s=document.createElement('span');s.textContent=p[0];var sm=document.createElement('small');sm.textContent=(p[1]||'')+'  ·  '+(cur+1)+' of '+list.length;cap.appendChild(s);cap.appendChild(sm)}
+  document.querySelectorAll('.thumb').forEach(function(b){b.addEventListener('click',function(){list=[].slice.call(document.querySelectorAll('.thumb')).filter(function(t){return !t.closest('[hidden]')});show(list.indexOf(b));lb.showModal()})});
+  document.getElementById('lb-prev').onclick=function(){show(cur-1)};
+  document.getElementById('lb-next').onclick=function(){show(cur+1)};
+  document.getElementById('lb-close').onclick=function(){lb.close()};
+  lb.addEventListener('click',function(e){if(e.target===lb)lb.close()});
+  lb.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1)});
+})();
+</script>
+<script>
+(function(){
+var PHASES=[
+  {name:'A library',from:0,to:1},
+  {name:'A studio',from:2,to:4},
+  {name:'Truth, then taste',from:5,to:9},
+  {name:'Character',from:10,to:14},
+  {name:'Subtraction',from:15,to:17}
+];
+// Site areas. `since` = moment index it first exists.
+var TREE=[
+  {id:'frontdoor',label:'Front door',since:13},
+  {id:'studio',label:'Studio',since:1,kids:[
+    {id:'bar',label:'Site bar',since:1},
+    {id:'modes',label:'Evaluate / Plan',since:3},
+    {id:'brief',label:'Brief',since:2},
+    {id:'frameworks',label:'Frameworks',since:3},
+    {id:'material',label:'Material',since:1},
+    {id:'cards',label:'Score cards',since:1},
+    {id:'history',label:'History',since:11}
+  ]},
+  {id:'compass',label:'Framework Compass',since:0},
+  {id:'about',label:'About',since:7}
+];
+var M=[
+ {d:'Summer',sub:'Archive',url:'framework-compass.html',img:'01-compass',title:'Framework Compass',
+  desc:'A reference site across 26 frameworks, rubrics and models, sorted by what you need. It explained each instrument. It didn’t check anything.',
+  at:['compass']},
+ {d:'Jul 31',sub:'1f73cee',url:'index.html',img:'02-first-tool',title:'The first tool',
+  desc:'An upload box and three score cards: readability, the CDC Clear Communication Index and PEMAT. A Classic / Studio switch shows the shape wasn’t picked yet.',
+  at:['studio','material','cards']},
+ {d:'Aug 17',sub:'768f86d',url:'index.html · Patient Education Analyzer',img:'03-studio-aug',tp:1,title:'From a list to a desk',
+  desc:'One studio view: Brief on the left, the material in the middle, scoring and accessibility on the right. The Compass becomes a reference behind the tool.',
+  at:['studio','brief','material','cards']},
+ {d:'Sep 15',sub:'c133e0c',url:'index.html · sonia-frameworks-v2',img:'04-sonia-sep',tp:2,by:'sonia',title:'Sonia’s prototype: two ways in',
+  desc:'Sonia moved Frameworks into a top bar with a live match count, made the Brief show its targets as you pick, and added a mode toggle: Evaluate a draft / Plan from an idea. Both canvases today come from it.',
+  q:[['I’d like to incorporate my <mark>colleague’s branch edits</mark> to master, how do I do it?','Chloe, Sep 15']],
+  at:['modes','frameworks','brief']},
+ {d:'Oct 9',sub:'b5c2877',url:'index.html · Sonia’s fork',img:'05-sonia-oct',by:'sonia',title:'Frameworks by goal, stage and scoring',
+  desc:'A 669-line rework from Sonia’s fork. Frameworks filter by goal, by stage and by whether they’re scored. A Framework checklists module arrives and Tune is retired.',
+  q:[['<mark>Merge her fork</mark> with main.','Chloe, Oct 13']],
+  at:['frameworks','cards']},
+ {d:'Oct 13',sub:'8fde6c8',url:'docs/evidence-validation-report.md',img:'05-sonia-oct',same:true,tp:3,title:'Check the sources before the pixels',
+  desc:'Every item count, threshold, formula and citation was tested against the published instruments. Unconfirmed claims were marked unverified. CCI, PEMAT and the Decisional Conflict Scale were realigned. The screen barely changed; what it said did.',
+  at:['cards','compass']},
+ {d:'Oct 14',sub:'b55b386',url:'index.html',img:'06-grade6',title:'Below grade 6',
+  desc:'Interface text rewritten below a grade 6 reading level. Unexplained icons and zone colours removed; the Workspace bar hidden. A plain-language tool has to pass its own test.',
+  at:['bar','brief','frameworks']},
+ {d:'Oct 16',sub:'6b9e79b',url:'index.html',img:'07-refresh',title:'A refresh, and honest scores',
+  desc:'A 13px type floor and seven type treatments. Unreviewed items no longer count as failed, "can’t tell" replaces guesses, and controls that only pretended to edit a file were removed.',
+  q:[['The smallest font size on the site should be <mark>bigger than 12px</mark>.','Chloe, Oct 16'],['Can we do something about it? <mark>If not, remove them.</mark>','Chloe, Oct 16']],
+  at:['material','cards','about']},
+ {d:'Oct 16',sub:'38ac90e',url:'framework-compass.html',img:'19-compass-oct16',before:'01-compass',beforeLabel:'Summer Compass',tp:4,title:'One framework list, everywhere',
+  desc:'The Compass is rebuilt on the studio’s design system and reads the same list: 23 frameworks, each linked to its real source. The Classic page and the scoring-logic page are deleted.',
+  q:[['<mark>What we show in the Compass is what we use in the main canvas.</mark>','Chloe, Oct 16']],
+  at:['compass','frameworks']},
+ {d:'Oct 16',sub:'a09cb07',url:'index.html',img:'08-proofing-desk',before:'07-refresh',tp:5,title:'The proofing desk',
+  desc:'A metaphor and a written contract. Paper on a cool grey desk, checks as printed score sheets, links in form blue, highlighter yellow only on flagged words. Dark mode designed, not inverted.',
+  q:[['The whole design can use an upgrade: <mark>more taste, less AI look</mark>, light and dark mode.','Chloe, Oct 16']],
+  at:['bar','brief','frameworks','material','cards']},
+ {d:'Oct 17',sub:'624d6e5',url:'demos/upload-options.html',img:'10-upload-options',before:'08-proofing-desk',title:'A name, and an empty panel that helps',
+  desc:'The app becomes PRISM, with Sonia and Chloe credited as name cards in About. The empty Material panel gets three options, each critiqued before it was shown. C was built.',
+  q:[['Give me some demo options to pick. <mark>Review and critique first</mark> before you show me.','Chloe, Oct 17'],['Build C but make it neater.','Chloe, Oct 17']],
+  at:['material','about','bar']},
+ {d:'Oct 17',sub:'adf4052',url:'index.html · suggestion card',mock:true,tp:6,title:'Flags become fixes',
+  desc:'A flagged sentence now comes with a suggested rewrite and the guideline behind it. Apply one or Apply all. Versions become a change log with Undo.',
+  q:[['Not only highlight inline, but also <mark>show the recommended edited line</mark>, so users can commit changes quickly.','Chloe, Oct 17']],
+  at:['material','cards','history']},
+ {d:'Oct 18',sub:'73b8d7a',url:'index.html',img:'09-flagged-i',before:'08-proofing-desk',
+  drafts:[['11-logo-history','Every logo attempt'],['18-type-directions','Type directions']],title:'Seven marks, one I',
+  desc:'Six marks and the plain wordmark, each tested at 160px, in the bar, as a 16px favicon and on the dark desk. The Flagged I borrows the product’s highlighter. Yellow becomes the theme colour.',
+  q:[['The site needs <mark>more character</mark>.','Chloe, Oct 18'],['I like logo 3. <mark>Use the yellow as the theme color.</mark>','Chloe, Oct 18']],
+  at:['bar']},
+ {d:'Oct 19',sub:'44eb366',url:'/ · front door',img:'13-front-door',before:'12-landing-mockups',beforeLabel:'Six mockups',title:'Six front doors, then one',
+  desc:'Hero 1, the marked-up handout, merged with hero 4’s slider, made editorial, then folded into one dark screen. The slider fixes the handout as you drag, and shows each fix’s source.',
+  q:[['Have the two concepts both on a dark background, tighter, <mark>just one screen height</mark>.','Chloe, Oct 19']],
+  at:['frontdoor']},
+ {d:'Oct 19',sub:'b52c1a4',url:'design/brainstorm/logo-animation.html',img:'14-logo-animation',title:'Five ways to move a logo',
+  desc:'Swipe, Scan, Stamp, Type-on, Prism fan. Scan won: a reading line sweeps PRISM and highlights the I, the way the tool reads a handout.',
+  q:[['<mark>Use 2</mark>, then push.','Chloe, Oct 19']],
+  at:['bar','frontdoor']},
+ {d:'Oct 21',sub:'deecb1a',url:'index.html · Plan from an idea',img:'15-plan-layout',noBefore:true,tp:7,by:'both',title:'Plan uses the Evaluate layout',
+  desc:'Sonia’s mode toggle had grown into a separate guided path. Now both modes share one layout, so the relevant frameworks show up on the right while you plan.',
+  q:[['So the relevant frameworks show up on the right panel <mark>without reinventing the wheel</mark>.','Chloe, Oct 21']],
+  at:['modes','cards','frameworks']},
+ {d:'Oct 27',sub:'not yet committed',url:'framework-compass.html',img:'17-compass-now',before:'19-compass-oct16',beforeLabel:'23 frameworks',tp:8,title:'The library review: 23 down to 11',
+  desc:'A spreadsheet review decided each framework. Anything that measures a care pathway, a program or the patient left the pick lists. Every cut stays in the Compass with its reason and when to revisit.',
+  q:[['Keep or cut COM-B, Ottawa DSF and Teach-Back? <mark>Cut/hide for now.</mark>','Chloe, Oct 27'],['<mark>Leave PAM out.</mark>','Chloe, Oct 27']],
+  at:['compass','frameworks']},
+ {d:'Oct 28',sub:'today',url:'index.html',img:'16-studio-now-light',before:'03-studio-aug',beforeLabel:'Aug 17',title:'PRISM today',
+  desc:'Plain language grounded in published guides, readability on its own row with its Flesch–Kincaid reference, and rewrites that show only the words that change.',
+  q:[['Only the actual changed text gets rewritten or highlighted, <mark>no need to repeat the whole thing</mark>.','Chloe, Oct 27']],
+  at:['material','cards','frameworks']}
+];
+// Features: m = moment it arrives; by = who.
+var F=[
+ ['Framework reference (26)',0],['Score cards',1],['One studio view',2],
+ ['Evaluate / Plan modes',3,'sonia'],['Live Brief targets',3,'sonia'],
+ ['Framework checklists',4,'sonia'],['Filter by goal and stage',4,'sonia'],
+ ['Items checked against sources',5],['Grade 6 interface text',6],['Honest scoring',7],
+ ['One framework list',8],['Proofing desk, light and dark',9],['PRISM name and credits',10],
+ ['Suggested rewrites with sources',11],['Flagged I logo',12],['Front door',13],['Logo animation',14],
+ ['One layout for both modes',15],['11-framework library',16],['Plain language with sources',17]
+];
+// Retired: [name, moment it existed from, moment it was retired]
+var G=[
+ ['Classic / Studio switch',1,8],['Tune panel',2,4],['Workspace bar',2,6],['Scoring-logic page',0,8],
+ ['Indigo accent and cream',2,9],['"Text the tool read" card',13,16],['EQIP, Plain Language, PCORI',8,16],['COM-B, Ottawa DSF, Teach-Back',8,16]
+];
+function dateOf(i){return M[i].d}
+
+var used=false, cur=0, showBefore=false, tpOnly=false, draft=null, showAllLocked=false;
+var $=function(id){return document.getElementById(id)};
+function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+// phases + ticks
+var phEl=$('phases'), tkEl=$('ticks');
+PHASES.forEach(function(p,k){
+  var b=document.createElement('button');b.className='mp-phase';b.style.setProperty('--n',p.to-p.from+1);
+  b.innerHTML='<span class="k">'+(k+1)+'</span><span class="t">'+esc(p.name)+'</span>';
+  b.setAttribute('aria-label','Phase '+(k+1)+': '+p.name);
+  b.onclick=function(){go(p.from)};phEl.appendChild(b);p.el=b;
+});
+var total=M.length;
+M.forEach(function(m,i){
+  var t=document.createElement('button');t.className='tick'+(m.tp?' tp':'');
+  t.style.left=((i+.5)/total*100)+'%';
+  t.innerHTML='<i></i><span>'+esc(m.d)+'</span>';
+  t.setAttribute('aria-label','Moment '+(i+1)+', '+m.d+': '+m.title);
+  t.onclick=function(){go(i)};tkEl.appendChild(t);m.tick=t;
+  var d=document.createElement('button');d.className='dot'+(m.tp?' tp':'');d.setAttribute('aria-label','Moment '+(i+1)+': '+m.title);
+  d.onclick=function(){go(i)};$('dots').appendChild(d);m.dot=d;
+});
+
+function phaseOf(i){for(var k=0;k<PHASES.length;k++)if(i>=PHASES[k].from&&i<=PHASES[k].to)return k}
+function beforeOf(i){var m=M[i];if(m.noBefore||m.mock)return null;if(m.before)return {img:m.before,label:m.beforeLabel||'Before'};
+  for(var j=i-1;j>=0;j--){if(M[j].img&&M[j].img!==m.img)return {img:M[j].img,label:M[j].d}}return null}
+
+function renderTree(m,i){
+  var ul=$('tree');ul.innerHTML='';
+  var root=document.createElement('li');root.innerHTML='<span class="node root">PRISM</span>';
+  var sub=document.createElement('ul');root.appendChild(sub);ul.appendChild(root);
+  TREE.forEach(function(n){
+    var li=document.createElement('li');li.appendChild(node(n,m,i));
+    if(n.kids){var u=document.createElement('ul');var row=document.createElement('li');row.className='row-nodes';
+      n.kids.forEach(function(k){row.appendChild(node(k,m,i))});u.appendChild(row);li.appendChild(u)}
+    sub.appendChild(li);
+  });
+}
+function node(n,m,i){var s=document.createElement('span');s.className='node';s.textContent=n.label;
+  if(n.since>i){s.classList.add('later');s.dataset.when=dateOf(n.since)}
+  else if(m.at.indexOf(n.id)>-1)s.classList.add('on');
+  return s}
+
+function renderFeatures(i){
+  var av=F.filter(function(f){return f[1]<=i}), lk=F.filter(function(f){return f[1]>i});
+  $('f-count').textContent=av.length+' of '+F.length;
+  $('f-avail').innerHTML=av.map(function(f){return '<li class="'+(f[1]===i?'new':'')+'"><span class="nm">'+esc(f[0])+'</span>'+(f[2]==='sonia'?'<span class="by">Sonia</span>':'')+(f[1]===i?'<span class="newtag">New</span>':'')+'</li>'}).join('');
+  var lim=showAllLocked?lk.length:6, shown=lk.slice(0,lim);
+  $('f-locked').innerHTML=shown.length?shown.map(function(f){return '<li><span class="nm">'+esc(f[0])+'</span><span class="d">'+esc(dateOf(f[1]))+'</span></li>'}).join(''):'<li style="padding-left:0"><span class="empty">Everything is here.</span></li>';
+  var more=$('f-more');more.hidden=lk.length<=6;more.textContent=showAllLocked?'Show fewer':'Show all '+lk.length;
+  var gone=G.filter(function(g){return g[2]<=i});
+  $('gone-block').hidden=!gone.length;
+  $('f-gone').innerHTML=gone.map(function(g){return '<li class="'+(g[2]===i?'new':'')+'"><span class="nm">'+esc(g[0])+'</span><span class="d">'+esc(dateOf(g[2]))+'</span></li>'}).join('');
+}
+
+function mockHTML(){
+  return '<div class="mock"><div><div class="paper"><h4>Taking your water pill</h4>Take the <span class="flag">diuretic</span> in the morning with food.'+
+  '<div class="sug"><b>Jargon.</b> Try: Take the <span class="new">water pill</span> in the morning with food.<span class="src">PEMAT-P item 3 · AHRQ: use common, everyday language</span><div class="acts"><span>Apply</span><span>Apply all</span></div></div></div>'+
+  '<div class="tagline">Reconstructed from the shipped suggestion card; no screenshot of this exact commit.</div></div></div>'}
+
+function render(){
+  var m=M[cur], k=phaseOf(cur), p=PHASES[k], b=beforeOf(cur);
+  if(!b)showBefore=false;
+  $('m-eyebrow').textContent=p.name+' · '+m.d;
+  $('m-title').textContent=m.title;
+  $('m-desc').textContent=m.desc;
+  var tags='';if(m.tp)tags+='<span class="tag tp">Turning point '+m.tp+'</span>';
+  if(m.by==='sonia')tags+='<span class="tag so">Sonia</span>';if(m.by==='both')tags+='<span class="tag so">Builds on Sonia</span>';
+  if(m.same)tags+='<span class="tag">Same screen, new content</span>';
+  $('m-tags').innerHTML=tags;
+  $('m-quotes').innerHTML=(m.q||[]).map(function(q){return '<blockquote>“'+q[0]+'”<cite>'+esc(q[1])+'</cite></blockquote>'}).join('');
+  $('m-when').innerHTML=esc(m.d)+'<small>'+esc(m.sub)+'</small>';
+  $('url').textContent='prism › '+m.url;
+  var scr=$('screen');
+  var img=showBefore&&b?b.img:(draft||m.img);
+  if(m.mock&&!draft){scr.innerHTML=mockHTML()}
+  else{scr.innerHTML='<img src="img/'+img+'.jpg" alt="'+esc((showBefore?'Before: ':'')+m.title)+'">'}
+  var ver=$('ver');ver.className='ver'+(showBefore?' before':'');ver.textContent=showBefore?'Before · '+b.label:'Moment '+(cur+1);
+  var tb=$('t-before');tb.disabled=!b;tb.setAttribute('aria-pressed',showBefore);tb.textContent=b?(showBefore?'Showing before':'Show before'):'No earlier screen';
+  // extra drafts
+  var dr=$('drafts');
+  if(m.drafts){dr.innerHTML='<span>More drafts:</span>'+[[m.img,'Live']].concat(m.drafts).map(function(d){var on=(draft||m.img)===d[0]&&!showBefore;return '<button class="dr" data-img="'+d[0]+'" aria-pressed="'+on+'"><img src="img/'+d[0]+'.jpg" alt="">'+esc(d[1])+'</button>'}).join('');
+    [].forEach.call(dr.querySelectorAll('.dr'),function(x){x.onclick=function(){draft=x.dataset.img===m.img?null:x.dataset.img;showBefore=false;render()}})}
+  else dr.innerHTML='';
+  $('count').textContent='Moment '+(cur+1)+' of '+total+(tpOnly?' · turning points only':'');
+  PHASES.forEach(function(ph,j){ph.el.setAttribute('aria-current',j===k)});
+  M.forEach(function(x,j){x.tick.setAttribute('aria-current',j===cur);x.dot.setAttribute('aria-current',j===cur);x.dot.classList.toggle('seen',j<cur)});
+  $('prev').disabled=step(-1)===null;$('next').disabled=step(1)===null;$('first').disabled=cur===0;$('last').disabled=cur===total-1;
+  renderTree(m,cur);renderFeatures(cur);
+  if(used){try{history.replaceState(null,'','#m'+(cur+1))}catch(e){}}
+}
+function step(dir){for(var j=cur+dir;j>=0&&j<total;j+=dir){if(!tpOnly||M[j].tp)return j}return null}
+function go(i){if(i===null||i<0||i>=total)return;used=true;cur=i;draft=null;showBefore=false;render();
+  [].forEach.call(document.querySelectorAll('#m-quotes blockquote'),function(){});}
+$('prev').onclick=function(){go(step(-1))};$('next').onclick=function(){go(step(1))};
+$('first').onclick=function(){go(0)};$('last').onclick=function(){go(total-1)};
+$('t-before').onclick=function(){used=true;showBefore=!showBefore;draft=null;render()};
+$('t-tp').onclick=function(){tpOnly=!tpOnly;$('t-tp').setAttribute('aria-pressed',tpOnly);if(tpOnly&&!M[cur].tp){var n=step(1);if(n===null){tpOnly=false;n=step(-1);tpOnly=true}go(n)}else render()};
+$('f-more').onclick=function(){showAllLocked=!showAllLocked;renderFeatures(cur)};
+document.addEventListener('keydown',function(e){
+  if(document.querySelector('dialog[open]'))return;
+  if(e.target.closest&&e.target.closest('input,textarea,[role=slider],input[type=range]'))return;
+  if(e.key==='ArrowRight'){go(step(1));}
+  else if(e.key==='ArrowLeft'){go(step(-1));}
+  else if(e.key==='b'||e.key==='B'){if(beforeOf(cur)){showBefore=!showBefore;render()}}
+});
+var h=/^#m(\d+)$/.exec(location.hash||'');if(h){var n=+h[1]-1;if(n>=0&&n<total){cur=n;addEventListener("load",function(){document.getElementById("moments").scrollIntoView()})}}
+render();
+})();
+</script>
+</body>
+</html>

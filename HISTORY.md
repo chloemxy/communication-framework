@@ -4,6 +4,24 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-28 — Presentation page: PRISM design journey
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
+
+- **New page at `/presentation/`** (`presentation/index.html`, `presentation/img/`), a companion
+  for the Drawing the Line talk. The Studio and Compass are unchanged.
+- **What's on it:**
+  - A before/after slider (Aug 17 against today, both light).
+  - A commits-per-day chart with the eight turning points.
+  - **Moments:** an 18-moment player with a phase bar, the draft from each commit in a browser
+    frame, Show before, Turning points only, the parts of the site each moment changed, and the
+    features available, coming later and retired.
+  - The design record: 23 entries with drafts and Chloe's quotes from build sessions, filterable.
+  - Sonia and Chloe's contributions, the library cut from 26 to 11, the seven logo marks and the
+    7-minute run of show.
+- **Screens** are the site rendered from each commit with headless Chrome (20 JPGs, 1.4 MB).
+- Also published as a private Claude artifact.
+
 ## 2026-10-21 — Plan: Next button pinned to the bottom
 
 Branch: `refresh-and-fixes` · Vercel: Production (pushed, merged to master)
