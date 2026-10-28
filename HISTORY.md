@@ -4,6 +4,14 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-28 — Presentation page: wordmark fix
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
+
+- **Header wordmark reads as one word again** (`presentation/index.html`). The bar's flex gap was
+  splitting "PR", the highlighted "I" and "SM" into separate pieces. The word now sits in one span,
+  and the I uses the product's slanted highlighter shape.
+
 ## 2026-10-28 — Presentation page: PRISM design journey
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
