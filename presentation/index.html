@@ -50,9 +50,9 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px;box
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--sheet);border-bottom:1px solid var(--rule)}
 .bar .wrap{display:flex;align-items:center;gap:24px;height:52px}
 .wordmark{display:flex;align-items:center;gap:10px;font:600 17px/1 var(--f-ui);color:var(--ink);text-decoration:none;letter-spacing:.02em}
-.wordmark .i{position:relative;display:inline-block}
-.wordmark .i::before{content:"";position:absolute;inset:-3px -1px;background:var(--brand);transform:skewX(-14deg);z-index:-1}
-.wordmark .i{color:var(--on-brand);z-index:0}
+.wordmark .word{white-space:nowrap}
+.wordmark .i{position:relative;display:inline-block;padding:0 .14em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
+.wordmark .i::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
 .wordmark small{font:400 13px/1 var(--f-ui);color:var(--ink-2);letter-spacing:0}
 .bar nav{margin-left:auto;display:flex;gap:4px;overflow-x:auto}
 .bar nav a{font:600 13px/1 var(--f-ui);color:var(--ink-2);text-decoration:none;padding:8px 10px;border-radius:var(--r1);white-space:nowrap}
@@ -344,7 +344,7 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
 <body>
 <header class="bar">
   <div class="wrap">
-    <a class="wordmark" href="#top" aria-label="PRISM design journey, back to top">PR<span class="i">I</span>SM <small>Design journey</small></a>
+    <a class="wordmark" href="#top" aria-label="PRISM design journey, back to top"><span class="word">PR<span class="i">I</span>SM</span> <small>Design journey</small></a>
     <nav aria-label="Sections">
       <a href="#moments">Moments</a>
       <a href="#journey">Journey</a>
