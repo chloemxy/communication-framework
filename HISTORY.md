@@ -4,6 +4,25 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-10-28 — Presentation page follows the talk deck
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The page now runs in the order of the slides** in *The Barrier Just Dropped*
+  (`presentation/index.html`): title, Who we are, The question, What we built, Where it started,
+  How we built it, Drawing the line, and What's next / Thank you. The page keeps its proofing-desk
+  style.
+- **New from the deck:**
+  - the 56-second walkthrough (`presentation/media/`, compressed from `screen record/prism-walkthrough-v4.mp4`);
+  - the origin story;
+  - a frameworks-to-PRISM map;
+  - the five steps of designing with Claude, each linked to a moment;
+  - the 3-to-26 turning point (sidebar to top bar, from Sonia's Sep 15 prototype);
+  - the Claude / Us split.
+- **The design record is now an appendix** after Thank you, in the deck's References spot: rhythm,
+  Moments, journey, collaboration, library and logo. The old run-of-show section is gone. Links
+  like `#m14` now open that moment from anywhere on the page.
+
 ## 2026-10-28 — Presentation page hosted on GitHub Pages
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: on, from `master`

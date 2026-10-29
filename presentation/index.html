@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PRISM Design Journey</title>
-<meta name="description" content="How PRISM got its shape: drafts, process quotes, turning points and the collaboration between Sonia Seto and Chloe Ma.">
+<title>The Barrier Just Dropped</title>
+<meta name="description" content="The Barrier Just Dropped: a lightning talk by Sonia Seto and Chloe Ma on designing PRISM with Claude, with the drafts, quotes and turning points behind it.">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -201,14 +201,6 @@ blockquote + blockquote{margin-top:8px}
 .note{padding:14px 20px;border-top:1px solid var(--rule);font-size:14px;color:var(--ink-2)}
 .note b{color:var(--ink)}
 
-/* talk */
-.talk{list-style:none;margin:0;padding:0}
-.talk li{display:grid;grid-template-columns:var(--margin) minmax(0,1fr) auto;gap:0 24px;padding:14px 20px 14px 0;border-top:1px solid var(--rule);align-items:baseline}
-.talk li:first-child{border-top:0}
-.talk .t{padding-left:20px;font:600 13px/1.4 var(--f-ui);color:var(--ink-2);font-variant-numeric:tabular-nums}
-.talk b{font-weight:600}
-.talk a{font-size:13px;white-space:nowrap}
-@media (max-width:720px){.talk li{grid-template-columns:1fr;padding:14px 16px}.talk .t{padding:0}}
 
 footer{padding-block:40px 64px;color:var(--ink-2);font-size:13px}
 footer .wrap > div{border-top:1px solid var(--rule);padding-top:20px;max-width:none}
@@ -224,6 +216,105 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
 .btn{font:600 13px/1 var(--f-ui);background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r1);padding:10px 12px;cursor:pointer}
 .btn:hover{border-color:var(--ink-2)}
 .btn.ink{background:var(--ink);color:var(--sheet);border-color:var(--ink)}
+/* deck chapters */
+.byline{font:600 15px/1.4 var(--f-ui);margin-top:18px}
+.byline small{display:block;font-weight:400;font-size:13px;color:var(--ink-2);margin-top:2px}
+.person .role{font:600 14px/1.4 var(--f-ui);color:var(--blue);margin-top:6px}
+.person .cred{font-size:13px;color:var(--ink-2);margin-top:2px}
+.person .rec{font:600 12px/1 var(--f-ui);color:var(--ink-2);margin-top:18px;text-transform:uppercase;letter-spacing:.06em}
+.person .rec + ul{margin-top:8px}
+.question{padding:40px var(--margin) 40px calc(var(--margin) + 24px);position:relative}
+.question q{display:block;font:italic 500 clamp(34px,5vw,60px)/1.08 var(--f-display);quotes:"\201C" "\201D";max-width:18ch;text-wrap:balance}
+.question p{font:400 18px/1.55 var(--f-read);color:var(--ink-2);max-width:56ch;margin:20px 0 0}
+.question cite{display:block;font:600 13px/1.4 var(--f-ui);font-style:normal;color:var(--ink-2);margin-top:14px}
+@media (max-width:720px){.question{padding:28px 20px}}
+.built{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:860px){.built{grid-template-columns:1fr}}
+.built video{display:block;width:100%;aspect-ratio:16/9;background:#121417;border-radius:var(--r2);border:1px solid var(--rule)}
+.built .pitch h3{font:500 44px/1 var(--f-display);letter-spacing:.02em}
+.built .pitch h3 .i{position:relative;display:inline-block;padding:0 .1em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
+.built .pitch h3 .i::before{content:"";position:absolute;inset:.1em -.06em .02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
+.built .pitch .sub{font-size:13px;color:var(--ink-2);margin-top:6px}
+.built .pitch p{margin:16px 0 0;font:400 17px/1.55 var(--f-read)}
+.feats{list-style:none;margin:20px 0 0;padding:0;border-top:1px solid var(--rule)}
+.feats li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:14px;color:var(--ink-2)}
+.feats b{display:block;color:var(--ink);font-weight:600}
+.sub-head{display:grid;grid-template-columns:var(--margin) minmax(0,1fr);gap:0 24px;align-items:baseline;margin:40px 0 16px}
+.sub-head .no{font:600 13px/1 var(--f-ui);color:var(--ink-2)}
+.sub-head h3{font:500 26px/1.2 var(--f-display)}
+.sub-head p{grid-column:2;margin:8px 0 0;color:var(--ink-2);max-width:62ch;font-size:14px}
+@media (max-width:720px){.sub-head{grid-template-columns:1fr}.sub-head p{grid-column:1}.sub-head .no{margin-bottom:8px}}
+.origin{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+.origin li{padding:20px;border-top:3px solid var(--rule)}
+.origin li.s{border-top-color:var(--sonia)}
+.origin li.c{border-top-color:var(--brand)}
+.origin li b{display:block;font:600 12px/1 var(--f-ui);color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+.origin li h4{font:500 21px/1.2 var(--f-display);margin:10px 0 0}
+.origin li p{margin:8px 0 0;font-size:14px;color:var(--ink-2)}
+@media (max-width:860px){.origin{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.origin{grid-template-columns:1fr}}
+.angles{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.1fr);gap:0;margin-top:16px}
+.angles > div{padding:20px 24px;border-left:1px solid var(--rule)}
+.angles > div.ang-h{grid-column:1 / -1;border-left:0;border-bottom:1px solid var(--rule);padding:14px 24px;font:600 12px/1 var(--f-ui);color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+.angles > div.ang-h + div{border-left:0}
+.angles b{display:block;font:600 14px/1.3 var(--f-ui)}
+.angles span{display:block;font-size:14px;color:var(--ink-2);margin-top:6px}
+.angles dfn{font:italic 500 22px/1.25 var(--f-display);color:var(--ink)}
+.angles .def{background:var(--sheet-2);border-radius:0 0 var(--r2) 0}
+@media (max-width:720px){.angles{grid-template-columns:1fr}.angles > div{border-left:0;border-top:1px solid var(--rule)}.angles > div.ang-h + div{border-top:0}.angles .def{border-radius:0 0 var(--r2) var(--r2)}}
+.map{padding:20px}
+.map-scroll{overflow-x:auto}
+.map svg{display:block;width:100%;min-width:620px;height:auto}
+.map text{font-family:var(--f-ui);fill:var(--ink-2);font-size:12px}
+.map text.fam{fill:var(--ink);font-weight:600;font-size:14px}
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0}
+.steps li{padding:18px 18px 16px;border-top:3px solid var(--ink)}
+.steps li .n{font:500 26px/1 var(--f-display);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.steps li h4{font:600 15px/1.3 var(--f-ui);margin:12px 0 0}
+.steps li p{margin:6px 0 0;font-size:14px;color:var(--ink-2)}
+.steps li a{display:inline-block;margin-top:10px;font-size:13px}
+@media (max-width:860px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.steps{grid-template-columns:1fr}}
+.tp-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:24px;padding:24px;margin-top:16px;align-items:center}
+.tp-card .tag{display:inline-block;margin-bottom:12px}
+.tp-card h4{font:500 26px/1.2 var(--f-display)}
+.tp-card p{margin:8px 0 0;font-size:14px;color:var(--ink-2)}
+.tp-pair{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:12px;align-items:center}
+.tp-pair .thumb{width:100%}
+.tp-pair .to{font:600 18px/1 var(--f-ui);color:var(--ink-2)}
+@media (max-width:860px){.tp-card{grid-template-columns:1fr}}
+@media (max-width:560px){.tp-pair{grid-template-columns:1fr}.tp-pair .to{transform:rotate(90deg);justify-self:center}}
+.line{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.line > div{padding:24px}
+.line > div + div{border-left:1px solid var(--rule)}
+.line h3{font:italic 500 28px/1.1 var(--f-display);padding-bottom:12px;border-bottom:1px solid var(--rule)}
+.line .cl h3{color:var(--blue)}
+.line .us h3 mark{font-style:italic}
+.line ul{list-style:none;margin:0;padding:0}
+.line li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:15px}
+.line li:last-child{border-bottom:0}
+.takeaway{margin-top:16px;padding:14px 16px;background:var(--sheet-2);border-radius:var(--r1);font:400 16px/1.5 var(--f-read)}
+.takeaway b{display:block;font:600 12px/1 var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);margin-bottom:8px}
+.real-q{grid-column:1 / -1;border-top:1px solid var(--rule);padding:20px 24px;font:400 18px/1.5 var(--f-read);color:var(--ink-2)}
+.real-q b{font:italic 600 18px/1.5 var(--f-read);color:var(--ink)}
+@media (max-width:720px){.line{grid-template-columns:1fr}.line > div + div{border-left:0;border-top:1px solid var(--rule)}}
+.thanks{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:24px;align-items:end}
+.thanks h2{font:500 clamp(56px,9vw,112px)/1 var(--f-display);letter-spacing:-.01em}
+.thanks h2 em{font-style:italic}
+.next{list-style:none;margin:28px 0 0;padding:0;border-top:1px solid var(--rule);max-width:56ch}
+.next li{padding:12px 0;border-bottom:1px solid var(--rule);font-size:15px;color:var(--ink-2)}
+.next b{color:var(--ink);font-weight:600}
+.visit{padding:24px}
+.visit b{display:block;font:600 12px/1 var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.visit a.big{display:block;font:500 24px/1.25 var(--f-display);margin-top:10px;word-break:break-word}
+.visit p{margin:14px 0 0;font-size:14px;color:var(--ink-2)}
+@media (max-width:860px){.thanks{grid-template-columns:1fr}}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.record-intro{padding-block:72px 8px;border-top:1px solid var(--rule);margin-top:40px}
+.record-intro h2{font:500 clamp(32px,4.4vw,52px)/1.05 var(--f-display);margin-top:16px}
+.record-intro p{margin:14px 0 0;color:var(--ink-2);max-width:62ch;font:400 17px/1.55 var(--f-read)}
+
 /* Moments player (scoped) */
 .wrap.wide{max-width:1320px}
 #moments,section[id]{scroll-margin-top:64px}
@@ -344,23 +435,25 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
 <body>
 <header class="bar">
   <div class="wrap">
-    <a class="wordmark" href="#top" aria-label="PRISM design journey, back to top"><span class="word">PR<span class="i">I</span>SM</span> <small>Design journey</small></a>
+    <a class="wordmark" href="#top" aria-label="The Barrier Just Dropped, back to top"><span class="word">PR<span class="i">I</span>SM</span> <small>Lightning talk</small></a>
     <nav aria-label="Sections">
-      <a href="#moments">Moments</a>
-      <a href="#journey">Journey</a>
-      <a href="#together">Sonia &amp; Chloe</a>
-      <a href="#library">Library</a>
-      <a href="#marks">Logo</a>
-      <a href="#talk">Talk</a>
+      <a href="#who">Who we are</a>
+      <a href="#built">PRISM</a>
+      <a href="#origin">Where it started</a>
+      <a href="#process">How we built it</a>
+      <a href="#line">Drawing the line</a>
+      <a href="#next">What's next</a>
+      <a href="#record">The record</a>
     </nav>
   </div>
 </header>
 
 <main id="top">
   <div class="wrap hero">
-    <div class="kicker">Drawing the Line · 7-minute talk companion</div>
-    <h1>How PRISM got its <mark>shape</mark></h1>
-    <p class="lede">PRISM is a free tool that checks patient handouts, posters and scripts against published health-literacy instruments. This is its design record: the drafts we threw away, the words we used while deciding, and the eight turning points that changed what it is.</p>
+    <div class="kicker">Lightning talk · November 2026</div>
+    <h1>The Barrier Just <mark>Dropped</mark></h1>
+    <div class="byline">Sonia Seto · Chloe Ma<small>Drawing the Line: Exploring AI in Medical Illustration · UofT Biomedical Communications</small></div>
+    <p class="lede">Two biomedical communicators built PRISM, a free tool that checks patient education materials against published frameworks, by designing with Claude. This page follows the talk and keeps the record behind it: the drafts we threw away, the words we used while deciding, and the turning points that changed what PRISM is.</p>
     <div class="tally" role="list">
       <div role="listitem"><b>89</b><span>commits, Jul 31 to Oct 21</span></div>
       <div role="listitem"><b>2</b><span>designers, two studios</span></div>
@@ -369,8 +462,66 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
     </div>
   </div>
 
-  <section class="wrap" aria-labelledby="ba-h">
-    <div class="sec-head"><span class="no">Before / after</span><div><h2 id="ba-h">August 17 against today</h2></div>
+  <section class="wrap" id="who" aria-labelledby="who-h">
+    <div class="sec-head"><span class="no">Who we are</span><div><h2 id="who-h">Two designers, one question</h2></div></div>
+    <div class="duo">
+      <article class="sheet person s">
+        <div class="mono" aria-hidden="true">SS</div>
+        <h3>Sonia Seto</h3>
+        <div class="role">Biomedical communicator &amp; UX designer</div>
+        <div class="cred">1T6 MScBMC · formerly patient education at UHN</div>
+        <div class="rec">In the record</div>
+        <ul>
+          <li><span class="num">Sep 15</span><span>Prototype branch: Frameworks top bar with live match count, live Brief targets, live Tune preview, workspace controls in one bar</span></li>
+          <li><span class="num">Sep 15</span><span><b>The mode toggle: Evaluate a draft / Plan from an idea</b></span></li>
+          <li><span class="num">Oct 9</span><span>Frameworks by goal, stage and scoring; the Framework checklists module; Tune retired (669 lines)</span></li>
+          <li><span class="num">Oct 17</span><span>Credited first in About</span></li>
+        </ul>
+      </article>
+      <article class="sheet person c">
+        <div class="mono" aria-hidden="true">CM</div>
+        <h3>Chloe Ma</h3>
+        <div class="role">Senior health strategy designer</div>
+        <div class="cred">2T1 MScBMC · GoInvo</div>
+        <div class="rec">In the record</div>
+        <ul>
+          <li><span class="num">Jul 31</span><span>First tool and the unified studio</span></li>
+          <li><span class="num">Oct 13</span><span>Merged Sonia's fork; evidence check against published instruments</span></li>
+          <li><span class="num">Oct 16–19</span><span>Proofing desk, one framework list, PRISM name, Flagged I, front door</span></li>
+          <li><span class="num">Oct 21–27</span><span>One layout for both modes; library review cuts</span></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap" id="question" aria-labelledby="q-h">
+    <div class="sec-head"><span class="no">The question</span><div><h2 id="q-h" class="visually-hidden">The question that started it</h2></div></div>
+    <figure class="sheet question" style="margin:0">
+      <q>Did my visual actually <mark>make a difference?</mark></q>
+      <p>Patient handouts, illustrations and animations left my hands at handoff, and I never found out whether they helped anyone understand.</p>
+      <cite>Sonia</cite>
+    </figure>
+  </section>
+
+  <section class="wrap" id="built" aria-labelledby="b-h">
+    <div class="sec-head"><span class="no">What we built</span><div><h2 id="b-h">PRISM, a patient education analyzer</h2></div>
+      <p>It maps patient education materials across 10+ frameworks and explains <em>why</em> each one applies.</p></div>
+    <div class="built">
+      <video controls muted playsinline preload="metadata" poster="media/prism-walkthrough.jpg" aria-label="PRISM walkthrough, 56 seconds, no sound">
+        <source src="media/prism-walkthrough.mp4" type="video/mp4">
+      </video>
+      <div class="pitch">
+        <h3>PR<span class="i">I</span>SM</h3>
+        <div class="sub">A walkthrough, 56 seconds, no sound</div>
+        <ul class="feats">
+          <li><b>Set up</b>Audience and goals</li>
+          <li><b>Workspace</b>Your content</li>
+          <li><b>Insights</b>Metrics and accessibility</li>
+        </ul>
+        <p><a href="https://communication-framework.vercel.app">Open PRISM</a></p>
+      </div>
+    </div>
+    <div class="sub-head"><span class="no">Then and now</span><div><h3 id="ba-h">August 17 against today</h3></div>
       <p>Drag the handle. Left is the first studio view, still called the Patient Education Analyzer. Right is PRISM on October 28.</p></div>
     <div class="compare" id="compare" style="--cut:50%">
       <img src="img/03-studio-aug.jpg" alt="The August studio: a beige page with Brief, Material and Accessibility panels and many small controls.">
@@ -380,6 +531,98 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
     </div>
     <div class="compare-ctl"><label for="cut">Reveal</label><input id="cut" type="range" min="0" max="100" value="50" aria-label="Move the divider between the August and October versions"></div>
   </section>
+
+  <section class="wrap" id="origin" aria-labelledby="o-h">
+    <div class="sec-head"><span class="no">Where it started</span><div><h2 id="o-h">From a post to a partnership</h2></div>
+      <p>Two LinkedIn posts, one chat, and two people who each knew half of what the project needed.</p></div>
+    <ol class="origin">
+      <li class="sheet s"><b>1 · The idea</b><h4>A post about the CDC's Clear Communication Index</h4><p>Sonia saw it and knew it was the missing piece in her work. It raised a bigger question: are there other frameworks, and is there a central hub of them?</p></li>
+      <li class="sheet s"><b>2 · The reach out</b><h4>GoInvo's AI design certification</h4><p>Sonia saw GoInvo's post on its Human-assisted AI Design Certification for Healthcare and reached out to Chloe to learn more.</p></li>
+      <li class="sheet c"><b>3 · From chat to partnership</b><h4>Sonia pitched, Chloe said yes</h4><p>The first chat explored the certification and whether it was a fit. It turned into a project: Sonia pitched her idea, and Chloe took it on.</p></li>
+    </ol>
+    <div class="sheet angles">
+      <div class="ang-h">4 · Two angles</div>
+      <div><b>Sonia</b><span>Knew the patient education space, but had not built a tool with Claude.</span></div>
+      <div><b>Chloe</b><span>Knew how to build with AI, but was new to patient education and its frameworks.</span></div>
+      <div class="def"><dfn>patient education</dfn> <span style="display:inline">(n.)</span><span>Teaching patients about their own health and care.</span></div>
+    </div>
+
+    <div class="sub-head"><span class="no">The problem</span><div><h3>So many frameworks. No shared map.</h3></div>
+      <p>One piece of patient content can be judged through about 26 frameworks, each a different lens, each living in its own silo.</p></div>
+    <div class="sheet map"><div class="map-scroll"><svg viewBox="0 0 910 310" role="img" aria-label="Five families of frameworks, each in its own silo, lead into PRISM, which brings them into one shared map."><text class="fam" x="240" y="38" text-anchor="end">Health literacy</text><text x="240" y="56" text-anchor="end">CDC CCI · AHRQ · Teach-Back</text><path d="M252 44 C430 44 470 160 600 160" fill="none" stroke="var(--ink-2)" stroke-width="1.5" opacity=".7"/><text class="fam" x="240" y="98" text-anchor="end">Patient-centred care</text><text x="240" y="116" text-anchor="end">Picker · Planetree · CAHPS</text><path d="M252 104 C430 104 470 160 600 160" fill="none" stroke="var(--ink-2)" stroke-width="1.5" opacity=".7"/><text class="fam" x="240" y="158" text-anchor="end">Shared decision-making</text><text x="240" y="176" text-anchor="end">Ottawa · SHARE</text><path d="M252 164 C430 164 470 160 600 160" fill="none" stroke="var(--ink-2)" stroke-width="1.5" opacity=".7"/><text class="fam" x="240" y="218" text-anchor="end">Design methods</text><text x="240" y="236" text-anchor="end">EBCD · SEIPS</text><path d="M252 224 C430 224 470 160 600 160" fill="none" stroke="var(--ink-2)" stroke-width="1.5" opacity=".7"/><text class="fam" x="240" y="278" text-anchor="end">Behaviour theory</text><text x="240" y="296" text-anchor="end">HBM · TTM · EPPM</text><path d="M252 284 C430 284 470 160 600 160" fill="none" stroke="var(--ink-2)" stroke-width="1.5" opacity=".7"/><rect x="600" y="140" width="112" height="40" rx="4" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/><text x="656" y="165" text-anchor="middle" style="fill:var(--ink);font-weight:600;font-size:15px;letter-spacing:.04em">PRISM</text><path d="M712 160 H900" stroke="var(--brand)" stroke-width="6"/><text x="720" y="196">one shared map</text></svg></div></div>
+  </section>
+
+  <section class="wrap" id="process" aria-labelledby="p-h">
+    <div class="sec-head"><span class="no">How we built it</span><div><h2 id="p-h">Designing with Claude</h2></div>
+      <p>Five steps, run many times over. Each links to a moment where it happened.</p></div>
+    <ol class="steps">
+      <li class="sheet"><span class="n">01</span><h4>Research &amp; analyze</h4><p>Gathered and reviewed patient education frameworks.</p><a href="#m6">Check the sources first</a></li>
+      <li class="sheet"><span class="n">02</span><h4>Prototype</h4><p>HTML mockups to explore ideas visually.</p><a href="#m14">Six front doors</a></li>
+      <li class="sheet"><span class="n">03</span><h4>Refine</h4><p>Match real design tokens and components.</p><a href="#m10">The proofing desk</a></li>
+      <li class="sheet"><span class="n">04</span><h4>Integrate</h4><p>Merge into the source code via GitHub.</p><a href="#m5">Sonia's fork</a></li>
+      <li class="sheet"><span class="n">05</span><h4>Ship</h4><p>Deploy on Vercel, with prototypes kept separate.</p><a href="#m18">PRISM today</a></li>
+    </ol>
+    <div class="sheet tp-card">
+      <div>
+        <span class="tag tp">A turning point</span>
+        <h4>What worked for 3 frameworks broke at 26.</h4>
+        <p>We moved frameworks out of the sidebar into a collapsible bar above the workspace. The bar came from Sonia's prototype on September 15.</p>
+      </div>
+      <div class="tp-pair">
+        <button class="thumb" data-img="img/03-studio-aug.jpg" data-cap="Before: sidebar|August 17. Frameworks is one panel in the right-hand column."><img src="img/03-studio-aug.jpg" alt="The August studio, with Frameworks as a panel in the right-hand column." loading="lazy"><span>Before: sidebar</span></button>
+        <span class="to" aria-hidden="true">→</span>
+        <button class="thumb" data-img="img/04-sonia-sep.jpg" data-cap="After: top bar|September 15, Sonia's prototype. Frameworks is a bar above the workspace, with Show all 26."><img src="img/04-sonia-sep.jpg" alt="Sonia's September prototype, with Frameworks as a bar across the top of the workspace." loading="lazy"><span>After: top bar</span></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="line" aria-labelledby="dl-h">
+    <div class="sec-head"><span class="no">Drawing the line</span><div><h2 id="dl-h">What Claude did. What stayed ours.</h2></div></div>
+    <div class="sheet line">
+      <div class="cl">
+        <h3>Claude</h3>
+        <ul>
+          <li>Writing and refactoring the code</li>
+          <li>Fast iteration on layout and interaction</li>
+          <li>Turning sketches and ideas into working prototypes</li>
+        </ul>
+      </div>
+      <div class="us">
+        <h3><mark>Us</mark></h3>
+        <ul>
+          <li>Domain knowledge and scientific accuracy</li>
+          <li>Visual judgement and design decisions</li>
+        </ul>
+        <div class="takeaway"><b>Takeaway · Sonia</b>Define scope, user flows and goals first. The polish can wait.</div>
+      </div>
+      <p class="real-q">The real question: <b>does this serve practitioners in the patient experience and education industry?</b></p>
+    </div>
+  </section>
+
+  <section class="wrap" id="next" aria-labelledby="ty-h">
+    <div class="thanks">
+      <div>
+        <h2 id="ty-h">Thank <em>you</em>.</h2>
+        <div class="sec-head" style="margin:28px 0 0;display:block"><span class="no">What's next</span></div>
+        <ul class="next">
+          <li><b>Open source</b>: free for anyone to use and extend.</li>
+          <li><b>See the gaps</b>: where frameworks overlap, and where they don't.</li>
+          <li><b>Build with us</b>: we'd love collaborators and feedback.</li>
+        </ul>
+      </div>
+      <div class="sheet visit">
+        <b>Try PRISM</b>
+        <a class="big" href="https://communication-framework.vercel.app">communication-framework.vercel.app</a>
+        <p>The code is on <a href="https://github.com/chloemxy/communication-framework">GitHub</a>.</p>
+        <p>Drawing the Line · UofT Biomedical Communications · November 2026</p>
+      </div>
+    </div>
+  </section>
+  <div class="wrap record-intro" id="record">
+    <div class="kicker">References</div>
+    <h2>The record behind the talk</h2>
+    <p>Everything the slides draw on: how the work moved day by day, eighteen moments you can play back, the full design journey with drafts and quotes, how Sonia's ideas grew, the library cuts and the logo study.</p>
+  </div>
 
   <section class="wrap" aria-labelledby="rh-h">
     <div class="sec-head"><span class="no">Rhythm</span><div><h2 id="rh-h">Slow summer, fast October</h2></div>
@@ -711,28 +954,6 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
   <section class="wrap" id="together" aria-labelledby="t-h">
     <div class="sec-head"><span class="no">Collaboration</span><div><h2 id="t-h">Two studios, one desk</h2></div>
       <p>Sonia and Chloe worked in separate forks and merged into one site. Sonia made fewer, larger moves; Chloe made many small ones. The biggest structural idea in PRISM is Sonia's.</p></div>
-    <div class="duo">
-      <article class="sheet person s">
-        <div class="mono" aria-hidden="true">SS</div>
-        <h3>Sonia Seto</h3><div class="org">Sonia Seto Studios</div>
-        <ul>
-          <li><span class="num">Sep 15</span><span>Prototype branch: Frameworks top bar with live match count, live Brief targets, live Tune preview, workspace controls in one bar</span></li>
-          <li><span class="num">Sep 15</span><span><b>The mode toggle: Evaluate a draft / Plan from an idea</b></span></li>
-          <li><span class="num">Oct 9</span><span>Frameworks by goal, stage and scoring; the Framework checklists module; Tune retired (669 lines)</span></li>
-          <li><span class="num">Oct 17</span><span>Credited first in About</span></li>
-        </ul>
-      </article>
-      <article class="sheet person c">
-        <div class="mono" aria-hidden="true">CM</div>
-        <h3>Chloe Ma</h3><div class="org">GoInvo</div>
-        <ul>
-          <li><span class="num">Jul 31</span><span>First tool and the unified studio</span></li>
-          <li><span class="num">Oct 13</span><span>Merged Sonia's fork; evidence check against published instruments</span></li>
-          <li><span class="num">Oct 16–19</span><span>Proofing desk, one framework list, PRISM name, Flagged I, front door</span></li>
-          <li><span class="num">Oct 21–27</span><span>One layout for both modes; library review cuts</span></li>
-        </ul>
-      </article>
-    </div>
     <div class="sheet lineage">
       <h3>How one of Sonia's ideas grew</h3>
       <p>The Evaluate / Plan toggle is the clearest line through the project, from her prototype to the two canvases people use now.</p>
@@ -780,25 +1001,11 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
     </div>
   </section>
 
-  <section class="wrap" id="talk" aria-labelledby="k-h">
-    <div class="sec-head"><span class="no">Talk</span><div><h2 id="k-h">Seven minutes, in person</h2></div>
-      <p>The run of show this page supports. Each beat links to the part of the record it draws on.</p></div>
-    <ol class="sheet talk">
-      <li><span class="t">0:00</span><span><b>Show the result first.</b> The front door slider fixes a handout live.</span><a href="#tp6">Flags become fixes</a></li>
-      <li><span class="t">0:40</span><span><b>A library, not a tool.</b> 26 rubrics nobody could use on deadline.</span><a href="#tp1">Turning point 1</a></li>
-      <li><span class="t">1:40</span><span><b>Truth before polish.</b> Check every claim, then score honestly.</span><a href="#tp3">Turning point 3</a></li>
-      <li><span class="t">2:50</span><span><b>One metaphor, written down.</b> The proofing desk and DESIGN.md.</span><a href="#tp5">Turning point 5</a></li>
-      <li><span class="t">3:50</span><span><b>Subtract.</b> 26 to 11, every cut with a reason.</span><a href="#library">Library</a></li>
-      <li><span class="t">4:50</span><span><b>Two designers, one desk.</b> Sonia's mode toggle became both canvases.</span><a href="#together">Collaboration</a></li>
-      <li><span class="t">5:50</span><span><b>Explore wide, choose narrow.</b> Six front doors, seven marks, five animations.</span><a href="#marks">Logo</a></li>
-      <li><span class="t">6:30</span><span><b>Close.</b> Check the evidence first, write the design down, show your cuts.</span><a href="#top">Back to top</a></li>
-    </ol>
-  </section>
 </main>
 
 <footer>
   <div class="wrap"><div>
-    <p><b>Sources.</b> The PRISM git history (89 commits, Jul 31 to Oct 21, 2026), HISTORY.md, DESIGN.md, the logo brainstorm, and Chloe's messages in build sessions with Claude. Screenshots are the site as it stood at each commit, rendered from the repository; web fonts may differ slightly from the live site.</p>
+    <p><b>Sources.</b> The talk deck, The Barrier Just Dropped; the PRISM git history (89 commits, Jul 31 to Oct 21, 2026), HISTORY.md, DESIGN.md, the logo brainstorm, and Chloe's messages in build sessions with Claude. Screenshots are the site as it stood at each commit, rendered from the repository; web fonts may differ slightly from the live site.</p>
     <p>Made by Sonia Seto (Sonia Seto Studios) and Chloe Ma (GoInvo), with Claude.</p>
   </div></div>
 </footer>
@@ -1099,6 +1306,7 @@ document.addEventListener('keydown',function(e){
   else if(e.key==='ArrowLeft'){go(step(-1));}
   else if(e.key==='b'||e.key==='B'){if(beforeOf(cur)){showBefore=!showBefore;render()}}
 });
+addEventListener("hashchange",function(){var g=/^#m(\d+)$/.exec(location.hash);if(g){go(+g[1]-1);document.getElementById("moments").scrollIntoView()}});
 var h=/^#m(\d+)$/.exec(location.hash||'');if(h){var n=+h[1]-1;if(n>=0&&n<total){cur=n;addEventListener("load",function(){document.getElementById("moments").scrollIntoView()})}}
 render();
 })();
