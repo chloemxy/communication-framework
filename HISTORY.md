@@ -4,6 +4,34 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-01 — The talk as a scroll story
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New page, `presentation/story.html`.** It tells the talk on one screen, with no visible
+  scrollbar. Scrolling changes the screen in place instead of moving the page. There are 12
+  scenes in the deck's order:
+  - **Opening:** the barrier tape drops and "Dropped" gets its highlight.
+  - **Who we are:** the two cards slide in.
+  - **The question:** the quote is highlighted as you scroll.
+  - **PRISM and the walkthrough:** PRISM's three features appear one by one, then the walkthrough
+    plays.
+  - **Then and now:** August wipes into October.
+  - **Where it started:** the origin cards and the two angles.
+  - **The frameworks map:** its lines draw into PRISM.
+  - **How we built it:** the five steps fill a progress bar, and the sidebar turns into the top bar.
+  - **Drawing the line:** a rule draws down the middle between Claude and Us.
+  - **Thank you:** it ends with a link to the record on the full page.
+- **The walkthrough is the shared one** (`walkthrough.js` and `media/walkthrough/` ship with this change). It loads the same `walkthrough.js` and
+  `media/walkthrough/` as the full page, so updates to the walkthrough show up in both. Its styles are copied
+  from `index.html`; if those change, copy them again.
+- **How it works:** each scene is a tall section with a sticky full-screen stage. A small script
+  turns the scroll position into `--k` values that the CSS animates from. → / PageDown and ← /
+  PageUp step one beat at a time, for a clicker. The chapter dots on the right jump between
+  sections. With reduced motion, each step appears without animation.
+- The current page, `presentation/index.html`, stays as the full version; the story links to it
+  as "Full page".
+
 ## 2026-10-28 — Presentation page follows the talk deck
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
