@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Barrier Just Dropped</title>
+<meta name="description" content="The Barrier Just Dropped, told as a scroll story: one screen that changes as you scroll, from the question that started PRISM to what Claude did and what stayed ours.">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500&family=Public+Sans:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+/* The talk as a scroll story. Each scene is a tall section with a sticky, full-screen stage.
+   The script turns the scroll position inside a scene into --t (0 to 1), and each element with
+   data-in="a b" into --k: 0 before a, 1 after b. CSS draws every change from --k. */
+:root{
+  --desk:#ECEEF0; --sheet:#FFFFFF; --sheet-2:#F6F7F8; --rule:#D5D9DE;
+  --ink:#16181D; --ink-2:#4A5059; --blue:#1D4F91; --hl:#FFE066; --brand:#FFE066; --on-brand:#16181D;
+  --sonia:#1D4F91; --sonia-bg:#E4ECF7;
+  --shadow:0 12px 40px rgba(22,24,29,.18);
+  --f-display:"Newsreader","Source Serif 4",Georgia,serif;
+  --f-ui:"Public Sans",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-read:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --r1:4px; --r2:6px; --hud:56px;
+  --gut:max(20px,env(safe-area-inset-left,0px));
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
+  --ink:#E9EBEE; --ink-2:#B4BAC2; --blue:#8DB4EC; --hl:rgba(255,214,0,.30); --brand:#F5CF4A; --on-brand:#16181D;
+  --sonia:#8DB4EC; --sonia-bg:#1F2A3A; --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
+  --ink:#E9EBEE; --ink-2:#B4BAC2; --blue:#8DB4EC; --hl:rgba(255,214,0,.30); --brand:#F5CF4A; --on-brand:#16181D;
+  --sonia:#8DB4EC; --sonia-bg:#1F2A3A; --shadow:0 12px 40px rgba(0,0,0,.5); color-scheme:dark }
+
+*{box-sizing:border-box}
+html{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0;height:0}
+body{background:var(--desk);color:var(--ink);font:400 15px/1.6 var(--f-ui);margin:0;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:2px}
+h1,h2,h3,h4{text-wrap:balance;margin:0;font-weight:500}
+p{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+img{max-width:100%;display:block}
+mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
+.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r2)}
+.label{font:600 13px/1.3 var(--f-ui);color:var(--ink-2);display:flex;align-items:center;gap:10px}
+.label::before{content:"";width:28px;height:4px;background:var(--brand);flex:none}
+.h2{font:500 clamp(30px,4.4vw,52px)/1.08 var(--f-display);margin-top:14px;letter-spacing:-.005em}
+.lead{font:400 clamp(16px,1.6vw,19px)/1.55 var(--f-read);color:var(--ink-2);max-width:60ch;margin-top:14px}
+.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pi{position:relative;display:inline-block;padding:0 .12em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
+.pi::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
+
+/* HUD: wordmark, chapter, progress */
+.hud{position:fixed;inset:0 0 auto;z-index:20;height:calc(var(--hud) + env(safe-area-inset-top,0px));padding:env(safe-area-inset-top,0px) var(--gut) 0;display:flex;align-items:center;gap:16px;background:color-mix(in srgb,var(--desk) 82%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.wordmark{display:flex;align-items:center;gap:10px;font:600 17px/1 var(--f-ui);color:var(--ink);text-decoration:none;letter-spacing:.02em;white-space:nowrap}
+.wordmark small{font:400 13px/1 var(--f-ui);color:var(--ink-2);letter-spacing:0}
+.hud-chap{font:600 13px/1 var(--f-ui);color:var(--ink-2);margin-left:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud-alt{font:600 13px/1 var(--f-ui);color:var(--ink);text-decoration:none;padding:8px 10px;border:1px solid var(--rule);border-radius:var(--r1);background:var(--sheet);white-space:nowrap}
+.hud-alt:hover{border-color:var(--ink-2)}
+.hud-bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--rule)}
+.hud-bar i{position:absolute;left:0;top:0;bottom:0;width:calc(var(--p,0) * 100%);background:var(--ink)}
+@media (max-width:560px){.wordmark small{display:none}}
+
+/* chapter rail */
+.rail{position:fixed;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:10px}
+.rail button{all:unset;cursor:pointer;display:flex;align-items:center;justify-content:flex-end;gap:10px;height:16px;font:600 12px/1 var(--f-ui);color:var(--ink-2)}
+.rail button span{opacity:0;transform:translateX(6px);transition:opacity .15s,transform .15s;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r1);padding:5px 8px;white-space:nowrap}
+.rail button::after{content:"";width:8px;height:8px;border-radius:50%;border:1.5px solid var(--ink-2);flex:none;transition:transform .15s}
+.rail button:hover span,.rail button:focus-visible span{opacity:1;transform:none}
+.rail button.on::after{background:var(--brand);border-color:var(--ink);transform:scale(1.35)}
+@media (max-width:900px){.rail{display:none}}
+
+/* scenes */
+.scene{position:relative;height:calc((var(--len,1) + 1) * 100vh);height:calc((var(--len,1) + 1) * 100dvh)}
+.stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  padding:calc(var(--hud) + env(safe-area-inset-top,0px) + 20px) calc(var(--gut) + 44px) calc(28px + env(safe-area-inset-bottom,0px)) var(--gut)}
+@media (max-width:900px){.stage{padding-right:var(--gut)}}
+.inner{width:100%;max-width:1080px;position:relative}
+
+/* .drive elements use --k for something of their own instead of fading in */
+[data-in]:not(.drive){opacity:var(--k,0);transform:translateY(calc((1 - var(--k,0)) * 28px));will-change:opacity,transform}
+[data-in].l:not(.drive){transform:translateX(calc((var(--k,0) - 1) * 72px))}
+[data-in].r:not(.drive){transform:translateX(calc((1 - var(--k,0)) * 72px))}
+[data-in].pop:not(.drive){transform:scale(calc(.9 + var(--k,0) * .1))}
+[data-in].fade:not(.drive){transform:none}
+.wipe{background:linear-gradient(var(--hl),var(--hl)) no-repeat 0 0 / calc(var(--k,0) * 100%) 100%}
+.hint{position:absolute;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);font:600 12px/1 var(--f-ui);color:var(--ink-2);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:calc(1 - var(--k,0))}
+.hint::after{content:"";width:1px;height:28px;background:linear-gradient(var(--ink-2),transparent)}
+
+/* 1 title */
+.title h1{font:500 clamp(46px,8.6vw,112px)/1 var(--f-display);letter-spacing:-.015em;margin-top:22px;max-width:12ch}
+.title h1 .dw{display:inline-block;transform:translateY(calc(var(--k,0) * .16em)) rotate(calc(var(--k,0) * 2deg));transform-origin:0 100%}
+.barrier{position:absolute;left:-4%;right:-4%;top:calc(50% - 6px);height:12px;border-radius:2px;
+  background:repeating-linear-gradient(-45deg,var(--ink) 0 16px,var(--brand) 16px 32px);
+  transform-origin:0 50%;transform:translateY(calc(var(--k,0) * 70vh)) rotate(calc(var(--k,0) * 18deg));opacity:calc(1 - var(--k,0) * 1.2)}
+.byline{font:600 15px/1.4 var(--f-ui);margin-top:22px}
+.byline small{display:block;font-weight:400;font-size:13px;color:var(--ink-2);margin-top:2px}
+.tally{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:28px;max-width:860px}
+.tally div{padding:14px 18px;border-left:1px solid var(--rule)}
+.tally div:first-child{border-left:0}
+.tally b{display:block;font:500 clamp(26px,3vw,34px)/1.1 var(--f-display);font-variant-numeric:tabular-nums}
+.tally span{font-size:13px;color:var(--ink-2)}
+@media (max-width:720px){.tally{grid-template-columns:repeat(2,minmax(0,1fr))}.tally div:nth-child(3){border-left:0}.tally div:nth-child(n+3){border-top:1px solid var(--rule)}.tally div{padding:10px 14px}}
+
+/* 2 who */
+.duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px}
+.person{padding:28px}
+.mono{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font:600 16px/1 var(--f-ui);margin-bottom:16px}
+.person.s .mono{background:var(--sonia-bg);color:var(--sonia)}
+.person.c .mono{background:var(--brand);color:var(--on-brand)}
+.person h3{font:500 clamp(24px,2.6vw,32px)/1.15 var(--f-display)}
+.person .role{font:600 14px/1.4 var(--f-ui);margin-top:6px}
+.person .cred{font-size:13px;color:var(--ink-2);margin-top:2px}
+.person p{font:400 16px/1.5 var(--f-read);color:var(--ink-2);margin-top:16px;padding-top:14px;border-top:1px solid var(--rule)}
+@media (max-width:720px){.duo{grid-template-columns:1fr;gap:12px;margin-top:18px}.person{padding:18px}.person p{display:none}.mono{width:38px;height:38px;margin-bottom:10px}}
+
+/* 3 question */
+.question q{display:block;font:500 clamp(38px,6.6vw,88px)/1.05 var(--f-display);letter-spacing:-.01em;quotes:"“" "”";margin-top:22px;max-width:15ch}
+.question q mark{background-color:transparent;padding:0 .08em}
+.question p{font:400 clamp(17px,1.8vw,21px)/1.55 var(--f-read);color:var(--ink-2);max-width:54ch;margin-top:28px}
+.question cite{display:block;font:600 14px/1.4 var(--f-ui);font-style:normal;color:var(--ink-2);margin-top:16px}
+
+/* 4 built */
+.big-mark{font:500 clamp(72px,14vw,180px)/1 var(--f-display);letter-spacing:.02em;margin-top:18px}
+.feats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:32px}
+.feats li{border-top:2px solid var(--ink);padding-top:14px}
+.feats b{display:block;font:500 clamp(22px,2.4vw,28px)/1.2 var(--f-display)}
+.feats span{color:var(--ink-2);font-size:15px}
+.next-hint{margin-top:32px;font:600 13px/1.4 var(--f-ui);color:var(--ink-2)}
+@media (max-width:720px){.feats{grid-template-columns:1fr;gap:12px;margin-top:20px}.feats li{padding-top:8px}}
+
+/* walkthrough (driven by walkthrough.js, which owns its own scroll track) */
+.walk{position:relative}
+.wk-track{position:relative}
+.wk-sticky{position:sticky;top:0;height:100vh;height:100dvh;display:flex;flex-direction:column;justify-content:center;gap:12px;
+  padding:calc(var(--hud) + env(safe-area-inset-top,0px) + 12px) calc(var(--gut) + 44px) calc(16px + env(safe-area-inset-bottom,0px)) var(--gut)}
+@media (max-width:900px){.wk-sticky{padding-right:var(--gut)}}
+.wk-cap{width:min(100%,calc((100dvh - var(--hud) - 170px) * 16 / 9));margin:0 auto;display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.wk-cap h2{font:500 clamp(20px,2.2vw,28px)/1.2 var(--f-display)}
+.wk-cap span{font:600 13px/1.3 var(--f-ui);color:var(--ink-2);text-align:right}
+.wk-frame{position:relative;width:min(100%,calc((100dvh - var(--hud) - 170px) * 16 / 9));aspect-ratio:16/9;margin:0 auto;overflow:hidden;border-radius:var(--r2);border:1px solid var(--rule);background:#ECEEF0}
+.wk-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;font-family:"Public Sans",Arial,sans-serif;color:#16181D}
+.wk-layer{position:absolute;inset:0;overflow:hidden;background:#ECEEF0}
+.wk-cam{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0}
+.wk-cam img{position:absolute;inset:0;width:1600px;height:900px;max-width:none;display:block}
+.wk-spot{position:absolute;border:3px solid #16181D;border-radius:10px;box-shadow:0 0 0 9999px rgba(22,24,29,.22),0 0 0 7px rgba(255,224,102,.9)}
+.wk-label{position:absolute;left:0;top:0;display:flex;align-items:center;gap:14px;background:#FFFFFF;color:#16181D;border:1px solid #D5D9DE;font:600 30px/1.25 "Public Sans",Arial,sans-serif;padding:16px 24px 16px 20px;border-radius:10px;box-shadow:0 14px 40px rgba(22,24,29,.18);white-space:nowrap}
+.wk-label i{width:14px;height:30px;background:#FFE066;transform:skewX(-14deg);flex:none;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(22,24,29,.15)}
+.wk-label small{display:block;font:400 22px/1.3 "Public Sans",Arial,sans-serif;color:#4A5059;margin-top:2px}
+.wk-chap{position:absolute;left:28px;bottom:28px;background:#FFFFFF;padding:10px 16px 10px 10px;border-radius:8px;border:1px solid #D5D9DE;box-shadow:0 8px 24px rgba(22,24,29,.12);font:600 22px/1 "Public Sans",Arial,sans-serif;color:#4A5059;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:12px;align-items:center}
+.wk-chap b{color:#16181D;background:#FFE066;padding:6px 9px;border-radius:4px;font-variant-numeric:tabular-nums;letter-spacing:0}
+.wk-cursor{position:absolute;left:0;top:0;width:44px;height:44px;transform-origin:4px 4px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+.wk-ripple{position:absolute;border-radius:50%;border:3px solid #16181D;background:rgba(255,224,102,.45)}
+.wk-rail{width:min(100%,calc((100dvh - var(--hud) - 170px) * 16 / 9));margin:0 auto}
+.wk-bar{position:relative;height:4px;background:var(--rule);border-radius:2px;margin-top:40px}
+.wk-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ink);border-radius:2px}
+.wk-chapbtn{position:absolute;bottom:10px;display:flex;align-items:center;gap:6px;font:600 12px/1 var(--f-ui);color:var(--ink-2);background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r1);padding:5px 8px 5px 5px;cursor:pointer;white-space:nowrap}
+.wk-chapbtn::after{content:"";position:absolute;left:10px;top:100%;width:1px;height:10px;background:var(--rule)}
+.wk-chapbtn b{background:var(--sheet-2);color:var(--ink);padding:3px 6px;border-radius:3px;font-variant-numeric:tabular-nums}
+.wk-chapbtn:hover{border-color:var(--ink-2);color:var(--ink)}
+.wk-chapbtn.on{color:var(--ink);border-color:var(--ink)}
+.wk-chapbtn.on b{background:var(--brand);color:var(--on-brand)}
+.wk-meta{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--ink-2);margin-top:10px}
+.wk-time{font-variant-numeric:tabular-nums;color:var(--ink)}
+@media (max-width:720px){.wk-chapbtn span{display:none}.wk-meta .wk-hint{display:none}.wk-cap span{display:none}}
+
+/* 5 then and now */
+.cmp{position:relative;margin-top:22px;width:min(100%,calc((100dvh - var(--hud) - 230px) * 16 / 10));aspect-ratio:16/10;border-radius:var(--r2);overflow:hidden;border:1px solid var(--rule);background:var(--sheet)}
+.cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left}
+.cmp .after{clip-path:inset(0 calc((1 - var(--k,0)) * 100%) 0 0)}
+.cmp .edge{position:absolute;top:0;bottom:0;left:calc(var(--k,0) * 100%);width:3px;margin-left:-1.5px;background:var(--brand);box-shadow:0 0 0 1px var(--ink)}
+.cmp .tagl,.cmp .tagr{position:absolute;bottom:12px;font:600 12px/1 var(--f-ui);background:var(--sheet);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r1);padding:6px 8px}
+.cmp .tagl{right:12px}.cmp .tagr{left:12px}
+.cmp-row{display:flex;gap:28px;align-items:flex-end;justify-content:space-between}
+.cmp-row .lead{max-width:34ch}
+
+/* 6 origin */
+.origin{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:28px}
+.origin li{padding:22px;border-top:4px solid var(--sonia)}
+.origin li.c{border-top-color:var(--brand)}
+.origin b{font:600 12px/1 var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.origin h4{font:500 clamp(19px,1.9vw,23px)/1.2 var(--f-display);margin-top:10px}
+.origin p{font:400 15px/1.5 var(--f-read);color:var(--ink-2);margin-top:10px}
+@media (max-width:860px){.origin{grid-template-columns:1fr;gap:10px;margin-top:16px}.origin li{padding:14px 16px}.origin p{font-size:14px;margin-top:6px}.origin h4{margin-top:6px}}
+
+/* 7 angles */
+.angles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:28px}
+.angles .sheet{padding:26px}
+.angles .sheet b{display:block;font:500 clamp(22px,2.4vw,30px)/1.2 var(--f-display)}
+.angles .sheet span{display:block;font:400 clamp(16px,1.6vw,19px)/1.5 var(--f-read);color:var(--ink-2);margin-top:10px}
+.angles .s{border-left:4px solid var(--sonia)}
+.angles .c{border-left:4px solid var(--brand)}
+.def{grid-column:1 / -1;text-align:center;margin-top:12px;font:400 clamp(17px,1.8vw,21px)/1.5 var(--f-read);color:var(--ink-2)}
+.def dfn{font:italic 500 1.25em/1 var(--f-display);color:var(--ink)}
+@media (max-width:720px){.angles{grid-template-columns:1fr;gap:12px;margin-top:18px}.angles .sheet{padding:18px}}
+
+/* 8 map */
+.map{margin-top:20px}
+.map svg{width:100%;height:auto;max-height:calc(100dvh - var(--hud) - 230px);display:block;font:400 13px/1 var(--f-ui)}
+.map text{fill:var(--ink-2)}
+.map .fam{fill:var(--ink);font-weight:600;font-size:15px}
+.map .ln{fill:none;stroke:var(--ink-2);stroke-width:1.5;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--k,0))}
+.map .beam{fill:none;stroke:var(--brand);stroke-width:8;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--k,0))}
+.map .v{display:none}
+@media (max-width:720px){.map .h{display:none}.map .v{display:block}}
+
+/* 9 steps */
+.steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:30px;position:relative}
+.steps li{padding:20px 18px;position:relative}
+.steps .n{font:500 32px/1 var(--f-display);font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.steps h4{font:500 20px/1.2 var(--f-display);margin-top:12px}
+.steps p{font-size:14px;color:var(--ink-2);margin-top:6px}
+.steps a{display:inline-block;font:600 13px/1.3 var(--f-ui);margin-top:10px}
+.steps .bar{grid-column:1 / -1;height:4px;padding:0;background:var(--rule);border-radius:2px;position:relative;margin-top:4px}
+.steps .bar i{position:absolute;inset:0 auto 0 0;width:calc(var(--k,0) * 100%);background:var(--brand);border-radius:2px}
+@media (max-width:860px){.steps{grid-template-columns:1fr;gap:8px;margin-top:16px}.steps li{padding:10px 14px;display:grid;grid-template-columns:40px 1fr;gap:0 10px;align-items:baseline}.steps .n{font-size:22px;grid-row:span 3}.steps h4{margin:0;font-size:18px}.steps p{margin-top:2px;font-size:13px}.steps a{margin-top:4px}.steps .bar{display:none}}
+
+/* 10 turning point */
+.turn{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:36px;align-items:center}
+.turn h3{font:500 clamp(32px,4.4vw,56px)/1.06 var(--f-display);margin-top:14px}
+.turn p{font:400 17px/1.55 var(--f-read);color:var(--ink-2);margin-top:18px}
+.swap{position:relative;aspect-ratio:16/10;border-radius:var(--r2);overflow:hidden;border:1px solid var(--rule);background:var(--sheet)}
+.swap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left}
+.swap .after{opacity:var(--k,0);transform:scale(calc(1.04 - var(--k,0) * .04))}
+.swap .cap{position:absolute;left:12px;bottom:12px;font:600 12px/1 var(--f-ui);background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r1);padding:6px 8px}
+.swap .cap.a{opacity:var(--k,0)}
+.swap .cap.b{opacity:calc(1 - var(--k,0))}
+@media (max-width:860px){.turn{grid-template-columns:1fr;gap:18px}.turn p{font-size:15px;margin-top:10px}}
+
+/* 11 drawing the line */
+.line{display:grid;grid-template-columns:minmax(0,1fr) 2px minmax(0,1fr);gap:0 40px;margin-top:30px}
+.line h3{font:500 clamp(28px,3.2vw,40px)/1.1 var(--f-display)}
+.line li{font:400 clamp(16px,1.7vw,20px)/1.45 var(--f-read);padding:12px 0;border-bottom:1px solid var(--rule)}
+.line ul{margin-top:12px}
+.rule-v{background:var(--ink);transform-origin:50% 0;transform:scaleY(var(--k,0))}
+.takeaway{margin-top:18px;padding:14px 16px;background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r1);font:400 17px/1.5 var(--f-read)}
+.takeaway b{display:block;font:600 12px/1 var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);margin-bottom:8px}
+.real-q{margin-top:28px;padding-top:20px;border-top:2px solid var(--ink);font:400 clamp(17px,1.9vw,22px)/1.45 var(--f-read);color:var(--ink-2)}
+.real-q b{font:italic 600 1em/1.45 var(--f-read);color:var(--ink)}
+@media (max-width:720px){.line{grid-template-columns:1fr;gap:14px;margin-top:16px}.rule-v{height:2px;transform:scaleX(var(--k,0));transform-origin:0 50%}.line li{padding:6px 0;font-size:15px}.line ul{margin-top:4px}.takeaway{font-size:15px;padding:10px 12px;margin-top:10px}.real-q{margin-top:14px;padding-top:12px;font-size:15px}}
+
+/* 12 thanks */
+.thanks{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;align-items:end}
+.thanks h2{font:500 clamp(64px,11vw,140px)/1 var(--f-display);letter-spacing:-.01em}
+.thanks h2 em{font-style:italic}
+.next{margin-top:28px}
+.next li{font:400 clamp(16px,1.7vw,19px)/1.5 var(--f-read);padding:10px 0;border-top:1px solid var(--rule)}
+.visit{padding:26px}
+.visit b{display:block;font:600 12px/1 var(--f-ui);text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.visit a.big{display:block;font:500 clamp(20px,2vw,24px)/1.25 var(--f-display);margin-top:10px;word-break:break-word}
+.visit p{margin-top:14px;font-size:14px;color:var(--ink-2)}
+.record{display:inline-flex;align-items:center;gap:8px;margin-top:22px;font:600 14px/1 var(--f-ui);color:var(--ink);text-decoration:none;padding:12px 14px;border-radius:var(--r1);background:var(--brand);color:var(--on-brand)}
+@media (max-width:860px){.thanks{grid-template-columns:1fr;gap:16px}.next{margin-top:14px}.next li{padding:6px 0;font-size:15px}.visit{padding:16px}}
+
+/* short screens (landscape phones, small laptops) */
+@media (max-height:700px) and (min-width:721px){.h2{font-size:clamp(26px,3.6vw,40px)}.lead{font-size:16px}.title h1{font-size:clamp(44px,7vw,88px)}.tally{margin-top:18px}.feats{margin-top:20px}.line li{padding:8px 0;font-size:16px}}
+@media (max-height:620px) and (max-width:720px){.lead{display:none}}
+</style>
+</head>
+<body>
+<header class="hud">
+  <a class="wordmark" href="#top" aria-label="The Barrier Just Dropped, back to the start"><span>PR<span class="pi">I</span>SM</span> <small>Lightning talk</small></a>
+  <span class="hud-chap" aria-live="polite"></span>
+  <a class="hud-alt" href="index.html">Full page</a>
+  <div class="hud-bar" aria-hidden="true"><i></i></div>
+</header>
+<nav class="rail" aria-label="Chapters"></nav>
+
+<main>
+  <section class="scene title" id="top" data-chap="The Barrier Just Dropped" style="--len:1.2">
+    <div class="stage"><div class="inner">
+      <div class="label">Lightning talk · November 2026</div>
+      <h1 style="position:relative">The Barrier Just <span class="dw drive" data-in="0.05 0.4"><mark class="wipe drive" data-in="0.05 0.4">Dropped</mark></span><span class="barrier drive" data-in="0.02 0.4" aria-hidden="true"></span></h1>
+      <div class="byline" data-in="0.3 0.5">Sonia Seto · Chloe Ma<small>Drawing the Line: Exploring AI in Medical Illustration · UofT Biomedical Communications</small></div>
+      <div class="tally" role="list" data-in="0.45 0.7">
+        <div role="listitem"><b>89</b><span>commits, Jul 31 to Oct 21</span></div>
+        <div role="listitem"><b>2</b><span>designers, two studios</span></div>
+        <div role="listitem"><b>18</b><span>drafts recovered</span></div>
+        <div role="listitem"><b>26 → 11</b><span>frameworks, after cutting</span></div>
+      </div>
+    </div>
+    <div class="hint drive" data-in="0 0.1">Scroll</div></div>
+  </section>
+
+  <section class="scene" id="who" data-chap="Who we are" style="--len:1.2">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.15">Who we are</div>
+      <h2 class="h2" data-in="0 0.2">Two designers, one question</h2>
+      <div class="duo">
+        <article class="sheet person s l" data-in="0.15 0.45">
+          <div class="mono" aria-hidden="true">SS</div>
+          <h3>Sonia Seto</h3>
+          <div class="role">Biomedical communicator &amp; UX designer</div>
+          <div class="cred">1T6 MScBMC · formerly patient education at UHN</div>
+          <p>Brought the patient education space, and the prototype that gave PRISM its two ways in.</p>
+        </article>
+        <article class="sheet person c r" data-in="0.3 0.6">
+          <div class="mono" aria-hidden="true">CM</div>
+          <h3>Chloe Ma</h3>
+          <div class="role">Senior health strategy designer</div>
+          <div class="cred">2T1 MScBMC · GoInvo</div>
+          <p>Brought building with AI: the first tool, the studio, and the merges that made it one product.</p>
+        </article>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene question" id="question" data-chap="The question" style="--len:1.2">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.1">The question</div>
+      <h2 class="visually-hidden">The question that started it</h2>
+      <q class="pop" data-in="0 0.25">Did my visual actually <mark class="wipe drive" data-in="0.25 0.55">make a difference?</mark></q>
+      <p data-in="0.5 0.72">Patient handouts, illustrations and animations left my hands at handoff, and I never found out whether they helped anyone understand.</p>
+      <cite data-in="0.62 0.82">Sonia</cite>
+    </div></div>
+  </section>
+
+  <section class="scene" id="built" data-chap="What we built" style="--len:1.2">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.1">What we built</div>
+      <div class="big-mark pop" data-in="0 0.25" aria-hidden="true">PR<span class="pi">I</span>SM</div>
+      <h2 class="h2" data-in="0.12 0.32">A patient education analyzer</h2>
+      <p class="lead" data-in="0.2 0.4">It maps patient education materials across 10+ frameworks and explains <em>why</em> each one applies.</p>
+      <ul class="feats">
+        <li data-in="0.38 0.52"><b>Set up</b><span>Audience and goals</span></li>
+        <li data-in="0.5 0.64"><b>Workspace</b><span>Your content</span></li>
+        <li data-in="0.62 0.76"><b>Insights</b><span>Metrics and accessibility</span></li>
+      </ul>
+      <p class="next-hint" data-in="0.8 0.95">Keep scrolling to play the walkthrough. Stop anywhere to pause.</p>
+    </div></div>
+  </section>
+
+  <section class="walk" id="walkthrough" data-chap="What we built · Walkthrough" data-walkthrough>
+    <div class="wk-track">
+      <div class="wk-sticky">
+        <div class="wk-cap"><h2>The walkthrough</h2><span><a href="https://communication-framework.vercel.app">Open PRISM</a> · <a href="media/prism-walkthrough.mp4">Watch as a video</a></span></div>
+        <div class="wk-frame" role="img" aria-label="PRISM walkthrough, played by scrolling: loading a sample handout, flagged plain-language problems, applying a suggested rewrite, ticking a framework, colour-blind and greyscale views of a poster, planning from an idea, and editing the handout while its reading grade drops.">
+          <div class="wk-stage"></div>
+        </div>
+        <div class="wk-rail">
+          <div class="wk-bar"><div class="wk-fill"></div><div class="wk-chaps"></div></div>
+          <div class="wk-meta"><span class="wk-time">0:00</span><span class="wk-hint">Scroll to play · stop to pause · <span class="wk-total"></span></span></div>
+        </div>
+      </div>
+    </div>
+    <noscript><video controls muted playsinline preload="metadata" poster="media/prism-walkthrough.jpg" style="width:100%"><source src="media/prism-walkthrough.mp4" type="video/mp4"></video></noscript>
+  </section>
+
+  <section class="scene" id="then" data-chap="What we built · Then and now" style="--len:1.3">
+    <div class="stage"><div class="inner">
+      <div class="cmp-row">
+        <div><div class="label" data-in="0 0.1">Then and now</div><h2 class="h2" data-in="0 0.15">August 17 against today</h2></div>
+        <p class="lead" data-in="0.05 0.2">The first studio view, still called the Patient Education Analyzer, becomes PRISM on October 28.</p>
+      </div>
+      <div class="cmp drive" data-in="0.2 0.85">
+        <img src="img/03-studio-aug.jpg" alt="The August studio: a beige page with Brief, Material and Accessibility panels and many small controls.">
+        <img class="after" src="img/16-studio-now-light.jpg" alt="PRISM today in light mode: a white Material sheet on a grey desk, one Open a file button and four getting-started steps.">
+        <div class="edge"></div>
+        <span class="tagr">Oct 28</span><span class="tagl">Aug 17</span>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene" id="origin" data-chap="Where it started" style="--len:1.4">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.1">Where it started</div>
+      <h2 class="h2" data-in="0 0.15">From a post to a partnership</h2>
+      <p class="lead" data-in="0.05 0.2">Two LinkedIn posts, one chat, and two people who each knew half of what the project needed.</p>
+      <ol class="origin">
+        <li class="sheet s" data-in="0.2 0.4"><b>1 · The idea</b><h4>A post about the CDC's Clear Communication Index</h4><p>Sonia saw it and knew it was the missing piece in her work. Were there other frameworks, and a central hub of them?</p></li>
+        <li class="sheet s" data-in="0.4 0.6"><b>2 · The reach out</b><h4>GoInvo's AI design certification</h4><p>Sonia saw GoInvo's post on its Human-assisted AI Design Certification for Healthcare and reached out to Chloe.</p></li>
+        <li class="sheet c" data-in="0.6 0.8"><b>3 · Chat to partnership</b><h4>Sonia pitched, Chloe said yes</h4><p>The first chat was about the certification. It turned into a project.</p></li>
+      </ol>
+    </div></div>
+  </section>
+
+  <section class="scene" id="angles" data-chap="Where it started · Two angles" style="--len:1.2">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.1">Two angles</div>
+      <h2 class="h2" data-in="0 0.15">Each of us knew half</h2>
+      <div class="angles">
+        <div class="sheet s l" data-in="0.15 0.4"><b>Sonia</b><span>Knew the patient education space, but had not built a tool with Claude.</span></div>
+        <div class="sheet c r" data-in="0.3 0.55"><b>Chloe</b><span>Knew how to build with AI, but was new to patient education and its frameworks.</span></div>
+        <p class="def pop" data-in="0.6 0.85"><dfn>patient education</dfn> (n.) Teaching patients about their own health and care.</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene" id="problem" data-chap="Where it started · The problem" style="--len:1.6">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.08">The problem</div>
+      <h2 class="h2" data-in="0 0.12">So many frameworks. No shared map.</h2>
+      <p class="lead" data-in="0.04 0.16">One piece of patient content can be judged through about 26 frameworks, each a different lens, each in its own silo.</p>
+      <div class="map">
+        <svg class="h" viewBox="0 0 910 310" role="img" aria-label="Five families of frameworks, each in its own silo, lead into PRISM, which brings them into one shared map.">
+          <g class="fade" data-in="0.14 0.24"><text class="fam" x="240" y="38" text-anchor="end">Health literacy</text><text x="240" y="56" text-anchor="end">CDC CCI · AHRQ · Teach-Back</text></g>
+          <g class="fade" data-in="0.18 0.28"><text class="fam" x="240" y="98" text-anchor="end">Patient-centred care</text><text x="240" y="116" text-anchor="end">Picker · Planetree · CAHPS</text></g>
+          <g class="fade" data-in="0.22 0.32"><text class="fam" x="240" y="158" text-anchor="end">Shared decision-making</text><text x="240" y="176" text-anchor="end">Ottawa · SHARE</text></g>
+          <g class="fade" data-in="0.26 0.36"><text class="fam" x="240" y="218" text-anchor="end">Design methods</text><text x="240" y="236" text-anchor="end">EBCD · SEIPS</text></g>
+          <g class="fade" data-in="0.3 0.4"><text class="fam" x="240" y="278" text-anchor="end">Behaviour theory</text><text x="240" y="296" text-anchor="end">HBM · TTM · EPPM</text></g>
+          <path class="ln drive" data-in="0.4 0.62" pathLength="1" d="M252 44 C430 44 470 160 600 160"/>
+          <path class="ln drive" data-in="0.42 0.64" pathLength="1" d="M252 104 C430 104 470 160 600 160"/>
+          <path class="ln drive" data-in="0.44 0.66" pathLength="1" d="M252 164 C430 164 470 160 600 160"/>
+          <path class="ln drive" data-in="0.46 0.68" pathLength="1" d="M252 224 C430 224 470 160 600 160"/>
+          <path class="ln drive" data-in="0.48 0.7" pathLength="1" d="M252 284 C430 284 470 160 600 160"/>
+          <g class="fade" data-in="0.66 0.76"><rect x="600" y="140" width="112" height="40" rx="4" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/><text x="656" y="165" text-anchor="middle" style="fill:var(--ink);font-weight:600;font-size:15px;letter-spacing:.04em">PRISM</text></g>
+          <path class="beam drive" data-in="0.74 0.9" pathLength="1" d="M712 160 H900"/>
+          <g class="fade" data-in="0.86 0.96"><text x="720" y="196" style="fill:var(--ink);font-weight:600">one shared map</text></g>
+        </svg>
+        <svg class="v" viewBox="0 0 360 470" role="img" aria-label="Five families of frameworks, each in its own silo, lead into PRISM, which brings them into one shared map.">
+          <g class="fade" data-in="0.14 0.24"><text class="fam" x="0" y="20">Health literacy</text><text x="0" y="38">CDC CCI · AHRQ · Teach-Back</text></g>
+          <g class="fade" data-in="0.18 0.28"><text class="fam" x="0" y="72">Patient-centred care</text><text x="0" y="90">Picker · Planetree · CAHPS</text></g>
+          <g class="fade" data-in="0.22 0.32"><text class="fam" x="0" y="124">Shared decision-making</text><text x="0" y="142">Ottawa · SHARE</text></g>
+          <g class="fade" data-in="0.26 0.36"><text class="fam" x="0" y="176">Design methods</text><text x="0" y="194">EBCD · SEIPS</text></g>
+          <g class="fade" data-in="0.3 0.4"><text class="fam" x="0" y="228">Behaviour theory</text><text x="0" y="246">HBM · TTM · EPPM</text></g>
+          <path class="ln drive" data-in="0.4 0.62" pathLength="1" d="M250 30 C330 30 340 300 180 340"/>
+          <path class="ln drive" data-in="0.42 0.64" pathLength="1" d="M250 82 C320 82 330 300 180 340"/>
+          <path class="ln drive" data-in="0.44 0.66" pathLength="1" d="M250 134 C310 134 320 300 180 340"/>
+          <path class="ln drive" data-in="0.46 0.68" pathLength="1" d="M250 186 C300 186 310 300 180 340"/>
+          <path class="ln drive" data-in="0.48 0.7" pathLength="1" d="M250 238 C290 238 300 300 180 340"/>
+          <g class="fade" data-in="0.66 0.76"><rect x="124" y="340" width="112" height="40" rx="4" fill="var(--sheet)" stroke="var(--ink)" stroke-width="1.5"/><text x="180" y="365" text-anchor="middle" style="fill:var(--ink);font-weight:600;font-size:15px;letter-spacing:.04em">PRISM</text></g>
+          <path class="beam drive" data-in="0.74 0.9" pathLength="1" d="M180 380 V440"/>
+          <g class="fade" data-in="0.86 0.96"><text x="194" y="430" style="fill:var(--ink);font-weight:600">one shared map</text></g>
+        </svg>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene" id="process" data-chap="How we built it" style="--len:1.4">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.08">How we built it</div>
+      <h2 class="h2" data-in="0 0.12">Designing with Claude</h2>
+      <p class="lead" data-in="0.04 0.16">Five steps, run many times over. Each links to the moment where it happened.</p>
+      <ol class="steps">
+        <li class="sheet" data-in="0.16 0.3"><span class="n">01</span><h4>Research &amp; analyze</h4><p>Gathered and reviewed patient education frameworks.</p><a href="index.html#m6">Check the sources first</a></li>
+        <li class="sheet" data-in="0.28 0.42"><span class="n">02</span><h4>Prototype</h4><p>HTML mockups to explore ideas visually.</p><a href="index.html#m14">Six front doors</a></li>
+        <li class="sheet" data-in="0.4 0.54"><span class="n">03</span><h4>Refine</h4><p>Match real design tokens and components.</p><a href="index.html#m10">The proofing desk</a></li>
+        <li class="sheet" data-in="0.52 0.66"><span class="n">04</span><h4>Integrate</h4><p>Merge into the source code via GitHub.</p><a href="index.html#m5">Sonia's fork</a></li>
+        <li class="sheet" data-in="0.64 0.78"><span class="n">05</span><h4>Ship</h4><p>Deploy on Vercel, with prototypes kept separate.</p><a href="index.html#m18">PRISM today</a></li>
+        <li class="bar drive" data-in="0.16 0.8" aria-hidden="true"><i></i></li>
+      </ol>
+    </div></div>
+  </section>
+
+  <section class="scene" id="turn" data-chap="How we built it · A turning point" style="--len:1.3">
+    <div class="stage"><div class="inner turn">
+      <div>
+        <div class="label" data-in="0 0.1">A turning point</div>
+        <h3 data-in="0 0.2">What worked for 3 frameworks broke at 26.</h3>
+        <p data-in="0.7 0.9">We moved frameworks out of the sidebar into a collapsible bar above the workspace. The bar came from Sonia's prototype on September 15.</p>
+      </div>
+      <div class="swap drive" data-in="0.3 0.65">
+        <img src="img/03-studio-aug.jpg" alt="August 17: Frameworks is one panel in the right-hand column.">
+        <img class="after" src="img/04-sonia-sep.jpg" alt="September 15, Sonia's prototype: Frameworks is a bar above the workspace, with Show all 26.">
+        <span class="cap b">Before: sidebar · Aug 17</span><span class="cap a">After: top bar · Sep 15</span>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene" id="line" data-chap="Drawing the line" style="--len:1.6">
+    <div class="stage"><div class="inner">
+      <div class="label" data-in="0 0.08">Drawing the line</div>
+      <h2 class="h2" data-in="0 0.12">What Claude did. What stayed ours.</h2>
+      <div class="line">
+        <div>
+          <h3 class="l" data-in="0.14 0.26">Claude</h3>
+          <ul>
+            <li class="l" data-in="0.2 0.32">Writing and refactoring the code</li>
+            <li class="l" data-in="0.26 0.38">Fast iteration on layout and interaction</li>
+            <li class="l" data-in="0.32 0.44">Turning sketches and ideas into working prototypes</li>
+          </ul>
+        </div>
+        <div class="rule-v drive" data-in="0.08 0.3" aria-hidden="true"></div>
+        <div>
+          <h3 class="r" data-in="0.42 0.54"><mark>Us</mark></h3>
+          <ul>
+            <li class="r" data-in="0.48 0.6">Domain knowledge and scientific accuracy</li>
+            <li class="r" data-in="0.54 0.66">Visual judgement and design decisions</li>
+          </ul>
+          <div class="takeaway" data-in="0.66 0.78"><b>Takeaway · Sonia</b>Define scope, user flows and goals first. The polish can wait.</div>
+        </div>
+      </div>
+      <p class="real-q" data-in="0.8 0.94">The real question: <b>does this serve practitioners in the patient experience and education industry?</b></p>
+    </div></div>
+  </section>
+
+  <section class="scene" id="next" data-chap="Thank you" style="--len:1">
+    <div class="stage"><div class="inner thanks">
+      <div>
+        <h2 class="pop" data-in="0 0.25">Thank <em>you</em>.</h2>
+        <div class="label" style="margin-top:28px" data-in="0.15 0.3">What's next</div>
+        <ul class="next">
+          <li data-in="0.2 0.38"><b>Open source</b>: free for anyone to use and extend.</li>
+          <li data-in="0.3 0.48"><b>See the gaps</b>: where frameworks overlap, and where they don't.</li>
+          <li data-in="0.4 0.58"><b>Build with us</b>: we'd love collaborators and feedback.</li>
+        </ul>
+      </div>
+      <div class="sheet visit" data-in="0.5 0.7">
+        <b>Try PRISM</b>
+        <a class="big" href="https://communication-framework.vercel.app">communication-framework.vercel.app</a>
+        <p>The code is on <a href="https://github.com/chloemxy/communication-framework">GitHub</a>.</p>
+        <p>Drawing the Line · UofT Biomedical Communications · November 2026</p>
+        <a class="record" href="index.html#record">The record behind the talk →</a>
+      </div>
+    </div></div>
+  </section>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  var root = document.documentElement;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hudChap = document.querySelector('.hud-chap'), rail = document.querySelector('.rail');
+  function clamp(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function ease(x){ return x * x * (3 - 2 * x); }
+  function pair(s){ return s ? s.split(' ').map(Number) : null; }
+  function seg(t, a){
+    if (a[1] <= a[0] || reduce) return t >= a[0] ? 1 : 0;
+    return ease(clamp((t - a[0]) / (a[1] - a[0])));
+  }
+
+  var scenes = [].slice.call(document.querySelectorAll('.scene')).map(function(s){
+    return { el:s, items:[].slice.call(s.querySelectorAll('[data-in]')).map(function(e){
+      return { el:e, a:pair(e.dataset.in), o:pair(e.dataset.out), k:-1 }; }) };
+  });
+  var chaps = [].slice.call(document.querySelectorAll('[data-chap]'));
+
+  // chapter rail: one dot per talk section (scenes that share a name before " · " group together)
+  var groups = [];
+  chaps.forEach(function(c){
+    var name = c.dataset.chap.split(' · ')[0];
+    if (!groups.length || groups[groups.length - 1].name !== name) groups.push({ name:name, el:c });
+  });
+  groups.forEach(function(g){
+    var b = document.createElement('button'); b.type = 'button';
+    b.innerHTML = '<span></span>'; b.firstChild.textContent = g.name;
+    b.setAttribute('aria-label', 'Go to ' + g.name);
+    b.addEventListener('click', function(){ go(top(g.el)); });
+    rail.appendChild(b); g.btn = b;
+  });
+
+  function top(el){ return el.getBoundingClientRect().top + window.scrollY; }
+  function range(el){ return Math.max(1, el.offsetHeight - innerHeight); }
+  function go(y){ window.scrollTo({ top:y, behavior: reduce ? 'auto' : 'smooth' }); }
+
+  function paint(Y){
+    var vh = innerHeight;
+    scenes.forEach(function(s){
+      var t0 = top(s.el) - window.scrollY + Y, r = range(s.el);
+      if (Y < t0 - vh || Y > t0 + r + vh) return;
+      var t = clamp((Y - t0) / r);
+      s.el.style.setProperty('--t', t.toFixed(4));
+      s.items.forEach(function(it){
+        var k = seg(t, it.a); if (it.o) k *= 1 - seg(t, it.o);
+        if (Math.abs(k - it.k) > 1e-4) { it.k = k; it.el.style.setProperty('--k', k.toFixed(4)); }
+      });
+    });
+    var max = Math.max(1, document.documentElement.scrollHeight - vh);
+    root.style.setProperty('--p', clamp(Y / max).toFixed(4));
+    var cur = chaps[0];
+    chaps.forEach(function(c){ if (top(c) <= window.scrollY + vh * 0.5) cur = c; });
+    if (hudChap.textContent !== cur.dataset.chap) hudChap.textContent = cur.dataset.chap;
+    var g0 = cur.dataset.chap.split(' · ')[0];
+    groups.forEach(function(g){ g.btn.classList.toggle('on', g.name === g0); });
+  }
+
+  // follow the scroll with a little lag so wheel steps glide
+  var shown = window.scrollY, raf = 0, last = 0;
+  function tick(now){
+    raf = 0;
+    var target = window.scrollY, dt = last ? Math.min(0.1, (now - last) / 1000) : 0.016; last = now;
+    shown = reduce ? target : shown + (target - shown) * (1 - Math.exp(-dt * 12));
+    if (Math.abs(target - shown) < 0.5) shown = target;
+    paint(shown);
+    if (shown !== target) raf = requestAnimationFrame(tick); else last = 0;
+  }
+  function kick(){ if (!raf) raf = requestAnimationFrame(tick); }
+  addEventListener('scroll', kick, { passive:true });
+  addEventListener('resize', function(){ shown = window.scrollY; kick(); });
+
+  // presenter keys: → / PageDown go to the next beat, ← / PageUp to the previous one
+  function stops(){
+    var out = [];
+    scenes.forEach(function(s){
+      var t0 = top(s.el), r = range(s.el), ends = { 0:1 };
+      s.items.forEach(function(it){ if (!it.el.classList.contains('hint')) ends[it.a[1]] = 1; });
+      Object.keys(ends).forEach(function(e){ out.push(Math.round(t0 + r * Math.min(1, +e))); });
+    });
+    var w = document.querySelector('.walk');
+    if (w) { out.push(Math.round(top(w))); out.push(Math.round(top(w) + range(w))); }
+    return out.sort(function(a, b){ return a - b; }).filter(function(v, i, a){ return !i || v - a[i - 1] > 8; });
+  }
+  addEventListener('keydown', function(e){
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    var fwd = e.key === 'ArrowRight' || e.key === 'PageDown', back = e.key === 'ArrowLeft' || e.key === 'PageUp';
+    if (!fwd && !back) return;
+    var y = window.scrollY, list = stops(), to = null;
+    if (fwd) { for (var i = 0; i < list.length; i++) if (list[i] > y + 4) { to = list[i]; break; } }
+    else { for (var j = list.length - 1; j >= 0; j--) if (list[j] < y - 4) { to = list[j]; break; } }
+    if (to !== null) { e.preventDefault(); go(to); }
+  });
+
+  paint(shown);
+})();
+</script>
+<script src="media/walkthrough/clips.js"></script>
+<script src="walkthrough.js"></script>
+</body>
+</html>
