@@ -228,9 +228,41 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
 .question p{font:400 18px/1.55 var(--f-read);color:var(--ink-2);max-width:56ch;margin:20px 0 0}
 .question cite{display:block;font:600 13px/1.4 var(--f-ui);font-style:normal;color:var(--ink-2);margin-top:14px}
 @media (max-width:720px){.question{padding:28px 20px}}
-.built{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:24px;align-items:start}
-@media (max-width:860px){.built{grid-template-columns:1fr}}
-.built video{display:block;width:100%;aspect-ratio:16/9;background:#121417;border-radius:var(--r2);border:1px solid var(--rule)}
+.built{display:block}
+.built .pitch{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px 32px;align-items:start}
+.built .pitch .feats{grid-column:2;grid-row:1 / span 3;margin-top:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 24px;border-top:0}
+.built .pitch .feats li{border-top:1px solid var(--rule)}
+@media (max-width:860px){.built .pitch{grid-template-columns:1fr}.built .pitch .feats{grid-column:1;grid-row:auto;margin-top:16px}}
+/* Scroll-driven walkthrough: a tall track, a sticky 16:9 stage; the stage itself is a light "video" canvas */
+.walk{margin-top:32px}
+.wk-track{position:relative}
+.wk-sticky{position:sticky;top:52px;height:calc(100vh - 52px);display:flex;flex-direction:column;justify-content:center;gap:12px;padding-block:16px}
+.wk-frame{position:relative;width:min(100%,calc((100vh - 52px - 132px) * 16 / 9));aspect-ratio:16/9;margin:0 auto;overflow:hidden;border-radius:var(--r2);border:1px solid var(--rule);background:#ECEEF0}
+.wk-stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;font-family:"Public Sans",Arial,sans-serif;color:#16181D}
+.wk-layer{position:absolute;inset:0;overflow:hidden;background:#ECEEF0}
+.wk-cam{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0}
+.wk-cam img{position:absolute;inset:0;width:1600px;height:900px;max-width:none;display:block}
+.wk-spot{position:absolute;border:3px solid #16181D;border-radius:10px;box-shadow:0 0 0 9999px rgba(22,24,29,.22),0 0 0 7px rgba(255,224,102,.9)}
+.wk-label{position:absolute;left:0;top:0;display:flex;align-items:center;gap:14px;background:#FFFFFF;color:#16181D;border:1px solid #D5D9DE;font:600 30px/1.25 "Public Sans",Arial,sans-serif;padding:16px 24px 16px 20px;border-radius:10px;box-shadow:0 14px 40px rgba(22,24,29,.18);white-space:nowrap}
+.wk-label i{width:14px;height:30px;background:#FFE066;transform:skewX(-14deg);flex:none;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(22,24,29,.15)}
+.wk-label small{display:block;font:400 22px/1.3 "Public Sans",Arial,sans-serif;color:#4A5059;margin-top:2px}
+.wk-chap{position:absolute;left:28px;bottom:28px;background:#FFFFFF;padding:10px 16px 10px 10px;border-radius:8px;border:1px solid #D5D9DE;box-shadow:0 8px 24px rgba(22,24,29,.12);font:600 22px/1 "Public Sans",Arial,sans-serif;color:#4A5059;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:12px;align-items:center}
+.wk-chap b{color:#16181D;background:#FFE066;padding:6px 9px;border-radius:4px;font-variant-numeric:tabular-nums;letter-spacing:0}
+.wk-cursor{position:absolute;left:0;top:0;width:44px;height:44px;transform-origin:4px 4px;filter:drop-shadow(0 3px 5px rgba(0,0,0,.3))}
+.wk-ripple{position:absolute;border-radius:50%;border:3px solid #16181D;background:rgba(255,224,102,.45)}
+.wk-rail{width:min(100%,calc((100vh - 52px - 132px) * 16 / 9));margin:0 auto}
+.wk-bar{position:relative;height:4px;background:var(--rule);border-radius:2px;margin-top:40px}
+.wk-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--ink);border-radius:2px}
+.wk-chapbtn{position:absolute;bottom:10px;display:flex;align-items:center;gap:6px;font:600 12px/1 var(--f-ui);color:var(--ink-2);background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r1);padding:5px 8px 5px 5px;cursor:pointer;white-space:nowrap}
+.wk-chapbtn::after{content:"";position:absolute;left:10px;top:100%;width:1px;height:10px;background:var(--rule)}
+.wk-chapbtn b{background:var(--sheet-2);color:var(--ink);padding:3px 6px;border-radius:3px;font-variant-numeric:tabular-nums}
+.wk-chapbtn:hover{border-color:var(--ink-2);color:var(--ink)}
+.wk-chapbtn.on{color:var(--ink);border-color:var(--ink)}
+.wk-chapbtn.on b{background:var(--brand);color:var(--on-brand)}
+.wk-meta{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--ink-2);margin-top:10px}
+.wk-time{font-variant-numeric:tabular-nums;color:var(--ink)}
+@media (max-width:1100px){.wk-chapbtn:not(.on) span{display:none}}
+@media (max-width:720px){.wk-chapbtn span{display:none}.wk-meta .wk-hint{display:none}}
 .built .pitch h3{font:500 44px/1 var(--f-display);letter-spacing:.02em}
 .built .pitch h3 .i{position:relative;display:inline-block;padding:0 .1em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
 .built .pitch h3 .i::before{content:"";position:absolute;inset:.1em -.06em .02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
@@ -507,19 +539,30 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
     <div class="sec-head"><span class="no">What we built</span><div><h2 id="b-h">PRISM, a patient education analyzer</h2></div>
       <p>It maps patient education materials across 10+ frameworks and explains <em>why</em> each one applies.</p></div>
     <div class="built">
-      <video controls muted playsinline preload="metadata" poster="media/prism-walkthrough.jpg" aria-label="PRISM walkthrough, 56 seconds, no sound">
-        <source src="media/prism-walkthrough.mp4" type="video/mp4">
-      </video>
       <div class="pitch">
         <h3>PR<span class="i">I</span>SM</h3>
-        <div class="sub">A walkthrough, 56 seconds, no sound</div>
+        <div class="sub">Scroll to play the walkthrough. Stop anywhere to pause.</div>
         <ul class="feats">
           <li><b>Set up</b>Audience and goals</li>
           <li><b>Workspace</b>Your content</li>
           <li><b>Insights</b>Metrics and accessibility</li>
         </ul>
-        <p><a href="https://communication-framework.vercel.app">Open PRISM</a></p>
+        <p><a href="https://communication-framework.vercel.app">Open PRISM</a> · <a href="media/prism-walkthrough.mp4">Watch as a video</a></p>
       </div>
+    </div>
+    <div class="walk" data-walkthrough>
+      <div class="wk-track">
+        <div class="wk-sticky">
+          <div class="wk-frame" role="img" aria-label="PRISM walkthrough, played by scrolling: loading a sample handout, flagged plain-language problems, applying a suggested rewrite, ticking a framework, colour-blind and greyscale views of a poster, planning from an idea, and editing the handout while its reading grade drops.">
+            <div class="wk-stage"></div>
+          </div>
+          <div class="wk-rail">
+            <div class="wk-bar"><div class="wk-fill"></div><div class="wk-chaps"></div></div>
+            <div class="wk-meta"><span class="wk-time">0:00</span><span class="wk-hint">Scroll to play · stop to pause · <span class="wk-total"></span></span></div>
+          </div>
+        </div>
+      </div>
+      <noscript><video controls muted playsinline preload="metadata" poster="media/prism-walkthrough.jpg" style="width:100%"><source src="media/prism-walkthrough.mp4" type="video/mp4"></video></noscript>
     </div>
     <div class="sub-head"><span class="no">Then and now</span><div><h3 id="ba-h">August 17 against today</h3></div>
       <p>Drag the handle. Left is the first studio view, still called the Patient Education Analyzer. Right is PRISM on October 28.</p></div>
@@ -1311,5 +1354,7 @@ var h=/^#m(\d+)$/.exec(location.hash||'');if(h){var n=+h[1]-1;if(n>=0&&n<total){
 render();
 })();
 </script>
+<script src="media/walkthrough/clips.js?v=20261101a"></script>
+<script src="walkthrough.js?v=20261101a"></script>
 </body>
 </html>

@@ -32,6 +32,27 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - The current page, `presentation/index.html`, stays as the full version; the story links to it
   as "Full page".
 
+## 2026-11-01 — Presentation page: walkthrough plays as you scroll
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The walkthrough is a scroll-driven player now, not a video** (`presentation/index.html`,
+  new `presentation/walkthrough.js`). The stage sticks under the site bar while you scroll through
+  it; scrolling moves the animation forward or back, and stopping holds it still, so a presenter
+  can talk over any moment. A rail under the stage shows the five chapters (Studio, Frameworks,
+  Posters and images, Plan from an idea, Edit and recheck), the time, and jumps to a chapter on
+  click.
+- **Why:** the embedded video looked soft (a 1280×720, 30 fps copy at about 630 kbps), and a talk
+  needs to pause anywhere. The player draws the recorded screens with the camera, cursor,
+  spotlight and labels live in the page, so it stays sharp at any size.
+- **Content matches v4 of the walkthrough** (49 s): it opens on the workspace, with no logo card
+  and no front door. Recorded screens are in `presentation/media/walkthrough/` (60 WebP images,
+  2400×1350, 9 MB, plus `clips.js`).
+- **"Watch as a video"** links to a new web encode at `presentation/media/prism-walkthrough.mp4`
+  (1920×1080, 60 fps, H.264 High), which replaces the 720p copy; the poster image was refreshed.
+  Without JavaScript the page shows that video instead.
+- The PRISM pitch sits above the player, with its three features in a row.
+
 ## 2026-10-28 — Presentation page follows the talk deck
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
