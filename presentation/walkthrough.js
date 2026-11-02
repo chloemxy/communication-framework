@@ -2,14 +2,14 @@
  * The page scrolls through a tall track; a sticky 16:9 stage shows the moment at that scroll
  * position. Stop scrolling and it holds still, so a presenter can talk over any moment.
  * The stage is drawn live (recorded screens + camera, cursor, spotlight and labels), so it stays
- * sharp at any size. Scenes and timing match screen record/prism-walkthrough-v4.mp4.
+ * sharp at any size. Scenes and timing match screen record/prism-walkthrough-v6.mp4.
  * Needs media/walkthrough/clips.js (window.PRISM_WALK_CLIPS) loaded first.
  */
 (function(){
   'use strict';
   var root = document.querySelector('[data-walkthrough]');
   if (!root || !window.PRISM_WALK_CLIPS) return;
-  var IMG_DIR = 'media/walkthrough/';
+  var IMG_DIR = 'media/walkthrough/', IMG_V = '?v=20261101c';   // bump when the recorded screens change
   var PX_PER_SEC = 150;                       // scroll distance per second of animation
 
   var FW = 1920, FH = 1080, PW = 1600, PH = 900, ZMIN = FW / PW;   // full view fills the stage
@@ -22,29 +22,59 @@
   // ---------- scenes (times in seconds within each scene) ----------
   var S = [];
   var P = r(C.studio.para), SG = r(C.studio.sug), AP = mid(C.studio.apply), TH = mid(C.studio.thumb);
+  var P2 = r(C.studio.paraAfter || C.studio.para);   // the "Applied" notice pushes the paragraph down
   var RP = R(120, 330, 560, 190), RS = R(1190, 300, 360, 320);
-  S.push({ clip:'studio', dur:11.8, chap:[1,'Studio'],
+  S.push({ clip:'studio', dur:11.8, chap:[1,'Apply a suggestion'],
     frames:[[0,0],[1.6,1,1],[7.6,2,1]],
     cam:[[0,F],[2.4,F],[3.3,RP],[5.0,RP],[5.8,RS],[8.2,RS],[9.0,RP],[10.6,RP],[11.4,F]],
     cursor:[[[0.2,760,820],[1.2,TH[0],TH[1]],[1.6,TH[0],TH[1]],[2.2,TH[0]+120,TH[1]+80]],
             [[6.0,1330,640],[7.1,AP[0],AP[1]],[7.8,AP[0],AP[1]],[8.2,AP[0]+60,AP[1]+40]]],
     clicks:[1.4,7.45],
     labels:[[3.4,5.0,'Plain-language problems are flagged','Medical words, vague words, long sentences',P],
-            [5.9,8.2,'A suggested rewrite','With the guideline it comes from',SG,6.6],
-            [9.1,10.6,'Applied in your text','Undo any time, or in History',P]] });
+            [5.9,8.2,'A suggested rewrite, from a card','With the guideline it comes from',SG,6.6],
+            [9.1,10.6,'Applied in your text','Undo any time, or in History',P2]] });
+
+  // Apply all: the Plain language card fixes every safe rewrite in one step
+  var AA = C.applyall, AB = mid(AA.btn);
+  var AAcard = R(AA.summary[0] - 6, AA.summary[1] - 6, AA.summary[2] + 12, AA.fixall[1] + AA.fixall[3] - AA.summary[1] + 12);
+  var AAdoc = R(140, 190, 660, 300);
+  S.push({ clip:'applyall', dur:9.8, chap:[2,'Apply all'],
+    frames:[[0,0],[3.75,1,1]],
+    cam:[[0,F],[0.8,F],[1.7,R(1180,150,400,260)],[4.9,R(1180,150,400,260)],[5.8,AAdoc],[8.6,AAdoc],[9.4,F]],
+    cursor:[[[1.5,1320,620],[2.9,AB[0],AB[1]],[3.9,AB[0],AB[1]],[4.3,AB[0]+50,AB[1]+60]]],
+    clicks:[3.6],
+    labels:[[1.8,4.7,'Or apply every rewrite at once','Each count updates when you click Apply all',AAcard],
+            [5.9,8.6,'Fixed across the whole page','One step in History undoes them all',AAdoc]] });
+
+  // History: every change is logged; name a version; revert to an earlier one
+  var H = C.history, HB = mid(H.btn), HN = mid(H.name), HS = mid(H.save), HR = mid(H.revert);
+  var histFrames = [[0,0],[1.5,1,1]]; for (var k = 2; k <= 6; k++) histFrames.push([5.75 + (k-2)*0.14, k]);
+  histFrames.push([6.6,7],[7.25,8,1],[9.3,9,1],[11.35,10,1]);
+  var HTOP = R(1200,40,400,470), HBOT = R(1200,560,400,330);
+  S.push({ clip:'history', dur:15.6, chap:[3,'History and versions'],
+    frames:histFrames,
+    cam:[[0,F],[1.9,F],[2.8,HTOP],[8.7,HTOP],[9.5,HBOT],[12.0,HBOT],[12.8,F]],
+    cursor:[[[0.2,820,520],[1.0,HB[0],HB[1]],[1.5,HB[0],HB[1]],[1.9,HB[0]+60,HB[1]+80]],
+            [[4.8,1330,330],[5.4,HN[0]-60,HN[1]],[5.7,HN[0]-60,HN[1]],[6.2,HN[0]-40,HN[1]+50],[6.7,HS[0],HS[1]],[7.4,HS[0],HS[1]],[7.8,HS[0]+40,HS[1]+60]],
+            [[9.9,1420,700],[10.9,HR[0],HR[1]],[11.5,HR[0],HR[1]],[11.9,HR[0]+60,HR[1]+40]]],
+    clicks:[1.25,5.55,7.15,11.25],
+    labels:[[2.9,5.4,'Every change is logged','What changed, word count and CCI score',r(H.item0)],
+            [5.6,8.7,'Name a version to come back to','Save version, or Ctrl/⌘+S',R(1205,58,390,H.saved[1] + H.saved[3] - 58)],
+            [9.6,11.3,'Revert to any earlier version','Here, the handout as first loaded',r(H.oldItem)],
+            [12.9,15.6,'Back to the original, nothing lost','The version you left stays in History',R(130,190,1470,330)]] });
 
   var CCI = C.fw.cci, BTN = mid(C.fw.btn);
-  S.push({ clip:'fw', dur:7.4, chap:[2,'Frameworks'],
+  S.push({ clip:'fw', dur:7.4, chap:[4,'Frameworks'],
     frames:[[0,0],[1.45,1,1],[4.75,2,1]],
     cam:[[0,F],[1.8,F],[2.7,R(800,125,790,430)],[3.9,R(800,125,790,430)],[4.4,R(800,380,790,400)],[6.2,R(800,380,790,400)],[7.0,F]],
     cursor:[[[0.2,1100,520],[1.1,BTN[0]+180,BTN[1]],[1.5,BTN[0]+180,BTN[1]],[2.0,BTN[0]+120,BTN[1]+120]],
             [[3.6,1250,480],[4.4,CCI[0]+22,CCI[1]+22],[4.9,CCI[0]+22,CCI[1]+22],[5.4,CCI[0]+90,CCI[1]+60]]],
     clicks:[1.3,4.6],
-    labels:[[2.8,4.0,'11 published frameworks','Each linked to its original source',R(808,132,772,410)],
+    labels:[[2.8,4.0,'23 published frameworks','Each linked to its original source',R(808,132,772,410)],
             [4.8,6.2,'Tick one to add its checks','CCI: CDC Clear Communication Index',r(CCI)]] });
 
   var CVD = C.poster.cvd.map(mid), ART = r(C.poster.art);
-  S.push({ clip:'poster', dur:8.4, chap:[3,'Posters and images'],
+  S.push({ clip:'poster', dur:8.4, chap:[5,'Posters and images'],
     frames:[[0,0],[3.35,1,1],[5.45,2,1]],
     cam:[[0,F],[1.4,F],[2.3,R(15,180,1160,560)],[7.2,R(15,180,1160,560)],[8.0,F]],
     cursor:[[[2.4,1150,800],[3.05,CVD[1][0],CVD[1][1]],[3.4,CVD[1][0],CVD[1][1]],[4.7,CVD[1][0],CVD[1][1]],[5.15,CVD[4][0],CVD[4][1]],[5.6,CVD[4][0],CVD[4][1]],[6.0,CVD[4][0]+80,CVD[4][1]+60]]],
@@ -52,17 +82,23 @@
     labels:[[2.4,5.2,'See it through colour blindness','The poster as a reader with deuteranopia sees it',ART],
             [5.4,7.2,'Or as a greyscale print','Check it still works without colour',ART]] });
 
-  var MB = mid(C.plan.modeBtn), IN = C.plan.input;
-  var planFrames = [[0,0],[1.15,1,1]]; for (var k = 2; k <= 17; k++) planFrames.push([3.6 + (k-2)*0.12, k]); planFrames.push([5.7,18]);
-  S.push({ clip:'plan', dur:7.6, chap:[4,'Plan from an idea'],
+  // Plan from an idea: the main message, what people should do, then the Draft stage and its checks
+  var MB = mid(C.plan.modeBtn), IN = C.plan.input, IN2 = C.plan.input2, NX = mid(C.plan.next);
+  var planFrames = [[0,0],[1.15,1,1]]; for (var k2 = 2; k2 <= 17; k2++) planFrames.push([3.6 + (k2-2)*0.12, k2]); planFrames.push([5.7,18]);
+  for (var k3 = 19; k3 <= 27; k3++) planFrames.push([6.5 + (k3-19)*0.12, k3]); planFrames.push([7.7,28],[9.25,29,1]);
+  var PIN = R(IN[0], IN[1], IN[2], IN2[1] + IN2[3] - IN[1]), PCH = r(C.plan.checks);
+  S.push({ clip:'plan', dur:13.4, chap:[6,'Plan from an idea'],
     frames:planFrames,
-    cam:[[0,F],[2.0,F],[2.9,R(250,290,790,220)],[6.5,R(250,290,790,220)],[7.3,F]],
+    cam:[[0,F],[2.0,F],[2.9,R(250,290,790,220)],[8.0,R(250,290,790,220)],[8.8,F],[9.6,F],[10.4,PCH],[12.6,PCH],[13.4,F]],
     cursor:[[[0.2,700,520],[0.85,MB[0],MB[1]],[1.2,MB[0],MB[1]],[1.6,MB[0]+60,MB[1]+90]],
-            [[2.9,820,560],[3.3,IN[0]+40,IN[1]+20],[3.5,IN[0]+40,IN[1]+20],[3.8,IN[0]+30,IN[1]+70]]],
-    clicks:[1.0,3.38],
-    labels:[[3.0,6.5,'Start with the one main message','Each stage lists the checks that apply',r(IN)]] });
+            [[2.9,820,560],[3.3,IN[0]+40,IN[1]+20],[3.5,IN[0]+40,IN[1]+20],[3.8,IN[0]+30,IN[1]+70]],
+            [[5.8,IN[0]+30,IN[1]+70],[6.2,IN2[0]+40,IN2[1]+20],[6.4,IN2[0]+40,IN2[1]+20],[6.8,IN2[0]+30,IN2[1]+70]],
+            [[8.2,900,640],[9.0,NX[0],NX[1]],[9.4,NX[0],NX[1]],[9.8,NX[0]+60,NX[1]+40]]],
+    clicks:[1.0,3.38,6.28,9.15],
+    labels:[[3.0,8.0,'Start with the one main message','Then what people should do',PIN],
+            [10.5,12.6,'Each stage lists the checks that apply','The draft is scored against them in the editor',PCH]] });
 
-  // ending: continuous editing, flags clearing as words are rewritten
+  // ending: continuous editing right in the text, flags clearing as words are rewritten
   var E = C.edit, selAt = new Map(E.edits.map(function(e){ return [e.at, e.sel]; }));
   var editFrames = [[0,0]], editCursor = [[1.6,620,640]], editClicks = [], t = 2.3;
   for (var j = 1; j < E.frames.length; j++) {
@@ -72,12 +108,13 @@
       editClicks.push(t - 0.2, t - 0.06); t += 0.6; }
     else t += (selAt.has(j + 1) || j === E.frames.length - 1) ? 0.45 : 0.11;
   }
-  var ED = R(140, 335, 1040, 180), EG = r(E.grade);
-  S.push({ clip:'edit', dur:t + 1.0, chap:[5,'Edit and recheck'], last:true,
+  // the grade was measured as "Gr 6"; it grows leftward as decimals appear, so widen the ring
+  var ED = R(140, 335, 1040, 180), EG = R(E.grade[0] - 40, E.grade[1], E.grade[2] + 40, E.grade[3]);
+  S.push({ clip:'edit', dur:t + 1.0, chap:[7,'Edit the text directly'], last:true,
     frames:editFrames,
     cam:[[0,F],[1.0,F],[1.9,ED],[t + 2,ED]],
     cursor:[editCursor], clicks:editClicks,
-    labels:[[2.0,t*0.55,'Edit right in the page','Flags clear as you rewrite',r(E.para)],
+    labels:[[2.0,t*0.55,'Or edit right in the text','Flags clear as you rewrite',r(E.para)],
             [t*0.55+0.2,t + 1.0,'Reading grade updates as you type','Every check reruns on each change',EG]] });
 
   var MIN_LABEL = 3.0;
@@ -130,7 +167,7 @@
   var cache = {};
   function img(file){
     var im = cache[file];
-    if (!im) { im = cache[file] = new Image(); im.decoding = 'async'; im.src = IMG_DIR + file; }
+    if (!im) { im = cache[file] = new Image(); im.decoding = 'async'; im.src = IMG_DIR + file + IMG_V; }
     return im;
   }
   function ready(file){ var im = img(file); return im.complete && im.naturalWidth > 0; }
@@ -155,7 +192,7 @@
   }
   var A = layer(), B = layer();
   function show(el, on){ el.style.display = on ? '' : 'none'; }
-  function setSrc(el, file){ if (el.dataset.f !== file) { el.src = IMG_DIR + file; el.dataset.f = file; } }
+  function setSrc(el, file){ if (el.dataset.f !== file) { el.src = IMG_DIR + file + IMG_V; el.dataset.f = file; } }
 
   function paint(Ly, s, lt, alpha){
     Ly.L.style.opacity = alpha; Ly.L.style.visibility = alpha > 0 ? 'visible' : 'hidden';
@@ -240,13 +277,24 @@
   function top(){ return track.getBoundingClientRect().top + window.scrollY - (parseFloat(getComputedStyle(sticky).top) || 0); }
   function scrollTime(){ var rg = range(); return rg > 0 ? clamp((window.scrollY - top()) / rg, 0, 1) * TOTAL : 0; }
 
+  // For pages that step through the walkthrough (story.html): one stop per label, held once the
+  // label is fully in (or once its follow-up click lands), as scroll positions.
+  window.PRISM_WALK = {
+    labels: S.reduce(function(out, s){
+      return out.concat(s.labels.map(function(l){
+        return { title:l[2], time:s.start + Math.min(l[1] - 0.2, Math.max(l[0] + 0.7, l[5] != null ? l[5] + 0.3 : 0)) };
+      }));
+    }, []),
+    stops: function(){ return this.labels.map(function(l){ return Math.round(top() + l.time / TOTAL * range()); }); }
+  };
+
   // chapter buttons on the progress rail
   S.forEach(function(s){
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'wk-chapbtn';
     b.style.left = (s.start / TOTAL * 100) + '%';
     b.innerHTML = '<b>' + s.chap[0] + '</b><span>' + s.chap[1] + '</span>';
-    b.setAttribute('aria-label', 'Go to ' + s.chap[1]);
+    b.setAttribute('aria-label', 'Go to ' + s.chap[1]); b.title = s.chap[1];
     b.addEventListener('click', function(){
       var at = s.start + (s === S[0] ? 0 : XF);
       window.scrollTo({ top: top() + at / TOTAL * range(), behavior: reduce ? 'auto' : 'smooth' });
