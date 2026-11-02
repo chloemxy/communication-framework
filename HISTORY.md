@@ -4,6 +4,37 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-01 — Story page becomes slides, sized for the room
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **No more real scrolling in `presentation/story.html`.** Each scroll, swipe, or key press
+  (→, ↓, Space or PageDown; ←, ↑ or PageUp to go back) plays one beat on a timer.
+  - In each slide, animations that overlap play together as one beat.
+  - After a slide's last beat, the next step changes slides: the old slide drifts away and fades,
+    and the new one fades in from the other side while its first beat plays.
+  - A trackpad's momentum counts as one step.
+  - **The walkthrough steps through its on-screen labels (17 points in the new seven-chapter recording), not whole chapters.** Each
+    step moves quickly (0.9–1.8 s) to the next labelled moment and holds there, so it never plays
+    on its own. To support this, `walkthrough.js` now lists those points as `window.PRISM_WALK`.
+    The full page doesn't use it.
+  - The chapter dots and Home/End jump between slides.
+- **Sized for a projector.** On anything wider than a phone, each slide fills the screen. All type
+  and spacing scale with the window: at 1920×1080, headlines are about 88px and body text about
+  36–42px. The opening title is about 180px.
+- **The opening slide no longer animates.** It opens already finished: "Dropped" highlighted and
+  tilted, with the names. The barrier tape and the row of four numbers are gone.
+- **Then and now works as a comparison again.**
+  - The screenshots keep their 16:10 shape and are no longer cropped.
+  - The wipe stops halfway, so August and October show side by side.
+  - Each date label shows only while its version is visible. Before, "Oct 28" sat over the August
+    screenshot.
+  - You can drag the divider anywhere.
+- The Drawing the line slide now shows Claude's column first, then Us.
+- **The top bar, the "Scroll or press →" hint and the "Next: the walkthrough" line are gone** (wordmark, chapter name, Full page link,
+  progress line), so slides use the
+  whole screen. The chapter dots on the right remain, and the last slide still links to the full page.
+
 ## 2026-11-01 — Walkthrough shows more of PRISM: Apply all, History, revert, the Plan stages
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -67,7 +98,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
   - **How we built it:** the five steps fill a progress bar, and the sidebar turns into the top bar.
   - **Drawing the line:** a rule draws down the middle between Claude and Us.
   - **Thank you:** it ends with a link to the record on the full page.
-- **The walkthrough is the shared one** (`walkthrough.js` and `media/walkthrough/` ship with this change). It loads the same `walkthrough.js` and
+- **The walkthrough is the shared one.** It loads the same `walkthrough.js` and
   `media/walkthrough/` as the full page, so updates to the walkthrough show up in both. Its styles are copied
   from `index.html`; if those change, copy them again.
 - **How it works:** each scene is a tall section with a sticky full-screen stage. A small script
