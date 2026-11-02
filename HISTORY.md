@@ -4,6 +4,51 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-01 — Walkthrough shows more of PRISM: Apply all, History, revert, the Plan stages
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Why:** the walkthrough showed one applied suggestion and a closing edit, but not the rest of
+  how a draft changes in PRISM: fixing everything at once, the change log, saved versions and
+  going back to one, or what Plan does after the first field.
+- **Seven chapters, 82 seconds** (was five, 49 s), all recorded from `master` as deployed:
+  1. Apply a suggestion: the Jargon rewrite from a card, as before.
+  2. **Apply all (new):** the Plain language card's "3 suggested changes", one click, counts
+     drop to 0 to fix, and "Applied 3 changes. Undo them all at once in History."
+  3. **History and versions (new):** the History panel lists each change with what changed
+     (struck and added words), word count and CCI; a version is named "Draft for Sonia" and
+     saved; then Revert takes the handout back to the first snapshot ("The version you left is
+     still in History").
+  4. Frameworks, 5. Posters and images: as before.
+  6. Plan from an idea: now also fills "What should people do?", moves to the Draft stage and
+     holds on the checks PRISM scores there.
+  7. Edit the text directly: the closing continuous edit, as before.
+- **Rail:** with seven chapters, only the current chapter shows its name (others show the
+  number; hover or focus shows the name).
+- **Updated:** `presentation/media/walkthrough/` (84 screens, `clips.js`), `presentation/walkthrough.js`
+  (scenes, image version tag), `presentation/index.html` (script version tags, rail rule),
+  `presentation/media/prism-walkthrough.mp4` and its poster. Master copy:
+  `screen record/prism-walkthrough-v6.mp4`.
+
+## 2026-11-01 — Walkthrough re-recorded from the live PRISM
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Why:** the walkthrough had been recorded from local, unreleased Studio edits (the Oct 26–27
+  library review, "Based on:" sources, a longer sample handout), so it didn't match PRISM as
+  deployed.
+- **Re-recorded from `master` as deployed** (served locally from a clean copy): the 117-word
+  sample handout, the Jargon rewrite with "Source: PEMAT-P, AHRQ", the "Applied. Undo it…"
+  notice, 23 frameworks with CCI ticked, the poster's colour-blind and greyscale views, Plan, and
+  the closing edit taking the reading grade from 6 to 4.5. Each scene was checked against the
+  live Studio.
+- **Labels:** "11 published frameworks" is now "23 published frameworks"; the "Applied" spotlight
+  follows the paragraph down when the notice appears; the grade ring is wide enough for "Gr 4.5".
+- **Updated:** `presentation/media/walkthrough/` (screens and `clips.js`), `presentation/walkthrough.js`
+  (labels, and a version tag on image URLs so browsers don't show the old screens),
+  `presentation/media/prism-walkthrough.mp4` and its poster. The master copy is
+  `screen record/prism-walkthrough-v5.mp4`.
+
 ## 2026-11-01 — The talk as a scroll story
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`

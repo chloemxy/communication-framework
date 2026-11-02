@@ -261,7 +261,9 @@ dialog::backdrop{background:rgba(10,11,13,.72)}
 .wk-chapbtn.on b{background:var(--brand);color:var(--on-brand)}
 .wk-meta{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--ink-2);margin-top:10px}
 .wk-time{font-variant-numeric:tabular-nums;color:var(--ink)}
-@media (max-width:1100px){.wk-chapbtn:not(.on) span{display:none}}
+/* seven chapters don't all fit by name: only the current one (or the one under the pointer) spells it out */
+.wk-chapbtn:not(.on):not(:hover):not(:focus-visible) span{display:none}
+.wk-chapbtn.on,.wk-chapbtn:hover,.wk-chapbtn:focus-visible{z-index:2}
 @media (max-width:720px){.wk-chapbtn span{display:none}.wk-meta .wk-hint{display:none}}
 .built .pitch h3{font:500 44px/1 var(--f-display);letter-spacing:.02em}
 .built .pitch h3 .i{position:relative;display:inline-block;padding:0 .1em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
@@ -1354,7 +1356,7 @@ var h=/^#m(\d+)$/.exec(location.hash||'');if(h){var n=+h[1]-1;if(n>=0&&n<total){
 render();
 })();
 </script>
-<script src="media/walkthrough/clips.js?v=20261101a"></script>
-<script src="walkthrough.js?v=20261101a"></script>
+<script src="media/walkthrough/clips.js?v=20261101c"></script>
+<script src="walkthrough.js?v=20261101c"></script>
 </body>
 </html>
