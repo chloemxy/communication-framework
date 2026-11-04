@@ -4,6 +4,20 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-04 — PRISM goes open source: Apache 2.0 for code, CC BY 4.0 for designs
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
+
+- **New `LICENSE`:** the standard Apache 2.0 text, unchanged, so GitHub detects it.
+- **New `NOTICE`:** the copyright line (Chloe Ma, Sonia Seto, and GoInvo), what each license
+  covers, and what neither covers: framework text, the Canadian healthcare charter PDF, the GoInvo
+  logo, trademark rights in the PRISM name and logo, and the YouTube video on slide 3.
+- **Slides:** the welcome and thank-you lines now read "Code licensed under Apache 2.0. Designs
+  licensed under Creative Commons Attribution 4.0."
+- **About panel:** a new License section under Feedback.
+- **Why two licenses:** Apache is written for software, and CC BY suits slides and images. It also
+  keeps the CC BY line the slides already carried.
+
 ## 2026-11-04 — Slides: one scroll each, shorter lines, one type system
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
