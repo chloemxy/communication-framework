@@ -4,6 +4,75 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-04 — Slides: one scroll each, shorter lines, one type system
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **One scroll per slide.** Each scroll, swipe or key press moves to the next slide, and
+  everything on it plays in one 1.6-second cascade. Before, every line or card needed its own
+  scroll. Going back snaps the slide in. The walkthrough still steps through its labels.
+- **Scene labels removed.** The yellow-dash kickers (A confession, An analogy, The catch, and so
+  on) are gone. The chapter rail still uses the names.
+- **Shorter, plainer lines.** Rewritten to cut AI-sounding phrasing ("camera-phone moment",
+  "isn't X", colon reveals) and extra words. For example:
+  - "We each knew half." / "Claude wrote the code. We made the calls."
+  - "Camera phones didn't end photography. They made everyone a photographer. AI just did that
+    for software."
+  - "Not everything worked." The three cards are now headlines only: 3 frameworks fit, 26 didn't;
+    checklists drifted; some bugs remain.
+  - "Anyone can build now. Knowing what to build is the job."
+  - The failure details (the sidebar fix from Sonia's prototype, Picker's 1993 principles, the
+    Plan draft behind the poster) are no longer on the slides, so say them out loud.
+- **One type system** (written up in a comment at the end of the stylesheet):
+  - **Two faces:** Newsreader and Public Sans. Source Serif 4 and the monospace byline are gone.
+  - **Five sizes**, set as `--fs-*` tokens: hero, display, heading, body and tag (plus fine
+    print). These replace about 25 one-off sizes.
+  - **Two inks:** white and grey.
+  - **Emphasis:** one highlighter per slide and no bold. Italic Newsreader is used only for the
+    closing line under a slide.
+  - Thank you now runs across the full width, with What's next and the PRISM card under it.
+  - Apostrophes in slide text are now curly.
+- **Cleanup:** dead CSS for slides that left the deck has been deleted: who, angles, map, steps,
+  turning point and drawing the line.
+
+## 2026-11-04 — Slides follow the talk's new structure: confession, analogy, catch, proof, voices, demo, failures, thesis
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Why:** the script now follows the shape of Doodle to Demo's talk (studied from its recording):
+  a personal confession, an analogy, the catch, proof with a number, real voices, a demo, honest
+  failures, then one thesis said plainly.
+- **New order** in `presentation/index.html` (12 slides):
+  1. Welcome (unchanged).
+  2. **A confession:** Sonia's "Did my visual actually make a difference?" (relabelled).
+  3. **An analogy (new):** "Phones didn't replace photographers. They let everyone show what they
+     see." Building software just had its camera-phone moment.
+  4. **The catch (new):** "Each of us knew only half." Sonia knew patient education but had never
+     built with AI; Chloe knew product design and AI tools but doesn't write code. "So Claude wrote
+     the code, and we brought everything else."
+  5. **The proof (new):** 27 hours of building, 123 commits, 21 sittings, 10+ frameworks,
+     0 developers, from the first commit on July 31 to today. Hours come from commit times
+     (commits under 2 hours apart are one sitting, plus 30 minutes each), the same method as the
+     old timeline. **Recount before the talk.**
+  6. Then and now (kept, now part of The proof).
+  7. **Real voices (new):** Nati Chen's interview on October 14, quoting only her verbatim line
+     "Most people start with copy only." Her biggest gap (paraphrased, not quoted): knowing where in
+     the design process each framework helps. Three days later Plan from an idea became a guided
+     path.
+  8. The demo: PRISM, then the walkthrough (relabelled).
+  9. **What went wrong (new):** three true failures from this log: the sidebar that broke at 26
+     frameworks (fixed by Sonia's prototype), checklists that paraphrased old sources (Picker's 1993
+     principles; every item is now checked against its source), and the Plan draft that hides
+     behind an open poster (found while recording, still open).
+  10. **The thesis (new):** "Intent first. Build fast. Iterate." with whose each one is, ending on
+      the camera-phone callback.
+  11. Thank you (unchanged).
+- **Removed from the deck:** Where it started, The problem (frameworks map), Designing with Claude
+  (five steps), A turning point (now a failure card) and Drawing the line (folded into the thesis).
+  Their styles are still in the file.
+- **Nati is quoted by name** (Chloe confirmed).
+- **Still to do:** background clips for the new slides (the camera-phone footage first).
+
 ## 2026-11-04 — The presentation site is gone; the story slides now live at /presentation/
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
