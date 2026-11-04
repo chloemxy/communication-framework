@@ -1,0 +1,31 @@
+PRISM
+Copyright 2026 Chloe Ma, Sonia Seto, and GoInvo
+
+CODE
+The source code in this repository (HTML, CSS and JavaScript) is licensed under
+the Apache License, Version 2.0. See the LICENSE file.
+
+DESIGNS
+Slides, images, screen recordings, illustrations and design explorations made
+for PRISM, including the contents of design/, presentation/img/ and
+presentation/media/, are licensed under Creative Commons Attribution 4.0
+International: https://creativecommons.org/licenses/by/4.0/
+
+NOT COVERED BY EITHER LICENSE
+The following belong to their owners, and neither license above applies to them:
+
+- Framework names, criteria and quoted text in analysis-engine.js, frameworks.js
+  and fw-judge.js, and any of that text shown in the site or in
+  framework-compass.pdf. Each belongs to its publisher, and PRISM cites the
+  source for each one. This includes Universal Patient Language (UPL) text,
+  (c) Bristol Myers Squibb.
+- A_Charter_for_Accountable_Use_of_AI-Canadian_Healthcare.pdf, which belongs to
+  its authors.
+- The GoInvo name and logo (presentation/img/goinvo-logo.svg).
+- The PRISM name and logo may be used to describe this project, but the licenses
+  above grant no trademark rights in them.
+- The video on slide 3, which is embedded from YouTube and is not part of this
+  repository.
+
+Libraries and fonts load from public CDNs when the site runs and are not part of
+this repository. Each one keeps its own license.
