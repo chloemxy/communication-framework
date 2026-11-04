@@ -69,6 +69,23 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   background:linear-gradient(90deg,rgb(18 20 23 / .92) 0%,rgb(18 20 23 / .88) 40%,rgb(18 20 23 / .74) 54%,rgb(18 20 23 / .22) 70%,rgb(18 20 23 / 0) 84%),
     linear-gradient(180deg,rgb(18 20 23 / 0) 62%,rgb(18 20 23 / .65) 100%)}
 #top .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .5)}
+/* slide 3 background: a muted phone commercial (analogy-bg.js), cropped to cover the slide and faded
+   in once it plays; a dark wash keeps the lines readable */
+.yt-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1s ease}
+.yt-bg.live{opacity:1}
+.yt-bg iframe{position:absolute;top:50%;left:50%;width:max(100vw,177.78vh);height:max(100vh,56.25vw);transform:translate(-50%,-50%);border:0}
+.yt-wash{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgb(18 20 23 / .86) 0%,rgb(18 20 23 / .7) 50%,rgb(18 20 23 / .45) 100%)}
+#analogy .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
+/* slide 2 background: a looping stock clip (question-bg.js), cropped so the pamphlet sits right of the text */
+.clip-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%}
+.clip-wash{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgb(18 20 23 / .88) 0%,rgb(18 20 23 / .8) 45%,rgb(18 20 23 / .45) 68%,rgb(18 20 23 / .25) 100%)}
+#question .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
+/* every video or generated animation names its source at the foot of its slide */
+.inner .credit{margin:16px 0 0;max-width:none;font:400 var(--fs-fine)/1.4 var(--f-ui);color:var(--ink-2)}
+.credit a{color:inherit}
+@media (min-width:721px){.inner .credit{position:absolute;left:0;bottom:0;margin:0}}
 .scene,.walk{opacity:0;visibility:hidden;transition:opacity .55s ease,transform .7s cubic-bezier(.2,.7,.2,1),visibility 0s linear .7s}
 .scene.on,.walk.on{opacity:1;visibility:visible;transform:none;transition:opacity .6s ease .12s,transform .8s cubic-bezier(.2,.7,.2,1) .05s,visibility 0s}
 .scene[data-dir="fwd"]:not(.on){transform:translateY(-4vh) scale(.985)}
@@ -184,12 +201,6 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* analogy, catch, proof, voices, thesis: the talk's new beats */
 .big-line{margin-top:18px;max-width:18ch}
 .big-line mark{background-color:var(--hl);padding:0 .08em}
-.halves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}
-.halves .sheet{padding:24px;border-top:4px solid var(--sonia)}
-.halves .sheet.c{border-top-color:var(--brand)}
-.halves b{color:var(--ink-2)}
-.halves h4{margin-top:10px}
-.halves p{color:var(--ink-2);margin-top:8px}
 .num{margin-top:16px;display:flex;align-items:baseline;gap:.25em}
 .num .unit{color:var(--ink-2)}
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:28px;border-top:1px solid var(--rule);padding-top:18px}
@@ -207,7 +218,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .thesis-l li{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:baseline;gap:24px;padding:14px 0;border-bottom:1px solid var(--rule)}
 .thesis-l b mark{background-color:var(--hl);padding:0 .08em}
 .thesis-l span{color:var(--ink-2)}
-@media (max-width:720px){.halves,.stats{grid-template-columns:1fr 1fr;gap:10px}.halves{grid-template-columns:1fr}.thesis-l li{grid-template-columns:1fr;gap:4px}}
+@media (max-width:720px){.stats{grid-template-columns:1fr 1fr;gap:10px}.thesis-l li{grid-template-columns:1fr;gap:4px}}
 @media (max-width:720px){.real-q{margin-top:14px;padding-top:12px;}}
 
 /* 12 thanks */
@@ -272,10 +283,6 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 
   .real-q{margin-top:calc(2.4 * var(--u));padding-top:calc(2 * var(--u))}
   .big-line{max-width:20ch;margin-top:calc(1.8 * var(--u))}
-  .halves{gap:calc(2 * var(--u));margin-top:calc(3 * var(--u))}
-  .halves .sheet{padding:calc(2.8 * var(--u));border-top-width:max(4px,.4 * var(--u))}
-  .halves h4{margin-top:calc(1.2 * var(--u))}
-  .halves p{margin-top:var(--u)}
   .stats{gap:calc(2 * var(--u));margin-top:calc(3 * var(--u));padding-top:calc(2 * var(--u))}
   .stats span{margin-top:calc(.6 * var(--u))}
   .note{margin-top:calc(2.4 * var(--u))}
@@ -302,13 +309,13 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
    italic only for the closing line under a slide. */
 .num .big,.big-mark,.thanks h2{font:500 var(--fs-hero)/.92 var(--f-display);letter-spacing:-.025em}
 .title h1,.question q,.big-line,.voice p,.thesis-l b,.h2,.num .unit,.stats b{font:500 var(--fs-display)/1.04 var(--f-display);letter-spacing:-.015em}
-.halves h4,.origin h4,.voice-did h4,.feats b,.wk-cap h2,.next b{font:500 var(--fs-head)/1.15 var(--f-display);letter-spacing:-.005em}
+.origin h4,.voice-did h4,.feats b,.wk-cap h2,.next b{font:500 var(--fs-head)/1.15 var(--f-display);letter-spacing:-.005em}
 .real-q{font:italic 400 var(--fs-head)/1.25 var(--f-display);color:var(--ink-2);border-top:0;padding-top:0}
 .real-q b{font:inherit;color:var(--ink)}
-.lead,.blurb,.question p,.halves p,.origin p,.voice-did p,.thesis-l span,.next li,.feats span,.stats span{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
+.lead,.blurb,.question p,.origin p,.voice-did p,.thesis-l span,.next li,.feats span,.stats span{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
 .blurb{color:var(--ink)}
 .intros b,.visit a.big{font:600 var(--fs-body)/1.3 var(--f-ui);color:var(--ink)}
-.label,.halves b,.origin b,.voice-did b,.visit b,.question cite,.voice cite{font:600 var(--fs-tag)/1.2 var(--f-ui);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.label,.origin b,.voice-did b,.visit b,.question cite,.voice cite{font:600 var(--fs-tag)/1.2 var(--f-ui);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
 .note,.fine,.t-by,.intros span,.visit p,.visit .lic,.wk-cap span{font:400 var(--fs-fine)/1.5 var(--f-ui);color:var(--ink-2)}
 .visit .feedback{color:var(--ink)}
 .num .unit{color:var(--ink-2)}
@@ -339,36 +346,29 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
           <div><b>Sonia Seto</b><span>Biomedical communicator and UX designer · MScBMC 1T6</span></div>
           <div><b>Chloe Ma</b><span>Senior product designer, GoInvo · MScBMC 2T1</span></div>
         </div>
-        <p class="fine">Drawing the Line: Exploring AI in Medical Illustration · UofT Biomedical Communications · Code licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Designs licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a>.</p>
+        <p class="fine">Drawing the Line: Exploring AI in Medical Illustration · UofT Biomedical Communications · Code licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Designs licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a>. Third-party video credited on its slide is not covered. Background: napkin sketch generated with <a href="https://gemini.google.com">Nano Banana (Google Gemini)</a>, animated in code.</p>
       </div>
     </div></div>
   </section>
 
   <section class="scene question" id="question" data-chap="A confession">
+    <video class="clip-bg" src="media/bg/clinic-pamphlet.mp4" poster="media/bg/clinic-pamphlet.jpg" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <h2 class="visually-hidden">The question that started it</h2>
       <q class="pop" data-in="0 0.25">Did my visual actually <mark class="wipe drive" data-in="0.25 0.55">make a difference?</mark></q>
       <p data-in="0.5 0.72">My work left at handoff. I never learned if it helped.</p>
       <cite data-in="0.62 0.82">Sonia</cite>
+      <p class="credit">Video: <a href="https://www.pexels.com/video/a-doctor-pointing-at-a-pamphlet-about-the-effects-of-diabetes-on-the-body-7580006/">“A Doctor Pointing at a Pamphlet”</a> by Pavel Danilyuk, Pexels</p>
     </div></div>
   </section>
 
   <section class="scene" id="analogy" data-chap="An analogy">
+    <div class="yt-bg" aria-hidden="true"></div><div class="yt-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <p class="big-line" data-in="0 0.22">Camera phones didn’t end photography.</p>
       <p class="big-line" data-in="0.3 0.52">They made <mark>everyone a photographer.</mark></p>
       <p class="real-q" data-in="0.6 0.8">AI just did that <b>for software.</b></p>
-    </div></div>
-  </section>
-
-  <section class="scene" id="catch" data-chap="The catch">
-    <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.15">We each knew <mark>half.</mark></h2>
-      <div class="halves">
-        <div class="sheet s" data-in="0.18 0.38"><b>Sonia</b><h4>Patient education</h4><p>Never built with AI.</p></div>
-        <div class="sheet c" data-in="0.4 0.6"><b>Chloe</b><h4>Product design and AI</h4><p>Doesn’t code.</p></div>
-      </div>
-      <p class="real-q" data-in="0.7 0.9">Claude wrote the code. <b>We made the calls.</b></p>
+      <p class="credit">Video: <a href="https://youtu.be/1WLqGs7c_yA">“Shot on iPhone 18 Pro: new trick”</a>, Apple</p>
     </div></div>
   </section>
 
@@ -425,7 +425,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   <section class="walk" id="walkthrough" data-chap="The demo · Walkthrough" data-walkthrough>
     <div class="wk-track">
       <div class="wk-sticky">
-        <div class="wk-cap"><h2>The walkthrough</h2><span><a href="https://communication-framework.vercel.app">Open PRISM</a> · <a href="media/prism-walkthrough.mp4">Watch as a video</a></span></div>
+        <div class="wk-cap"><h2>The walkthrough</h2><span>Screen recording of PRISM by Sonia Seto and Chloe Ma · <a href="https://communication-framework.vercel.app">Open PRISM</a> · <a href="media/prism-walkthrough.mp4">Watch as a video</a></span></div>
         <div class="wk-frame" role="img" aria-label="PRISM walkthrough, played by scrolling: loading a sample handout, flagged plain-language problems, applying a suggested rewrite, ticking a framework, colour-blind and greyscale views of a poster, planning from an idea, and editing the handout while its reading grade drops.">
           <div class="wk-stage"></div>
         </div>
@@ -680,6 +680,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 })();
 </script>
 <script src="napkin.js?v=20261104e"></script>
+<script src="analogy-bg.js?v=20261104b"></script>
+<script src="question-bg.js?v=20261104a"></script>
 <script src="media/walkthrough/clips.js?v=20261102h"></script>
 <script src="walkthrough.js?v=20261102h"></script>
 </body>

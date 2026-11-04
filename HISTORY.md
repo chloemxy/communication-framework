@@ -18,6 +18,45 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
 - **Why two licenses:** Apache is written for software, and CC BY suits slides and images. It also
   keeps the CC BY line the slides already carried.
 
+## 2026-11-04 — Slides: The catch removed
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Removed The catch** ("We each knew half", the Sonia and Chloe cards, "Claude wrote the code. We
+  made the calls."). The analogy now leads straight into The proof, and the deck is 11 slides. Its
+  styles are gone too.
+
+## 2026-11-04 — Slide 2 plays a clinic clip; slides name their media sources
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 2 ("Did my visual actually make a difference?") has a full-bleed video:** a doctor using
+  a printed diabetes pamphlet, from Pexels ("A Doctor Pointing at a Pamphlet" by Pavel Danilyuk).
+  - Cropped so the pamphlet sits right of the text, with the first 2 seconds trimmed and a dark
+    wash on top. It loops every 15.6 seconds with a 1-second crossfade.
+  - It plays only while slide 2 is showing, and people who prefer reduced motion see a still.
+  - The earlier AI pile-of-guides animation was dropped for looking weird.
+- **Every video or generated animation now names its source at the foot of its slide:** the
+  napkin on slide 1 (Nano Banana), the clip on slide 2, the iPhone ad on slide 3, and the
+  walkthrough. Slide 1 also says third-party video isn't covered by the CC BY licence.
+- **Code:** new file `presentation/question-bg.js`, new `media/bg/clinic-pamphlet.mp4` and `.jpg`,
+  and the `.clip-bg`, `.clip-wash` and `.credit` styles in `presentation/index.html`.
+
+## 2026-11-04 — Slide 3 plays a phone commercial behind the analogy
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 3 ("Camera phones didn't end photography") has a moving background:** Apple's
+  "Shot on iPhone 18 Pro: new trick" commercial (youtu.be/1WLqGs7c_yA).
+  - It's muted, with no controls or captions, and cropped to fill the slide.
+  - It loops the first 26.5 seconds, which cuts the "Shot on iPhone" title and logo that
+    start at about 27 seconds.
+  - A dark wash sits on top so the lines stay readable.
+- **Embedded from YouTube, not copied into the repo.** The video plays only while slide 3 is
+  showing and needs an internet connection; offline, the slide stays plain dark.
+- **Code:** new file `presentation/analogy-bg.js`, plus the `.yt-bg` and `.yt-wash` styles in
+  `presentation/index.html`.
+
 ## 2026-11-04 — Slides: one scroll each, shorter lines, one type system
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
