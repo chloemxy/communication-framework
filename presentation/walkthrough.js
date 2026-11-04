@@ -2,14 +2,14 @@
  * The page scrolls through a tall track; a sticky 16:9 stage shows the moment at that scroll
  * position. Stop scrolling and it holds still, so a presenter can talk over any moment.
  * The stage is drawn live (recorded screens + camera, cursor, spotlight and labels), so it stays
- * sharp at any size. Scenes and timing match screen record/prism-walkthrough-v6.mp4.
+ * sharp at any size. Scenes and timing match screen record/prism-walkthrough-v7.mp4.
  * Needs media/walkthrough/clips.js (window.PRISM_WALK_CLIPS) loaded first.
  */
 (function(){
   'use strict';
   var root = document.querySelector('[data-walkthrough]');
   if (!root || !window.PRISM_WALK_CLIPS) return;
-  var IMG_DIR = 'media/walkthrough/', IMG_V = '?v=20261101c';   // bump when the recorded screens change
+  var IMG_DIR = 'media/walkthrough/', IMG_V = '?v=20261102h';   // bump when the recorded screens change
   var PX_PER_SEC = 150;                       // scroll distance per second of animation
 
   var FW = 1920, FH = 1080, PW = 1600, PH = 900, ZMIN = FW / PW;   // full view fills the stage
@@ -21,37 +21,78 @@
 
   // ---------- scenes (times in seconds within each scene) ----------
   var S = [];
-  var P = r(C.studio.para), SG = r(C.studio.sug), AP = mid(C.studio.apply), TH = mid(C.studio.thumb);
+  // Getting started: a beginner follows "How to check your material" on the empty Studio, one label per step
+  var G = C.guide, OB = mid(G.openBrief), PA = mid(G.patients), HO = mid(G.handout), GT = mid(G.thumb), FB = mid(G.fwBtn), MT = mid(G.met);
+  var GS = R(G.steps[0], G.steps[1] - 6, G.steps[2], G.steps[3] + 12), BP = r(G.briefPanel);
+  var GTB = R(G.thumb[0] - 10, G.thumb[1] - 10, G.thumb[2] + 20, G.thumb[3] + 52), GTC = R(120, 470, 460, 330);
+  var SAM = r(G.sam), SAMC = R(808, 200, 772, 330), PR = R(G.pematPill[0] + 2, G.pematPill[1] + 2, G.pematPill[2] - 4, G.pematItem[1] + G.pematItem[3] - G.pematPill[1]);
+  var PRC = R(PR.x - 6, PR.y - 10, PR.w + 12, PR.h + 150);   // room under the card for the label, clear of the Met buttons
+  S.push({ clip:'guide', dur:27.0, chap:[1,'Getting started'],
+    frames:[[0,0],[4.65,1,1],[7.45,2,1],[8.65,3,1],[10.4,4,1],[13.5,5,1],[16.05,6,1],[18.3,7,1],[20.4,8,1],[23.05,9,1]],
+    cam:[[0,F],[2.2,F],[3.0,GS],[5.2,GS],[6.2,BP],[10.2,BP],[11.2,GTC],[13.8,GTC],[14.6,F],[16.0,F],[17.0,SAMC],[20.4,SAMC],[21.4,PRC],[25.8,PRC],[26.6,F]],
+    cursor:[[[3.4,1080,560],[4.4,OB[0],OB[1]],[4.75,OB[0],OB[1]],[5.1,OB[0]+60,OB[1]+70]],
+            [[6.4,520,420],[7.2,PA[0],PA[1]],[7.6,PA[0],PA[1]],[8.4,HO[0],HO[1]],[8.8,HO[0],HO[1]],[9.2,HO[0]+60,HO[1]+60]],
+            [[11.6,520,790],[12.6,GT[0],GT[1]],[13.0,GT[0],GT[1]],[13.4,GT[0]+80,GT[1]+60]],
+            [[14.8,1000,520],[15.8,FB[0],FB[1]],[16.2,FB[0],FB[1]],[16.6,FB[0]-40,FB[1]+90],[17.8,SAM.x+18,SAM.y+18],[18.45,SAM.x+18,SAM.y+18],[18.9,SAM.x+80,SAM.y+70]],
+            [[21.8,1100,720],[22.8,MT[0],MT[1]],[23.2,MT[0],MT[1]],[23.6,MT[0]+60,MT[1]+60]]],
+    clicks:[4.6,7.4,8.6,12.85,16.0,18.25,23.0],
+    labels:[[5.6,10.2,'Step 1: set your Brief','Who it\u2019s for and what it is: here, patients and a handout',BP,8.9],
+            [11.4,14.2,'Step 2: add your material','Open a file, paste text, or start from the sample handout',GTB,12.85],
+            [16.8,20.4,'Step 3: pick your frameworks','The Brief already picked six for a handout; tick any to add it',SAM,18.55],
+            [21.6,25.8,'Step 4: review the results','Scores appear; rate what the tool can\u2019t check, Met or Not met',PR,23.1]] });
+
+  var P = r(C.studio.para), SG = r(C.studio.sug), AP = mid(C.studio.apply);
   var P2 = r(C.studio.paraAfter || C.studio.para);   // the "Applied" notice pushes the paragraph down
-  var RP = R(120, 330, 560, 190), RS = R(1190, 300, 360, 320);
-  S.push({ clip:'studio', dur:11.8, chap:[1,'Apply a suggestion'],
-    frames:[[0,0],[1.6,1,1],[7.6,2,1]],
-    cam:[[0,F],[2.4,F],[3.3,RP],[5.0,RP],[5.8,RS],[8.2,RS],[9.0,RP],[10.6,RP],[11.4,F]],
-    cursor:[[[0.2,760,820],[1.2,TH[0],TH[1]],[1.6,TH[0],TH[1]],[2.2,TH[0]+120,TH[1]+80]],
-            [[6.0,1330,640],[7.1,AP[0],AP[1]],[7.8,AP[0],AP[1]],[8.2,AP[0]+60,AP[1]+40]]],
-    clicks:[1.4,7.45],
-    labels:[[3.4,5.0,'Plain-language problems are flagged','Medical words, vague words, long sentences',P],
-            [5.9,8.2,'A suggested rewrite, from a card','With the guideline it comes from',SG,6.6],
-            [9.1,10.6,'Applied in your text','Undo any time, or in History',P2]] });
+  var RP = R(120, 330, 560, 190), RS = R(SG.x - 20, SG.y - 20, SG.w + 40, SG.h + 70);
+  // each scene opens on the previous one's last screen; recorded rail scrolls play as glides (frames 1-8)
+  function glideFrames(at){ var f = [[0,0]]; for (var g = 1; g <= 8; g++) f.push([at + (g-1)*0.1, g]); return f; }
+  S.push({ clip:'studio', dur:10.8, chap:[2,'Apply a suggestion'],
+    frames:glideFrames(0.6).concat([[6.6,C.studio.marks.applied,1]]),
+    cam:[[0,F],[1.6,F],[2.4,RP],[4.0,RP],[4.8,RS],[7.2,RS],[8.0,RP],[9.6,RP],[10.4,F]],
+    cursor:[[[5.0,1330,700],[6.1,AP[0],AP[1]],[6.8,AP[0],AP[1]],[7.2,AP[0]+60,AP[1]+40]]],
+    clicks:[6.45],
+    labels:[[2.4,4.0,'Plain-language problems are flagged','Medical words, vague words, long sentences',P],
+            [4.9,7.2,'A suggested rewrite, from a card','With the guideline it comes from',SG,5.6],
+            [8.1,9.6,'Applied in your text','Undo any time, or in History',P2]] });
+
+  // Edit the text directly: after the suggestion, finish the paragraph by hand;
+  // flags clear and the reading grade drops as words change
+  var E = C.edit, selAt = new Map(E.edits.map(function(e){ return [e.at, e.sel]; }));
+  var editFrames = glideFrames(0.7).slice(0, E.marks.start + 1), editCursor = [[1.6,620,640]], editClicks = [], t = 2.3;
+  for (var j = E.marks.start + 1; j < E.frames.length; j++) {
+    editFrames.push([t, j]);
+    if (selAt.has(j)) { var se = selAt.get(j), m = [se[0]+se[2]/2, se[1]+se[3]/2];
+      editCursor.push([t - 0.4, m[0], m[1]]); editCursor.push([t + 0.15, m[0], m[1]]); editCursor.push([t + 0.45, m[0] + 30, m[1] + 46]);
+      editClicks.push(t - 0.2, t - 0.06); t += 0.6; }
+    else t += (selAt.has(j + 1) || j === E.frames.length - 1) ? 0.45 : 0.11;
+  }
+  // the grade was measured as "Gr 6"; it grows leftward as decimals appear, so widen the ring
+  var ED = R(140, 360, 1050, 300), EG = R(E.grade[0] - 40, E.grade[1], E.grade[2] + 40, E.grade[3]);
+  S.push({ clip:'edit', dur:t + 2.0, chap:[3,'Edit the text directly'],
+    frames:editFrames,
+    cam:[[0,F],[1.0,F],[1.9,ED],[t + 1.0,ED],[t + 1.9,F]],
+    cursor:[editCursor], clicks:editClicks,
+    labels:[[2.0,t*0.55,'Or edit right in the text','Flags clear as you rewrite',r(E.para)],
+            [t*0.55+0.2,t + 1.0,'Reading grade updates as you type','Every check reruns on each change',EG]] });
 
   // Apply all: the Plain language card fixes every safe rewrite in one step
   var AA = C.applyall, AB = mid(AA.btn);
   var AAcard = R(AA.summary[0] - 6, AA.summary[1] - 6, AA.summary[2] + 12, AA.fixall[1] + AA.fixall[3] - AA.summary[1] + 12);
   var AAdoc = R(140, 190, 660, 300);
-  S.push({ clip:'applyall', dur:9.8, chap:[2,'Apply all'],
-    frames:[[0,0],[3.75,1,1]],
-    cam:[[0,F],[0.8,F],[1.7,R(1180,150,400,260)],[4.9,R(1180,150,400,260)],[5.8,AAdoc],[8.6,AAdoc],[9.4,F]],
-    cursor:[[[1.5,1320,620],[2.9,AB[0],AB[1]],[3.9,AB[0],AB[1]],[4.3,AB[0]+50,AB[1]+60]]],
-    clicks:[3.6],
-    labels:[[1.8,4.7,'Or apply every rewrite at once','Each count updates when you click Apply all',AAcard],
-            [5.9,8.6,'Fixed across the whole page','One step in History undoes them all',AAdoc]] });
+  S.push({ clip:'applyall', dur:10.6, chap:[4,'Apply all'],
+    frames:glideFrames(0.6).concat([[4.55,AA.marks.applied,1]]),
+    cam:[[0,F],[1.6,F],[2.5,R(1180,150,400,260)],[5.7,R(1180,150,400,260)],[6.6,AAdoc],[9.4,AAdoc],[10.2,F]],
+    cursor:[[[2.3,1320,620],[3.7,AB[0],AB[1]],[4.7,AB[0],AB[1]],[5.1,AB[0]+50,AB[1]+60]]],
+    clicks:[4.4],
+    labels:[[2.6,5.5,'Or apply every rewrite at once','Each count updates when you click Apply all',AAcard],
+            [6.7,9.4,'Fixed across the whole page','One step in History undoes them all',AAdoc]] });
 
   // History: every change is logged; name a version; revert to an earlier one
   var H = C.history, HB = mid(H.btn), HN = mid(H.name), HS = mid(H.save), HR = mid(H.revert);
   var histFrames = [[0,0],[1.5,1,1]]; for (var k = 2; k <= 6; k++) histFrames.push([5.75 + (k-2)*0.14, k]);
   histFrames.push([6.6,7],[7.25,8,1],[9.3,9,1],[11.35,10,1]);
   var HTOP = R(1200,40,400,470), HBOT = R(1200,560,400,330);
-  S.push({ clip:'history', dur:15.6, chap:[3,'History and versions'],
+  S.push({ clip:'history', dur:15.6, chap:[5,'History and versions'],
     frames:histFrames,
     cam:[[0,F],[1.9,F],[2.8,HTOP],[8.7,HTOP],[9.5,HBOT],[12.0,HBOT],[12.8,F]],
     cursor:[[[0.2,820,520],[1.0,HB[0],HB[1]],[1.5,HB[0],HB[1]],[1.9,HB[0]+60,HB[1]+80]],
@@ -61,20 +102,10 @@
     labels:[[2.9,5.4,'Every change is logged','What changed, word count and CCI score',r(H.item0)],
             [5.6,8.7,'Name a version to come back to','Save version, or Ctrl/⌘+S',R(1205,58,390,H.saved[1] + H.saved[3] - 58)],
             [9.6,11.3,'Revert to any earlier version','Here, the handout as first loaded',r(H.oldItem)],
-            [12.9,15.6,'Back to the original, nothing lost','The version you left stays in History',R(130,190,1470,330)]] });
-
-  var CCI = C.fw.cci, BTN = mid(C.fw.btn);
-  S.push({ clip:'fw', dur:7.4, chap:[4,'Frameworks'],
-    frames:[[0,0],[1.45,1,1],[4.75,2,1]],
-    cam:[[0,F],[1.8,F],[2.7,R(800,125,790,430)],[3.9,R(800,125,790,430)],[4.4,R(800,380,790,400)],[6.2,R(800,380,790,400)],[7.0,F]],
-    cursor:[[[0.2,1100,520],[1.1,BTN[0]+180,BTN[1]],[1.5,BTN[0]+180,BTN[1]],[2.0,BTN[0]+120,BTN[1]+120]],
-            [[3.6,1250,480],[4.4,CCI[0]+22,CCI[1]+22],[4.9,CCI[0]+22,CCI[1]+22],[5.4,CCI[0]+90,CCI[1]+60]]],
-    clicks:[1.3,4.6],
-    labels:[[2.8,4.0,'23 published frameworks','Each linked to its original source',R(808,132,772,410)],
-            [4.8,6.2,'Tick one to add its checks','CCI: CDC Clear Communication Index',r(CCI)]] });
+            [12.9,15.6,'Back to the original, nothing lost','The version you left stays in History',R(115,195,670,330)]] });
 
   var CVD = C.poster.cvd.map(mid), ART = r(C.poster.art);
-  S.push({ clip:'poster', dur:8.4, chap:[5,'Posters and images'],
+  S.push({ clip:'poster', dur:8.4, chap:[6,'Posters and images'],
     frames:[[0,0],[3.35,1,1],[5.45,2,1]],
     cam:[[0,F],[1.4,F],[2.3,R(15,180,1160,560)],[7.2,R(15,180,1160,560)],[8.0,F]],
     cursor:[[[2.4,1150,800],[3.05,CVD[1][0],CVD[1][1]],[3.4,CVD[1][0],CVD[1][1]],[4.7,CVD[1][0],CVD[1][1]],[5.15,CVD[4][0],CVD[4][1]],[5.6,CVD[4][0],CVD[4][1]],[6.0,CVD[4][0]+80,CVD[4][1]+60]]],
@@ -82,40 +113,27 @@
     labels:[[2.4,5.2,'See it through colour blindness','The poster as a reader with deuteranopia sees it',ART],
             [5.4,7.2,'Or as a greyscale print','Check it still works without colour',ART]] });
 
-  // Plan from an idea: the main message, what people should do, then the Draft stage and its checks
-  var MB = mid(C.plan.modeBtn), IN = C.plan.input, IN2 = C.plan.input2, NX = mid(C.plan.next);
-  var planFrames = [[0,0],[1.15,1,1]]; for (var k2 = 2; k2 <= 17; k2++) planFrames.push([3.6 + (k2-2)*0.12, k2]); planFrames.push([5.7,18]);
-  for (var k3 = 19; k3 <= 27; k3++) planFrames.push([6.5 + (k3-19)*0.12, k3]); planFrames.push([7.7,28],[9.25,29,1]);
-  var PIN = R(IN[0], IN[1], IN[2], IN2[1] + IN2[3] - IN[1]), PCH = r(C.plan.checks);
-  S.push({ clip:'plan', dur:13.4, chap:[6,'Plan from an idea'],
+  // Plan from an idea: clear the poster for a new piece, outline it, step to Draft, then send the outline to the
+  // editor, where it is scored; the walkthrough ends on the whole Studio
+  var PL = C.plan, CL = mid(PL.clear), MB = mid(PL.modeBtn), IN = PL.input, IN2 = PL.input2, NX = mid(PL.next), TE = mid(PL.toEditor);
+  var planFrames = [[0,0],[1.15,1,1],[2.75,2,1]];
+  for (var k2 = 3; k2 <= 18; k2++) planFrames.push([5.2 + (k2-3)*0.12, k2]); planFrames.push([7.3,19]);
+  for (var k3 = 20; k3 <= 28; k3++) planFrames.push([8.1 + (k3-20)*0.12, k3]); planFrames.push([9.3,29],[10.85,30,1],[15.15,31,1]);
+  var PIN = R(IN[0], IN[1], IN[2], IN2[1] + IN2[3] - IN[1]), PCH = r(PL.checks);
+  var PED = R(PL.editor[0] - 4, PL.editor[1] - 4, PL.read[0] + PL.read[2] - PL.editor[0] + 8, 330), PEC = R(20, 140, 1180, 420);
+  S.push({ clip:'plan', dur:23.2, chap:[7,'Plan from an idea'], last:true,
     frames:planFrames,
-    cam:[[0,F],[2.0,F],[2.9,R(250,290,790,220)],[8.0,R(250,290,790,220)],[8.8,F],[9.6,F],[10.4,PCH],[12.6,PCH],[13.4,F]],
-    cursor:[[[0.2,700,520],[0.85,MB[0],MB[1]],[1.2,MB[0],MB[1]],[1.6,MB[0]+60,MB[1]+90]],
-            [[2.9,820,560],[3.3,IN[0]+40,IN[1]+20],[3.5,IN[0]+40,IN[1]+20],[3.8,IN[0]+30,IN[1]+70]],
-            [[5.8,IN[0]+30,IN[1]+70],[6.2,IN2[0]+40,IN2[1]+20],[6.4,IN2[0]+40,IN2[1]+20],[6.8,IN2[0]+30,IN2[1]+70]],
-            [[8.2,900,640],[9.0,NX[0],NX[1]],[9.4,NX[0],NX[1]],[9.8,NX[0]+60,NX[1]+40]]],
-    clicks:[1.0,3.38,6.28,9.15],
-    labels:[[3.0,8.0,'Start with the one main message','Then what people should do',PIN],
-            [10.5,12.6,'Each stage lists the checks that apply','The draft is scored against them in the editor',PCH]] });
-
-  // ending: continuous editing right in the text, flags clearing as words are rewritten
-  var E = C.edit, selAt = new Map(E.edits.map(function(e){ return [e.at, e.sel]; }));
-  var editFrames = [[0,0]], editCursor = [[1.6,620,640]], editClicks = [], t = 2.3;
-  for (var j = 1; j < E.frames.length; j++) {
-    editFrames.push([t, j]);
-    if (selAt.has(j)) { var se = selAt.get(j), m = [se[0]+se[2]/2, se[1]+se[3]/2];
-      editCursor.push([t - 0.4, m[0], m[1]]); editCursor.push([t + 0.15, m[0], m[1]]); editCursor.push([t + 0.45, m[0] + 30, m[1] + 46]);
-      editClicks.push(t - 0.2, t - 0.06); t += 0.6; }
-    else t += (selAt.has(j + 1) || j === E.frames.length - 1) ? 0.45 : 0.11;
-  }
-  // the grade was measured as "Gr 6"; it grows leftward as decimals appear, so widen the ring
-  var ED = R(140, 335, 1040, 180), EG = R(E.grade[0] - 40, E.grade[1], E.grade[2] + 40, E.grade[3]);
-  S.push({ clip:'edit', dur:t + 1.0, chap:[7,'Edit the text directly'], last:true,
-    frames:editFrames,
-    cam:[[0,F],[1.0,F],[1.9,ED],[t + 2,ED]],
-    cursor:[editCursor], clicks:editClicks,
-    labels:[[2.0,t*0.55,'Or edit right in the text','Flags clear as you rewrite',r(E.para)],
-            [t*0.55+0.2,t + 1.0,'Reading grade updates as you type','Every check reruns on each change',EG]] });
+    cam:[[0,F],[3.6,F],[4.5,R(250,290,790,220)],[9.6,R(250,290,790,220)],[10.4,F],[11.2,F],[12.0,PCH],[15.2,PCH],[16.0,PEC],[18.9,PEC],[19.8,F]],
+    cursor:[[[0.2,900,600],[0.85,CL[0],CL[1]],[1.2,CL[0],CL[1]],[1.9,MB[0],MB[1]],[2.8,MB[0],MB[1]],[3.2,MB[0]+60,MB[1]+90]],
+            [[4.5,820,560],[4.9,IN[0]+40,IN[1]+20],[5.1,IN[0]+40,IN[1]+20],[5.4,IN[0]+30,IN[1]+70]],
+            [[7.4,IN[0]+30,IN[1]+70],[7.8,IN2[0]+40,IN2[1]+20],[8.0,IN2[0]+40,IN2[1]+20],[8.4,IN2[0]+30,IN2[1]+70]],
+            [[9.8,900,640],[10.6,NX[0],NX[1]],[11.0,NX[0],NX[1]],[11.4,NX[0]+60,NX[1]+40]],
+            [[13.6,700,720],[14.6,TE[0],TE[1]],[15.2,TE[0],TE[1]],[15.6,TE[0]+60,TE[1]+40]]],
+    clicks:[1.0,2.6,4.98,7.88,10.75,15.0],
+    labels:[[4.6,9.6,'Start with the one main message','Then what people should do',PIN],
+            [12.1,14.6,'Each stage lists the checks that apply','The draft is scored against them in the editor',PCH],
+            [16.1,18.9,'The outline opens in the editor','Already scored against the frameworks you picked',PED,15.3],
+            [20.0,23.2,'That\u2019s PRISM','From an idea to a draft checked against published frameworks']] });
 
   var MIN_LABEL = 3.0;
   function stretch(s, at, extra){
@@ -128,7 +146,7 @@
     s.dur += extra;
   }
   function byClip(n){ return S.filter(function(s){ return s.clip === n; })[0]; }
-  [['studio',1.7,0.5],['poster',0.3,0.8],['plan',1.3,0.4],['edit',0.2,0.4]].forEach(function(a){ stretch(byClip(a[0]), a[1], -a[2]); });
+  [['guide',0.3,1.8],['poster',0.3,0.8],['edit',0.2,0.4]].forEach(function(a){ stretch(byClip(a[0]), a[1], -a[2]); });
   S.forEach(function(s){
     s.labels.forEach(function(l){ var d = l[1] - l[0]; if (d < MIN_LABEL) stretch(s, l[5] != null ? l[5] : l[1] - 0.4, MIN_LABEL - d); });
   });
@@ -139,14 +157,14 @@
   // ---------- drawing ----------
   function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
   function ease(x){ x = clamp(x, 0, 1); return x*x*x*(x*(x*6 - 15) + 10); }
-  function zoomFor(q){ return q === F ? ZMIN : clamp(Math.min(FW / (q.w * 1.12), FH / (q.h * 1.3)), ZMIN, 2.6); }
+  function zoomFor(q){ return q === F ? ZMIN : clamp(Math.min(FW / (q.w * 1.12), FH / (q.h * 1.3)), ZMIN, 2.1); }
   function smoothCam(kk){
-    var out = kk.map(function(x){ return x.slice(); }), EXT = 0.35;
+    var out = kk.map(function(x){ return x.slice(); }), EXT = 0.5;   // camera moves borrow up to 0.5 s from the holds on each side, so zooms read slowly
     for (var i = 0; i < out.length - 1; i++) {
       if (out[i][1] === out[i+1][1]) continue;
       var prevHold = i > 0 && out[i-1][1] === out[i][1] ? out[i][0] - out[i-1][0] : 0;
       var nextHold = i + 2 < out.length && out[i+1][1] === out[i+2][1] ? out[i+2][0] - out[i+1][0] : 0;
-      out[i][0] -= Math.min(EXT, prevHold * 0.4); out[i+1][0] += Math.min(EXT, nextHold * 0.4);
+      out[i][0] -= Math.min(EXT, prevHold * 0.45); out[i+1][0] += Math.min(EXT, nextHold * 0.45);
     }
     return out;
   }
@@ -216,8 +234,11 @@
       if (Lb[4]) {
         var rr = Lb[4], p1 = toS(c, rr.x, rr.y), p2 = toS(c, rr.x + rr.w, rr.y + rr.h), pad = 10;
         show(Ly.spot, true); Ly.spot.style.opacity = a;
-        Ly.spot.style.left = (p1[0] - pad) + 'px'; Ly.spot.style.top = (p1[1] - pad) + 'px';
-        Ly.spot.style.width = (p2[0] - p1[0] + pad*2) + 'px'; Ly.spot.style.height = (p2[1] - p1[1] + pad*2) + 'px';
+        // keep the whole box on the stage: cards at the page edge would push its border out of frame
+        var EDGE = 12, sx1 = Math.max(EDGE, p1[0] - pad), sy1 = Math.max(EDGE, p1[1] - pad);
+        var sx2 = Math.min(FW - EDGE, p2[0] + pad), sy2 = Math.min(FH - EDGE, p2[1] + pad);
+        Ly.spot.style.left = sx1 + 'px'; Ly.spot.style.top = sy1 + 'px';
+        Ly.spot.style.width = (sx2 - sx1) + 'px'; Ly.spot.style.height = (sy2 - sy1) + 'px';
         lx = clamp(p1[0] - pad, 40, FW - lw - 40);
         ly = p2[1] + pad + 24; if (ly + lh > FH - 110) ly = p1[1] - pad - 24 - lh;
         if (ly < 30) ly = clamp(p2[1] + pad + 24, 30, FH - lh - 110);
@@ -278,11 +299,22 @@
   function scrollTime(){ var rg = range(); return rg > 0 ? clamp((window.scrollY - top()) / rg, 0, 1) * TOTAL : 0; }
 
   // For pages that step through the walkthrough (story.html): one stop per label, held once the
-  // label is fully in (or once its follow-up click lands), as scroll positions.
+  // label is fully in (or once its follow-up click lands), as scroll positions. A stop never lands
+  // mid-typing: inside a run of quick frame changes it moves to just after the run's last frame.
+  function settle(s, lt){
+    var f = s.frames.map(function(q){ return q[0]; }), RUN = 0.2, i = 0;
+    while (i < f.length - 1 && f[i + 1] <= lt) i++;
+    // only while the run is still going (or just ended), not anywhere after a finished run such as a rail glide
+    var inRun = (i + 1 < f.length && f[i + 1] - f[i] < RUN) || (i > 0 && f[i] - f[i - 1] < RUN && lt - f[i] < RUN);
+    if (!inRun) return lt;
+    while (i + 1 < f.length && f[i + 1] - f[i] < RUN) i++;
+    return Math.min(s.dur - XF, f[i] + 0.15);
+  }
   window.PRISM_WALK = {
     labels: S.reduce(function(out, s){
       return out.concat(s.labels.map(function(l){
-        return { title:l[2], time:s.start + Math.min(l[1] - 0.2, Math.max(l[0] + 0.7, l[5] != null ? l[5] + 0.3 : 0)) };
+        var lt = Math.min(l[1] - 0.2, Math.max(l[0] + 0.7, l[5] != null ? l[5] + 0.3 : 0));
+        return { title:l[2], time:s.start + settle(s, lt) };
       }));
     }, []),
     stops: function(){ return this.labels.map(function(l){ return Math.round(top() + l.time / TOTAL * range()); }); }
@@ -309,7 +341,7 @@
     raf = 0;
     var target = scrollTime(), dt = last ? Math.min(0.1, (now - last) / 1000) : 0.016; last = now;
     // follow the scroll with a little lag, so wheel steps glide instead of jumping
-    shown = reduce ? target : shown + (target - shown) * (1 - Math.exp(-dt * 9));
+    shown = reduce ? target : shown + (target - shown) * (1 - Math.exp(-dt * 14));
     if (Math.abs(target - shown) < 0.002) shown = target;
     render(shown);
     fill.style.width = (shown / TOTAL * 100) + '%';
