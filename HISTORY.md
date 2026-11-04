@@ -4,6 +4,92 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-04 — The presentation site is gone; the story slides now live at /presentation/
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Deleted the long-scroll presentation page** (the old `presentation/index.html`). Only the
+  story slides are left.
+- **The slides moved to `presentation/index.html`**, so `/presentation/` opens them directly.
+  `presentation/story.html` is now a tiny redirect to `/presentation/`, so old links still work.
+- On the "Designing with Claude" slide, the five step cards no longer link into the deleted page:
+  the "Check the sources first", "Six front doors", "The proofing desk", "Sonia's fork" and "PRISM
+  today" lines are gone, and the lead drops "Each links to the moment where it happened."
+- The screenshots in `presentation/img/` are kept, even the ones only the old page used.
+
+## 2026-11-04 — Story page: the welcome slide gets GoInvo, a blurb, intros and a license
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The opening slide now carries everything a welcome page needs**, laid out top to bottom:
+  - the **GoInvo logo**, with "By Sonia Seto, Chloe Ma" and the feedback email
+    **prism@goinvo.com**;
+  - the title, with the new blurb under it: "Clickable napkin sketches: share ideas faster,
+    improve them faster.";
+  - **both speakers' introductions** along the bottom, with name, role and BMC year;
+  - the event line and the license: "This project and designs are licensed under Creative Commons
+    Attribution 4.0".
+- The logo is a copy of GoInvo's SVG (`presentation/img/goinvo-logo.svg`), drawn inline in the
+  slide's text colour so it can switch to white on the dark backgrounds that come later.
+- At 1920×1080 the title is about 180px and the blurb about 50px. Everything fits on one screen,
+  on a projector and on a phone.
+- Chloe's title is now **Senior product designer** (was Senior health strategy designer) on the
+  welcome slide, the "Who we are" slide and the full presentation page.
+- **The welcome slide's background draws itself (prototype).** A napkin with a pen sketch of
+  PRISM's Studio sits behind the title. When the slide comes on, the sketch draws itself onto the
+  blank napkin: first the two big frames trace their outlines, then the cards, labels and lines wipe
+  in, top to bottom, in about 6 s. Then the sketched "Open" button fills with the brand yellow and a
+  ring spreads from it, the "clickable napkin sketch". It replays whenever the slide is shown again,
+  and shows the finished sketch straight away for people who prefer reduced motion.
+  - **Colour: warm wood**, the photo's own colours (Chloe's pick). Adding `?tone=cool` to the
+    address shows a version greyed to the deck's cool grey, for comparison.
+  - **Readability:** a wash in the wood's own tone fades from the left, so the title, logo and intros
+    sit on plain tabletop rather than on the sketch.
+  - **Made from one Nano Banana still** (the draft, 1024px wide, upscaled 2×):
+    `scripts/napkin-ink.py` separates the ink into `media/bg/napkin-ink.png`, paints a blank napkin
+    (`napkin-blank.webp`) and lists the ink's mark groups in drawing order
+    (`napkin-strokes.json`). `presentation/napkin.js` draws it.
+  - **Still a draft:** the napkin overlaps the right side of the title and the image is soft at
+    projector size. A regenerated pair (napkin in the right 40%, no coffee ring, larger size) runs
+    through the same script.
+- **The whole story page is on warm paper now** (Chloe's pick, option A of three previewed): the
+  background `#F3EDE4`, cards `#FBF8F3`, rules `#DDD3C5`, and warm near-black text (`#1E1A16`,
+  `#5A5048`). It runs on from the napkin's wood on the welcome slide instead of jumping to cool
+  grey. Yellow accents and Sonia's blue are unchanged. The walkthrough's screens keep PRISM's own
+  colours, since they're the real app.
+- **No dark mode on the story page.** It stays on warm paper even when the viewer's computer is set to
+  dark.
+- **Two slides removed:** "Who we are" (the introductions now open the talk on the welcome slide)
+  and "Each of us knew half". The story page has 11 slides.
+- **Napkin animation fixes.**
+  - **No more early checkboxes.** Faint outlines of the boxes and lines had stayed on the blank
+    napkin where the ink was erased, so they showed before being drawn. Each piece was also
+    revealed as a rectangle that overlapped its neighbours. Now the blank napkin is filled from the
+    paper around each hole (no halos), and each of the 69 marks reveals only its own ink, using a
+    per-pixel owner map (`media/bg/napkin-marks.png`).
+  - **A visible click.** After the sketch is drawn, a cursor glides to "Open" and presses it; the
+    button fills solid yellow and a ring spreads out.
+- **"10+ frameworks" everywhere for now:** The problem slide said "about 26"; it now matches the PRISM
+  slide's "10+". (A turning point keeps "broke at 26", the size of the library at that moment.)
+- **Thank you** now has the GoInvo logo, "Feedback: prism@goinvo.com" and the CC BY 4.0 line on its
+  Try PRISM card. Its "The record behind the talk →" button is removed.
+- **The story page now uses PRISM's own dark theme** (Chloe's pick, after previewing it), replacing
+  the warm paper: page `#121417`, cards `#1B1E22`, rules `#343A41`, text `#E9EBEE` / `#B4BAC2`, links
+  `#8DB4EC`, and PRISM's translucent yellow highlighter. The talk now looks like the product. There is
+  still only one theme, with no light mode.
+- **Welcome slide: every line is readable.** The text keeps to the left half, and the napkin moves into
+  the right 42% (on a 1920×1080 screen the text ends at 982px and the napkin starts at 1085px). The
+  title is set on two lines, "The Barrier / Just Dropped", at about 140px. The photo's top and bottom
+  edges fade into the dark, so the napkin sits in a pool of light, dimmed slightly to suit the page.
+  On phones the napkin is hidden.
+- **Welcome slide: the napkin photo now bleeds across the whole slide** (it had been boxed into the
+  right 42%). A dark wash from the left, and another along the bottom, keeps the text in contrast
+  where it crosses the napkin: white text measures about 11:1 and the grey role lines about 5.8:1 at
+  their hardest spots (WCAG AA asks for 4.5:1). A soft text shadow backs this up. The slides now
+  live in `presentation/index.html` (moved there in another session); this change is there.
+- **Not done yet:** the animated portraits; moving backgrounds on the other slides; a regenerated,
+  sharper napkin still; the repo has no `LICENSE` file yet to match the license line.
+
 ## 2026-11-02 — Walkthrough: moves as you scroll, no jumps, Edit after Apply, a proper ending
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
