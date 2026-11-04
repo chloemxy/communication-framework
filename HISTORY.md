@@ -4,6 +4,151 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-02 — Walkthrough: moves as you scroll, no jumps, Edit after Apply, a proper ending
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **It starts moving right away.** The opening held still for 2.2 s, about 330 px of scrolling
+  with nothing changing on screen. It now holds for 0.4 s, and the camera heads for the guide
+  straight after. The player also follows the scroll a little more closely, with less trailing lag.
+- **New chapter order:** Getting started, Apply a suggestion, **Edit the text directly**, Apply
+  all, History and versions, Posters and images, Plan from an idea. Editing by hand now follows
+  the one-card fix. It picks up the paragraph where the suggestion left it: "various
+  complications" becomes "problems", "precipitated" becomes "caused", and "adequately" is deleted.
+  The reading grade drops from 5.3 to 4.2. Apply all then fixes the three rewrites that are left.
+- **The same screen no longer changes between chapters.** The walkthrough was re-recorded in one
+  pass, in this order. Each chapter starts on exactly the screen the previous one ended on. When
+  the card rail moves to a different card, the move is recorded as a short scroll the viewer sees;
+  before, the crossfade swapped in different cards.
+- **Plan finishes its flow and the walkthrough has an ending.** Plan now:
+  1. clears the poster for a new piece;
+  2. outlines the message;
+  3. steps to Draft;
+  4. clicks "Write the draft in the editor". The outline opens in the editor, already scored:
+     grade below 1, CCI and PEMAT ready to rate.
+
+  Then the camera pulls back to the whole Studio and holds on "That's PRISM: From an idea to a
+  draft checked against published frameworks". This leads into the next slide, Then and now,
+  which compares the Studio in August with today.
+- **Highlight boxes stay whole.** A box around a card at the page's right edge ran off the frame
+  (Every change is logged, Name a version, Revert). Boxes now stop 12 px inside the frame, ring
+  included. "Back to the original, nothing lost" now frames just the reverted handout and its
+  notice, instead of a strip across the whole page and under the History panel.
+- **Story page stops:** the "don't stop mid-typing" rule no longer mistakes a rail scroll for
+  typing. 21 stops in all.
+- **Found in PRISM, not fixed here:** with a poster or image open, Plan's "Write the draft in the
+  editor" fills the editor behind the image, so the outline never shows. The walkthrough avoids
+  this by clearing the poster first.
+- **Updated:**
+  - `presentation/media/walkthrough/` (100 screens, `clips.js`)
+  - `presentation/walkthrough.js`
+  - the `?v=20261102h` tags in `presentation/index.html` and `presentation/story.html`
+  - the web video (106 s) and its poster
+
+  Master copy: `screen record/prism-walkthrough-v9.mp4`.
+
+## 2026-11-02 — Walkthrough starts like a beginner: the four steps of "How to check your material"
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Why:** the walkthrough opened with a handout already being edited. A first-time visitor lands on
+  the empty Studio and its four-step guide, so the walkthrough now starts there and follows it.
+- **New first chapter, "Getting started"** (27 s), recorded from `master` as deployed, one label per
+  guide step:
+  1. **Step 1: set your Brief.** It holds on the empty Studio, then zooms in on the guide, and the
+     cursor clicks its Open Brief button. Then it picks Patients (the guide ticks step 1) and Handout,
+     and the Brief picks six frameworks for a handout.
+  2. **Step 2: add your material.** It clicks the sample handout. This replaces the "Start from a
+     sample handout" label from the entry below.
+  3. **Step 3: pick your frameworks.** It opens the list of 23, shows the six the Brief picked, and
+     ticks SAM (Suitability Assessment of Materials).
+  4. **Step 4: review the results.** The PEMAT card shows 16 items to rate. It marks the first one
+     Met, and the card drops to 15 to rate.
+- **The separate Frameworks chapter is gone.** Step 3 now shows the list and ticking. There are still
+  seven chapters: Getting started, Apply a suggestion, Apply all, History and versions, Posters and
+  images, Plan from an idea, Edit the text directly. The video is 97 s (was 82 s).
+- **The whole walkthrough was re-recorded in one pass**, so the later chapters carry the Brief
+  (Patients, Handout) and the seven frameworks. Plan's Draft stage now lists the checks turned on
+  for you. The closing edit's camera is wider, so it keeps the reading grade (now lower down in the
+  Readability card) in view.
+- **Updated:**
+  - `presentation/media/walkthrough/` (89 screens, `clips.js`)
+  - `presentation/walkthrough.js` (scenes, image version tag)
+  - the `?v=20261102c` script tags in `presentation/index.html` and `presentation/story.html`
+  - `presentation/media/prism-walkthrough.mp4` and its poster
+
+  Master copy: `screen record/prism-walkthrough-v7.mp4`.
+- **Re-rendered (v8)** to match the new chapter order, the longer edit chapter and the 0.5 s camera
+  smoothing described in the entry below. It is 98 s; the web copy is 40 MB. Master copy:
+  `screen record/prism-walkthrough-v8.mp4`.
+
+## 2026-11-02 — Story page: PRISM logo fix; the walkthrough holds on its opening and plays slower
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The yellow marker behind the "I" in PRISM (What we built slide) no longer hangs below the
+  word.** It was sized to the font's full line, including the space for descenders, so it ran
+  about a quarter of the letter's height under the baseline. It now ends just below the baseline.
+- **The walkthrough holds on its opening screen first.** On the story page, the first step into the
+  walkthrough shows the opening screen and stops there; the next step starts playing. (A "Start
+  from a sample handout" label added here was replaced by the Getting started chapter above.)
+- **Each step plays instead of fast-forwarding.** A step forward now plays the walkthrough at its
+  recorded speed and holds on the next label; a step back rewinds quickly.
+- **A step never stops mid-typing.** If a label's stop would land while text is being typed, it
+  moves to just after the last letter (`walkthrough.js`). Before, Plan from an idea stopped on
+  "Che|" in the main message box.
+- **Gentler camera.** Each zoom or pan takes up to 0.5 s longer on each side, borrowed from the
+  pauses around it, and the closest zoom is 2.1× instead of 2.6×. This applies on both pages.
+- Edit the text directly briefly moved to follow History; the re-recorded order in the entry above
+  (Edit right after Apply a suggestion) replaces that.
+- The walkthrough's chapter rail on the story page only spells out the current chapter's name, as on
+  the full page, so the names no longer overlap.
+
+## 2026-11-01 — Walkthrough shows more of PRISM: Apply all, History, revert, the Plan stages
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Why:** the walkthrough showed one applied suggestion and a closing edit, but not the rest of
+  how a draft changes in PRISM: fixing everything at once, the change log, saved versions and
+  going back to one, or what Plan does after the first field.
+- **Seven chapters, 82 seconds** (was five, 49 s), all recorded from `master` as deployed:
+  1. Apply a suggestion: the Jargon rewrite from a card, as before.
+  2. **Apply all (new):** the Plain language card's "3 suggested changes", one click, counts
+     drop to 0 to fix, and "Applied 3 changes. Undo them all at once in History."
+  3. **History and versions (new):** the History panel lists each change with what changed
+     (struck and added words), word count and CCI; a version is named "Draft for Sonia" and
+     saved; then Revert takes the handout back to the first snapshot ("The version you left is
+     still in History").
+  4. Frameworks, 5. Posters and images: as before.
+  6. Plan from an idea: now also fills "What should people do?", moves to the Draft stage and
+     holds on the checks PRISM scores there.
+  7. Edit the text directly: the closing continuous edit, as before.
+- **Rail:** with seven chapters, only the current chapter shows its name (others show the
+  number; hover or focus shows the name).
+- **Updated:** `presentation/media/walkthrough/` (84 screens, `clips.js`), `presentation/walkthrough.js`
+  (scenes, image version tag), `presentation/index.html` (script version tags, rail rule),
+  `presentation/media/prism-walkthrough.mp4` and its poster. Master copy:
+  `screen record/prism-walkthrough-v6.mp4`.
+
+## 2026-11-01 — Walkthrough re-recorded from the live PRISM
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Why:** the walkthrough had been recorded from local, unreleased Studio edits (the Oct 26–27
+  library review, "Based on:" sources, a longer sample handout), so it didn't match PRISM as
+  deployed.
+- **Re-recorded from `master` as deployed** (served locally from a clean copy): the 117-word
+  sample handout, the Jargon rewrite with "Source: PEMAT-P, AHRQ", the "Applied. Undo it…"
+  notice, 23 frameworks with CCI ticked, the poster's colour-blind and greyscale views, Plan, and
+  the closing edit taking the reading grade from 6 to 4.5. Each scene was checked against the
+  live Studio.
+- **Labels:** "11 published frameworks" is now "23 published frameworks"; the "Applied" spotlight
+  follows the paragraph down when the notice appears; the grade ring is wide enough for "Gr 4.5".
+- **Updated:** `presentation/media/walkthrough/` (screens and `clips.js`), `presentation/walkthrough.js`
+  (labels, and a version tag on image URLs so browsers don't show the old screens),
+  `presentation/media/prism-walkthrough.mp4` and its poster. The master copy is
+  `screen record/prism-walkthrough-v5.mp4`.
+
 ## 2026-11-01 — Story page becomes slides, sized for the room
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`

@@ -52,7 +52,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .lead{font:400 clamp(16px,1.6vw,19px)/1.55 var(--f-read);color:var(--ink-2);max-width:60ch;margin-top:14px}
 .visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .pi{position:relative;display:inline-block;padding:0 .12em;margin:0 .02em;color:var(--on-brand);isolation:isolate}
-.pi::before{content:"";position:absolute;inset:.06em -.08em -.02em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
+/* the box runs to the font's descender; stop the marker just under the baseline */
+.pi::before{content:"";position:absolute;inset:.04em -.08em .22em;background:var(--brand);clip-path:polygon(18% 0,100% 0,82% 100%,0 100%);z-index:-1}
 
 /* chapter rail */
 .rail{position:fixed;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:10px}
@@ -148,6 +149,9 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .wk-chapbtn.on b{background:var(--brand);color:var(--on-brand)}
 .wk-meta{display:flex;justify-content:space-between;gap:16px;font-size:13px;color:var(--ink-2);margin-top:10px}
 .wk-time{font-variant-numeric:tabular-nums;color:var(--ink)}
+/* seven chapters don't all fit by name: only the current one (or the one under the pointer) spells it out */
+.wk-chapbtn:not(.on):not(:hover):not(:focus-visible) span{display:none}
+.wk-chapbtn.on,.wk-chapbtn:hover,.wk-chapbtn:focus-visible{z-index:2}
 @media (max-width:720px){.wk-chapbtn span{display:none}.wk-meta .wk-hint{display:none}.wk-cap span{display:none}}
 
 /* 5 then and now */
@@ -621,7 +625,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   function walkTop(){ return walkEl.getBoundingClientRect().top + window.scrollY; }
   // one stop per walkthrough label (walkthrough.js lists them)
   function walkStops(){
-    return window.PRISM_WALK ? window.PRISM_WALK.stops() : [walkTop()];
+    // the first point is the opening screen, held before anything plays
+    return [walkTop()].concat(window.PRISM_WALK ? window.PRISM_WALK.stops() : []);
   }
   function count(s){ return s.walk ? walkStops().length : s.beats.length; }
 
@@ -631,23 +636,31 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     if (!anim) return;
     cancelAnimationFrame(anim.raf); var a = anim; anim = null; a.apply(a.to);
   }
-  function tween(apply, from, to, dur, delay){
+  // playback at a steady speed, easing only over its first and last 8%
+  function steady(k){
+    var e = .08, v = 1 / (1 - e);
+    if (k < e) return v * k * k / (2 * e);
+    if (k > 1 - e) return 1 - v * (1 - k) * (1 - k) / (2 * e);
+    return v * (k - e / 2);
+  }
+  function tween(apply, from, to, dur, delay, curve){
     finish();
     if (reduce || dur <= 0) { apply(to); return; }
-    anim = { apply:apply, from:from, to:to, dur:dur, t0:performance.now() + (delay || 0) };
+    anim = { apply:apply, from:from, to:to, dur:dur, t0:performance.now() + (delay || 0), curve:curve || inOut };
     (function step(now){
       if (!anim) return;
       var k = clamp((now - anim.t0) / anim.dur);
-      anim.apply(anim.from + (anim.to - anim.from) * inOut(k));
+      anim.apply(anim.from + (anim.to - anim.from) * anim.curve(k));
       if (k < 1) anim.raf = requestAnimationFrame(step); else anim = null;
     })(performance.now());
   }
   function playBeat(s, back, delay){
     if (s.walk) {
       var to = walkStops()[s.beat], from = window.scrollY, d = Math.abs(to - from);
-      // a quick move to the next point, not a playback: at most 1.8 s however much happens between
-      var dur = Math.min(1800, Math.max(900, d / 150 * 260)) * (back ? .6 : 1);
-      tween(function(v){ window.scrollTo(0, v); }, from, to, dur, delay);
+      // forward plays at recorded speed (150 px of track per second) and holds; back is a quick rewind
+      var go = function(v){ window.scrollTo(0, v); };
+      if (back) tween(go, from, to, 700, delay);
+      else tween(go, from, to, Math.min(11000, d / 150 * 1000), delay, steady);
     } else {
       var t = s.beats[s.beat];
       tween(function(v){ paintSlide(s, v); }, s.t, t, (520 + 900 * Math.abs(t - s.t)) * (back ? .6 : 1), delay);
@@ -770,7 +783,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   if (start) show(start, 1); else markRail();
 })();
 </script>
-<script src="media/walkthrough/clips.js?v=20261101c"></script>
-<script src="walkthrough.js?v=20261101c"></script>
+<script src="media/walkthrough/clips.js?v=20261102h"></script>
+<script src="walkthrough.js?v=20261102h"></script>
 </body>
 </html>
