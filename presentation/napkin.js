@@ -1,5 +1,5 @@
 /* The welcome slide's background: a napkin sketch of PRISM draws itself, stroke group by stroke
- * group, then a cursor glides in and clicks its "Open" button. Plays each time the slide comes on.
+ * group, then a cursor glides in and clicks its "Open" button. Loops while the slide is on screen.
  * media/bg/napkin-blank.webp is the bare napkin, napkin-ink.png the ink alone (same size),
  * napkin-marks.png says which mark owns each ink pixel, and napkin-strokes.json lists the marks in
  * drawing order (boxes in image pixels). All four come from scripts/napkin-ink.py. */
@@ -12,7 +12,7 @@
   // the slide's data-tone picks the grade; ?tone=cool or ?tone=warm overrides it, for comparing
   var tone = /[?&]tone=(warm|cool)/.exec(location.search); if (tone) slide.dataset.tone = tone[1];
   var blank = new Image(), ink = new Image(), owner = new Image(), data = null, t0 = 0, raf = 0, plan = [];
-  var OPEN = null, CLICK = { glide:0.9, ripple:0.8, hold:0.6 };
+  var OPEN = null, CLICK = { glide:0.9, ripple:0.8, hold:0.6 }, LOOP = { hold:3, fade:0.8, rest:0.4 };
 
   function load(im, src){ return new Promise(function(ok){ im.onload = ok; im.onerror = ok; im.src = DIR + src + V; }); }
   Promise.all([load(blank, 'napkin-blank.webp'), load(ink, 'napkin-ink.png'), load(owner, 'napkin-marks.png'),
@@ -111,8 +111,14 @@
     if (reduce) { frame(1e9); return; }
     t0 = performance.now() + 450;           // let the slide fade in first
     (function step(now){
-      var t = (now - t0) / 1000; frame(t);
-      if (t < plan.done) raf = requestAnimationFrame(step);
+      if (!slide.classList.contains('on')) return;
+      var t = (now - t0) / 1000, gone = t - plan.done - LOOP.hold;
+      if (gone >= LOOP.fade) { t0 = now + LOOP.rest * 1000; t = -LOOP.rest; gone = -1; }
+      frame(t);
+      if (gone > 0) {                       // the sketch fades off the napkin, then draws itself again
+        ctx.globalAlpha = gone / LOOP.fade; ctx.drawImage(blank, 0, 0); ctx.globalAlpha = 1;
+      }
+      raf = requestAnimationFrame(step);
     })(performance.now());
   }
   new MutationObserver(function(){ if (data && slide.classList.contains('on')) play(); })

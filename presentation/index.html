@@ -80,12 +80,36 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* slide 2 background: a looping stock clip (question-bg.js), cropped so the pamphlet sits right of the text */
 .clip-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%}
 .clip-wash{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgb(18 20 23 / .88) 0%,rgb(18 20 23 / .8) 45%,rgb(18 20 23 / .45) 68%,rgb(18 20 23 / .25) 100%)}
+  background:linear-gradient(90deg,rgb(18 20 23 / .85) 0%,rgb(18 20 23 / .7) 45%,rgb(18 20 23 / .4) 66%,rgb(18 20 23 / .05) 88%,rgb(18 20 23 / 0) 100%)}
 #question .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
+/* What we brought: the two hands sit in the clear band between the headline and the cards */
+#brought .clip-bg{top:-28%;height:128%;object-position:50% 50%}
+.adam-wash{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgb(18 20 23 / .88) 0%,rgb(18 20 23 / .55) 16%,rgb(18 20 23 / .1) 26%,rgb(18 20 23 / .1) 42%,rgb(18 20 23 / .88) 56%,rgb(18 20 23 / .96) 100%)}
+@media (max-width:720px){.adam-wash{background:rgb(18 20 23 / .78)}}
+#brought .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
+/* AI certification: the illustration draws in along its ribbon, then the seal lands */
+.cert-band{position:absolute;inset:0 0 auto;height:calc(100vw * .558);overflow:hidden;background:#F6D3B1}
+.cert-art{position:relative;width:100%;aspect-ratio:2752 / 1536}
+.cert-art img{position:absolute;inset:0;width:100%;height:100%}
+.cert-img{clip-path:inset(0 calc((1 - var(--k,0)) * 100%) 0 0)}
+.cert-seal{clip-path:circle(18% at 83% 49.5%);transform-origin:83% 49.5%;opacity:min(1,calc(var(--k,0) * 4));transform:scale(calc(1.3 - var(--k,0) * .3))}
+#certify .stage{z-index:1}
+#certify .inner{padding-top:calc(100vw * .558)}
+.cert-std{margin-top:14px}
+@media (min-width:721px){.cert-band{inset:0;height:auto;background:#121417}
+  .cert-art{transform:translateY(-8%)}
+  .cert-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(18 20 23 / 0) 50%,rgb(18 20 23 / .93) 60%,rgb(18 20 23 / 1) 86%)}
+  #certify .inner{justify-content:flex-end;padding:58dvh 0 calc(5 * var(--u))}
+  #certify .h2{font-size:calc(5.2 * var(--u));margin:0}
+  #certify .lead{max-width:none;margin-top:calc(.8 * var(--u))}
+  #certify .cert-std{margin-top:calc(.8 * var(--u))}
+  #certify .real-q{margin-top:calc(1.2 * var(--u))}}
 /* every video or generated animation names its source at the foot of its slide */
 .inner .credit{margin:16px 0 0;max-width:none;font:400 var(--fs-fine)/1.4 var(--f-ui);color:var(--ink-2)}
 .credit a{color:inherit}
-@media (min-width:721px){.inner .credit{position:absolute;left:0;bottom:0;margin:0}}
+/* footers share one spot: the foot of the slide, left-aligned, the source note on The proof included */
+@media (min-width:721px){.inner .credit,.inner .note{position:absolute;left:0;right:0;bottom:0;margin:0}}
 .scene,.walk{opacity:0;visibility:hidden;transition:opacity .55s ease,transform .7s cubic-bezier(.2,.7,.2,1),visibility 0s linear .7s}
 .scene.on,.walk.on{opacity:1;visibility:visible;transform:none;transition:opacity .6s ease .12s,transform .8s cubic-bezier(.2,.7,.2,1) .05s,visibility 0s}
 .scene[data-dir="fwd"]:not(.on){transform:translateY(-4vh) scale(.985)}
@@ -109,8 +133,9 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* welcome: logo and byline on top, title and blurb in the middle, intros and fine print at the foot */
 .t-head{display:flex;flex-direction:column;gap:12px;color:var(--ink-2)}
 .goinvo{width:72px;height:auto;display:block}
-.t-by{color:var(--ink-2)}
-.t-by a,.fine a{color:inherit}
+.intros div{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center}
+.intros img{grid-row:span 2;max-width:none;width:60px;height:60px;border-radius:50%;object-fit:cover}
+.fine a{color:inherit}
 .t-main{margin-top:28px}
 .blurb{color:var(--ink);margin-top:20px;max-width:40ch}
 /* on the projector the welcome text keeps to the left half, clear of the napkin */
@@ -201,9 +226,15 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* analogy, catch, proof, voices, thesis: the talk's new beats */
 .big-line{margin-top:18px;max-width:18ch}
 .big-line mark{background-color:var(--hl);padding:0 .08em}
+.halves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:28px}
+.halves .sheet{padding:24px;border-top:4px solid var(--sonia)}
+.halves .sheet.c{border-top-color:var(--brand)}
+.halves h4{margin-top:10px}
+.halves p{margin-top:8px}
+@media (max-width:720px){.halves{grid-template-columns:1fr;gap:10px}}
 .num{margin-top:16px;display:flex;align-items:baseline;gap:.25em}
 .num .unit{color:var(--ink-2)}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:28px;border-top:1px solid var(--rule);padding-top:18px}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-top:28px;border-top:1px solid var(--rule);padding-top:18px}
 .stats b{display:block;}
 .stats span{display:block;color:var(--ink-2);margin-top:6px}
 .note{color:var(--ink-2);margin-top:22px}
@@ -248,15 +279,19 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   .lead{max-width:52ch;margin-top:calc(1.2 * var(--u))}
 
   .title h1{max-width:none;margin-top:calc(1.6 * var(--u))}
-  .t-main,.t-foot{max-width:52%}
+  .t-main{max-width:52%}
+  /* every item on the welcome slide holds one row */
+  .intros div,.intros span{white-space:nowrap}
+  @media (min-width:1000px){.fine{white-space:nowrap}}
   .title h1{white-space:nowrap}
   .title .inner{justify-content:space-between}
   .goinvo{width:calc(7 * var(--u))}
   .t-head{gap:calc(1.2 * var(--u))}
   .t-main,.t-foot{margin-top:0}
   .blurb{max-width:none;margin-top:calc(1.8 * var(--u))}
-  .intros{gap:calc(4 * var(--u));padding-top:calc(1.4 * var(--u))}
-  .intros span{margin-top:calc(.3 * var(--u))}
+  .intros div{column-gap:calc(1.2 * var(--u))}
+  .intros img{width:calc(6.6 * var(--u));height:calc(6.6 * var(--u))}
+  .intros{grid-template-columns:auto auto;justify-content:start;gap:calc(4 * var(--u));padding-top:calc(1.4 * var(--u));max-width:52%}
   .fine{margin-top:calc(1.4 * var(--u))}
 
   .question q{max-width:17ch;margin-top:calc(2 * var(--u))}
@@ -283,6 +318,11 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 
   .real-q{margin-top:calc(2.4 * var(--u));padding-top:calc(2 * var(--u))}
   .big-line{max-width:20ch;margin-top:calc(1.8 * var(--u))}
+  #brought .inner{justify-content:space-between;padding-bottom:calc(2.4 * var(--u))}
+  .halves{gap:calc(2 * var(--u));margin-top:calc(3 * var(--u))}
+  .halves .sheet{padding:calc(2.8 * var(--u));border-top-width:max(4px,.4 * var(--u))}
+  .halves h4{margin-top:calc(1.2 * var(--u))}
+  .halves p{margin-top:var(--u)}
   .stats{gap:calc(2 * var(--u));margin-top:calc(3 * var(--u));padding-top:calc(2 * var(--u))}
   .stats span{margin-top:calc(.6 * var(--u))}
   .note{margin-top:calc(2.4 * var(--u))}
@@ -309,17 +349,18 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
    italic only for the closing line under a slide. */
 .num .big,.big-mark,.thanks h2{font:500 var(--fs-hero)/.92 var(--f-display);letter-spacing:-.025em}
 .title h1,.question q,.big-line,.voice p,.thesis-l b,.h2,.num .unit,.stats b{font:500 var(--fs-display)/1.04 var(--f-display);letter-spacing:-.015em}
-.origin h4,.voice-did h4,.feats b,.wk-cap h2,.next b{font:500 var(--fs-head)/1.15 var(--f-display);letter-spacing:-.005em}
+.halves h4,.origin h4,.voice-did h4,.feats b,.wk-cap h2,.next b{font:500 var(--fs-head)/1.15 var(--f-display);letter-spacing:-.005em}
 .real-q{font:italic 400 var(--fs-head)/1.25 var(--f-display);color:var(--ink-2);border-top:0;padding-top:0}
 .real-q b{font:inherit;color:var(--ink)}
-.lead,.blurb,.question p,.origin p,.voice-did p,.thesis-l span,.next li,.feats span,.stats span{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
+.lead,.blurb,.question p,.halves p,.origin p,.voice-did p,.thesis-l span,.next li,.feats span,.stats span{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
 .blurb{color:var(--ink)}
 .intros b,.visit a.big{font:600 var(--fs-body)/1.3 var(--f-ui);color:var(--ink)}
-.label,.origin b,.voice-did b,.visit b,.question cite,.voice cite{font:600 var(--fs-tag)/1.2 var(--f-ui);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
-.note,.fine,.t-by,.intros span,.visit p,.visit .lic,.wk-cap span{font:400 var(--fs-fine)/1.5 var(--f-ui);color:var(--ink-2)}
+.label,.halves b,.origin b,.voice-did b,.visit b,.question cite,.voice cite,.cert-std{font:600 var(--fs-tag)/1.2 var(--f-ui);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2)}
+.note,.fine,.intros span,.visit p,.visit .lic,.wk-cap span{font:400 var(--fs-fine)/1.5 var(--f-ui);color:var(--ink-2)}
 .visit .feedback{color:var(--ink)}
 .num .unit{color:var(--ink-2)}
 .next b{display:block;color:var(--ink)}
+.num .big,.stats b{font-variant-numeric:tabular-nums lining-nums}
 
 /* short screens (landscape phones, small laptops) */
 @media (max-height:620px) and (max-width:720px){.lead{display:none}}
@@ -334,7 +375,6 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     <div class="stage"><div class="inner">
       <div class="t-head">
         <svg class="goinvo" viewBox="0 0 59 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GoInvo"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.20963 13.2915C4.90652 13.2915 3.79058 13.7184 2.8618 14.5721C1.93252 15.4263 1.46713 16.442 1.46713 17.6202C1.46713 19.3353 2.28572 20.4807 3.92039 21.0582V21.1055C2.35163 21.3832 1.56725 21.9294 1.56725 22.7425C1.56725 23.5411 2.35163 24.0904 3.92039 24.3913V24.4401C1.30663 25.0562 0 26.003 0 27.2851C0 28.0668 0.401497 28.7164 1.20701 29.2291C2.01101 29.7434 3.14355 30 4.60464 30C6.2217 30 7.47651 29.695 8.36906 29.0877C9.2606 28.4777 9.70688 27.7382 9.70688 26.8696C9.70688 26.1974 9.42311 25.626 8.85458 25.1555C8.28554 24.6865 7.24959 24.2755 5.74322 23.9258C4.23836 23.5771 3.3443 23.3411 3.06154 23.2187C2.77929 23.0968 2.63841 22.9014 2.63841 22.634C2.63841 22.3814 2.78533 22.1624 3.08066 21.9782C3.3755 21.7916 4.04516 21.6296 5.08765 21.4912C6.13114 21.3534 6.9613 21.1626 7.58116 20.9224C8.1995 20.6812 8.75798 20.2081 9.25658 19.5051C9.75518 18.8015 10.0052 18.0039 10.0052 17.11C10.0052 15.7745 9.44475 14.785 8.32529 14.1452V14.0979H11.5363L11.6731 13.2915H6.20963ZM8.00138 14.9756C8.59155 15.4981 8.88538 16.158 8.88538 16.9556C8.88538 17.8021 8.57847 18.6111 7.96364 19.3866C7.35083 20.1606 6.47891 20.5489 5.35039 20.5489C4.50513 20.5489 3.8244 20.264 3.3107 19.6952C2.7955 19.1264 2.5389 18.4491 2.5389 17.6663C2.5389 16.7268 2.88053 15.9116 3.56478 15.2245C4.24904 14.5375 5.04751 14.1924 5.96018 14.1924C6.73198 14.1924 7.41272 14.4536 8.00138 14.9756ZM7.55992 28.5723C6.84146 28.9868 5.80652 29.1946 4.45461 29.1946C3.40911 29.1946 2.58347 29.0362 1.97871 28.7204C1.37294 28.4041 1.06955 27.9808 1.06955 27.4522C1.06955 26.6689 1.58627 26.0405 2.61869 25.5663C3.65161 25.0921 4.46618 24.8555 5.0634 24.8555C5.27169 24.8555 5.91922 25.0273 7.00447 25.3734C8.09073 25.717 8.63562 26.241 8.63562 26.9441C8.63562 27.6147 8.27638 28.1578 7.55992 28.5723ZM13.559 15.1774C12.5502 16.4343 12.0466 18.0548 12.0466 20.0389C12.0466 21.4614 12.4179 22.583 13.1595 23.4007C13.9032 24.2195 14.8465 24.6289 15.9911 24.6289C17.4678 24.6289 18.7458 24.0055 19.8245 22.7594C20.9027 21.5149 21.4415 19.8805 21.4415 17.8568C21.4415 16.4579 21.0788 15.3476 20.3528 14.5247C19.6273 13.7034 18.6502 13.2915 17.423 13.2915C15.8543 13.2915 14.5668 13.92 13.559 15.1774ZM13.9687 22.6777C13.4837 22.0415 13.2406 21.1688 13.2406 20.0636C13.2406 18.4343 13.6185 17.0643 14.3727 15.9539C15.1284 14.8426 16.1286 14.2887 17.3728 14.2887C18.2428 14.2887 18.9401 14.6096 19.4623 15.2545C19.9861 15.8979 20.2467 16.7665 20.2467 17.8568C20.2467 19.4685 19.8251 20.8355 18.9839 21.9546C18.1416 23.0721 17.1268 23.6322 15.9409 23.6322C15.1113 23.6322 14.4537 23.3133 13.9687 22.6777ZM25.3426 10.9268C25.5877 11.1593 25.8805 11.275 26.2206 11.275C26.5607 11.275 26.853 11.1593 27.0976 10.9268C27.3426 10.6928 27.4648 10.4141 27.4648 10.0901C27.4648 9.75783 27.3426 9.47549 27.0976 9.24252C26.853 9.00853 26.5607 8.89178 26.2206 8.89178C25.8805 8.89178 25.5877 9.00853 25.3426 9.24252C25.0986 9.47549 24.9764 9.75783 24.9764 10.0901C24.9764 10.4141 25.0986 10.6928 25.3426 10.9268ZM24.7394 13.5043L23.1344 24.4148H25.2958L26.9013 13.5043H24.7394ZM29.7046 13.5043L28.1006 24.4148H30.2369L31.2839 17.4659C31.301 17.3455 31.5375 17.0688 31.9903 16.6348C32.4446 16.2002 32.8245 15.8767 33.1324 15.6638C33.4403 15.4499 33.7291 15.2915 33.9993 15.1896C34.27 15.0863 34.5135 15.0354 34.7298 15.0354C35.1037 15.0354 35.4156 15.186 35.6652 15.4843C35.9137 15.7857 36.04 16.2203 36.04 16.7901C36.04 16.9958 36.0184 17.2205 35.9781 17.4659L34.9321 24.4148H37.0694L38.1677 17.5368C38.2175 17.236 38.2417 16.9485 38.2417 16.6718C38.2417 15.6911 37.9972 14.8908 37.5086 14.2711C37.0181 13.6499 36.3298 13.3387 35.4413 13.3387C34.1311 13.3387 32.8658 14.0495 31.6472 15.4735L31.5883 15.435L31.8796 13.5043H29.7046ZM47.072 13.5043L43.4132 20.4306L41.853 13.5043H39.7112L42.3184 24.6287H43.3926L49.2687 13.5043H47.072ZM50.8477 15.094C49.7947 16.3745 49.2684 17.9678 49.2684 19.8732C49.2684 21.4068 49.6498 22.604 50.413 23.4665C51.1753 24.3279 52.2298 24.7584 53.5742 24.7584C55.0997 24.7584 56.3872 24.1186 57.4317 22.838C58.4777 21.5575 59 19.9205 59 17.9277C59 16.4887 58.6131 15.3377 57.8363 14.4712C57.0594 13.6062 56.03 13.1731 54.743 13.1731C53.2019 13.1731 51.9013 13.8129 50.8477 15.094ZM56.224 15.6167C56.5993 16.1618 56.7845 16.8926 56.7845 17.8096C56.7845 19.2958 56.463 20.5291 55.821 21.5103C55.177 22.4895 54.4052 22.9802 53.4991 22.9802C52.927 22.9802 52.448 22.7112 52.0621 22.1738C51.6762 21.6358 51.4825 20.94 51.4825 20.0863C51.4825 18.6561 51.804 17.4167 52.448 16.3685C53.0925 15.3215 53.8558 14.7979 54.7433 14.7979C55.3586 14.7979 55.8517 15.0715 56.224 15.6167Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.0326 11.1681C22.0693 10.9145 22.1548 10.6769 22.2635 10.4495L13.8156 9.59985C13.7644 9.82819 13.7108 10.0557 13.6784 10.2888C13.6364 10.5787 13.6161 10.866 13.6055 11.1502L22.0524 11.9998C22.0099 11.7322 21.9916 11.4589 22.0326 11.1681Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.6444 7.73795C22.9135 7.5668 23.2014 7.43411 23.5013 7.3293L17.6968 1.20001C17.4174 1.36155 17.1381 1.52357 16.8631 1.70626C16.5864 1.88895 16.3335 2.07981 16.0801 2.26924L21.884 8.39997C22.0987 8.16391 22.3408 7.93699 22.6444 7.73795Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.2567 7.00936C27.6495 7.04148 28.0166 7.11001 28.3673 7.19996L29.6852 0.18546C29.244 0.129351 28.799 0.0788098 28.3402 0.0454013C27.9889 0.0184175 27.6414 0.0102795 27.2938 0L25.9746 7.02777C26.3856 6.9918 26.8092 6.97509 27.2567 7.00936Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30.4688 11.1808C30.6717 11.4363 30.8286 11.715 30.9521 11.9999L38.3436 6.3408C38.1395 6.0543 37.9318 5.77058 37.6997 5.49183C37.4983 5.24681 37.2853 5.02503 37.0723 4.79993L29.6855 10.4551C29.9675 10.6614 30.2335 10.8904 30.4688 11.1808Z" fill="currentColor"/></svg>
-        <p class="t-by">By Sonia Seto, Chloe Ma<br><a href="mailto:prism@goinvo.com">prism@goinvo.com</a></p>
       </div>
       <div class="t-main">
         <div class="label">Lightning talk · November 2026</div>
@@ -343,22 +383,37 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
       </div>
       <div class="t-foot">
         <div class="intros">
-          <div><b>Sonia Seto</b><span>Biomedical communicator and UX designer · MScBMC 1T6</span></div>
-          <div><b>Chloe Ma</b><span>Senior product designer, GoInvo · MScBMC 2T1</span></div>
+          <div class="s"><img src="img/sonia-seto.jpg" alt=""><b>Sonia Seto (1T6)</b><span>Biomedical communicator and UX designer</span></div>
+          <div class="c"><img src="img/chloe-ma.jpg" alt=""><b>Chloe Ma (2T1)</b><span>Senior product designer, GoInvo</span></div>
         </div>
-        <p class="fine">Drawing the Line: Exploring AI in Medical Illustration · UofT Biomedical Communications · Code licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Designs licensed under <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a>. Third-party video credited on its slide is not covered. Background: napkin sketch generated with <a href="https://gemini.google.com">Nano Banana (Google Gemini)</a>, animated in code.</p>
+        <p class="fine">Feedback: <a href="mailto:prism@goinvo.com">prism@goinvo.com</a><br>This project is licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a> (code) and <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a> (designs).<br>Background: napkin sketch generated with <a href="https://gemini.google.com">Nano Banana (Google Gemini)</a>, animated in code.</p>
       </div>
     </div></div>
   </section>
 
   <section class="scene question" id="question" data-chap="A confession">
-    <video class="clip-bg" src="media/bg/clinic-pamphlet.mp4" poster="media/bg/clinic-pamphlet.jpg" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" aria-hidden="true"></div>
+    <video class="clip-bg" src="media/bg/handoffs-loop.mp4?v=20261104a" poster="media/bg/handoffs-loop.jpg?v=20261104a" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <h2 class="visually-hidden">The question that started it</h2>
       <q class="pop" data-in="0 0.25">Did my visual actually <mark class="wipe drive" data-in="0.25 0.55">make a difference?</mark></q>
       <p data-in="0.5 0.72">My work left at handoff. I never learned if it helped.</p>
       <cite data-in="0.62 0.82">Sonia</cite>
-      <p class="credit">Video: <a href="https://www.pexels.com/video/a-doctor-pointing-at-a-pamphlet-about-the-effects-of-diabetes-on-the-body-7580006/">“A Doctor Pointing at a Pamphlet”</a> by Pavel Danilyuk, Pexels</p>
+      <p class="credit">Video: generated with <a href="https://gemini.google.com">Veo (Google Gemini)</a></p>
+    </div></div>
+  </section>
+
+  <section class="scene" id="brought" data-chap="What we brought">
+    <video class="clip-bg" src="media/bg/creation-of-adam-loop.mp4?v=20261104a" poster="media/bg/creation-of-adam-loop.jpg?v=20261104a" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="adam-wash" aria-hidden="true"></div>
+    <div class="stage"><div class="inner">
+      <h2 class="h2" data-in="0 0.15">What we <mark>brought.</mark></h2>
+      <div>
+        <div class="halves">
+          <div class="sheet s" data-in="0.18 0.38"><b>Sonia</b><h4>The framework idea</h4><p>Had never used Claude or tools like it.</p></div>
+          <div class="sheet c" data-in="0.4 0.6"><b>Chloe</b><h4>AI fluency, open source</h4><p>Had never heard of these frameworks.</p></div>
+        </div>
+        <p class="real-q" data-in="0.7 0.9">Each knew what <b>the other didn’t.</b></p>
+      </div>
+      <p class="credit">Background: <a href="https://commons.wikimedia.org/wiki/File:Michelangelo_-_Creation_of_Adam_(cropped).jpg">The Creation of Adam</a>, Michelangelo, c. 1512, public domain via Wikimedia Commons, with flowers and motion generated with <a href="https://gemini.google.com">Veo (Google Gemini)</a></p>
     </div></div>
   </section>
 
@@ -374,15 +429,16 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 
   <section class="scene" id="proof" data-chap="The proof">
     <div class="stage"><div class="inner">
-      <p class="num pop" data-in="0 0.3"><span class="big">27</span> <span class="unit">hours</span></p>
+      <p class="num pop" data-in="0 0.3"><span class="big drive" data-in="0 0.9" data-count="27">27</span> <span class="unit">hours</span></p>
       <p class="lead" data-in="0.25 0.45">of building, July 31 to today.</p>
       <ul class="stats">
-        <li data-in="0.45 0.6"><b>123</b><span>commits</span></li>
-        <li data-in="0.52 0.67"><b>21</b><span>sittings</span></li>
-        <li data-in="0.59 0.74"><b>10+</b><span>frameworks</span></li>
-        <li data-in="0.66 0.81"><b>0</b><span>developers</span></li>
+        <li data-in="0.45 0.6"><b class="drive" data-in="0.4 0.95" data-count="123">123</b><span>commits</span></li>
+        <li data-in="0.52 0.67"><b class="drive" data-in="0.45 0.95" data-count="21">21</b><span>sittings</span></li>
+        <li data-in="0.59 0.74"><b class="drive" data-in="0.5 0.95" data-count="23" data-suffix="M">23M</b><span>tokens</span></li>
+        <li data-in="0.63 0.78"><b class="drive" data-in="0.55 0.95" data-count="10" data-suffix="+">10+</b><span>frameworks</span></li>
+        <li data-in="0.68 0.83"><b>0</b><span>developers</span></li>
       </ul>
-      <p class="note" data-in="0.8 0.95">/ Hours from commit times: commits under 2 hours apart count as one sitting, plus 30 minutes each.</p>
+      <p class="note">/ Hours from commit times: commits under 2 hours apart count as one sitting, plus 30 minutes each. Tokens: Chloe’s Claude Code only, Aug 17 to Nov 4, counting input, output and newly cached context.</p>
     </div></div>
   </section>
 
@@ -440,7 +496,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 
   <section class="scene" id="fails" data-chap="What went wrong">
     <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.15">Not everything <mark>worked.</mark></h2>
+      <h2 class="h2" data-in="0 0.15">Not everything worked.</h2>
       <ol class="origin">
         <li class="sheet s" data-in="0.18 0.38"><b>Design</b><h4>3 frameworks fit. 26 didn’t.</h4></li>
         <li class="sheet s" data-in="0.38 0.58"><b>Facts</b><h4>Checklists drifted.</h4></li>
@@ -453,11 +509,27 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   <section class="scene" id="thesis" data-chap="The thesis">
     <div class="stage"><div class="inner">
       <ol class="thesis-l">
-        <li data-in="0 0.2"><b>Intent first.</b><span>Ours: who it’s for, and what good looks like.</span></li>
-        <li data-in="0.25 0.45"><b>Build fast.</b><span>Claude’s: the code and the clickable prototype.</span></li>
-        <li data-in="0.5 0.7"><b><mark>Iterate.</mark></b><span>Together: show it, react, change it.</span></li>
+        <li data-in="0 0.2"><b>Intent first.</b><span>Know what you’re here for.</span></li>
+        <li data-in="0.25 0.45"><b>Build fast.</b><span>AI is quick, and great for brainstorming.</span></li>
+        <li data-in="0.5 0.7"><b><mark>Iterate.</mark></b><span>Show it, change it, cut it back.</span></li>
       </ol>
-      <p class="real-q" data-in="0.76 0.94">Anyone can build now. <b>Knowing what to build is the job.</b></p>
+      <p class="real-q" data-in="0.76 0.94">AI gives you the average. <b>You’re the designer.</b></p>
+    </div></div>
+  </section>
+
+  <section class="scene" id="certify" data-chap="AI certification" data-dur="4500">
+    <div class="cert-band">
+      <div class="cert-art">
+        <img class="cert-img drive" data-in="0 0.7" src="media/bg/ai-certification-2.webp?v=20261104a" alt="A person hands a puzzle piece to a robot hand; its work unrolls as a long paper ribbon of screens and charts to a designer, who marks it up with a pen; at the end a hand stamps it Health Certified Insight.">
+        <img class="cert-seal drive" data-in="0.72 0.86" src="media/bg/ai-certification-2.webp?v=20261104a" alt="" aria-hidden="true">
+      </div>
+    </div>
+    <div class="stage"><div class="inner">
+      <h2 class="h2" data-in="0.08 0.24">Certify the work, <mark>not the AI.</mark></h2>
+      <p class="lead" data-in="0.3 0.46">This screen, this flow, this version: fit for purpose, under these conditions.</p>
+      <p class="cert-std" data-in="0.5 0.66">Safety · Data integrity · Regulatory fit · Usability · Language · Bias · Flow</p>
+      <p class="real-q" data-in="0.86 1">The barrier dropped. <b>The responsibility didn’t.</b></p>
+      <p class="credit">Illustration: generated with <a href="https://gemini.google.com">Nano Banana (Google Gemini)</a></p>
     </div></div>
   </section>
 
@@ -504,7 +576,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   var slides = [].slice.call(document.querySelectorAll('.scene, .walk')).map(function(el){
     if (el === walkEl) return { el:el, walk:true, beat:-1 };
     var items = [].slice.call(el.querySelectorAll('[data-in]')).map(function(e){
-      return { el:e, a:pair(e.dataset.in), o:pair(e.dataset.out), k:-1 }; });
+      return { el:e, a:pair(e.dataset.in), o:pair(e.dataset.out), k:-1, n:e.dataset.count ? +e.dataset.count : null }; });
     // one scroll per slide: everything on it plays in one go, in data-in order
     return { el:el, items:items, beats:items.length ? [1] : [], t:0, beat:-1 };
   });
@@ -514,7 +586,11 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     s.el.style.setProperty('--t', t.toFixed(4));
     s.items.forEach(function(it){
       var k = seg(t, it.a); if (it.o) k *= 1 - seg(t, it.o);
-      if (Math.abs(k - it.k) > 1e-4) { it.k = k; it.el.style.setProperty('--k', k.toFixed(4)); }
+      if (Math.abs(k - it.k) > 1e-4) {
+        it.k = k; it.el.style.setProperty('--k', k.toFixed(4));
+        // data-count: the number counts up to its value as the slide plays
+        if (it.n !== null) it.el.textContent = Math.round(it.n * k) + (it.el.dataset.suffix || '');
+      }
     });
   }
   function walkTop(){ return walkEl.getBoundingClientRect().top + window.scrollY; }
@@ -558,8 +634,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
       else tween(go, from, to, Math.min(11000, d / 150 * 1000), delay, steady);
     } else {
       var t = s.beats[s.beat];
-      // forward is a 1.6 s cascade at an even pace; back snaps over 0.4 s
-      tween(function(v){ paintSlide(s, v); }, s.t, t, back ? 400 : 1600, delay, back ? inOut : function(k){ return k; });
+      // forward is a 1.6 s cascade at an even pace (data-dur sets a slide's own length); back snaps over 0.4 s
+      tween(function(v){ paintSlide(s, v); }, s.t, t, back ? 400 : +s.el.dataset.dur || 1600, delay, back ? inOut : function(k){ return k; });
     }
   }
 
@@ -679,9 +755,9 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   if (start) show(start, 1); else markRail();
 })();
 </script>
-<script src="napkin.js?v=20261104e"></script>
+<script src="napkin.js?v=20261104f"></script>
 <script src="analogy-bg.js?v=20261104b"></script>
-<script src="question-bg.js?v=20261104a"></script>
+<script src="question-bg.js?v=20261104c"></script>
 <script src="media/walkthrough/clips.js?v=20261102h"></script>
 <script src="walkthrough.js?v=20261102h"></script>
 </body>
