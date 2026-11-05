@@ -1,14 +1,18 @@
-/* Slide 2 background: a looping Pexels clip of a doctor using a medical pamphlet. It plays only while
-   the slide is on screen, and stays on its poster frame for people who prefer reduced motion. */
+/* Slide background clips: slide 2's Pexels clip of a doctor using a medical pamphlet, and the slow
+   zoom on The Creation of Adam. Each plays only while its slide is on screen, and stays on its poster
+   frame for people who prefer reduced motion. */
 (function(){
-  var scene = document.getElementById('question');
-  var video = scene && scene.querySelector('.clip-bg');
-  if (!video) return;
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  function sync(){
-    if (scene.classList.contains('on')) { var p = video.play(); if (p) p.catch(function(){}); }
-    else video.pause();
-  }
-  new MutationObserver(sync).observe(scene, { attributes: true, attributeFilter: ['class'] });
-  sync();
+  [].forEach.call(document.querySelectorAll('.scene .clip-bg'), function(video){
+    var scene = video.closest('.scene');
+    function sync(){
+      if (scene.classList.contains('on')) { var p = video.play(); if (p) p.catch(function(){}); }
+      else video.pause();
+    }
+    new MutationObserver(sync).observe(scene, { attributes: true, attributeFilter: ['class'] });
+    // a slide reached before its clip has loaded starts playing as soon as it can
+    video.addEventListener('canplay', sync);
+    document.addEventListener('visibilitychange', sync);
+    sync();
+  });
 })();

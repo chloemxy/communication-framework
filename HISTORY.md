@@ -4,6 +4,89 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-04 — New AI-generated backgrounds on slides 2, 3 and AI certification
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 2 (A confession):** the Pexels clip is replaced by `media/bg/handoffs-loop.mp4`, handouts
+  landing on a clinic desk until they pile up. The dark wash is a little lighter.
+- **Slide 3 (What we brought):** the zoom on the painting is replaced by
+  `media/bg/creation-of-adam-loop.mp4`, flowers growing around the two hands. The clip sits higher, so
+  the fingertips show between the headline and the cards.
+- **Both clips are silent** (audio track removed) and enlarged to 1920 x 1080. Each holds its last
+  frame for 2.5 seconds, then fades back to its first frame, so the 13.5-second loop has no jump.
+- **AI certification:** `media/bg/ai-certification-2.webp` now fills the whole slide, with the text on
+  a dark fade below it. The headline is a little smaller and the lead fits on one line. This also
+  fixes the slide's image path, which pointed at a file that had moved.
+- **Source lines updated** on all three slides: Veo (Google Gemini) for the two videos, Nano Banana for
+  the illustration.
+
+## 2026-11-04 — Welcome slide: the napkin sketch loops
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The napkin now loops while the welcome slide is showing.** After the click, the finished sketch
+  holds for 3 seconds, fades off the napkin, and draws itself again, about every 11.5 seconds. It
+  stops when you leave the slide. People who prefer reduced motion still see the finished sketch.
+
+## 2026-11-04 — Slide 2: sharper video
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The clinic clip is re-cut from the Pexels original** (1920 x 1080 is the largest Pexels offers).
+  Less zoom (1.45x, was 1.6x), about three times the bitrate (3.8 Mbps, was 1.3), and adaptive
+  sharpening with a little more contrast. The file is 7.4 MB, up from 2.5 MB.
+- **Playback fix:** the first re-cut used heavy encoder settings (H.264 level 5.0), and the video was
+  reported as not moving. It is now level 4.1, and clips retry playing once they have loaded.
+- **The wash now fades out on the right**, so the pamphlet and hands aren't greyed over. The text
+  side stays as dark as before.
+
+## 2026-11-04 — Slides: footers in one spot
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Title slide portraits:** round photos of Sonia and Chloe, cropped so their heads match.
+- **Title slide:** names side by side with class years in brackets, job titles below them, and
+  the footer as three lines (feedback email, licences, background credit). The byline is gone. The event line and the third-party video sentence are gone from this slide.
+- **What went wrong:** the highlight on "worked." is gone.
+- **The proof's footnote now sits at the foot of the slide,** in the same place as the media credits
+  on the other slides.
+
+## 2026-11-04 — Slides: take-home rewritten; new AI certification slide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The thesis** keeps Intent first, Build fast and Iterate, with new lines from the talk script. It
+  closes on "AI gives you the average. You're the designer."
+- **New slide before Thank you: AI certification.** "Certify the work, not the AI", fit for purpose
+  under stated conditions, and the shared standard. "We" means designers who create with AI. It
+  closes on "The barrier dropped. The responsibility didn't."
+- **Animated illustration** (`presentation/img/ai-certification.webp`): it draws in left to right along
+  the ribbon, then the seal lands. The slide plays over 4.5 seconds (`data-dur`).
+- **Still to do:** the illustration credit on the slide is a placeholder.
+
+## 2026-11-04 — The proof: numbers count up
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **27, 123, 21 and 10+ now count up from 0** as the slide plays (`data-count` on the number). The
+  0 developers stays at 0. Going back to the slide shows the final numbers.
+- **New stat: 23M tokens.** From the Claude Code logs on Chloe's machine, Aug 17 to Nov 4: input,
+  output and cache writes (22.8M). Cache re-reads are left out (1.2B with them), and so are Sonia's
+  usage and anything before Aug 17. The footnote says so. **Recount before the talk.**
+
+## 2026-11-04 — Slides: What we brought
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New slide after A confession.** Sonia brought the framework idea and had never used Claude or
+  tools like it. Chloe brought AI fluency and open source and had never heard of these frameworks.
+  It closes on "Each knew what the other didn't." The deck is 12 slides again.
+- **Background:** a 20-second looping slow zoom on the hands in Michelangelo's *The Creation of Adam*
+  (`presentation/media/bg/creation-of-adam.mp4`, 3 MB, made from the public-domain image on
+  Wikimedia Commons), with Sonia's side under Adam and Chloe's under God's hand. The source is
+  credited at the foot of the slide. `question-bg.js` now runs every slide's background clip.
+
 ## 2026-11-04 — PRISM goes open source: Apache 2.0 for code, CC BY 4.0 for designs
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
