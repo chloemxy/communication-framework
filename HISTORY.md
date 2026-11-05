@@ -4,6 +4,127 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-05 — Last slide: dotted paper background
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Animated dot grid** (`presentation/dot-bg.js`): a faint dotted paper grid sits behind the last slide,
+  and soft patches of brighter dots bloom at random spots, then fade. It runs only while the slide is on
+  screen and stays a plain faint grid for people who prefer reduced motion.
+- **Test page:** `design/brainstorm/dot-grid-options.html` holds the six animation options.
+
+## 2026-11-05 — Last slide ends on a question
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The huge "Thank you." is replaced** by "What’s your view on our approach?" at headline size, to open
+  the Q&A. "Thank you" moves to a small line above the next steps, and the slide's menu name is now
+  Your turn. The next steps and the PRISM card stay up during questions.
+- **Simpler card:** it now holds only Try PRISM and Feedback, at one size. GitHub, the licences and the
+  event move to a single fine-print line at the bottom, like the source lines on other slides.
+
+## 2026-11-05 — Slides: never more than 4 type treatments
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **One rule for every slide:** a serif headline, sans at one size for everything else, and fine print
+  for sources. Rows now differ only by white or grey. Uppercase tags, italic lines, mid-size serif
+  subheads and bold are gone, so no slide uses more than 4 treatments (it was up to 6).
+- **Why:** rows with a different treatment each read as noise, worst on Thank you and What we brought.
+- **The proof:** the ledger numbers now match the headline size, and their column is wider so "23M"
+  clears "tokens".
+- **Thank you:** the card's spacing is tighter so it stays on screen.
+
+## 2026-11-05 — AI certification: the illustration moves
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New background video** (`media/bg/ai-certification-loop.mp4`): Chloe's illustration animated with Veo
+  replaces the still image. The clip's start and end don't match, so it plays forward, then in reverse,
+  and never jumps. It is silent, 20 seconds and 7 MB.
+- **Enlarged from 1280 x 720 to 1920 x 1080** to match the other clips, so it looks a little softer than
+  the still did.
+- **Source line** now credits the animation to Veo (Google Gemini).
+
+## 2026-11-05 — Slides: tag and fine print match at 22px
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Tags and fine print are now one size:** 22px on a 1920×1080 projector (fine print was about 21px).
+  Both still scale with the screen like the rest of the type, because a fixed 22px clipped the Thank
+  you slide at 1280×720. Phones stay at 12px.
+
+## 2026-11-05 — The proof: numbers in a ledger, recounted
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The stat row becomes a ledger.** The big hours number sits on the left, with four ruled rows
+  beside it, so the numbers line up in one column and the uneven gaps are gone.
+- **Numbers recounted from the repo:** 29 hours (was 27), 131 commits (was 123), 23 sittings (was 21).
+  The line under the hours now reads "of building, over 16 days."
+- **The dark wash over the video is a little stronger,** since the numbers now sit over the bright windows.
+- **The footer is one row,** with the hours and token notes cut down and the video credit joined on.
+- **"10+ frameworks" is off this slide;** the deck gives different counts, so it waits for a decision.
+
+## 2026-11-05 — Camera phones slide: headline in three rows
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The headline drops from four rows to three.** "Camera phones didn’t end photography." is a small
+  italic line, then "They made everyone a photographer." runs over two big rows, larger than any
+  other headline, with the highlight on "everyone". On a phone it wraps freely.
+
+## 2026-11-05 — The proof gets days racing by; slide 2 plays once
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The 27 hours slide has a moving background** (`media/bg/office-days.mp4`): an office where a full
+  day passes every 5 seconds, sun crossing the floor, the lamp coming on at night, and real code from
+  `napkin.js` typing on the monitor. It loops with no visible join, and a dark wash keeps the numbers
+  readable. The room is a Nano Banana image; the days and code are animated in code.
+- **Slide 2 no longer loops.** The clip plays once when the slide opens, stops on the full pile, and
+  starts over on each return to the slide. It stays sharp, with no blur on the leaflets.
+
+## 2026-11-05 — Slide 3: new flower clip with much less zoom
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New Veo clip** (`media/bg/creation-of-adam-bloom.mp4`): vines grow along both arms from the bare
+  painting into full bloom, then play in reverse. It is silent, 20 seconds and 14 MB.
+- **Sharper on the slide:** the hands are already high in the frame, so the zoom drops from 1.28x to
+  1.06x.
+
+## 2026-11-04 — AI certification: illustration fills the slide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The illustration now bleeds across the whole slide** and is simply there when the slide opens: the
+  left-to-right wipe and the seal pop are gone. A lighter dark fade sits behind the text, so the scroll
+  shows through.
+
+## 2026-11-04 — Slides: Human review
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New slide between The thesis and AI certification.** "AI drafted it. We reviewed it." with counts from
+  the Framework Compass library review v2: 32 frameworks (23 kept, 9 cut), 11 flagged to verify, 6 open
+  decisions. The numbers count up. It leads into certification as the human check on AI.
+- **Recheck the numbers** against the Google Sheet. They come from the local v2 file.
+
+## 2026-11-04 — Slides 2 and 3: clips play forward, then in reverse
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The loops now run A to B to A.** Each clip plays through, then plays backwards to its first frame,
+  so it never jumps or fades back to the start. Each loop is 20 seconds and about 8.7 MB, still silent.
+
+## 2026-11-04 — AI certification: illustration credited to Chloe
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The source line now credits Chloe Ma alone** and links the GoInvo article, Human-Assisted AI
+  Design Certification for Healthcare.
+
 ## 2026-11-04 — New AI-generated backgrounds on slides 2, 3 and AI certification
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -51,6 +172,8 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - **What went wrong:** the highlight on "worked." is gone.
 - **The proof's footnote now sits at the foot of the slide,** in the same place as the media credits
   on the other slides.
+- **All footers sit lower,** close to the bottom edge, with clear space above them. The title slide's
+  footer now uses the same spot.
 
 ## 2026-11-04 — Slides: take-home rewritten; new AI certification slide
 
@@ -211,7 +334,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-04 — The presentation site is gone; the story slides now live at /presentation/
 
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
 
 - **Deleted the long-scroll presentation page** (the old `presentation/index.html`). Only the
   story slides are left.
@@ -224,7 +347,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-04 — Story page: the welcome slide gets GoInvo, a blurb, intros and a license
 
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
 
 - **The opening slide now carries everything a welcome page needs**, laid out top to bottom:
   - the **GoInvo logo**, with "By Sonia Seto, Chloe Ma" and the feedback email
@@ -297,7 +420,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-02 — Walkthrough: moves as you scroll, no jumps, Edit after Apply, a proper ending
 
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
 
 - **It starts moving right away.** The opening held still for 2.2 s, about 330 px of scrolling
   with nothing changing on screen. It now holds for 0.4 s, and the camera heads for the guide
@@ -340,7 +463,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-02 — Walkthrough starts like a beginner: the four steps of "How to check your material"
 
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
 
 - **Why:** the walkthrough opened with a handout already being edited. A first-time visitor lands on
   the empty Studio and its four-step guide, so the walkthrough now starts there and follows it.
@@ -375,7 +498,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-02 — Story page: PRISM logo fix; the walkthrough holds on its opening and plays slower
 
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
 
 - **The yellow marker behind the "I" in PRISM (What we built slide) no longer hangs below the
   word.** It was sized to the font's full line, including the space for descenders, so it ran
@@ -442,7 +565,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-01 — Story page becomes slides, sized for the room
 
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
 
 - **No more real scrolling in `presentation/story.html`.** Each scroll, swipe, or key press
   (→, ↓, Space or PageDown; ←, ↑ or PageUp to go back) plays one beat on a timer.
@@ -470,51 +593,6 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - **The top bar, the "Scroll or press →" hint and the "Next: the walkthrough" line are gone** (wordmark, chapter name, Full page link,
   progress line), so slides use the
   whole screen. The chapter dots on the right remain, and the last slide still links to the full page.
-
-## 2026-11-01 — Walkthrough shows more of PRISM: Apply all, History, revert, the Plan stages
-
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
-
-- **Why:** the walkthrough showed one applied suggestion and a closing edit, but not the rest of
-  how a draft changes in PRISM: fixing everything at once, the change log, saved versions and
-  going back to one, or what Plan does after the first field.
-- **Seven chapters, 82 seconds** (was five, 49 s), all recorded from `master` as deployed:
-  1. Apply a suggestion: the Jargon rewrite from a card, as before.
-  2. **Apply all (new):** the Plain language card's "3 suggested changes", one click, counts
-     drop to 0 to fix, and "Applied 3 changes. Undo them all at once in History."
-  3. **History and versions (new):** the History panel lists each change with what changed
-     (struck and added words), word count and CCI; a version is named "Draft for Sonia" and
-     saved; then Revert takes the handout back to the first snapshot ("The version you left is
-     still in History").
-  4. Frameworks, 5. Posters and images: as before.
-  6. Plan from an idea: now also fills "What should people do?", moves to the Draft stage and
-     holds on the checks PRISM scores there.
-  7. Edit the text directly: the closing continuous edit, as before.
-- **Rail:** with seven chapters, only the current chapter shows its name (others show the
-  number; hover or focus shows the name).
-- **Updated:** `presentation/media/walkthrough/` (84 screens, `clips.js`), `presentation/walkthrough.js`
-  (scenes, image version tag), `presentation/index.html` (script version tags, rail rule),
-  `presentation/media/prism-walkthrough.mp4` and its poster. Master copy:
-  `screen record/prism-walkthrough-v6.mp4`.
-
-## 2026-11-01 — Walkthrough re-recorded from the live PRISM
-
-Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
-
-- **Why:** the walkthrough had been recorded from local, unreleased Studio edits (the Oct 26–27
-  library review, "Based on:" sources, a longer sample handout), so it didn't match PRISM as
-  deployed.
-- **Re-recorded from `master` as deployed** (served locally from a clean copy): the 117-word
-  sample handout, the Jargon rewrite with "Source: PEMAT-P, AHRQ", the "Applied. Undo it…"
-  notice, 23 frameworks with CCI ticked, the poster's colour-blind and greyscale views, Plan, and
-  the closing edit taking the reading grade from 6 to 4.5. Each scene was checked against the
-  live Studio.
-- **Labels:** "11 published frameworks" is now "23 published frameworks"; the "Applied" spotlight
-  follows the paragraph down when the notice appears; the grade ring is wide enough for "Gr 4.5".
-- **Updated:** `presentation/media/walkthrough/` (screens and `clips.js`), `presentation/walkthrough.js`
-  (labels, and a version tag on image URLs so browsers don't show the old screens),
-  `presentation/media/prism-walkthrough.mp4` and its poster. The master copy is
-  `screen record/prism-walkthrough-v5.mp4`.
 
 ## 2026-11-01 — The talk as a scroll story
 
@@ -626,6 +704,221 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`)
     7-minute run of show.
 - **Screens** are the site rendered from each commit with headless Chrome (20 JPGs, 1.4 MB).
 - Also published as a private Claude artifact.
+
+## 2026-10-27 — Plain language checks get sources; reading grade fixed; row hover
+
+Branch: `refresh-and-fixes` · Vercel: not pushed (local only)
+
+- **Reading grade was too low.** Every heading and table cell ("Normal", "Under 80") counted
+  as a full sentence, and numbers counted as zero syllables. The sample handout read
+  grade 2.7; it now reads 4.3.
+  - Readability now reads only the sentences: headings and tables are left out, and numbers
+    are dropped from the word and syllable counts.
+  - The footer's sentence count and words per sentence now match Readability's.
+  - "How the grade is worked out" now cites both formulas: the grade from Kincaid,
+    Fishburne, Rogers & Chissom (1975), Navy Research Branch Report 8-75
+    (doi:10.21236/ADA006655), and the ease from Flesch (1948) (doi:10.1037/h0057532).
+  - The grade and ease bars are coloured against the audience's target: green when they
+    meet it, amber when close (within 2 grades, or 10 ease points), red when far off. Bars
+    for poster text stay neutral.
+  - **Fix:** the first version dropped all table text, so a handout laid out in a table
+    scored nothing (all dashes). Now only short table labels (under 5 words with no full
+    stop) are left out. Sentences in tables still count, and if nothing is left the whole
+    text is read.
+- **Sentence splits no longer leave fragments.** "…what works, what doesn't, and what
+  would…" was split into "What would make the experience better for you." The splitter now
+  skips:
+  - an ", and" that closes a list (another comma within 8 words before it)
+  - a break where the new sentence would start with what, which, who, whom, whose, that,
+    how, why, whether, than or as
+
+  Those sentences get no automatic rewrite. Clean splits still work.
+- **"How to judge" guidance for 7 checklists:** HBM, TTM, EPPM, SAM, IPDAS, DISCERN and WHO
+  ERC, 88 items in all.
+  - **At the top of each checklist:** "What each answer means" explains the scale (for TTM,
+    rate the target stage first and mark the other stages N/A; for EPPM, fear needs efficacy),
+    plus a line on whose reading it is.
+  - **Under each item:** a "How to judge" disclosure says what each answer looks like on a
+    page, best first (Met / Partly / Not met / N/A, SAM 2 / 1 / 0, DISCERN 5 / 2–4 / 1).
+    N/A lines show only where the scale offers N/A. Open panels stay open while you rate.
+  - **Labelled PRISM's reading, not official wording.** HBM, TTM and EPPM are theories, not
+    checklists. The DISCERN bands follow its handbook, and SAM's follow Doak, Doak & Root.
+  - **Code:** new file `fw-judge.js` (`PEA_FW_JUDGE`), plus `fwJudgeHtml()` in `index.html`.
+- **"Allow Grammarly" checkbox in the editor toolbar.** Off by default and remembered in this
+  browser. Ticking it removes the opt-out tags from every text field, including ones added
+  later. Unticking puts them back.
+- **Grammarly is off on the studio's text fields.** Its underlines piled on top of PRISM's own
+  flags. Every text field gets Grammarly's opt-out attributes (`data-gramm`,
+  `data-gramm_editor`, `data-enable-grammarly` set to false): the document, the Brief, search
+  boxes, and the New lines in Plain language. Fields added later are marked as they appear (a
+  small script at the top of `<body>`).
+- **Framework checklists: header layout.** The chevron lines up with the group label
+  ("Self-rated"), and "0 of 5 rated" lines up with "1 framework". The hover tint now extends
+  the same distance past the text on both sides. Before, a `max-width:100%` rule for all card
+  content had squashed it, so the count sat against the right edge.
+- **"Default" group at the top of the Frameworks list.** It holds Plain language and
+  Readability, in every sort order. The rest are grouped by the chosen sort. In Plan from an
+  idea it holds only Plain language, because Readability is Evaluate only there.
+  (`FW_DEFAULT` in `index.html`.)
+- **Edit in place, Enter to apply.** The Edit button and its separate text box are gone.
+  Click the New line to edit it directly: it fills with the whole new sentence, or the
+  sentence as it is when there's no suggestion, with the cursor at the end. **Enter** applies,
+  the same as the Apply button. **Esc** puts it back, and leaving it unchanged restores the
+  preview. When there's no suggested rewrite, New shows "No safe automatic rewrite. Write your
+  own." as its placeholder (the separate note under the card is gone), and Apply appears once
+  you've typed a change.
+- **After Apply, the document stays on the change and shows it.** The document panel scrolls
+  to centre the changed sentence (`scrollDocTo()`). The new words get a green mark
+  (`::highlight(pea-applied)`) for 4 seconds, or until you type. If words were only removed,
+  the whole sentence is marked. The cursor sits at the end of the sentence.
+- **Apply all now includes the "Everyday word" swaps.** They were left out before.
+- **Hand edits change and show only the words you changed.** "Edit" then "Apply" used to
+  replace the whole sentence, and History showed the old sentence struck through followed by
+  the new one in full. A word-by-word comparison (`wordDiffEdits()`) now replaces only the
+  changed words. The record shows those words with a few words of context, for example
+  "…so ~~some~~ couple things may look or…". Added words get only an underline, and removed
+  words only a strike-through.
+- **Plain language, take three: one tickable row, on by default.** It sits at the top of the
+  Frameworks list in every sort order, with a tick box (on by default) and a "Plain language"
+  chip in the bar. Its three guides (CDC Everyday Words, Federal Plain Language Guidelines,
+  Gigerenzer & Hoffrage) are listed inside it as links, each with a short note. Unticking it,
+  or pressing Clear, hides the Plain language card and its highlights. It isn't counted in
+  "1 of 11", because it's not a framework in the library. The separate guide rows below are
+  replaced by this.
+- **Plain language dropdown group, take two.** The group now holds only its guides: CDC
+  Everyday Words, Federal Plain Language Guidelines and Gigerenzer & Hoffrage, each its own
+  row with a link and a "Guide" tag, and no tick box. CCI, PEMAT-P and Readability are back in
+  their own groups, and the Compass's Situation filter skips this group (it has no frameworks).
+  Cache tag: `frameworks.js v=20261027c`.
+- **Workspace notes float above the footer.** Notes like "Workspace edited — hit Save…" and
+  "Changed in…" used to sit in the editor toolbar and push the document down when they
+  wrapped. They now float just above the word-count footer and take no space.
+  - **"How the grade is worked out"** in the Readability card shows the formula with the
+    actual numbers, the counts, and what was left out.
+- **Every Plain language finding now says what it's based on.** Item numbers were checked
+  against the engine's PEMAT-P and CCI wording.
+  - Long sentences: Federal Plain Language Guidelines (the 18- and 25-word limits are PRISM's).
+  - Medical words: PEMAT-P item 4. The medical-word list is still PRISM's, because CDC's list
+    leaves out disease and anatomy terms.
+  - Passive voice: PEMAT-P item 5 (CCI item 6 asks the same).
+  - Bare percentages: CCI items 15–16 and Gigerenzer & Hoffrage.
+  - Wordy and acronyms: Federal Plain Language Guidelines.
+  - Vague words: labelled "PRISM's own rule".
+- **New check, "Everyday word", from CDC's *Everyday Words for Public Health Communication***
+  (May 2016). It covers 56 of CDC's 103 terms. The very common ones (disease, risk, dose,
+  data…) are left out because they would flag almost every handout. CDC's own alternatives are
+  quoted, with a one-click swap where one reads cleanly. It's a review, not a fix, because CDC
+  says to check the context first. "Jargon" is renamed "Medical word".
+- **Frameworks dropdown: a "Plain language" group at the top** (sorted by use case, the
+  default). It holds CCI, PEMAT-P and Readability, plus an "Also used" line linking CDC
+  Everyday Words, the Federal Plain Language Guidelines and Gigerenzer & Hoffrage.
+- **Issue row hover:** hovering a finding now tints the whole row, rewrite box included, as one
+  rounded block. The rewrite box is white with a rule line, aligned with the label and the
+  Fix/Review tag.
+- **Code:** `index.html` (`computeFK`, `readabilityText()`, `EVERYDAY`, `SCAN_BASIS`,
+  `fixSwap`, issue styles, dropdown refs). `frameworks.js` (the `plain` situation with
+  `refs`). Cache tag: `frameworks.js v=20261027b`.
+
+## 2026-10-27 — Library review's open questions answered: 7 more frameworks hidden
+
+Branch: `refresh-and-fixes` · Vercel: not pushed (local only)
+
+- **Hidden: SHARE, AHRQ Toolkit and Picker.** The tool checks materials in the formats we
+  support, not care pathways, programs or services.
+- **Hidden: COM-B, Ottawa DSF and Teach-Back.** These are lenses that can't check a document.
+- **WHO ERC stays in Plan only**, because practitioners might write crisis materials.
+- **PEMAT-A/V stays in both canvases.** The tool doesn't take video uploads, but PEMAT-A/V
+  still checks a video or animation script and storyboard (Brief: Video, and the Plan video
+  flow).
+- **PAM stays out.** It's a licensed survey that measures the patient, not the material.
+  (It was never in the tool.)
+- **Now offered:** Evaluate a draft has 11 frameworks and Plan from an idea has 12. On the
+  Compass, the hidden ones are listed under "Not in the library right now", with the reason
+  and when to revisit. The use-case sets and the Recommended order were updated to match.
+- **Code:** `frameworks.js` (entries moved to `CUT`), `FW_REG` regenerated with 14 frameworks,
+  `framework-compass.html`. Cache tags: `frameworks.js v=20261027a`, `plan.js v=20261027a`.
+
+## 2026-10-26 — Framework library follows the Compass library review (v2)
+
+Branch: `refresh-and-fixes` · Vercel: not pushed (local only)
+
+Source: `framework-compass-library-review-v2.xlsx` (Library, Cut and Summary tabs).
+
+- **Cut: EQIP, Plain Language and PCORI.** They're gone from the Frameworks list in both
+  canvases, the use-case sets, the Recommended order and the Compass list. The Compass shows
+  them under "Cut from the library" with the sheet's reason and when to revisit. The
+  **Plain language card still runs** on every text; it's just no longer tied to a framework.
+  The "Research with patient partners" use case is gone (PCORI was its only framework), and
+  "Used often in our work" is now UPL alone.
+- **Each canvas offers only its frameworks (the sheet's Modes column):**
+  - **Evaluate a draft (11):** the 9 marked Both, plus Readability and DISCERN (Evaluate only).
+  - **Plan from an idea (18):** the 9 marked Both, plus COM-B, HBM, TTM, Ottawa DSF and
+    Teach-Back (Plan only), plus SHARE, AHRQ Toolkit, Picker and WHO ERC (Plan only, if scope
+    fits). These last four are shown for now, because open question 2 (does Plan cover care
+    pathways, programs or services?) hasn't been answered.
+  - The Readability card still scores in Plan when you check the storyboard or script. It
+    just isn't in Plan's pick list.
+- **The Compass** labels each framework with its canvas ("Plan and evaluate", "Evaluate only",
+  "Plan only", "Plan only, if scope fits") and adds a Canvas filter (Plan from an idea /
+  Evaluate a draft).
+- **Not done:** NCI Pink Book, EBCD and PAM (Bring back / Keep in the sheet) aren't in the tool
+  yet. Each needs its items written from its source first.
+- **Code:** `frameworks.js` (`modes`, `decision`, `CUT`, `MODE_LABEL`, `MODE_CANVAS`).
+  `index.html` (`fwAvailable()` replaces `FW_AVAILABLE`, `FW_LIVE` no longer includes
+  plainlang, and `FW_REG` is regenerated with 20 frameworks). `plan.js` (plainlang removed from
+  the flows). `framework-compass.html`, `scripts/build-fw-reg.js`. Cache tags:
+  `frameworks.js v=20261026a`, `plan.js v=20261026a`.
+
+## 2026-10-21 — "Text the tool read" hidden; highlights leave room for Grammarly
+
+Branch: `refresh-and-fixes` · Vercel: not pushed (local only)
+
+- **The "Text the tool read" card is hidden for now.** Words read from an image or PDF are
+  still scored and highlighted as before; the card just isn't shown. Hints that pointed to it
+  were reworded. Bring it back by restoring `'mod-vtext': () => visualOn` in `APPLIES`.
+- **Flagged words are a yellow fill only, with no underline.** The underline sat exactly where
+  Grammarly and the browser draw theirs, so the two covered each other. The marks never
+  changed the document (CSS Custom Highlight API), so only the look clashed. The issue you
+  click still gets a thick underline for a moment.
+- **Code:** `index.html` (`APPLIES`, hint text), `design-system.css` (`::highlight(pea-flag)`),
+  stylesheet cache tag `v=20261021b`.
+
+## 2026-10-21 — Plan from an idea starts with no frameworks
+
+Branch: `refresh-and-fixes` · Vercel: not pushed (local only)
+
+- **Switching to Plan from an idea clears the Frameworks bar.** Picks, ratings, open
+  checklists and the output filter from Evaluate a draft are reset, so the plan starts empty.
+- **Nothing switches itself on in Plan.** The Brief's picks (for example Video → PEMAT-A/V) and
+  in-use scoring cards don't count there. Only frameworks that the plan turns on ("Check the
+  storyboard words", "Score the final script", handing a draft to the editor) or that you tick
+  are selected.
+- **Back in Evaluate**, the usual rules return, including the Brief's picks. Going back into
+  Plan clears again.
+- **Code:** `index.html`. `fwPlanning()` gates `selectedFrameworks()` and `fwChosen()`, and
+  `setMode()` clears on the switch into Plan.
+
+## 2026-10-21 — Light theme matches dark; longer sample handout
+
+Branch: `refresh-and-fixes` · Vercel: not pushed (local only)
+
+- **Light theme greys now follow the dark theme.** Both themes already used the same cool slate
+  hue (about 212°). The light page was nearly white (`#ECEEF0`), so the two looked like
+  different tools. The page is now a visible slate (`--desk #D8DDE3`) under white sheets,
+  mirroring dark mode's slate desk with lighter panels. The related tokens moved with it:
+  - `--sheet-2 #EEF1F4`, `--rule #C9CFD6`, `--hover #E5E9EE`, `--meter-track #DDE2E8`
+  - `--scroll-thumb #A9B1BA`, `--checker-b #E3E7EC`
+- **Contrast kept:** on the new desk, `--control-border` is darkened to `#6E767F` (3.4:1) and
+  `--ink-disabled` to `#565D66` (4.9:1). Ink, ink-2, form blue and the status colours all
+  stay ≥ 4.5:1 on the desk. Dark theme is unchanged. Edit is in `design-system.css`; its
+  cache-bust is now `v=20261021a` on index, Compass and the logo preview page.
+- **Sample handout is much longer:** about 685 words, up from about 117. It is a two-page
+  blood pressure handout with these sections: why it matters, what you need, before you check,
+  numbered steps, a numbers table, medicine, everyday habits, when to call, when to call 911,
+  questions to ask, and a closing reminder.
+- **It still carries problems on purpose:** the jargon paragraph, a bare percentage, passive
+  sentences, vague wording, a long sentence, an undefined acronym (DASH), and a mix of
+  "care team" and "provider". So every check still has something to find.
 
 ## 2026-10-21 — Plan: Next button pinned to the bottom
 

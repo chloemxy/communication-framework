@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dot Grid Options</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500&family=Public+Sans:wght@400&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#0B0C0E;color:#EDEEF0;font-family:'Public Sans',Arial,sans-serif;padding:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px;max-width:1400px;margin:0 auto}
+.lab{font-size:15px;margin:0 0 8px;color:#C9CDD3}
+.sl{container-type:inline-size;position:relative;aspect-ratio:16/9;background:#121417;border-radius:6px;overflow:hidden;--i:#EDEEF0;--g:#A9AEB6;--r:#30343A}
+canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.in{position:relative;height:100%;box-sizing:border-box;padding:4cqw 7cqw 2.4cqw 5cqw;display:flex;flex-direction:column;color:var(--i)}
+.q{font:500 6.6cqw/1.06 Newsreader,Georgia,serif;letter-spacing:-.015em;margin:0 0 2.6cqw}
+.q mark{background:#5A4C10;color:inherit;padding:0 .12em}
+.g{display:grid;grid-template-columns:1.2fr 1fr;gap:4cqw;flex:1;min-height:0}
+.b{font-size:2.1cqw;line-height:1.38;color:var(--g);margin:0}
+.w{color:var(--i)}
+.r{border-top:1px solid var(--r);padding:.7cqw 0}
+.c{background:#1B1F24;border:1px solid var(--r);border-radius:4px;padding:2cqw;align-self:start}
+.u{text-decoration:underline;margin:.4cqw 0 1.2cqw}
+.f{font-size:1.15cqw;color:var(--g);margin:0}
+</style>
+</head>
+<body>
+<div class="grid" id="g"></div>
+<script>
+const R=Math.random, TAU=Math.PI*2;
+const names=['1. Drifting patches','2. One roaming spotlight','3. Ripples from random spots','4. Twinkling dots','5. Soft sweep, random angles','6. Patches bloom and vanish'];
+const row=(t,s)=>`<div class="r"><p class="b w">${t}</p><p class="b">${s}</p></div>`;
+document.getElementById('g').innerHTML=names.map(n=>`<section><p class="lab">${n}</p><div class="sl"><canvas></canvas><div class="in"><p class="q">What’s your view<br><mark>on our approach?</mark></p><div class="g"><div><p class="b" style="margin-bottom:.7cqw">Thank you. What’s next:</p>${row('Open source','Free to use and extend.')}${row('See the gaps','Where frameworks overlap, and don’t.')}${row('Build with us','Collaborators and feedback welcome.')}</div><div class="c"><p class="b">Try PRISM</p><p class="b w u">communication-framework.vercel.app</p><p class="b">Feedback</p><p class="b w u">prism@goinvo.com</p></div></div><p class="f">Code on GitHub, licensed Apache 2.0. Designs licensed CC BY 4.0. Drawing the Line · UofT Biomedical Communications · November 2026</p></div></div></section>`).join('');
+
+const gauss=(dx,dy,r)=>Math.exp(-(dx*dx+dy*dy)/(r*r));
+function wander(n,r,speed){
+  const b=Array.from({length:n},()=>({x:R(),y:R()*.56,tx:R(),ty:R()*.56,r}));
+  return {step(dt){b.forEach(p=>{const k=1-Math.exp(-dt*speed);p.x+=(p.tx-p.x)*k;p.y+=(p.ty-p.y)*k;if(Math.hypot(p.tx-p.x,p.ty-p.y)<.04){p.tx=R();p.ty=R()*.56}})},
+          a(u,v){let s=0;for(const p of b)s+=gauss(u-p.x,v-p.y,p.r);return s}};
+}
+function ripples(){
+  let rings=[],next=0;
+  return {step(dt,t){if(t>next){rings.push({x:R(),y:R()*.56,b:t});next=t+1.6+R()*1.4}rings=rings.filter(q=>t-q.b<5)},
+    t:0,a(u,v,t){let s=0;for(const q of rings){const age=t-q.b,rad=age*.13,d=Math.hypot(u-q.x,v-q.y)-rad;s+=Math.exp(-(d*d)/.0009)*(1-age/5)}return s}};
+}
+function twinkle(){
+  const m=new Map();
+  return {step(){},a(u,v,t,i){let p=m.get(i);if(!p){p={o:R()*TAU,s:.5+R()*1.6};m.set(i,p)}const w=Math.sin(t*p.s+p.o);return w>.55?(w-.55)/.45:0}};
+}
+function sweep(){
+  let ang=R()*TAU,b=0,dur=7;
+  return {step(dt,t){if(t-b>dur){b=t;ang=R()*TAU;dur=6+R()*3}},
+    a(u,v,t){const p=(t-b)/dur,cx=u-.5,cy=v-.28,d=cx*Math.cos(ang)+cy*Math.sin(ang),pos=-.75+p*1.5,e=d-pos;return Math.exp(-(e*e)/.014)}};
+}
+function bloom(){
+  let ps=[],next=0;
+  return {step(dt,t){if(t>next){ps.push({x:R(),y:R()*.56,b:t,r:.12+R()*.12});next=t+.9+R()*1.1}ps=ps.filter(p=>t-p.b<5)},
+    a(u,v,t){let s=0;for(const p of ps){const k=Math.sin(Math.PI*(t-p.b)/5);s+=gauss(u-p.x,v-p.y,p.r)*k*k}return s}};
+}
+const fx=[wander(3,.17,.28),wander(1,.26,.34),ripples(),twinkle(),sweep(),bloom()];
+const cv=[...document.querySelectorAll('canvas')].map((c,i)=>({c,x:c.getContext('2d'),f:fx[i]}));
+function fit(){const D=Math.min(devicePixelRatio||1,2);cv.forEach(o=>{const r=o.c.getBoundingClientRect();o.w=r.width;o.h=r.height;o.c.width=r.width*D;o.c.height=r.height*D;o.x.setTransform(D,0,0,D,0,0)})}
+addEventListener('resize',fit);fit();
+let prev=performance.now();
+function draw(ms){
+  const t=ms/1000,dt=Math.min(.1,(ms-prev)/1000);prev=ms;
+  for(const o of cv){
+    o.f.step(dt,t);o.x.clearRect(0,0,o.w,o.h);
+    const z=o.w*.02,rad=Math.max(.8,o.w*.0014);let i=0;
+    for(let py=z/2;py<o.h;py+=z)for(let px=z/2;px<o.w;px+=z){
+      const a=Math.min(1,o.f.a(px/o.w,py/o.w,t,i++));
+      o.x.fillStyle=`rgba(255,255,255,${(.05+a*.62).toFixed(3)})`;
+      o.x.beginPath();o.x.arc(px,py,rad,0,TAU);o.x.fill();
+    }
+  }
+
+}
+setInterval(()=>draw(performance.now()),40);
+window.__frames=()=>cv.map(o=>o.c.toDataURL().length);
+</script>
+</body>
+</html>
