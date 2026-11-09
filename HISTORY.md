@@ -4,6 +4,476 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-08 — Logo opening on Meet PRISM; one title across Verification; one-line captions
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Meet PRISM opens with the PRISM logo.** The first time the slide comes up, the logo plays its
+  scan large in the middle, then shrinks into a small PRISM logo that now sits above "For health
+  handouts, posters and web pages", while the page rises in. It plays once per showing of the deck
+  (off with reduced motion). Slide-only: the app's own front door is unchanged.
+- **The decisions slide keeps the spreadsheet’s title,** "AI drafted it. We reviewed it." Moving
+  between the two, neither slide moves and only the content under the title changes (both carry
+  `data-title="verify"`).
+- **Feature captions stay on one line** on slides (the longest, the Framework Compass one, is 1479 of
+  1684 px at 1080p).
+- **The homepage screen no longer runs off the right edge;** it stops at the slide’s right margin,
+  cropped from the right.
+
+## 2026-11-08 — Homepage slider: "Eight homepages in 18 hours.", upright slider, bigger screen
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New title and line:** "Eight homepages in 18 hours." / "Drag through every version." (was
+  "Scores aren’t enough." and the Jul 31 description).
+- **Hours instead of dates:** each version is labelled with the hours of building before it
+  (0, 1, 3, 9, 10, 12, 15, 18 h), counted from commit times the same way as the 29-hours slide
+  (commits under 2 hours apart are one sitting, plus 30 minutes each).
+- **Layout B1:** title, line and an upright slider share a left column; every hour is labelled and
+  the current one rides on the grip. Drag up and down; release snaps to the nearest version.
+- **Bigger screen:** the homepage fills the right side at full slide height and runs off the right
+  edge (about 1.4× the old size). Phones keep a horizontal slider above the screen.
+
+## 2026-11-08 — Verification spreadsheet runs to the bottom of the slide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- The Excel window on "AI drafted it. We reviewed it." now fills from under the title to the bottom
+  edge of the slide (13 rows visible at 1080p instead of about 6); the sheet tabs sit on the edge.
+
+## 2026-11-08 — Decisions and Verification slides: source notes removed
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- Removed the footer line ("Source: Framework Compass library review, v2. …") from
+  "32 frameworks. 32 human calls." and from the spreadsheet slide "AI drafted it. We reviewed it."
+
+## 2026-11-08 — Top titles share one height; spreadsheet header row back to normal
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Every title at the top of a slide now starts on the same line** (86 px down at 1080p). "Scores
+  aren’t enough." sat 56 px lower because it was aligned to the bottom of its three-line description;
+  Verification sat lower because its content was centred. Both are now pinned like the others.
+- The spreadsheet’s row 1 no longer sticks while scrolling (it slid over the frozen columns);
+  columns A to C, the column letters and the row numbers still stay put.
+
+## 2026-11-08 — Review spreadsheet: columns A to C frozen
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **#, Framework and Full name stay in place** while the sheet scrolls or pans sideways, with a darker
+  line after column C, like frozen panes in Excel. The column letters and row numbers stay put too.
+
+## 2026-11-08 — Homepage slider down to 8 versions
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Dot 7 removed** (an Oct 17 version, `img/home/14.jpg` deleted), leaving 8.
+
+## 2026-11-08 — Slides: one title size
+
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
+
+- **Every slide title is now 115px on a 1920×1080 projector** (`--fs-title`, 6 units). Before, titles ran
+  100–173px: 127px on most slides, 104px on The updates, Verification and Your turn, 100px on AI
+  certification, and 173px for the analogy line. The per-slide size overrides are gone. Phones keep
+  the display size.
+- **Your turn:** the headline column is wider (1.5 to 1 instead of 1.15 to 1), so "What's your view on
+  our approach?" stays on two lines and the contact card no longer runs off the foot of the slide.
+- The PRISM wordmark and the big numbers on The proof keep the larger hero size.
+
+## 2026-11-08 — Meet PRISM shows the real front door
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The Meet PRISM slide is now the PRISM landing page itself**, loaded from `../index.html?intro`
+  in a frame that fills the slide, with its top bar (logo, countdown, Pause, Skip) hidden. The
+  countdown is paused so it never hands off to the Studio. The handout’s fixes step through by
+  themselves while the slide is up, and stop if someone drags the slider. Wheel and arrow keys over
+  the page still turn slides. The old title, line, link and studio screenshot are gone.
+
+## 2026-11-08 — Homepage slider follows the pointer, then snaps
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Dragging the handle moves it smoothly with the pointer,** and the screens crossfade in step with it.
+  On release (or on a plain click) it glides to the nearest version in about 0.3 s and stays there.
+
+## 2026-11-08 — Homepage slider down to 9 versions
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Seven more versions removed** (dots 4, 6, 7, 9, 13, 14 and 15), leaving 9; their images are deleted
+  from `img/home/`.
+
+## 2026-11-08 — Homepage slider: grab handle with the date on it
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The slider handle is a wide yellow grip** (three lines, grab cursor) and the date rides on it in
+  a small tag, so the date tag on the screen itself is gone. Screens still crossfade.
+- **The handle nudges right and back when the slide opens**, to show it can be dragged.
+- **More room between the title and the slider;** the Jul 31 and Oct 19 end labels are gone, since
+  the date now rides on the handle.
+
+## 2026-11-08 — Frameworks clip by area; Compass expanders stay put; slider trimmed to 16
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Frameworks panel plays a longer clip** (`media/loops/6-frameworks-area.mp4`, 21 s, replaces
+  `6-frameworks.mp4`): sorts the list By area and scrolls through every area, ticks CCI, closes the
+  list, then the cards: Readability collapses, the CCI card scrolls through its items, Readability opens.
+- **Framework Compass: "How it’s scored" and "All references" no longer jump** when opened
+  (`framework-compass.html`). They are now buttons that stay in the row; what they open appears
+  full width under it. The Compass clip (`7-compass-studio.mp4`) is re-recorded with the fix.
+  *Not pushed: `framework-compass.html` also holds the unpushed Oct 27 app work, so it stays local.*
+- **Homepage slider: four versions removed** (dots 3, 5, 6 and 7), leaving 16, and the footer note
+  under the slide is gone.
+
+## 2026-11-08 — Compass clip starts in the Studio
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The Framework Compass panel shows how to get there** (`media/loops/7-compass-studio.mp4`, 14 s,
+  replaces `7-compass.mp4`): it starts in the Studio, clicks Framework Compass in the top bar, the
+  Compass opens in place, then scrolls to PEMAT-A/V and opens All references and How it’s scored.
+  The camera is wider than before so the top bar stays in view.
+- Caption: "One click from the Studio: how each of 14 frameworks is scored, with its source."
+
+## 2026-11-08 — Slides: one framework count, 14
+
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
+
+- **The Frameworks feature caption now says 14**, matching the Framework Compass: "Pick from 14
+  published frameworks, grouped by area." It said 11, the number Evaluate a draft offers; Plan from an
+  idea adds HBM, TTM and WHO ERC, so all 14 are usable across the two.
+
+## 2026-11-08 — Homepage slider ends Oct 19; closed feature panels get round corners
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The homepage slider stops at Oct 19** with 20 versions; the last four (the later front door
+  versions) are gone, and their images removed from `img/home/`.
+- **Closed feature panels have a rounded bottom-right corner.** The panel is narrower than its
+  video, so the white video showed a square corner there.
+
+## 2026-11-08 — Plain language clip: every way to apply a fix, History and Revert
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Panel 4 on "Bring your draft." plays a longer clip** (`media/loops/4-fixes.mp4`, 19 s, replaces
+  `4-checks.mp4`), recorded the same way as the other loops (same window, no zoom, drawn cursor):
+  hard words are highlighted; one rewrite is applied from its card; "Various" is retyped as "Many"
+  right in the text; Apply all fixes the rest; History opens with every change listed; Revert brings
+  back the handout as first loaded, highlights and all.
+- Caption: "Fix one, edit in the text, or apply all. Revert any change from History."
+
+## 2026-11-08 — Slides: a Meet PRISM intro before the demo
+
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
+
+- **New slide before "Bring your draft."** The PRISM wordmark with its yellow highlighter on the I,
+  "A patient education analyzer.", one line on what it does, and the live address. A real studio
+  screenshot fades in on the right; phones hide it. The deck is 14 slides.
+
+## 2026-11-08 — Slides: "Not everything worked" removed
+
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
+
+- **Removed the What went wrong slide** ("Not everything worked.": the Design, Facts and Bugs cards,
+  and "Claude sounds sure when it’s wrong. Check everything."). The proof now leads straight into
+  the thesis, and the deck is 13 slides. Its styles are shared with other slides, so they stay.
+
+## 2026-11-08 — Homepage stepper becomes a slider above the screen
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The row of dots on "Scores aren’t enough." is now a slider, and sits above the homepage screen.**
+  Drag the yellow handle or click anywhere on it to jump straight to that version; scrolling and the
+  arrow keys still step one version at a time.
+
+## 2026-11-08 — Verification leads into AI certification
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Verification and its summary moved** to sit right before AI certification. The order is now:
+  … The updates → The proof → What went wrong → The thesis → Verification (spreadsheet) →
+  "32 frameworks. 32 human calls." → AI certification → Your turn.
+
+## 2026-11-08 — Verification summary slide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New slide after the review spreadsheet: "32 frameworks. 32 human calls."** All 32 frameworks
+  from the v2 review, in five columns by decision: Keep 7, With conditions 8, Brought back 4,
+  Depends on scope 4, Cut 9 (struck through). Text appears at once, with no animation.
+
+## 2026-11-08 — Review spreadsheet scrolls by hand
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The spreadsheet on Verification scrolls left, right, up and down.** A wheel or trackpad gesture
+  over the sheet scrolls the sheet instead of turning the slide; anywhere else on the slide, and the
+  arrow keys or a clicker, still move to the next slide. Column letters and row numbers stay pinned.
+- **It still pans by itself** across the columns and back when the slide opens, and stops the moment
+  someone wheels, drags or touches it.
+
+## 2026-11-08 — Your turn: split left and right
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The closing slide is split in two.** The question sits top left with the GoInvo card (Try PRISM,
+  Feedback) under it; What’s next runs down the right half. The card’s bottom edge lines up with the
+  last line of the list, and "Thank you. What’s next:" sits on the same baseline as the question’s
+  last line. On narrow screens it still stacks.
+
+## 2026-11-08 — Four feature clips re-recorded wider, with scrolling
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Plain language (7.4 s)** is framed wider so the draft, Readability and the Plain language
+  module all show. Hard words light up, then a suggested fix is applied and the long sentence
+  splits in the draft, and the list moves to the next suggestion (cited to PEMAT-P item 4).
+  Its caption now reads “Flags hard words, suggests fixes, shows the grade.”
+- **Images (9.6 s)** shows all three modules: alt text is typed, the Alt text card folds away,
+  two palette colours get a contrast result, and the poster switches to deuteranopia, then greyscale.
+- **Frameworks (10.2 s)** is full width. The sort menu opens with its four options (drawn over
+  the page, since the recorder can't capture the browser's own menu), sorts by name, scrolls
+  through all 11, regroups by area and ticks CCI. The extra clicks are gone.
+- **Framework Compass (9.4 s)** scrolls down to PEMAT-A/V and highlights its source link, its
+  full citation under All references, and its formula under How it's scored.
+- **Plain language clip redone (9.9 s) to match how PRISM works:** the highlights are already on when
+  the draft opens (the earlier one-by-one reveal was staged). Three suggestions are then applied in
+  turn: the long sentence splits, “hypertension” becomes “high blood pressure”, and “myocardial
+  infarction” becomes “heart attack”. The grade goes from 4.3 to 4.1.
+- **The “Screen recordings of PRISM” credit line is gone** from both feature slides, at your request.
+- **Drop or paste caption** drops “or image”: “Word, PDF or text opens as an editable draft.”
+
+## 2026-11-08 — Homepage stepper, the real review sheet, sharper feature captions
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **"Scores aren’t enough." steps through every homepage version.** 24 screenshots, one for each
+  commit that visibly changed `index.html` from Jul 31 to Nov 4, rebuilt from git and saved in
+  `img/home/`. Each scroll moves one version; a row of 24 evenly spaced dots fills as you go, and
+  the next scroll after the last version moves on to the next slide. The old two-image slider is gone.
+- **Verification shows the real spreadsheet.** The Library tab of the v2 review (23 frameworks, all
+  13 columns) is drawn as an Excel window from the file’s own cells, and pans slowly from column A
+  to M and back while the slide is up. The four count-up numbers and the closing line are gone.
+- **Feature captions say what each feature does,** with the repeated and filler phrases cut, and
+  the Plan caption now describes the feature instead of quoting Nati.
+- **Rail dots are evenly spaced;** the extra gap before each new chapter is gone.
+
+## 2026-11-08 — Title retype removed
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Titles no longer retype** (`presentation/index.html`). The backspace-and-retype transition
+  is gone (its CSS, script and the camera-phone slide's `data-rt-with`). Titles fade in with the
+  rest of the slide again, 160 ms after it opens. `titleOf` and `plain` stay because the rail
+  labels each dot with its slide's title. The titles' shared 86px starting height stays too.
+
+## 2026-11-08 — Your turn: everything shows at once
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The closing slide no longer animates its text.** The question, the What’s next list, the
+  PRISM and feedback card and the licence line are all there the moment the slide opens.
+
+## 2026-11-08 — "Three tests" and "Make room to grow" slides removed
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Removed two slides** from `presentation/index.html`: "Every framework had to pass three tests"
+  (`#decided`) and the "Make room to grow." before/after (`#then-2`). "Scores aren’t enough." now
+  leads straight to Verification. The images they used stay in the repo.
+
+## 2026-11-08 — "Check the math" slide removed
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Removed the "Check the math." before/after slide** (`#then-6`, the readability grade pair) from
+  `presentation/index.html`. Human review now leads straight to The proof. The screenshots
+  `img/ba-grade-before.jpg` and `img/ba-grade-after.jpg` stay in the repo, unused.
+
+## 2026-11-08 — Titles hold one height; one rail dot per slide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Top titles start at one height** (`presentation/index.html`). The seven slides whose title
+  sits at the top (What we brought, both PRISM slides, the three before/afters, the closing
+  question) are marked `.pin`: their title starts 8% down the screen (86px at 1080) instead of
+  wherever centring put it (67–103px), so a retyped title stays in place. The centred statement
+  slides keep their layout.
+- **The rail has a dot for every slide**, not one per chapter, so it can step to any slide. A
+  small gap marks where a chapter starts, and hovering shows the slide's title.
+- **Each dot's click target is the dot plus 8px around it.** The hidden label no longer
+  catches clicks, which had made the whole ~200px row clickable.
+
+## 2026-11-08 — Slide titles retype
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Going forward, each slide's title is retyped** (`presentation/index.html`). The new slide
+  opens with the previous slide's title in its place, deletes it letter by letter, then types
+  its own behind a yellow caret. The rest of the slide plays once the title is done.
+  - Timing: 16 ms per letter to delete, a 150 ms pause, 38 ms per letter to type. A typical
+    change takes about 1–1.5 seconds.
+  - Titles are the headline on each slide (`.title h1`, `.h2`, `.big-line`, the question and
+    the closing question). Slides without one (The proof, the walkthrough) type the next title
+    from blank.
+  - The title is held at its finished size while it types, so lines break where they end up.
+    Highlighted words get their highlight as they are typed.
+  - On the camera-phone slide, the setup line shows while its punchline types
+    (`data-rt-with`), since it reads first.
+  - Pressing next during typing finishes the slide and moves on. Going back shows titles at
+    once. With reduced motion, titles appear without typing.
+
+## 2026-11-08 — Slides: a refresh keeps your place
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Refreshing the slides reopens the slide you were on** (`presentation/index.html`). The
+  current slide is remembered in this browser only (`localStorage`, key `prism-talk-slide`);
+  the address stays `/presentation/`.
+- **Home** goes back to the title slide, and that is remembered too.
+- A slide named in the address (e.g. `#voices`) still wins over the remembered one.
+- The slide plays in again as it does when you arrive on it; the walkthrough reopens at its start.
+- **Note:** opening the deck again later in the same browser also lands on the last slide, so
+  press Home before the talk.
+
+## 2026-11-08 — Slide 2 gets a Framework Compass panel; longer Frameworks clip; Plan shows the checks
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Check it, or plan it.** now has four panels: Images, Frameworks, Framework Compass (new) and
+  Plan (`presentation/index.html`).
+- **Frameworks** (`media/loops/6-frameworks.mp4`, 9.4 s): points to "11 frameworks", shows the
+  groups, re-sorts by name and then by area, then ticks CCI and PEMAT-P into the bar. Caption:
+  "11 frameworks, grouped and sorted. Tick what you need."
+- **Framework Compass** (`media/loops/7-compass.mp4`, new): the page with its 14 frameworks; a
+  search for "video" narrows it to PEMAT-A/V and opens How it's scored. Caption: "How each
+  framework is scored, and its source."
+- **Plan from an idea** (`media/loops/8-plan.mp4`, replaces `7-plan`): starts on a filled-in
+  video storyboard (what's shown, said and on screen for all five scenes), then ticks three
+  scene checks, each citing its framework item (CDC IDD/ELL 4, PEMAT-A/V 10, PEMAT-A/V 22).
+- **Rounded strips:** each panel is now clipped to rounded corners, so the closed strips no
+  longer show a square white corner under the dimmed overlay.
+- The section now runs about 3:55 (the Compass panel and the longer Frameworks clip add about 20 s).
+
+## 2026-11-08 — Feature clips: drop and images re-recorded; playback retries
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Drop or paste** (`media/loops/3-drop.mp4`): the dragged Word file now starts inside the
+  frame instead of half off its right edge, so the first frame already shows what's happening.
+- **Images** (`media/loops/5-images.mp4`): the colour-blind buttons were below the frame, so
+  their clicks happened out of view. The card column is now scrolled so the contrast check
+  (5.81:1, picked before the clip starts) and the colour-blind buttons are both in frame; the
+  poster switches to Deuteranopia, then Greyscale. Caption: "Contrast, colour-blind views and
+  alt text."
+- **Playback retries** (`presentation/index.html`, `playClip()`): if a clip hasn't loaded when
+  its panel opens, it plays once it can; if it still hasn't started after 1.2 s, it reloads
+  and tries again.
+
+## 2026-11-08 — Feature clips play once; panels clickable; rounder corners; smaller active dot
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Feature clips play once and stop on the result** (`presentation/media/loops/*.mp4`). The
+  0.35 s fade back to the first frame was trimmed off, and the videos no longer loop. Each
+  replays from the start when its panel opens again.
+- **Every feature panel is clickable** (`presentation/index.html`). A click, or Enter on a
+  focused panel, opens that feature directly; the panels glide over in 0.55 s. Clicking the
+  open panel replays its clip. The arrow keys and scrolling still step through them in order.
+- **Video corners are round again.** Chrome drew square corners on playing videos, so each
+  video now sits in a clipped, rounded frame (`.fp-v`).
+- **Chapter dots:** the current dot grows to 110% instead of 135%.
+- Panel 4's caption is now "Hard words are flagged, with a reading grade." so it fits on one line.
+
+## 2026-11-08 — Middle of the talk reworked: features, decisions, updates, verification
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New order after the analogy** (`presentation/index.html`), about 3:35 to present:
+  1. **What PRISM does, slide 1 ("Bring your draft."):** four panels, Private, Brief, Drop or
+     paste, Plain language.
+  2. **What PRISM does, slide 2 ("Check it, or plan it."):** three panels, Images, Frameworks,
+     Plan from an idea. Plan's caption is Nati's "Most people start with copy only."
+  3. **How we decided (new):** three tests every framework had to pass (material only,
+     documents, our formats), closing on "26 frameworks became 14."
+  4. **The updates:** Scores aren't enough; Make room to grow.
+  5. **Verification:** AI drafted it, we reviewed it (Sonia's spreadsheet); Check the math.
+  6. **The proof:** unchanged, with its numbers and office background, now closing the section.
+- **Expanding panels:** each click opens the next panel. The open panel plays its loop; the
+  others shrink to dimmed strips with their names and pause. Phones stack the panels.
+- **Seven loops** in `presentation/media/loops/` (MP4 plus a still, 2.1 MB in all), recorded
+  with headless Chrome from the current Studio in light mode. Every loop is under 5 seconds,
+  uses the same camera distance (a fixed 960×480 window of the 1440×900 app, at 2×) and never
+  zooms or pans. A drawn cursor with a yellow click ring shows each action, and the last
+  0.35 s fades back to the first frame so the loop restarts without a jump.
+- **Out of the deck:** the PRISM overview, the walkthrough, Real voices, and the before/afters
+  Start where they start, Keep only what's sourced (now a line on How we decided) and Quote,
+  don't paraphrase. Their files stay in the repo; `walkthrough.js` no longer loads.
+- **Refresh keeps your slide:** the address changes to the current slide (`#features`,
+  `#decided`…), so a reload opens it again.
+- Checked at 1920×1080: each panel step, every new slide, the address on each slide change,
+  no console errors.
+
+## 2026-11-08 — Then and now becomes six before/after slides
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Six slides replace the one Aug 17 vs. today slide** (`presentation/index.html`), all in the
+  same template: a headline that says why the change was made, a line on what changed, and the
+  wipe between before and after. They sit in The proof, after the numbers.
+  1. **Scores aren't enough.** The first tool (Jul 31) gave three scores; PRISM (Oct 28) shows
+     what to fix, and why.
+  2. **Make room to grow.** The side panel broke at 26 frameworks; Sonia's Sep 15 prototype
+     made it a bar on top.
+  3. **Start where they start.** After Nati's interview, Plan went from a blank editor to a
+     guided path (Oct 17).
+  4. **Keep only what's sourced.** 26 frameworks became 14, each linked to its source.
+  5. **Quote, don't paraphrase.** Claude had reworded CDC's CCI checklist; since Oct 16 every
+     item is CDC's own wording.
+  6. **Check the math.** Headings counted as sentences, so a grade 4.3 handout read as 2.7
+     (fixed Oct 27).
+- **New screenshots** in `presentation/img/ba-*.jpg`, taken with headless Chrome from the code
+  before and after each change: `f7cf84c` / `c2cc437` (Plan), `19f5989~1` / `19f5989` (CCI),
+  and the last commit / the working tree (grade, both scoring today's sample handout). The CCI
+  and grade pairs are close crops of their card, so their wipe runs all the way across
+  (`--stop:1`); the others stop halfway as before. Each wipe can still be dragged.
+- A one-slide version that stepped through all six pairs was tried first and replaced before
+  it was deployed.
+- **Real voices:** the "Three days later" card is gone, since slide 3 now tells that story.
+- **To check:** the grade fix (Oct 27) is still only in the working tree, not on Production.
+
+## 2026-11-05 — What we brought: art left, text panel right
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New layout for slide 3** (`presentation/index.html`): the hands video fills the left 59% of the slide,
+  zoomed in with the fingertips at its centre and no dark wash over it. The title, text and source line
+  sit in a dark panel on the right. The two cards are gone, replaced by a blue and a yellow side rule.
+- **Copy:** each person's name and first line merge, as "Sonia: the framework idea" and
+  "Chloe: AI fluency, open source". The rest of the wording is unchanged.
+- **Phones** stack the title, art and text. A centred letterbox version was tried first and replaced
+  before it was deployed.
+
+## 2026-11-08 — What we brought: new flower clip that grows once
+
+Branch: `refresh-and-fixes` · Vercel / GitHub Pages: not pushed (local only)
+
+- **New Veo clip** (`media/bg/creation-of-adam-grow.mp4`): vines start at both hands, wrap up the arms
+  and bloom into lilies, roses and blue flowers in about 5 seconds. It plays once and holds in full
+  bloom, starting over on each visit. Silent, enlarged from 1280 x 720 to 1920 x 1080. Rebuilt from
+  Chloe's newer version of the clip, which adds lilies to the right arm and blooms by about 6 seconds.
+- **Wider framing:** the clip now fills the art panel instead of zooming in on the hands, so the flowers
+  along both arms show.
+- **Fixed overlap:** "Each knew what the other didn't" ran into the source line at 1280 x 720. The art
+  panel is a little narrower (55% of the width instead of 59%) and the source line is shorter.
+
 ## 2026-11-05 — Last slide: dotted paper background
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
