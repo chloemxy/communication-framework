@@ -4,6 +4,21 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-08 — Contrast card suggests a passing shade
+
+Branch: `claude/focused-stonebraker-69c134` · Vercel: not pushed yet
+
+- **Fix rows in the contrast card** (Images → Colour and contrast): when a pair fails AA body
+  (4.5:1) or AAA (7:1), a row under the grades names the nearest shade of the text colour that
+  passes, with a swatch and its ratio, e.g. "Darken to #9d211a (7.00:1) to pass AAA" for
+  #b3261e on #f6f1e8 (5.81:1). One row per failing target; nothing shows when all three pass.
+- **How the shade is found:** same hue and saturation, lightness only, in 0.1% steps; darker on
+  light backgrounds, lighter on dark ones. A shade counts only if its exact ratio reaches the
+  target. If even black or white can't reach it, the row says to pick a different colour.
+- **Preview:** each row's Preview button (secondary button, pressed state while on) swaps the
+  shade into the Large heading / body copy sample; Show original swaps it back. Picking new
+  swatches clears the preview. The artwork itself is never changed.
+
 ## 2026-11-05 — Last slide: dotted paper background
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
