@@ -18,6 +18,12 @@ Branch: `claude/focused-stonebraker-69c134` · Vercel: not pushed yet
 - **Preview:** each row's Preview button (secondary button, pressed state while on) swaps the
   shade into the Large heading / body copy sample; Show original swaps it back. Picking new
   swatches clears the preview. The artwork itself is never changed.
+- **Talk walkthrough, chapter 6 (Posters and images)** gains a third beat after greyscale: the
+  camera moves to the contrast card, #b3261e on #f6f1e8 is picked, the fix row is spotlit ("Fails
+  AAA? PRISM suggests a fix"), then Preview is clicked ("Preview it before you change the art").
+  Two new recorded frames (`media/walkthrough/06-poster-003/004.webp`) are the existing
+  normal-colour poster frame with the live contrast card captured at the same size and scale; the
+  chapter grows from 8.4 s to 16.2 s. Frame and script cache versions bumped to `20261108a`.
 
 ## 2026-11-05 — Last slide: dotted paper background
 
