@@ -4,6 +4,54 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-09 — AI certification: plain-language line under the title
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New line under "Certify the work, not the AI."** It now reads "A person signs off each screen
+  as safe for patients, against:", with "safe for patients" highlighted like "not the AI." The old
+  line ("This screen, this flow, this version: fit for purpose, under these conditions.") didn't
+  read as a sentence; the new one fits on one row and leads into the list of seven standards below
+  it (`presentation/index.html`).
+
+## 2026-11-09 — Verification: the two "We reviewed it" slides flip cleanly
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **No ghost of the spreadsheet behind the decision list.** When the list had faded in over the
+  spreadsheet, the spreadsheet slide then ran its own fade-and-slide out and showed through. It now
+  hides at once while still covered (`presentation/index.html`).
+- **Fast flipping no longer leaves a slide stuck underneath.** Moving on from either slide within
+  0.7 s used to leave the spreadsheet showing under the next slide; the shared-title fade now
+  settles first.
+- **The shared title renders the same on both slides**, so its letters don't shimmer at the swap.
+- **The spreadsheet's header row is frozen too.** The column letters and row 1 (#, Framework, Full
+  name, Zone…) now stay at the top when the sheet scrolls down, like Freeze Panes in Excel, alongside
+  the frozen first columns.
+
+## 2026-11-09 — "Intent first" moves after AI certification; text appears by block
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The thesis slide ("Intent first. Build fast. Iterate.") now comes after AI certification**,
+  just before "What's your view on our approach?" (`presentation/index.html`).
+- **Text appears a block at a time, not line by line.** On the thesis slide the three rows come in
+  together, then "AI gives you the average. You're the designer." On AI certification the title,
+  the description and the standards line come in together, then "The responsibility didn't." last.
+
+## 2026-11-09 — Homepage slider: three type styles, no hours on the timeline, bigger screen
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Three type styles in the left column:** serif for the stat numbers, white sans for the prompt
+  and the stat labels, grey sans at the same size for one credit line ("Chloe · 10 h · Oct 16").
+  The yellow uppercase tag and the italic serif quote are gone, and every prompt is one size.
+- **No hours on the timeline.** The labels and the hour on the handle are hidden. The timeline is
+  a slim row of dots, and the credit line names the hour.
+- **Bigger screen:** 1084x678 at 1600x900 (was 1028x643), because the left column is narrower
+  (17u, was 20u). The prompt's first line sits level with the screen's top edge, and the stats end
+  level with its bottom edge.
+
 ## 2026-11-09 — Homepage slider: the prompt behind each version; timeline above the screen
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
