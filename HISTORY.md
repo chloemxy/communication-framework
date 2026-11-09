@@ -4,6 +4,13 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-09 — "What we brought" hidden
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The "What we brought" slide is hidden** (`hidden` on `#brought` in `presentation/index.html`).
+  It no longer shows or gets a rail dot; the markup stays, so removing `hidden` brings it back.
+
 ## 2026-11-09 — AI certification: plain-language line under the title
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
