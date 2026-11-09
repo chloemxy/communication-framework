@@ -160,35 +160,36 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .hs-dots i{position:relative;width:12px;height:12px;border-radius:50%;background:var(--desk);border:2px solid var(--ink-2);box-sizing:border-box}
 .hs-dots b{position:absolute;inset:-2px;border-radius:50%;background:var(--brand)}
 .hs-lab{display:none}
-/* the prompt behind each version, faded in and out with its screen */
+/* the prompt behind each version, faded in and out with its screen. Three type styles only: the
+   serif stat numbers, white sans for the prompt and the stat labels, grey sans (same size) for the
+   credit line that carries the name, hour and date */
 .hs-side{gap:24px}
 .hs-q{display:grid}
 .hs-q > div{grid-area:1 / 1}
-.hs-tag{font:600 var(--fs-tag)/1 var(--f-ui);color:var(--brand);letter-spacing:.06em;text-transform:uppercase}
-.hs-q blockquote{margin:.6em 0 0;font:italic 400 calc(1.25 * var(--fs-body))/1.25 var(--f-display);color:var(--ink)}
+.hs-q blockquote{margin:0;font:400 var(--fs-body)/1.4 var(--f-ui);color:var(--ink)}
 .hs-q blockquote::before{content:"“"}.hs-q blockquote::after{content:"”"}
-.hs-who{margin-top:.7em;font:400 var(--fs-tag)/1.3 var(--f-ui);color:var(--ink-2)}
+.hs-who{margin-top:.6em;font:400 var(--fs-body)/1.4 var(--f-ui);color:var(--ink-2)}
 /* the build stats (moved here from the hidden 29 hours slide) */
 .hs-ledger{margin:0}
 .hs-ledger li{grid-template-columns:max-content 1fr;padding:6px 0}
 .hs-ledger b{font-size:calc(2.2 * var(--fs-body));min-width:2.9em}
-/* slides: the hour timeline runs above the screen; the screen is a whole 16:10 shot, as large as
-   fits inside the slide margins. Beside it, the prompt starts level with its top edge and the stats
-   end level with its bottom edge */
+.hs-ledger span{font:400 var(--fs-body)/1.2 var(--f-ui);color:var(--ink)}
+/* the hours aren't shown on the timeline; the credit line names the hour */
+.hs-bub,.hs-lab{display:none}
+/* slides: a slim timeline of dots runs above the screen; the screen is a whole 16:10 shot, as large
+   as fits inside the slide margins. Beside it, the prompt starts level with its top edge and the
+   stats end level with its bottom edge */
 @media (min-width:721px){
   #then .inner{container-type:size}
-  .hs-wrap{--tl:calc(6.4 * var(--u));--sw:min(100cqw - 23 * var(--u),(100cqh - var(--tl)) * 1.6);height:100%;display:grid;grid-template-columns:calc(20 * var(--u)) var(--sw);grid-template-rows:var(--tl) calc(var(--sw) / 1.6);justify-content:space-between;align-content:center}
+  .hs-wrap{--tl:calc(2.6 * var(--u));--sw:min(100cqw - 19.5 * var(--u),(100cqh - var(--tl)) * 1.6);height:100%;display:grid;grid-template-columns:calc(17 * var(--u)) var(--sw);grid-template-rows:var(--tl) calc(var(--sw) / 1.6);justify-content:space-between;align-content:center}
   .hs-side{grid-column:1;grid-row:2;min-height:0;justify-content:space-between}
-  .hs-tag{font-size:calc(.95 * var(--u))}
-  .hs-q blockquote{font-size:calc(2 * var(--u))}
-  .hs-q blockquote.long{font-size:calc(1.65 * var(--u))}
-    .hs-who{font-size:var(--u)}
-  .hs-ledger li{grid-template-columns:calc(9.6 * var(--u)) 1fr;padding:calc(.4 * var(--u)) 0}
+  .hs-q blockquote,.hs-who,.hs-ledger span{font-size:calc(1.5 * var(--u))}
+  /* the first line's cap height sits level with the screen's top edge */
+  .hs-q{margin-top:calc(-.72 * var(--u))}
+  .hs-ledger li{grid-template-columns:calc(8.6 * var(--u)) 1fr;padding:calc(.4 * var(--u)) 0}
   .hs-ledger b{font-size:calc(3.1 * var(--u));min-width:0}
-  .hs-ledger span{font-size:calc(1.5 * var(--u))}
-  .hs-axis{grid-column:2;grid-row:1;align-self:start;height:20px;margin:calc(3.4 * var(--u)) 22px 0}
-  .hs-axis::before{top:calc(-3.2 * var(--u));bottom:-10px;left:-22px;right:-22px}
-  .hs-lab{display:block;position:absolute;left:50%;bottom:calc(100% + 18px);transform:translateX(-50%);font:400 var(--fs-tag)/1 var(--f-ui);color:var(--ink-2);padding:.45em 0;white-space:nowrap}
+  .hs-axis{grid-column:2;grid-row:1;align-self:start;height:20px;margin:4px 22px 0}
+  .hs-axis::before{top:-12px;bottom:-10px;left:-22px;right:-22px}
   .hs-screen{grid-column:2;grid-row:2;margin:0;aspect-ratio:auto}
   .hs-v{left:0;right:0;margin:0;width:auto;max-width:none}
   .hs-v img{width:100%;height:100%;max-width:none;aspect-ratio:auto}
@@ -198,13 +199,14 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .xl-bar{background:#217346;color:#fff;font:600 13px/2 "Segoe UI",Arial,sans-serif;padding:0 12px}
 .xl-win{overflow:auto;overscroll-behavior:contain;height:min(52vh,560px);scrollbar-width:thin;scrollbar-color:#b9b9b9 #f3f3f3}
 .xl-grid{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content;font-size:14px;line-height:1.25}
-.xl-grid tr:first-child th{position:sticky;top:0;z-index:2}.xl-grid th:first-child{position:sticky;left:0;z-index:1}.xl-grid tr:first-child th:first-child{z-index:3}
+/* the column letters and the header row stay put on scroll, like Freeze Panes */
+.xl-grid thead{position:sticky;top:0;z-index:3}.xl-grid th:first-child{position:sticky;left:0;z-index:1}.xl-grid thead > tr > :first-child{z-index:3}
 .xl-grid th{background:#f3f3f3;color:#555;font-weight:400;border-right:1px solid #d4d4d4;border-bottom:1px solid #d4d4d4;padding:2px 4px;text-align:center}
 .xl-grid td{background:#fff;border-right:1px solid #e1e1e1;border-bottom:1px solid #e1e1e1;padding:3px 6px;vertical-align:top}
 /* columns A to C stay put, as Excel's frozen panes do; a darker line marks where they end */
 .xl-grid tr > :nth-child(2),.xl-grid tr > :nth-child(3),.xl-grid tr > :nth-child(4){position:sticky;z-index:1}
 .xl-grid tr > :nth-child(2){left:calc(3 * var(--u))}.xl-grid tr > :nth-child(3){left:calc(6.5 * var(--u))}.xl-grid tr > :nth-child(4){left:calc(16.5 * var(--u));border-right:2px solid #9a9a9a}
-.xl-grid tr:first-child > :nth-child(2),.xl-grid tr:first-child > :nth-child(3),.xl-grid tr:first-child > :nth-child(4){z-index:3}
+.xl-grid thead > tr > :nth-child(2),.xl-grid thead > tr > :nth-child(3),.xl-grid thead > tr > :nth-child(4){z-index:3}
 .xl-grid td div{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:2.5em}
 .xl-h td{background:#e8f1ea;font-weight:700}
 .xl-tabs{display:flex;gap:18px;background:#f3f3f3;border-top:1px solid #d4d4d4;font:13px/2 "Segoe UI",Arial,sans-serif;color:#333;padding-left:36px}
@@ -253,6 +255,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .scene.keep.on{transition:opacity .5s ease,visibility 0s}
 .scene.keep-under{opacity:1!important;visibility:visible!important}
 .scene.keep .stage{background:var(--desk)}
+/* both copies of a shared title render the same way, so the letters don't shimmer at the swap */
+.scene[data-title] .h2{will-change:opacity,transform}
 .stage{position:absolute;inset:0;overflow:hidden;display:flex;align-items:center;justify-content:center;
   padding:calc(env(safe-area-inset-top,0px) + 20px) calc(var(--gut) + 44px) calc(28px + env(safe-area-inset-bottom,0px)) var(--gut)}
 @media (max-width:900px){.stage{padding-right:var(--gut)}}
@@ -686,14 +690,14 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
       <div class="hs-side">
         <h2 class="h2 visually-hidden">Eight homepages in 18 hours.</h2>
         <div class="hs-q">
-          <div class="fade" data-in="0.0000 0.1250" data-out="0.1875 0.2500"><p class="hs-tag">My prompt · 0 h</p><blockquote class="long">use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">Chloe, Jul 31</p></div>
-          <div class="fade" data-in="0.1875 0.2500" data-out="0.3125 0.3750"><p class="hs-tag">My prompt · 1 h</p><blockquote>merge studio into the main page, make it feel like a [workspace], brief on one side, material in the middle, checklists on the other</blockquote><p class="hs-who">Chloe, Aug 17</p></div>
-          <div class="fade" data-in="0.3125 0.3750" data-out="0.4375 0.5000"><p class="hs-tag">Prompt · 3 h</p><blockquote>split it into [evaluate a draft] and [plan from an idea], keep it lighter, less boxes</blockquote><p class="hs-who">Sonia, Oct 9</p></div>
-          <div class="fade" data-in="0.4375 0.5000" data-out="0.5625 0.6250"><p class="hs-tag">My prompt · 9 h</p><blockquote>The main workspace/canvas doesn’t need to be this big, the smallest font size on the site should be bigger than 12px.</blockquote><p class="hs-who">Chloe, Oct 16</p></div>
-          <div class="fade" data-in="0.5625 0.6250" data-out="0.6875 0.7500"><p class="hs-tag">My prompt · 10 h</p><blockquote class="long">In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">Chloe, Oct 16</p></div>
-          <div class="fade" data-in="0.6875 0.7500" data-out="0.8125 0.8750"><p class="hs-tag">My prompt · 12 h</p><blockquote>the whole design can use an upgrade, more taste, less ai look, light and dark mode</blockquote><p class="hs-who">Chloe, Oct 16</p></div>
-          <div class="fade" data-in="0.8125 0.8750" data-out="0.9375 1.0000"><p class="hs-tag">My prompt · 15 h</p><blockquote>improve the 23 frameworks dropdown, better grouping and recommended group for situations</blockquote><p class="hs-who">Chloe, Oct 17</p></div>
-          <div class="fade" data-in="0.9375 1.0000"><p class="hs-tag">My prompt · 18 h</p><blockquote>make button center, make where to type and paste more obvious, show where history log/change log is</blockquote><p class="hs-who">Chloe, Oct 19</p></div>
+          <div class="fade" data-in="0.0000 0.1250" data-out="0.1875 0.2500"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">Chloe · 0 h · Jul 31</p></div>
+          <div class="fade" data-in="0.1875 0.2500" data-out="0.3125 0.3750"><blockquote>merge studio into the main page, make it feel like a [workspace], brief on one side, material in the middle, checklists on the other</blockquote><p class="hs-who">Chloe · 1 h · Aug 17</p></div>
+          <div class="fade" data-in="0.3125 0.3750" data-out="0.4375 0.5000"><blockquote>split it into [evaluate a draft] and [plan from an idea], keep it lighter, less boxes</blockquote><p class="hs-who">Sonia · 3 h · Oct 9</p></div>
+          <div class="fade" data-in="0.4375 0.5000" data-out="0.5625 0.6250"><blockquote>The main workspace/canvas doesn’t need to be this big, the smallest font size on the site should be bigger than 12px.</blockquote><p class="hs-who">Chloe · 9 h · Oct 16</p></div>
+          <div class="fade" data-in="0.5625 0.6250" data-out="0.6875 0.7500"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">Chloe · 10 h · Oct 16</p></div>
+          <div class="fade" data-in="0.6875 0.7500" data-out="0.8125 0.8750"><blockquote>the whole design can use an upgrade, more taste, less ai look, light and dark mode</blockquote><p class="hs-who">Chloe · 12 h · Oct 16</p></div>
+          <div class="fade" data-in="0.8125 0.8750" data-out="0.9375 1.0000"><blockquote>improve the 23 frameworks dropdown, better grouping and recommended group for situations</blockquote><p class="hs-who">Chloe · 15 h · Oct 17</p></div>
+          <div class="fade" data-in="0.9375 1.0000"><blockquote>make button center, make where to type and paste more obvious, show where history log/change log is</blockquote><p class="hs-who">Chloe · 18 h · Oct 19</p></div>
         </div>
         <ul class="ledger hs-ledger">
           <li><b>131</b><span>commits</span></li>
@@ -736,16 +740,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     </div></div>
   </section>
 
-  <section class="scene" id="thesis" data-chap="The thesis">
-    <div class="stage"><div class="inner">
-      <ol class="thesis-l">
-        <li data-in="0 0.2"><b>Intent first.</b><span>Know what you’re here for.</span></li>
-        <li data-in="0.25 0.45"><b>Build fast.</b><span>AI is quick, and great for brainstorming.</span></li>
-        <li data-in="0.5 0.7"><b><mark>Iterate.</mark></b><span>Show it, change it, cut it back.</span></li>
-      </ol>
-      <p class="real-q" data-in="0.76 0.94">AI gives you the average. <b>You’re the designer.</b></p>
-    </div></div>
-  </section>
+
 
 
   <section class="scene pin" id="review" data-chap="Verification" data-title="verify">
@@ -754,8 +749,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
       <div class="xl" aria-label="The Framework Compass library review spreadsheet: 23 frameworks across 13 columns, from name and zone to decision, notes, what to verify and source.">
         <div class="xl-bar">framework-compass-library-review-v2.xlsx</div>
         <div class="xl-win" data-scroll tabindex="0" aria-label="Spreadsheet, scrolls left, right, up and down"><table class="xl-grid"><colgroup><col style="width:calc(3 * var(--u))"><col style="width:calc(3.5 * var(--u))"><col style="width:calc(10 * var(--u))"><col style="width:calc(22 * var(--u))"><col style="width:calc(13 * var(--u))"><col style="width:calc(9 * var(--u))"><col style="width:calc(11 * var(--u))"><col style="width:calc(7 * var(--u))"><col style="width:calc(13 * var(--u))"><col style="width:calc(24 * var(--u))"><col style="width:calc(24 * var(--u))"><col style="width:calc(30 * var(--u))"><col style="width:calc(30 * var(--u))"><col style="width:calc(20 * var(--u))"></colgroup>
-          <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th></tr>
-          <tr class="xl-h"><th>1</th><td><div>#</div></td><td><div>Framework</div></td><td><div>Full name</div></td><td><div>Zone</div></td><td><div>Output</div></td><td><div>Modes</div></td><td><div>Role</div></td><td><div>Decision</div></td><td><div>Plan mode use</div></td><td><div>Evaluate mode use</div></td><td><div>Why / notes</div></td><td><div>To verify</div></td><td><div>Source</div></td></tr>
+          <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th></tr>
+          <tr class="xl-h"><th>1</th><td><div>#</div></td><td><div>Framework</div></td><td><div>Full name</div></td><td><div>Zone</div></td><td><div>Output</div></td><td><div>Modes</div></td><td><div>Role</div></td><td><div>Decision</div></td><td><div>Plan mode use</div></td><td><div>Evaluate mode use</div></td><td><div>Why / notes</div></td><td><div>To verify</div></td><td><div>Source</div></td></tr></thead><tbody>
           <tr><th>2</th><td><div>1</div></td><td><div>CCI</div></td><td><div>CDC Clear Communication Index</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Design target: main message, behavioural guidance, numbers presented clearly.</div></td><td><div>Scores the draft against the 20 items.</div></td><td><div>The most unambiguous of the set; natural anchor for the Document Audit screen.</div></td><td><div>Confirm the 20-item count and the 90% pass threshold against the CDC source.</div></td><td><div>CDC Clear Communication Index</div></td></tr>
           <tr><th>3</th><td><div>2</div></td><td><div>PEMAT-P</div></td><td><div>Patient Education Materials Assessment Tool (printable)</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Design target for understandability and actionability.</div></td><td><div>Two scores: understandability and actionability.</div></td><td><div>Built for exactly this use; separates &#x27;can they understand it&#x27; from &#x27;can they act on it&#x27;.</div></td><td><div>Confirm item count and the 70% threshold.</div></td><td><div>AHRQ PEMAT-P</div></td></tr>
           <tr><th>4</th><td><div>3</div></td><td><div>SAM</div></td><td><div>Suitability Assessment of Materials</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Design target for graphics, layout and literacy demand.</div></td><td><div>Scores the draft factor by factor.</div></td><td><div>Most granular on graphics and layout. Some factors (e.g., cultural fit) need rater judgment.</div></td><td><div>Item count: earlier in this thread I cited 26 criteria; 22 factors is the commonly cited count. Confirm against the source.</div></td><td><div>Doak, Doak &amp; Root (1996), via KP Washington Research</div></td></tr>
@@ -779,7 +774,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
           <tr><th>22</th><td><div>21</div></td><td><div>AHRQ Toolkit</div></td><td><div>AHRQ Health Literacy Universal Precautions Toolkit</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div>Scope-dependent</div></td><td><div>Organisational practices around a resource; includes tools on designing materials.</div></td><td><div>—</div></td><td><div>Organisational practice change. Only relevant if plan mode covers programs or services.</div></td><td><div></div></td><td><div>AHRQ</div></td></tr>
           <tr><th>23</th><td><div>22</div></td><td><div>Picker</div></td><td><div>Picker Principles of Person Centred Care</div></td><td><div>Experience &amp; partnership</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div>Scope-dependent</div></td><td><div>Principles for designing care pathways and services.</div></td><td><div>—</div></td><td><div>Care-model principles, closest to &#x27;experience as a whole&#x27;. Fits only if plan mode covers pathways or services.</div></td><td><div></div></td><td><div>Picker</div></td></tr>
           <tr><th>24</th><td><div>23</div></td><td><div>WHO ERC</div></td><td><div>WHO Emergency Risk Communication guideline</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div>Scope-dependent</div></td><td><div>Principles for planning urgent or crisis communications.</div></td><td><div>—</div></td><td><div>Agency-level emergency communication. Relevant only if practitioners write urgent or crisis materials.</div></td><td><div>Add an interview question: do practitioners write urgent or crisis communications?</div></td><td><div>World Health Organization (2017)</div></td></tr>
-        </table></div>
+        </tbody></table></div>
         <div class="xl-tabs"><b>Library</b><span>Cut</span><span>Consider adding</span><span>Summary</span></div>
       </div>
     </div></div>
@@ -806,10 +801,21 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     </div>
     <div class="stage"><div class="inner">
       <h2 class="h2" data-in="0.08 0.24">Certify the work, <mark>not the AI.</mark></h2>
-      <p class="lead" data-in="0.3 0.46">This screen, this flow, this version: fit for purpose, under these conditions.</p>
-      <p class="cert-std" data-in="0.5 0.66">Safety · Data integrity · Regulatory fit · Usability · Language · Bias · Flow</p>
+      <p class="lead" data-in="0.08 0.24">A person signs off each screen as <mark>safe for patients</mark>, against:</p>
+      <p class="cert-std" data-in="0.08 0.24">Safety · Data integrity · Regulatory fit · Usability · Language · Bias · Flow</p>
       <p class="real-q" data-in="0.86 1">The barrier dropped. <b>The responsibility didn’t.</b></p>
       <p class="credit">Illustration by Chloe Ma, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a>, from <a href="https://www.goinvo.com/vision/ai-design-certification">Human-Assisted AI Design Certification for Healthcare</a></p>
+    </div></div>
+  </section>
+
+  <section class="scene" id="thesis" data-chap="The thesis">
+    <div class="stage"><div class="inner">
+      <ol class="thesis-l">
+        <li data-in="0 0.25"><b>Intent first.</b><span>Know what you’re here for.</span></li>
+        <li data-in="0 0.25"><b>Build fast.</b><span>AI is quick, and great for brainstorming.</span></li>
+        <li data-in="0 0.25"><b><mark>Iterate.</mark></b><span>Show it, change it, cut it back.</span></li>
+      </ol>
+      <p class="real-q" data-in="0.45 0.7">AI gives you the average. <b>You’re the designer.</b></p>
     </div></div>
   </section>
 
@@ -950,22 +956,35 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     return s.replace(/\s+/g, ' ').trim();
   }
 
-  var cur = 0;
+  var cur = 0, keepSettle = null;
   function show(i, dir){
     finish();
     var a = slides[cur], b = slides[i];
     if (a !== b) {
+      // a flip before the last shared-title fade has settled settles it first, so no slide stays stuck underneath
+      if (keepSettle) keepSettle();
       a.el.dataset.dir = dir > 0 ? 'fwd' : 'back';
       a.el.classList.remove('on');
       [].forEach.call(a.el.querySelectorAll('video'), function(v){ if (v.closest('.fp')) v.pause(); });
       a.el.setAttribute('aria-hidden', 'true');
       b.el.dataset.dir = dir > 0 ? 'back' : 'fwd';
       var same = a.el.dataset.title && a.el.dataset.title === b.el.dataset.title;
-      [a, b].forEach(function(s){ clearTimeout(s.el._keep); s.el.classList.remove('keep', 'keep-under'); });
       if (same) {
         var under = slides.indexOf(a) < slides.indexOf(b) ? a : b;
         a.el.classList.add('keep'); b.el.classList.add('keep'); under.el.classList.add('keep-under');
-        [a, b].forEach(function(s){ s.el._keep = setTimeout(function(){ s.el.classList.remove('keep', 'keep-under'); }, 700); });
+        // once the top slide has finished fading, the slide that is now off hides at once, with no fade or
+        // slide of its own, while the top one still covers it; otherwise it shows through as a ghost
+        var timer, pair = [a, b];
+        keepSettle = function(){
+          clearTimeout(timer); keepSettle = null;
+          pair.forEach(function(s){
+            var off = !s.el.classList.contains('on');
+            if (off) s.el.style.transition = 'none';
+            s.el.classList.remove('keep', 'keep-under');
+            if (off) { void s.el.offsetWidth; s.el.style.transition = ''; }
+          });
+        };
+        timer = setTimeout(keepSettle, 700);
       }
       void b.el.offsetWidth;
       b.el.classList.add('on');
