@@ -160,28 +160,38 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .hs-dots i{position:relative;width:12px;height:12px;border-radius:50%;background:var(--desk);border:2px solid var(--ink-2);box-sizing:border-box}
 .hs-dots b{position:absolute;inset:-2px;border-radius:50%;background:var(--brand)}
 .hs-lab{display:none}
-/* slides: title column on the left with an upright slider, the screen fills the right at full
-   height, cropped from the right so it keeps the slide's right margin */
+/* the prompt behind each version, faded in and out with its screen */
+.hs-side{gap:24px}
+.hs-q{display:grid}
+.hs-q > div{grid-area:1 / 1}
+.hs-tag{font:600 var(--fs-tag)/1 var(--f-ui);color:var(--brand);letter-spacing:.06em;text-transform:uppercase}
+.hs-q blockquote{margin:.6em 0 0;font:italic 400 calc(1.25 * var(--fs-body))/1.25 var(--f-display);color:var(--ink)}
+.hs-q blockquote::before{content:"“"}.hs-q blockquote::after{content:"”"}
+.hs-who{margin-top:.7em;font:400 var(--fs-tag)/1.3 var(--f-ui);color:var(--ink-2)}
+/* the build stats (moved here from the hidden 29 hours slide) */
+.hs-ledger{margin:0}
+.hs-ledger li{grid-template-columns:max-content 1fr;padding:6px 0}
+.hs-ledger b{font-size:calc(2.2 * var(--fs-body));min-width:2.9em}
+/* slides: the hour timeline runs above the screen; the screen is a whole 16:10 shot, as large as
+   fits inside the slide margins. Beside it, the prompt starts level with its top edge and the stats
+   end level with its bottom edge */
 @media (min-width:721px){
-  #then .inner{display:grid;grid-template-columns:calc(26 * var(--u)) minmax(0,1fr);grid-template-rows:minmax(0,1fr);column-gap:calc(3 * var(--u))}
-  #then .h2{font-size:calc(4.4 * var(--u));line-height:1.02}
-  #then .lead{margin-top:calc(1.4 * var(--u));font-size:calc(1.9 * var(--u))}
-  .hs-side{min-height:0}
-  .hs-screen{margin:0;aspect-ratio:auto}
+  #then .inner{container-type:size}
+  .hs-wrap{--tl:calc(6.4 * var(--u));--sw:min(100cqw - 23 * var(--u),(100cqh - var(--tl)) * 1.6);height:100%;display:grid;grid-template-columns:calc(20 * var(--u)) var(--sw);grid-template-rows:var(--tl) calc(var(--sw) / 1.6);justify-content:space-between;align-content:center}
+  .hs-side{grid-column:1;grid-row:2;min-height:0;justify-content:space-between}
+  .hs-tag{font-size:calc(.95 * var(--u))}
+  .hs-q blockquote{font-size:calc(2 * var(--u))}
+  .hs-q blockquote.long{font-size:calc(1.65 * var(--u))}
+    .hs-who{font-size:var(--u)}
+  .hs-ledger li{grid-template-columns:calc(9.6 * var(--u)) 1fr;padding:calc(.4 * var(--u)) 0}
+  .hs-ledger b{font-size:calc(3.1 * var(--u));min-width:0}
+  .hs-ledger span{font-size:calc(1.5 * var(--u))}
+  .hs-axis{grid-column:2;grid-row:1;align-self:start;height:20px;margin:calc(3.4 * var(--u)) 22px 0}
+  .hs-axis::before{top:calc(-3.2 * var(--u));bottom:-10px;left:-22px;right:-22px}
+  .hs-lab{display:block;position:absolute;left:50%;bottom:calc(100% + 18px);transform:translateX(-50%);font:400 var(--fs-tag)/1 var(--f-ui);color:var(--ink-2);padding:.45em 0;white-space:nowrap}
+  .hs-screen{grid-column:2;grid-row:2;margin:0;aspect-ratio:auto}
   .hs-v{left:0;right:0;margin:0;width:auto;max-width:none}
   .hs-v img{width:100%;height:100%;max-width:none;aspect-ratio:auto}
-  .hs-axis{flex:1;min-height:0;width:12px;height:auto;margin:calc(3.4 * var(--u)) 0 calc(.6 * var(--u))}
-  .hs-axis::before{left:-10px;right:calc(-8 * var(--u));top:-10px;bottom:-10px}
-  .hs-line{left:5px;right:auto;top:6px;bottom:6px;width:2px;height:auto}
-  .hs-fill{width:100%;height:clamp(0%,calc((var(--t,0) * 8 - 1) / 7 * 100%),100%)}
-  .hs-thumb{left:-12px;top:clamp(0%,calc((var(--t,0) * 8 - 1) / 7 * 100%),100%);width:26px;height:44px;margin:-22px 0 0;flex-direction:column}
-  .hs-thumb > i{width:11px;height:2px}
-  .hs-thumb.nudge{animation-name:hs-nudge-v}
-  .hs-bub{left:calc(100% + 14px);bottom:auto;top:50%;transform:translateY(-50%)}
-  .hs-bub > span{text-align:left}
-  .hs-bub::after{left:auto;right:100%;top:50%;margin:-5px 0 0;border-top-color:transparent;border-right-color:var(--brand)}
-  .hs-dots{right:auto;bottom:0;width:12px;flex-direction:column}
-  .hs-lab{display:block;position:absolute;left:33px;top:50%;transform:translateY(-50%);font:400 var(--fs-tag)/1 var(--f-ui);color:var(--ink-2);padding-left:.75em;white-space:nowrap}
 }
 /* Verification: the real review spreadsheet, panning across every column while the slide is up */
 .xl{margin-top:24px;background:#fff;border-radius:4px;overflow:hidden;box-shadow:0 10px 40px rgb(0 0 0 / .45);color:#1d1d1d;font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;text-shadow:none}
@@ -344,25 +354,29 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .cmp-row .lead{max-width:34ch}
 @media (max-width:720px){.cmp-row{flex-direction:column;align-items:flex-start;gap:0}}
 /* close-up card crops (--stop:1) wipe all the way, since their change sits on the right of the frame */
-/* What PRISM does: expanding panels. Each click opens the next panel (--k 0 to 1); the open one is
-   60u wide and plays its loop, the others share what's left as dimmed strips with their names.
+/* What PRISM does: expanding panels. Each click opens the next panel (--k 0 to 1); the open one
+   plays its loop, the others are slim dimmed strips (about 4u) with their names. The open panel
+   (--open) takes the row's width less three 4u strips, capped so the 2:1 video and its caption
+   still fit the screen height; the strips (--shut) share whatever is left.
    The loops are all recorded at one scale, so the app reads the same size in every panel. */
-.fp-row{display:flex;gap:calc(1.2 * var(--u,1vw));margin-top:calc(2.4 * var(--u,1vw))}
-.fp{position:relative;overflow:hidden;min-width:0;flex:calc(1 - var(--k,0)) 1 calc(var(--k,0) * 60 * var(--u,1vw))}
-.fp-in{width:calc(60 * var(--u,1vw))}
+.fp-row{display:flex;gap:calc(1.2 * var(--u,1vw));margin-top:calc(1.6 * var(--u,1vw));container-type:inline-size;
+  --open:min(100cqw - 15.6 * var(--u,1vw), 2 * (100dvh - 24.2 * var(--u,1vw)));
+  --shut:calc((100cqw - 3.6 * var(--u,1vw) - var(--open)) / 3)}
+.fp{position:relative;overflow:hidden;min-width:0;flex:0 0 calc(var(--k,0) * var(--open) + (1 - var(--k,0)) * var(--shut))}
+.fp-in{width:var(--open)}
 .fp{cursor:pointer;border-radius:var(--r2);clip-path:inset(0 round var(--r2))}
 .fp-v{border-radius:var(--r2);overflow:hidden;clip-path:inset(0 round var(--r2));background:#fff;box-shadow:inset 0 0 0 1px var(--rule)}
 .fp video{display:block;width:100%;aspect-ratio:2/1;object-fit:cover;object-position:left top}
 .fp:focus-visible{outline:none}.fp:focus-visible .fp-v{box-shadow:inset 0 0 0 3px var(--brand)}
 /* a click on a panel opens it: the panels glide there with a CSS transition instead of the slide timeline */
-.fp-row.jump .fp{transition:flex-grow .55s cubic-bezier(.45,0,.25,1),flex-basis .55s cubic-bezier(.45,0,.25,1)}
+.fp-row.jump .fp{transition:flex-basis .55s cubic-bezier(.45,0,.25,1)}
 .fp-row.jump .fp-cap,.fp-row.jump .fp-strip{transition:opacity .4s}
 .fp-cap{margin-top:calc(1.2 * var(--u,1vw));opacity:clamp(0,var(--k,0) * 2 - 1,1)}
 .fp-cap b,.fp-cap span{display:block;font:400 var(--fs-body)/1.45 var(--f-ui)}
 .fp-cap b{color:var(--ink)}.fp-cap span{color:var(--ink-2);max-width:56ch}
 /* each caption line stays on one line on slides */
 @media (min-width:721px){.fp-cap b,.fp-cap span{white-space:nowrap;max-width:none}}
-.fp-strip{position:absolute;left:0;right:0;top:0;aspect-ratio:auto;height:calc(30 * var(--u,1vw));display:flex;align-items:flex-end;justify-content:center;padding-bottom:calc(1.6 * var(--u,1vw));background:rgb(18 20 23 / .74);border-radius:var(--r2);opacity:calc(1 - var(--k,0));pointer-events:none}
+.fp-strip{position:absolute;left:0;right:0;top:0;aspect-ratio:auto;height:calc(var(--open) / 2);display:flex;align-items:flex-end;justify-content:center;padding-bottom:calc(1.6 * var(--u,1vw));background:rgb(18 20 23 / .74);border-radius:var(--r2);opacity:calc(1 - var(--k,0));pointer-events:none}
 /* a closed panel is narrower than its video, so the video has no rounded corner at the panel's
    bottom-right; paint the slide colour outside the curve there */
 .fp-strip::after{content:"";position:absolute;right:0;bottom:0;width:var(--r2);height:var(--r2);background:radial-gradient(circle at 0 0,transparent calc(var(--r2) - .5px),var(--desk) var(--r2))}
@@ -614,15 +628,15 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
         </div>
         <div class="fp drive" data-in="0.5000 0.5750" data-out="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/3-drop.jpg" src="media/loops/3-drop.mp4" aria-label="A Word file dragged into the empty Material panel opens as an editable handout."></video></div>
-            <p class="fp-cap"><b>Drop or paste</b><span>Word, PDF or text opens as an editable draft.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/6-frameworks-area.jpg" src="media/loops/6-frameworks-area.mp4" aria-label="The Frameworks list is sorted By area and scrolled through every area, CCI is ticked, then the list closes and the frameworks show as cards: Readability collapses, the CCI card scrolls through its items, and Readability opens again."></video></div>
+            <p class="fp-cap"><b>Frameworks</b><span>Pick from 14 published frameworks, grouped by area.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>3 · Drop or paste</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>3 · Frameworks</span></div>
         </div>
         <div class="fp drive" data-in="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
             <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/4-fixes.jpg" src="media/loops/4-fixes.mp4" aria-label="Hard words are highlighted. One suggested rewrite is applied from its card, a word is retyped in the text, then Apply all fixes the rest. History lists every change, and Revert brings back the handout as first loaded."></video></div>
-            <p class="fp-cap"><b>Plain language, on by default</b><span>Fix one, edit in the text, or apply all. Revert any change from History.</span></p>
+            <p class="fp-cap"><b>Plain language, on by default</b><span>Fix one, edit in the text, or apply all.<br>Revert any change from History.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>4 · Plain language</span></div>
         </div>
@@ -637,21 +651,21 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
         <div class="fp drive" data-in="0 0.0625" data-out="0.2500 0.3250" role="button" tabindex="0">
           <div class="fp-in">
             <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/5-images.jpg" src="media/loops/5-images.mp4" aria-label="On the sample poster, alt text is typed, two palette colours pass a 5.81 to 1 contrast check, and the poster switches to deuteranopia and then greyscale views."></video></div>
-            <p class="fp-cap"><b>Images</b><span>Checks contrast and alt text, with colour-blind and greyscale views.</span></p>
+            <p class="fp-cap"><b>Images</b><span>Checks contrast and alt text,<br>with colour-blind and greyscale views.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>5 · Images</span></div>
         </div>
         <div class="fp drive" data-in="0.2500 0.3250" data-out="0.5000 0.5750" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/6-frameworks-area.jpg" src="media/loops/6-frameworks-area.mp4" aria-label="The Frameworks list is sorted By area and scrolled through every area, CCI is ticked, then the list closes and the frameworks show as cards: Readability collapses, the CCI card scrolls through its items, and Readability opens again."></video></div>
-            <p class="fp-cap"><b>Frameworks</b><span>Pick from 14 published frameworks, grouped by area.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/3-drop.jpg" src="media/loops/3-drop.mp4" aria-label="A Word file dragged into the empty Material panel opens as an editable handout."></video></div>
+            <p class="fp-cap"><b>Drop or paste</b><span>Word, PDF or text opens as an editable draft.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>6 · Frameworks</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>6 · Drop or paste</span></div>
         </div>
         <div class="fp drive" data-in="0.5000 0.5750" data-out="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
             <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/7-compass-studio.jpg" src="media/loops/7-compass-studio.mp4" aria-label="In the Studio, Framework Compass is clicked in the top bar and the Compass opens in place. It scrolls to PEMAT-A/V, opens All references and then How it’s scored."></video></div>
-            <p class="fp-cap"><b>Framework Compass</b><span>One click from the Studio: how each of 14 frameworks is scored, with its source.</span></p>
+            <p class="fp-cap"><b>Framework Compass</b><span>One click from the Studio:<br>how each of 14 frameworks is scored, with its source.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>7 · Compass</span></div>
         </div>
@@ -668,11 +682,27 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 
   <section class="scene pin" id="then" data-chap="The updates" data-beats="8" data-dur="450">
     <div class="stage"><div class="inner">
+      <div class="hs-wrap">
       <div class="hs-side">
-        <h2 class="h2">Eight homepages <mark>in 18 hours.</mark></h2>
-        <p class="lead">Drag through every version.</p>
-        <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.1250" data-out="0.1875 0.2500">0 h</span><span class="fade" data-in="0.1875 0.2500" data-out="0.3125 0.3750">1 h</span><span class="fade" data-in="0.3125 0.3750" data-out="0.4375 0.5000">3 h</span><span class="fade" data-in="0.4375 0.5000" data-out="0.5625 0.6250">9 h</span><span class="fade" data-in="0.5625 0.6250" data-out="0.6875 0.7500">10 h</span><span class="fade" data-in="0.6875 0.7500" data-out="0.8125 0.8750">12 h</span><span class="fade" data-in="0.8125 0.8750" data-out="0.9375 1.0000">15 h</span><span class="fade" data-in="0.9375 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.1250"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.1875 0.2500"></b><span class="hs-lab">1 h</span></i><i><b class="fade" data-in="0.3125 0.3750"></b><span class="hs-lab">3 h</span></i><i><b class="fade" data-in="0.4375 0.5000"></b><span class="hs-lab">9 h</span></i><i><b class="fade" data-in="0.5625 0.6250"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.6875 0.7500"></b><span class="hs-lab">12 h</span></i><i><b class="fade" data-in="0.8125 0.8750"></b><span class="hs-lab">15 h</span></i><i><b class="fade" data-in="0.9375 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
+        <h2 class="h2 visually-hidden">Eight homepages in 18 hours.</h2>
+        <div class="hs-q">
+          <div class="fade" data-in="0.0000 0.1250" data-out="0.1875 0.2500"><p class="hs-tag">My prompt · 0 h</p><blockquote class="long">use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">Chloe, Jul 31</p></div>
+          <div class="fade" data-in="0.1875 0.2500" data-out="0.3125 0.3750"><p class="hs-tag">My prompt · 1 h</p><blockquote>merge studio into the main page, make it feel like a [workspace], brief on one side, material in the middle, checklists on the other</blockquote><p class="hs-who">Chloe, Aug 17</p></div>
+          <div class="fade" data-in="0.3125 0.3750" data-out="0.4375 0.5000"><p class="hs-tag">Prompt · 3 h</p><blockquote>split it into [evaluate a draft] and [plan from an idea], keep it lighter, less boxes</blockquote><p class="hs-who">Sonia, Oct 9</p></div>
+          <div class="fade" data-in="0.4375 0.5000" data-out="0.5625 0.6250"><p class="hs-tag">My prompt · 9 h</p><blockquote>The main workspace/canvas doesn’t need to be this big, the smallest font size on the site should be bigger than 12px.</blockquote><p class="hs-who">Chloe, Oct 16</p></div>
+          <div class="fade" data-in="0.5625 0.6250" data-out="0.6875 0.7500"><p class="hs-tag">My prompt · 10 h</p><blockquote class="long">In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">Chloe, Oct 16</p></div>
+          <div class="fade" data-in="0.6875 0.7500" data-out="0.8125 0.8750"><p class="hs-tag">My prompt · 12 h</p><blockquote>the whole design can use an upgrade, more taste, less ai look, light and dark mode</blockquote><p class="hs-who">Chloe, Oct 16</p></div>
+          <div class="fade" data-in="0.8125 0.8750" data-out="0.9375 1.0000"><p class="hs-tag">My prompt · 15 h</p><blockquote>improve the 23 frameworks dropdown, better grouping and recommended group for situations</blockquote><p class="hs-who">Chloe, Oct 17</p></div>
+          <div class="fade" data-in="0.9375 1.0000"><p class="hs-tag">My prompt · 18 h</p><blockquote>make button center, make where to type and paste more obvious, show where history log/change log is</blockquote><p class="hs-who">Chloe, Oct 19</p></div>
+        </div>
+        <ul class="ledger hs-ledger">
+          <li><b>131</b><span>commits</span></li>
+          <li><b>23</b><span>sittings</span></li>
+          <li><b>23M</b><span>tokens</span></li>
+          <li><b>0</b><span>developers</span></li>
+        </ul>
       </div>
+      <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="8" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.1250" data-out="0.1875 0.2500">0 h</span><span class="fade" data-in="0.1875 0.2500" data-out="0.3125 0.3750">1 h</span><span class="fade" data-in="0.3125 0.3750" data-out="0.4375 0.5000">3 h</span><span class="fade" data-in="0.4375 0.5000" data-out="0.5625 0.6250">9 h</span><span class="fade" data-in="0.5625 0.6250" data-out="0.6875 0.7500">10 h</span><span class="fade" data-in="0.6875 0.7500" data-out="0.8125 0.8750">12 h</span><span class="fade" data-in="0.8125 0.8750" data-out="0.9375 1.0000">15 h</span><span class="fade" data-in="0.9375 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.1250"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.1875 0.2500"></b><span class="hs-lab">1 h</span></i><i><b class="fade" data-in="0.3125 0.3750"></b><span class="hs-lab">3 h</span></i><i><b class="fade" data-in="0.4375 0.5000"></b><span class="hs-lab">9 h</span></i><i><b class="fade" data-in="0.5625 0.6250"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.6875 0.7500"></b><span class="hs-lab">12 h</span></i><i><b class="fade" data-in="0.8125 0.8750"></b><span class="hs-lab">15 h</span></i><i><b class="fade" data-in="0.9375 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
       <div class="hs-screen">
           <figure class="hs-v fade" data-in="0.0000 0.1250" data-out="0.1875 0.2500"><img src="img/home/00.jpg" alt="The homepage at the first commit (Jul 31)."></figure>
           <figure class="hs-v fade" data-in="0.1875 0.2500" data-out="0.3125 0.3750"><img src="img/home/01.jpg" alt="The homepage after 1 hour of building (Aug 17)."></figure>
@@ -683,10 +713,11 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
           <figure class="hs-v fade" data-in="0.8125 0.8750" data-out="0.9375 1.0000"><img src="img/home/15.jpg" alt="The homepage after 15 hours of building (Oct 17)."></figure>
           <figure class="hs-v fade" data-in="0.9375 1.0000"><img src="img/home/19.jpg" alt="The homepage after 18 hours of building (Oct 19)."></figure>
       </div>
+      </div>
     </div></div>
   </section>
 
-  <section class="scene" id="proof" data-chap="The proof">
+  <section class="scene" id="proof" data-chap="The proof" hidden>
     <video class="clip-bg" src="media/bg/office-days.mp4?v=20261105b" poster="media/bg/office-days.jpg?v=20261105b" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="proof-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <div class="proof-split">
@@ -832,7 +863,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 
   // slides: every .scene, plus the walkthrough, which plays by moving the page within its own track
   var walkEl = document.querySelector('.walk');
-  var slides = [].slice.call(document.querySelectorAll('.scene, .walk')).map(function(el){
+  // a slide marked hidden is left out of the deck
+  var slides = [].slice.call(document.querySelectorAll('.scene:not([hidden]), .walk')).map(function(el){
     if (el === walkEl) return { el:el, walk:true, beat:-1 };
     var items = [].slice.call(el.querySelectorAll('[data-in]')).map(function(e){
       return { el:e, a:pair(e.dataset.in), o:pair(e.dataset.out), k:-1, n:e.dataset.count ? +e.dataset.count : null }; });

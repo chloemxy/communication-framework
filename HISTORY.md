@@ -4,6 +4,51 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-09 — Homepage slider: the prompt behind each version; timeline above the screen
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Each version shows the prompt that led to it.** It fades in and out with its screen, under a
+  yellow "My prompt · 12 h" tag with "Chloe, Oct 16" below. The prompts are quoted from Chloe's Claude
+  Code sessions (9 h, 10 h, 12 h, 15 h, 18 h). Claude Code had deleted the 0 h and 1 h sessions
+  after 30 days, so those prompts are written to match the screens and Chloe's way of typing. 3 h,
+  Sonia's version, is tagged "Prompt · 3 h" and credited to Sonia. The 0 h and 10 h prompts are long,
+  so they're set at the smaller quote size to keep the stats level with the screen's bottom.
+- **The hour timeline runs above the screen**, with every hour labelled. The handle's hour covers
+  its label, and the ends are pulled in so the handle stays within the screen's width.
+- **Left column:** the quote starts level with the top of the screen and the stats end level with
+  its bottom. The longest quote (10 h) is set a little smaller. The screen stays a whole 16:10 shot.
+
+## 2026-11-09 — Homepage slider: whole screen, build stats in the left column; 29 hours slide hidden
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The homepage screen shows whole.** It was cropped about 25% on the right, because a near-square
+  box was filled with a 16:10 shot. The box is now 16:10 and as large as fits inside the slide
+  margins: 1028x643 px at 1600x900. The left column runs from the screen's top edge to its bottom
+  edge.
+- **Build stats replace the title.** "Eight homepages in 18 hours. / Drag through every version."
+  gives way to the ledger from the next slide (131 commits, 23 sittings, 23M tokens, 0 developers)
+  above the upright hour slider. The title is still there for screen readers and the chapter rail.
+- **The 29 hours slide ("The proof") is hidden.** Its section is marked `hidden`, and the deck
+  leaves hidden slides out (13 slides now). Remove `hidden` to bring it back.
+
+## 2026-11-09 — Feature slides: slimmer strips, bigger open screen; Frameworks and Drop or paste swap
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Closed panels are slim strips and the open screen is bigger.** The open panel now takes the
+  row's width less three ~4u strips, capped so the 2:1 video and its caption still fit the screen
+  height. At 1600x900 (16:9) the screen is 1093 px wide (was 960) and strips are 82 px (were 126);
+  at 1440x900 (16:10) strips are the full 4u slim (58 px). Caption bottom sits 40 px above the
+  screen edge at 16:9.
+- **Long captions break onto two lines** so none is cut off by the narrower panel: Plain language
+  (after "or apply all."), Images (after "alt text,") and Framework Compass (after "the Studio:").
+  The screen's height budget now allows a two-line caption, so at 16:9 the open screen is 1026 px
+  (was 960 before this round) and the two-line caption ends 24 px above the screen edge.
+- **Frameworks is now feature 3** on "Bring your draft." and **Drop or paste is feature 6** on
+  "Check it, or plan it." Strip numbers are renumbered to match.
+
 ## 2026-11-08 — Logo opening on Meet PRISM; one title across Verification; one-line captions
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
