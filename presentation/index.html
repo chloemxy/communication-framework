@@ -141,7 +141,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .hs-v img{display:block;height:100%;max-width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top left;border-radius:4px;box-shadow:0 10px 40px rgb(0 0 0 / .45)}
 .hs-axis{position:relative;margin:56px 0 14px;height:40px;cursor:pointer;touch-action:none;outline:none}
 .hs-axis::before{content:"";position:absolute;left:0;right:0;top:-10px;bottom:-4px}
-.hs-thumb{position:absolute;top:-8px;width:44px;height:26px;margin-left:-22px;border-radius:13px;background:var(--brand);box-shadow:0 0 0 5px rgb(245 207 74 / .22),0 2px 8px rgb(0 0 0 / .5);left:clamp(0%,calc((var(--t,0) * 5 - 1) / 4 * 100%),100%);z-index:2;display:flex;align-items:center;justify-content:center;gap:4px;cursor:grab}
+.hs-thumb{position:absolute;top:-8px;width:44px;height:26px;margin-left:-22px;border-radius:13px;background:var(--brand);box-shadow:0 0 0 5px rgb(245 207 74 / .22),0 2px 8px rgb(0 0 0 / .5);left:clamp(0%,calc((var(--t,0) * 4 - 1) / 3 * 100%),100%);z-index:2;display:flex;align-items:center;justify-content:center;gap:4px;cursor:grab}
 .hs-axis:active .hs-thumb,.hs-axis.dragging .hs-thumb{cursor:grabbing}
 .hs-thumb > i{width:2px;height:11px;border-radius:1px;background:var(--on-brand)}
 /* the hour rides on the handle; one span per version, faded in and out with its screen */
@@ -155,7 +155,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 @media (prefers-reduced-motion:reduce){.hs-thumb.nudge{animation:none}}
 .hs-axis:focus-visible .hs-thumb{box-shadow:0 0 0 5px rgb(245 207 74 / .5)}
 .hs-line{position:absolute;left:6px;right:6px;top:5px;height:2px;background:var(--rule)}
-.hs-fill{height:100%;background:var(--brand);width:clamp(0%,calc((var(--t,0) * 5 - 1) / 4 * 100%),100%)}
+.hs-fill{height:100%;background:var(--brand);width:clamp(0%,calc((var(--t,0) * 4 - 1) / 3 * 100%),100%)}
 .hs-dots{position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between}
 .hs-dots i{position:relative;width:12px;height:12px;border-radius:50%;background:var(--desk);border:2px solid var(--ink-2);box-sizing:border-box}
 .hs-dots b{position:absolute;inset:-2px;border-radius:50%;background:var(--brand)}
@@ -685,17 +685,16 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     </div></div>
   </section>
 
-  <section class="scene pin" id="then" data-chap="The updates" data-beats="5" data-dur="450">
+  <section class="scene pin" id="then" data-chap="The updates" data-beats="4" data-dur="450">
     <div class="stage"><div class="inner">
       <div class="hs-wrap">
       <div class="hs-side">
-        <h2 class="h2 visually-hidden">Five homepages in 18 hours.</h2>
+        <h2 class="h2 visually-hidden">Four homepages in 18 hours.</h2>
         <div class="hs-q">
-          <div class="fade" data-in="0.0000 0.2000" data-out="0.3000 0.4000"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">Chloe · 0 h · Jul 31</p></div>
-          <div class="fade" data-in="0.3000 0.4000" data-out="0.5000 0.6000"><blockquote>merge studio into the main page, make it feel like a [workspace], brief on one side, material in the middle, checklists on the other</blockquote><p class="hs-who">Chloe · 1 h · Aug 17</p></div>
-          <div class="fade" data-in="0.5000 0.6000" data-out="0.7000 0.8000"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">Chloe · 10 h · Oct 16</p></div>
-          <div class="fade" data-in="0.7000 0.8000" data-out="0.9000 1.0000"><blockquote>improve the 23 frameworks dropdown, better grouping and recommended group for situations</blockquote><p class="hs-who">Chloe · 15 h · Oct 17</p></div>
-          <div class="fade" data-in="0.9000 1.0000"><blockquote>make button center, make where to type and paste more obvious, show where history log/change log is</blockquote><p class="hs-who">Chloe · 18 h · Oct 19</p></div>
+          <div class="fade" data-in="0.0000 0.2500" data-out="0.3750 0.5000"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">Chloe · 0 h · Jul 31</p></div>
+          <div class="fade" data-in="0.3750 0.5000" data-out="0.6250 0.7500"><blockquote>merge studio into the main page, make it feel like a [workspace], brief on one side, material in the middle, checklists on the other</blockquote><p class="hs-who">Chloe · 1 h · Aug 17</p></div>
+          <div class="fade" data-in="0.6250 0.7500" data-out="0.8750 1.0000"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">Chloe · 10 h · Oct 16</p></div>
+          <div class="fade" data-in="0.8750 1.0000"><blockquote>make button center, make where to type and paste more obvious, show where history log/change log is</blockquote><p class="hs-who">Chloe · 18 h · Oct 19</p></div>
         </div>
         <ul class="ledger hs-ledger">
           <li><b>131</b><span>commits</span></li>
@@ -704,13 +703,12 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
           <li><b>0</b><span>developers</span></li>
         </ul>
       </div>
-      <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.2000" data-out="0.3000 0.4000">0 h</span><span class="fade" data-in="0.3000 0.4000" data-out="0.5000 0.6000">1 h</span><span class="fade" data-in="0.5000 0.6000" data-out="0.7000 0.8000">10 h</span><span class="fade" data-in="0.7000 0.8000" data-out="0.9000 1.0000">15 h</span><span class="fade" data-in="0.9000 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.2000"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.3000 0.4000"></b><span class="hs-lab">1 h</span></i><i><b class="fade" data-in="0.5000 0.6000"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.7000 0.8000"></b><span class="hs-lab">15 h</span></i><i><b class="fade" data-in="0.9000 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
+      <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.2500" data-out="0.3750 0.5000">0 h</span><span class="fade" data-in="0.3750 0.5000" data-out="0.6250 0.7500">1 h</span><span class="fade" data-in="0.6250 0.7500" data-out="0.8750 1.0000">10 h</span><span class="fade" data-in="0.8750 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.2500"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.3750 0.5000"></b><span class="hs-lab">1 h</span></i><i><b class="fade" data-in="0.6250 0.7500"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.8750 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
       <div class="hs-screen">
-          <figure class="hs-v fade" data-in="0.0000 0.2000" data-out="0.3000 0.4000"><img src="img/home/00.jpg" alt="The homepage at the first commit (Jul 31)."></figure>
-          <figure class="hs-v fade" data-in="0.3000 0.4000" data-out="0.5000 0.6000"><img src="img/home/01.jpg" alt="The homepage after 1 hour of building (Aug 17)."></figure>
-          <figure class="hs-v fade" data-in="0.5000 0.6000" data-out="0.7000 0.8000"><img src="img/home/11.jpg" alt="The homepage after 10 hours of building (Oct 16)."></figure>
-          <figure class="hs-v fade" data-in="0.7000 0.8000" data-out="0.9000 1.0000"><img src="img/home/15.jpg" alt="The homepage after 15 hours of building (Oct 17)."></figure>
-          <figure class="hs-v fade" data-in="0.9000 1.0000"><img src="img/home/19.jpg" alt="The homepage after 18 hours of building (Oct 19)."></figure>
+          <figure class="hs-v fade" data-in="0.0000 0.2500" data-out="0.3750 0.5000"><img src="img/home/00.jpg" alt="The homepage at the first commit (Jul 31)."></figure>
+          <figure class="hs-v fade" data-in="0.3750 0.5000" data-out="0.6250 0.7500"><img src="img/home/01.jpg" alt="The homepage after 1 hour of building (Aug 17)."></figure>
+          <figure class="hs-v fade" data-in="0.6250 0.7500" data-out="0.8750 1.0000"><img src="img/home/11.jpg" alt="The homepage after 10 hours of building (Oct 16)."></figure>
+          <figure class="hs-v fade" data-in="0.8750 1.0000"><img src="img/home/19.jpg" alt="The homepage after 18 hours of building (Oct 19)."></figure>
       </div>
       </div>
     </div></div>

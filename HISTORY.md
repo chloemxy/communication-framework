@@ -4,6 +4,14 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-10 — Homepage slider down to four versions
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **15 h (Oct 17) removed.** Four versions remain: 0 h, 1 h, 10 h and 18 h, re-spaced so each
+  scroll moves one. The hidden title reads "Four homepages in 18 hours." The screenshot stays in
+  `img/home/`.
+
 ## 2026-11-10 — Homepage slider down to five versions
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -45,6 +53,9 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - **The spreadsheet's header row is frozen too.** The column letters and row 1 (#, Framework, Full
   name, Zone…) now stay at the top when the sheet scrolls down, like Freeze Panes in Excel, alongside
   the frozen first columns.
+- **The decision list's headings each fit on one row:** "With conditions" is now "With caveats" and
+  "Depends on scope" is now "If in scope"; headings no longer wrap, and the two-line space they kept
+  is gone.
 
 ## 2026-11-09 — "Intent first" moves after AI certification; text appears by block
 
