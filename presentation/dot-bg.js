@@ -1,9 +1,7 @@
-/* Last slide's dotted paper: a faint dot grid where soft patches bloom at random spots and fade away.
-   It runs only while the slide is on screen, and stays a plain faint grid for people who prefer
-   reduced motion. */
-(function(){
-  var canvas = document.querySelector('#next .dot-bg');
-  if (!canvas) return;
+/* Dotted paper for the closing slides: a faint dot grid where soft patches bloom at random spots
+   and fade away. Each canvas runs only while its slide is on screen, and stays a plain faint grid
+   for people who prefer reduced motion. */
+[].forEach.call(document.querySelectorAll('.dot-bg'), function(canvas){
   var scene = canvas.closest('.scene'), ctx = canvas.getContext('2d');
   var still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var LIFE = 5, BASE = 0.05, PEAK = 0.42, TAU = Math.PI * 2;
@@ -48,4 +46,4 @@
   document.addEventListener('visibilitychange', sync);
   fit();
   sync();
-})();
+});

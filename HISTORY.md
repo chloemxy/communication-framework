@@ -4,6 +4,40 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-10 — New closing slide: three numbered principles on the dotted paper
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New last slide** (`presentation/index.html`, `#wrap`, chapter "Thank you"). It merges the
+  thesis and the "Your turn" slides as concept J1. Three columns, each with a large dim numeral
+  (1, 2, 3), a one-line serif title and a short line: "Intent first. Name the goal before you
+  prompt." / "Build fast. Let AI draft the options." / "Iterate. Keep what works. Cut the rest."
+  Only "Iterate." is highlighted. Footer under a hairline (option F6), which folds in the old
+  "What's next" list: "**Your turn.** It's free, open, and unfinished." then "Code GitHub · Try
+  communication-framework.vercel.app · Talk prism@goinvo.com". GitHub links to the repo. At
+  1920×1080 it sits on two lines.
+- **Same background as "What's your view"**: the dotted paper whose dots bloom and fade.
+  `presentation/dot-bg.js` now runs on every `.dot-bg` canvas, not only the one on `#next`.
+- The thesis slide and "What's your view" slide stay in place for now so both can be compared;
+  hide them (`hidden` on the section) once this one is approved.
+
+## 2026-11-10 — Feature clips re-recorded wider; open panel fills the row
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **All eight feature clips re-recorded** (`presentation/media/loops/1-private` … `8-plan`, MP4 plus
+  first-frame still). The Studio now runs 1200×680 with the document panel at 40%, so its three
+  columns all show; each clip is a 1200×572 window of it (2.1:1), at the same text size as before
+  (96% on a 16:9 screen). Same actions, cursor and lengths as the earlier clips. The Plain
+  language clip now clicks a Revert that is on screen, and the Plan clip scrolls its checks higher.
+- **The open panel always fills the row** to the slide's right margin, beside three 4u strips. Its
+  height follows the clips' 2.1:1 shape, capped so a two-line caption fits; on a screen wider than
+  16:9 the clip is trimmed at the bottom instead of leaving a gap. At 1600×900 the screen is
+  1146×546 (was 1026×513) and the caption ends 40 px above the edge.
+- **Captions are two rows again** (title, then one line). The Compass line is shortened to "From the
+  Studio: how each of 14 frameworks is scored, and its source." The others fit unchanged.
+- Clip URLs carry `?v=20261110` so browsers and Vercel fetch the new files.
+
 ## 2026-11-10 — Homepage slider down to four versions
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -50,6 +84,9 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
   0.7 s used to leave the spreadsheet showing under the next slide; the shared-title fade now
   settles first.
 - **The shared title renders the same on both slides**, so its letters don't shimmer at the swap.
+- **Going back from the decision list, the title stays still.** The spreadsheet underneath used to fade
+  in while the list faded out, so the title dimmed mid-way; it is now there at once and only the list
+  fades.
 - **The spreadsheet's header row is frozen too.** The column letters and row 1 (#, Framework, Full
   name, Zone…) now stay at the top when the sheet scrolls down, like Freeze Panes in Excel, alongside
   the frozen first columns.
