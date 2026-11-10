@@ -216,16 +216,6 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   #review .stage{padding-bottom:0}
   #review .xl{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:4px 4px 0 0}
   #review .xl-win{flex:1;height:auto;min-height:0}}
-/* Your turn: question top left, the GoInvo card under it, What’s next down the right half;
-   the label sits on the question’s last line; the card and the list end on the list’s last line */
-@media (min-width:861px){
-  #next .thanks{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);grid-template-rows:auto auto;align-content:start;column-gap:calc(5 * var(--u))}
-  #next .thanks h2{grid-column:1;grid-row:1;align-self:last baseline}
-  #next .thanks > div:not(.visit){display:contents}
-  #next .thanks .label{grid-column:2;grid-row:1;align-self:last baseline}
-  #next .thanks .next{grid-column:2;grid-row:2;align-self:end}
-  #next .visit{grid-column:1;grid-row:2;align-self:end;margin-top:calc(3 * var(--u))}
-  #next .next li:last-child{padding-bottom:0}}
 /* Verification summary: every framework, one column per decision; the cut ones struck through */
 .wall{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;margin-top:32px;list-style:none;padding:0}
 #decided .h2{max-width:none;white-space:nowrap}
@@ -267,6 +257,33 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* .pin slides start their title at one height, so titles sit in the same place from slide to slide */
 .scene.pin .stage{align-items:flex-start;padding-top:8dvh}
 .scene.pin .inner{justify-content:flex-start}
+/* Morph, the default slide change (View Transitions): the page crossfades while shared parts, the title
+   and anything marked data-morph, glide from their old place and size to the new one. The slides' own
+   CSS fade is off while it runs. */
+::view-transition-group(*){animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.25,1)}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.6s}
+.vt .scene{transition:none!important}
+.vt-held{opacity:1!important;transform:none!important}
+/* Prism wipe (data-wipe="prism"): the next slide is revealed behind a slanted highlighter swipe, the
+   logo's own shape, trailed by three thin lines of split light. The edge leans 20deg (36.4vh over the
+   full height), and the band is skewed by the same angle so it rides the seam. */
+html.vt-prism::view-transition-old(root){animation:none}
+html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezier(.65,0,.25,1) both}
+@keyframes prism-reveal{
+  from{clip-path:polygon(-60vh 0,-3.6vh 0,-40vh 100%,-60vh 100%)}
+  to{clip-path:polygon(-60vh 0,calc(100vw + 36.4vh) 0,100vw 100%,-60vh 100%)}}
+.prism-edge{position:fixed;left:0;top:0;height:100vh;width:12vh;display:flex;gap:1.1vh;align-items:stretch;
+  transform:translateX(-200vh);pointer-events:none;z-index:50;view-transition-name:vt-prism}
+.prism-edge i{width:.7vh;flex:none}
+.prism-edge i:nth-child(1){background:#E5484D}
+.prism-edge i:nth-child(2){background:#30A46C}
+.prism-edge i:nth-child(3){background:#3E63DD}
+.prism-edge b{flex:1;background:var(--brand)}
+::view-transition-group(vt-prism){animation:prism-edge 1.2s cubic-bezier(.65,0,.25,1) both;transform-origin:0 0}
+::view-transition-new(vt-prism){animation:none}
+@keyframes prism-edge{
+  from{transform:translateX(-14.6vh) skewX(-20deg)}
+  to{transform:translateX(calc(100vw + 25.4vh)) skewX(-20deg)}}
 .scene.pin .h2,.scene.pin .thanks h2{margin-top:0}
 
 /* .drive elements use --k for something of their own instead of fading in */
@@ -440,20 +457,21 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .visit .goinvo{width:72px;color:var(--ink-2);margin-bottom:18px}
 .visit a.big + b{margin-top:calc(1.4 * var(--u))}
 .dot-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-#next .stage{z-index:1}
 /* closing slide: the three principles as numbered columns over the dotted paper, a small ask and links below */
 .scene.dots .stage{z-index:1}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
-.steps .n{display:block;font:500 calc(1.4 * var(--fs-display))/1 var(--f-display);color:var(--rule);font-variant-numeric:lining-nums}
+.steps .n{display:block;font:500 var(--fs-display)/1 var(--f-display);color:var(--rule);font-variant-numeric:lining-nums}
 .steps b{display:block;margin-top:10px}
 .steps b mark{background-color:var(--hl);padding:0 .08em}
 .steps span{display:block;margin-top:8px;text-wrap:balance}
 .wrap-foot{display:flex;justify-content:space-between;align-items:baseline;gap:12px 32px;flex-wrap:wrap;margin-top:28px;padding-top:14px;border-top:1px solid var(--rule)}
 .wrap-foot a,.wrap-foot b{color:var(--ink);font-weight:400}
 .steps .n{margin:0}
+/* closing headline: a small grey lead-in line in the UI sans, the full-size serif title under it */
+.mh .lead-in{display:block;font:400 var(--fs-head)/1.3 var(--f-ui);color:var(--ink-2);letter-spacing:0;margin-bottom:.35em}
 @media (max-width:720px){.steps{grid-template-columns:1fr;gap:16px}}
 @media (min-width:721px){.steps{gap:calc(4 * var(--u))}.steps b{margin-top:var(--u)}.steps span{margin-top:var(--u)}
-  #wrap .inner{justify-content:center}
+  .steps{margin-top:calc(5 * var(--u))}
   .wrap-foot{position:absolute;left:0;right:0;bottom:0;margin:0;padding-top:calc(1.4 * var(--u))}}
 .thanks .fine{grid-column:1 / -1}
 .thanks .fine a{color:inherit}
@@ -552,7 +570,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* every slide title shares one size: 115px on a 1920x1080 projector */
 .title h1,.question q,.big-line,.h2,.thanks h2{font-size:var(--fs-title)}
 /* closing columns: each step title holds one line in a third of the slide */
-.steps b{font-size:min(var(--fs-display),calc(4.8 * var(--u)));white-space:nowrap}
+.steps b{font-size:calc(3.6 * var(--u));white-space:nowrap}
 @media (max-width:720px){.steps b{white-space:normal}}
 
 /* short screens (landscape phones, small laptops) */
@@ -631,7 +649,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 
 
 
-  <section class="scene" id="intro" data-chap="Meet PRISM">
+  <section class="scene" id="intro" data-chap="Meet PRISM" data-wipe="prism">
     <iframe class="pm-door" src="../index.html?intro" title="The PRISM front door: Make your health handout easy to read" loading="eager"></iframe>
   </section>
 
@@ -823,7 +841,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     </div></div>
   </section>
 
-  <section class="scene" id="thesis" data-chap="The thesis">
+  <section class="scene" id="thesis" data-chap="The thesis" hidden>
     <div class="stage"><div class="inner">
       <ol class="thesis-l">
         <li data-in="0 0.25"><b>Intent first.</b><span>Know what you’re here for.</span></li>
@@ -834,38 +852,17 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     </div></div>
   </section>
 
-  <section class="scene pin" id="next" data-chap="Your turn">
-    <canvas class="dot-bg" aria-hidden="true"></canvas>
-    <div class="stage"><div class="inner thanks">
-      <h2 class="pop">What’s your view<br> <mark>on our approach?</mark></h2>
-      <div>
-        <div class="label">Thank you. What’s next:</div>
-        <ul class="next">
-          <li><b>Open source</b>Free to use and extend.</li>
-          <li><b>See the gaps</b>Where frameworks overlap, and don’t.</li>
-          <li><b>Build with us</b>Collaborators and feedback welcome.</li>
-        </ul>
-      </div>
-      <div class="sheet visit">
-        <svg class="goinvo" viewBox="0 0 59 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GoInvo"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.20963 13.2915C4.90652 13.2915 3.79058 13.7184 2.8618 14.5721C1.93252 15.4263 1.46713 16.442 1.46713 17.6202C1.46713 19.3353 2.28572 20.4807 3.92039 21.0582V21.1055C2.35163 21.3832 1.56725 21.9294 1.56725 22.7425C1.56725 23.5411 2.35163 24.0904 3.92039 24.3913V24.4401C1.30663 25.0562 0 26.003 0 27.2851C0 28.0668 0.401497 28.7164 1.20701 29.2291C2.01101 29.7434 3.14355 30 4.60464 30C6.2217 30 7.47651 29.695 8.36906 29.0877C9.2606 28.4777 9.70688 27.7382 9.70688 26.8696C9.70688 26.1974 9.42311 25.626 8.85458 25.1555C8.28554 24.6865 7.24959 24.2755 5.74322 23.9258C4.23836 23.5771 3.3443 23.3411 3.06154 23.2187C2.77929 23.0968 2.63841 22.9014 2.63841 22.634C2.63841 22.3814 2.78533 22.1624 3.08066 21.9782C3.3755 21.7916 4.04516 21.6296 5.08765 21.4912C6.13114 21.3534 6.9613 21.1626 7.58116 20.9224C8.1995 20.6812 8.75798 20.2081 9.25658 19.5051C9.75518 18.8015 10.0052 18.0039 10.0052 17.11C10.0052 15.7745 9.44475 14.785 8.32529 14.1452V14.0979H11.5363L11.6731 13.2915H6.20963ZM8.00138 14.9756C8.59155 15.4981 8.88538 16.158 8.88538 16.9556C8.88538 17.8021 8.57847 18.6111 7.96364 19.3866C7.35083 20.1606 6.47891 20.5489 5.35039 20.5489C4.50513 20.5489 3.8244 20.264 3.3107 19.6952C2.7955 19.1264 2.5389 18.4491 2.5389 17.6663C2.5389 16.7268 2.88053 15.9116 3.56478 15.2245C4.24904 14.5375 5.04751 14.1924 5.96018 14.1924C6.73198 14.1924 7.41272 14.4536 8.00138 14.9756ZM7.55992 28.5723C6.84146 28.9868 5.80652 29.1946 4.45461 29.1946C3.40911 29.1946 2.58347 29.0362 1.97871 28.7204C1.37294 28.4041 1.06955 27.9808 1.06955 27.4522C1.06955 26.6689 1.58627 26.0405 2.61869 25.5663C3.65161 25.0921 4.46618 24.8555 5.0634 24.8555C5.27169 24.8555 5.91922 25.0273 7.00447 25.3734C8.09073 25.717 8.63562 26.241 8.63562 26.9441C8.63562 27.6147 8.27638 28.1578 7.55992 28.5723ZM13.559 15.1774C12.5502 16.4343 12.0466 18.0548 12.0466 20.0389C12.0466 21.4614 12.4179 22.583 13.1595 23.4007C13.9032 24.2195 14.8465 24.6289 15.9911 24.6289C17.4678 24.6289 18.7458 24.0055 19.8245 22.7594C20.9027 21.5149 21.4415 19.8805 21.4415 17.8568C21.4415 16.4579 21.0788 15.3476 20.3528 14.5247C19.6273 13.7034 18.6502 13.2915 17.423 13.2915C15.8543 13.2915 14.5668 13.92 13.559 15.1774ZM13.9687 22.6777C13.4837 22.0415 13.2406 21.1688 13.2406 20.0636C13.2406 18.4343 13.6185 17.0643 14.3727 15.9539C15.1284 14.8426 16.1286 14.2887 17.3728 14.2887C18.2428 14.2887 18.9401 14.6096 19.4623 15.2545C19.9861 15.8979 20.2467 16.7665 20.2467 17.8568C20.2467 19.4685 19.8251 20.8355 18.9839 21.9546C18.1416 23.0721 17.1268 23.6322 15.9409 23.6322C15.1113 23.6322 14.4537 23.3133 13.9687 22.6777ZM25.3426 10.9268C25.5877 11.1593 25.8805 11.275 26.2206 11.275C26.5607 11.275 26.853 11.1593 27.0976 10.9268C27.3426 10.6928 27.4648 10.4141 27.4648 10.0901C27.4648 9.75783 27.3426 9.47549 27.0976 9.24252C26.853 9.00853 26.5607 8.89178 26.2206 8.89178C25.8805 8.89178 25.5877 9.00853 25.3426 9.24252C25.0986 9.47549 24.9764 9.75783 24.9764 10.0901C24.9764 10.4141 25.0986 10.6928 25.3426 10.9268ZM24.7394 13.5043L23.1344 24.4148H25.2958L26.9013 13.5043H24.7394ZM29.7046 13.5043L28.1006 24.4148H30.2369L31.2839 17.4659C31.301 17.3455 31.5375 17.0688 31.9903 16.6348C32.4446 16.2002 32.8245 15.8767 33.1324 15.6638C33.4403 15.4499 33.7291 15.2915 33.9993 15.1896C34.27 15.0863 34.5135 15.0354 34.7298 15.0354C35.1037 15.0354 35.4156 15.186 35.6652 15.4843C35.9137 15.7857 36.04 16.2203 36.04 16.7901C36.04 16.9958 36.0184 17.2205 35.9781 17.4659L34.9321 24.4148H37.0694L38.1677 17.5368C38.2175 17.236 38.2417 16.9485 38.2417 16.6718C38.2417 15.6911 37.9972 14.8908 37.5086 14.2711C37.0181 13.6499 36.3298 13.3387 35.4413 13.3387C34.1311 13.3387 32.8658 14.0495 31.6472 15.4735L31.5883 15.435L31.8796 13.5043H29.7046ZM47.072 13.5043L43.4132 20.4306L41.853 13.5043H39.7112L42.3184 24.6287H43.3926L49.2687 13.5043H47.072ZM50.8477 15.094C49.7947 16.3745 49.2684 17.9678 49.2684 19.8732C49.2684 21.4068 49.6498 22.604 50.413 23.4665C51.1753 24.3279 52.2298 24.7584 53.5742 24.7584C55.0997 24.7584 56.3872 24.1186 57.4317 22.838C58.4777 21.5575 59 19.9205 59 17.9277C59 16.4887 58.6131 15.3377 57.8363 14.4712C57.0594 13.6062 56.03 13.1731 54.743 13.1731C53.2019 13.1731 51.9013 13.8129 50.8477 15.094ZM56.224 15.6167C56.5993 16.1618 56.7845 16.8926 56.7845 17.8096C56.7845 19.2958 56.463 20.5291 55.821 21.5103C55.177 22.4895 54.4052 22.9802 53.4991 22.9802C52.927 22.9802 52.448 22.7112 52.0621 22.1738C51.6762 21.6358 51.4825 20.94 51.4825 20.0863C51.4825 18.6561 51.804 17.4167 52.448 16.3685C53.0925 15.3215 53.8558 14.7979 54.7433 14.7979C55.3586 14.7979 55.8517 15.0715 56.224 15.6167Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.0326 11.1681C22.0693 10.9145 22.1548 10.6769 22.2635 10.4495L13.8156 9.59985C13.7644 9.82819 13.7108 10.0557 13.6784 10.2888C13.6364 10.5787 13.6161 10.866 13.6055 11.1502L22.0524 11.9998C22.0099 11.7322 21.9916 11.4589 22.0326 11.1681Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.6444 7.73795C22.9135 7.5668 23.2014 7.43411 23.5013 7.3293L17.6968 1.20001C17.4174 1.36155 17.1381 1.52357 16.8631 1.70626C16.5864 1.88895 16.3335 2.07981 16.0801 2.26924L21.884 8.39997C22.0987 8.16391 22.3408 7.93699 22.6444 7.73795Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.2567 7.00936C27.6495 7.04148 28.0166 7.11001 28.3673 7.19996L29.6852 0.18546C29.244 0.129351 28.799 0.0788098 28.3402 0.0454013C27.9889 0.0184175 27.6414 0.0102795 27.2938 0L25.9746 7.02777C26.3856 6.9918 26.8092 6.97509 27.2567 7.00936Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30.4688 11.1808C30.6717 11.4363 30.8286 11.715 30.9521 11.9999L38.3436 6.3408C38.1395 6.0543 37.9318 5.77058 37.6997 5.49183C37.4983 5.24681 37.2853 5.02503 37.0723 4.79993L29.6855 10.4551C29.9675 10.6614 30.2335 10.8904 30.4688 11.1808Z" fill="currentColor"/></svg>
-        <b>Try PRISM</b>
-        <a class="big" href="https://communication-framework.vercel.app">communication-framework.vercel.app</a>
-        <b>Feedback</b>
-        <a class="big" href="mailto:prism@goinvo.com">prism@goinvo.com</a>
-      </div>
-      <p class="fine">Code on <a href="https://github.com/chloemxy/communication-framework">GitHub</a>, licensed <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Designs licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Drawing the Line · UofT Biomedical Communications · November 2026</p>
-    </div></div>
-  </section>
-  <section class="scene dots" id="wrap" data-chap="Thank you">
+  <section class="scene pin dots" id="wrap" data-chap="Thank you">
     <canvas class="dot-bg" aria-hidden="true"></canvas>
     <div class="stage"><div class="inner">
-      <h2 class="visually-hidden">How we work, and what’s next</h2>
+      <h2 class="h2 mh" data-in="0 0.25"><span class="lead-in">AI gives you the average.</span> You’re the designer.</h2>
       <ol class="steps">
         <li data-in="0 0.25"><span class="n" aria-hidden="true">1</span><b>Intent first.</b><span>Name the goal before you prompt.</span></li>
-        <li data-in="0.1 0.35"><span class="n" aria-hidden="true">2</span><b>Build fast.</b><span>Let AI draft the options.</span></li>
-        <li data-in="0.2 0.45"><span class="n" aria-hidden="true">3</span><b><mark>Iterate.</mark></b><span>Keep what works. Cut the rest.</span></li>
+        <li data-in="0 0.25"><span class="n" aria-hidden="true">2</span><b>Build fast.</b><span>Let AI draft the options.</span></li>
+        <li data-in="0 0.25"><span class="n" aria-hidden="true">3</span><b>Iterate.</b><span>Keep what works. Cut the rest.</span></li>
       </ol>
-      <p class="wrap-foot" data-in="0.45 0.7"><span><b>Your turn.</b> It’s free, open, and unfinished.</span><span>Code <a href="https://github.com/chloemxy/communication-framework">GitHub</a> · Try <a href="https://communication-framework.vercel.app">communication-framework.vercel.app</a> · Talk <a href="mailto:prism@goinvo.com">prism@goinvo.com</a></span></p>
+      <p class="wrap-foot" data-in="0 0.25"><span><b>Your turn.</b> It’s free, open, and unfinished.</span><span>Try <a href="https://communication-framework.vercel.app">communication-framework.vercel.app</a> · Talk <a href="mailto:prism@goinvo.com">prism@goinvo.com</a></span></p>
+      <p class="fine" data-in="0 0.25">Code on <a href="https://github.com/chloemxy/communication-framework">GitHub</a>, licensed <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Designs licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p>
     </div></div>
   </section>
 </main>
@@ -973,7 +970,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   }
 
   // each slide's title (the rail names its dot after it)
-  var TITLE = '.title h1, .h2, .big-line, .question q, #next h2';
+  var TITLE = '.title h1, .h2, .big-line, .question q';
   function titleOf(s){ return s && !s.walk ? s.el.querySelector(TITLE) : null; }
   function plain(el){
     var s = '';
@@ -983,10 +980,69 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
     return s.replace(/\s+/g, ' ').trim();
   }
 
-  var cur = 0, keepSettle = null;
+  var cur = 0, keepSettle = null, vtSeq = 0;
   function show(i, dir){
     finish();
     var a = slides[cur], b = slides[i];
+    // morph is the default: browsers with View Transitions glide shared parts (the title, anything marked
+    // data-morph) to their new place. Slides that share data-title, the walkthrough, and reduced motion
+    // keep the plain fade.
+    if (a === b || !document.startViewTransition || reduce || a.walk || b.walk ||
+        (a.el.dataset.title && a.el.dataset.title === b.el.dataset.title)) return swap(a, b, i, dir);
+    morph(a, b, i, dir);
+  }
+  function shown(el){
+    if (!el || el.classList.contains('visually-hidden')) return false;
+    var r = el.getBoundingClientRect();
+    return r.width > 0 && +getComputedStyle(el).opacity > .5;
+  }
+  function morph(a, b, i, dir){
+    var root = document.documentElement, my = ++vtSeq;
+    // a slide marked data-wipe="prism" is entered (going forward) by the highlighter wipe instead
+    var prism = dir > 0 && b.el.dataset.wipe === 'prism';
+    // leftovers from a transition that was cut short
+    [].forEach.call(document.querySelectorAll('.vt-named'), function(e){ e.style.viewTransitionName = ''; e.classList.remove('vt-named'); });
+    [].forEach.call(document.querySelectorAll('.vt-held'), function(e){ if (!a.el.contains(e)) e.classList.remove('vt-held'); });
+    var edge = document.querySelector('.prism-edge'); if (edge) edge.remove();
+    // pairs: [old element, new element, name]
+    var pairs = [];
+    if (!prism) {
+      var ta = titleOf(a), tb = titleOf(b);
+      if (shown(ta) && tb && !tb.classList.contains('visually-hidden')) pairs.push([ta, tb, 'vt-title']);
+      [].forEach.call(b.el.querySelectorAll('[data-morph]'), function(e){
+        var o = a.el.querySelector('[data-morph="' + e.dataset.morph + '"]');
+        if (shown(o)) pairs.push([o, e, 'vt-m-' + e.dataset.morph]);
+      });
+    }
+    function tag(el, n){ el.style.viewTransitionName = n; el.classList.add('vt-named'); }
+    pairs.forEach(function(p){ tag(p[0], p[2]); });
+    root.classList.add('vt'); root.classList.toggle('vt-prism', prism);
+    cur = i;
+    var done = false;
+    function apply(){
+      if (done) return; done = true;
+      pairs.forEach(function(p){ p[0].style.viewTransitionName = ''; p[0].classList.remove('vt-named'); });
+      swap(a, b, i, dir);
+      // the morphed part arrives already in place, so it skips its own fade-in on this slide
+      pairs.forEach(function(p){ p[1].classList.add('vt-held'); tag(p[1], p[2]); });
+      if (prism) {
+        edge = document.createElement('div'); edge.className = 'prism-edge'; edge.setAttribute('aria-hidden', 'true');
+        edge.innerHTML = '<i></i><i></i><i></i><b></b>';
+        document.body.appendChild(edge);
+      }
+    }
+    var t = document.startViewTransition(apply);
+    // a transition the browser skips or aborts still changes the slide; the rejections are expected
+    t.ready.catch(function(){}); t.updateCallbackDone.catch(function(){});
+    t.finished.catch(function(){}).then(function(){
+      apply();
+      if (edge) edge.remove();
+      if (my !== vtSeq) return;
+      [].forEach.call(document.querySelectorAll('.vt-named'), function(e){ e.style.viewTransitionName = ''; e.classList.remove('vt-named'); });
+      root.classList.remove('vt', 'vt-prism');
+    });
+  }
+  function swap(a, b, i, dir){
     if (a !== b) {
       // a flip before the last shared-title fade has settled settles it first, so no slide stays stuck underneath
       if (keepSettle) keepSettle();
