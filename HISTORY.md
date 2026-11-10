@@ -4,6 +4,16 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-10 — Homepage slider down to five versions
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Three versions removed from the slider:** 3 h (Oct 9, Sonia's version), 9 h and 12 h (Oct 16).
+  Five remain: 0 h, 1 h, 10 h, 15 h and 18 h. Each scroll moves one version, with the screen,
+  prompt and dots in step. Their screenshots stay in `img/home/`.
+- The slide's hidden title (for screen readers and the chapter rail) now reads "Five homepages in
+  18 hours."
+
 ## 2026-11-09 — "What we brought" hidden
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
