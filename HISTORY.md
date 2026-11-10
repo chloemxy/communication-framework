@@ -4,6 +4,49 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-10 — Slide transitions: morph by default, prism wipe into Meet PRISM
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Morph is the default slide change** (`presentation/index.html`, `show()` → `morph()`). Browsers
+  with View Transitions (Chrome, Edge, Safari 18) crossfade the page while the title glides from its
+  old place and size to the new one, like PowerPoint Morph. Any element marked `data-morph="name"`
+  on two slides glides the same way. A morphed title arrives in place and skips its own fade-in.
+  Slides that share `data-title` (Verification), the walkthrough, and reduced motion keep the old fade.
+- **Prism wipe into Meet PRISM** (`data-wipe="prism"` on `#intro`, forward only): the next slide is
+  revealed behind a slanted yellow highlighter band, the logo's own swipe shape, trailed by three
+  thin lines of split light (red, green, blue). Going back from Meet PRISM uses the morph.
+- If the browser skips or cuts short a transition, the slide still changes.
+
+## 2026-11-10 — "What's your view" slide removed; closing title as a small lead-in over the serif; license on the last slide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The "What's your view on our approach?" slide is removed** (`presentation/index.html`, `#next`),
+  along with its layout rules and its entry in the rail's title lookup. The deck now ends on the
+  closing slide (`#wrap`).
+- **The closing title drops the yellow highlight**: "AI gives you the average." is a small grey
+  lead-in line in Public Sans, and "You're the designer." is the full-size Newsreader title under it.
+  A mono version (IBM Plex Mono) was tried first and dropped (option D) so the deck keeps two fonts.
+  The rest of the deck's yellow highlights are unchanged for now.
+- **The license is on the closing slide**: "Code on GitHub, licensed Apache 2.0. Designs licensed
+  CC BY 4.0." sits in fine print under the footer. The footer's "Code GitHub" link is dropped,
+  since the license line now links GitHub.
+
+## 2026-11-10 — Thesis slide hidden; closing slide gets its title and appears all at once
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The thesis slide is hidden** (`presentation/index.html`, `#thesis`, `hidden` on the section). Its
+  three principles now live on the closing slide (`#wrap`), so the deck goes straight from AI
+  certification to "What's your view". It is still in the file and can come back by removing `hidden`.
+- **The closing slide has a title (option T1)**: "AI gives you the average. You're the designer."
+  at the size of every slide title, set at the same height as the other titled slides. The slide's
+  one highlight moves from "Iterate." to "You're the designer." The columns step down to fit: the
+  numerals are smaller and the step names are one size below the title.
+- **The closing slide shows all at once.** The three columns and the footer now fade in together
+  instead of one after another.
+
 ## 2026-11-10 — New closing slide: three numbered principles on the dotted paper
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
