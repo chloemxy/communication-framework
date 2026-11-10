@@ -97,6 +97,9 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
   height. At 1600x900 (16:9) the screen is 1093 px wide (was 960) and strips are 82 px (were 126);
   at 1440x900 (16:10) strips are the full 4u slim (58 px). Caption bottom sits 40 px above the
   screen edge at 16:9.
+- **Strips stay 4u on every screen shape.** In a browser window wider than 16:9 (e.g. 1920x960)
+  the screen is height-limited and the strips had been taking the spare width (181 px each); now
+  they stay 4u (68 px there, 64 px at 1600x900) and the row ends short of the right margin instead.
 - **Long captions break onto two lines** so none is cut off by the narrower panel: Plain language
   (after "or apply all."), Images (after "alt text,") and Framework Compass (after "the Studio:").
   The screen's height budget now allows a two-line caption, so at 16:9 the open screen is 1026 px

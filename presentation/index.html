@@ -361,11 +361,12 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* What PRISM does: expanding panels. Each click opens the next panel (--k 0 to 1); the open one
    plays its loop, the others are slim dimmed strips (about 4u) with their names. The open panel
    (--open) takes the row's width less three 4u strips, capped so the 2:1 video and its caption
-   still fit the screen height; the strips (--shut) share whatever is left.
+   still fit the screen height. The strips (--shut) stay 4u on every screen shape; on a wide, short
+   screen the row simply ends short of the right margin.
    The loops are all recorded at one scale, so the app reads the same size in every panel. */
 .fp-row{display:flex;gap:calc(1.2 * var(--u,1vw));margin-top:calc(1.6 * var(--u,1vw));container-type:inline-size;
   --open:min(100cqw - 15.6 * var(--u,1vw), 2 * (100dvh - 24.2 * var(--u,1vw)));
-  --shut:calc((100cqw - 3.6 * var(--u,1vw) - var(--open)) / 3)}
+  --shut:calc(4 * var(--u,1vw))}
 .fp{position:relative;overflow:hidden;min-width:0;flex:0 0 calc(var(--k,0) * var(--open) + (1 - var(--k,0)) * var(--shut))}
 .fp-in{width:var(--open)}
 .fp{cursor:pointer;border-radius:var(--r2);clip-path:inset(0 round var(--r2))}
