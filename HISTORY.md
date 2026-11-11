@@ -38,6 +38,24 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
   slide's text stayed hidden. The opening slide now appears at once and its text plays in by itself
   (`presentation/index.html`, start-up code calls `swap()` instead of `show()`). Slide-to-slide
   transitions are unchanged.
+## 2026-11-11 — Contrast card suggests a passing shade
+
+Branch: `claude/focused-stonebraker-69c134` · Vercel: Production (merged to `master`)
+
+- **Fix rows in the contrast card** (Images → Colour and contrast): when a pair fails AA body
+  (4.5:1) or AAA (7:1), a row under the grades names the nearest shade of the text colour that
+  passes, with a swatch and its ratio, e.g. "Darken to #9d211a (7.00:1) to pass AAA" for
+  #b3261e on #f6f1e8 (5.81:1). One row per failing target; nothing shows when all three pass.
+- **How the shade is found:** same hue and saturation, lightness only, in 0.1% steps; darker on
+  light backgrounds, lighter on dark ones. A shade counts only if its exact ratio reaches the
+  target. If even black or white can't reach it, the row says to pick a different colour.
+- **Preview:** each row's Preview button (secondary button, pressed state while on) swaps the
+  shade into the Large heading / body copy sample; Show original swaps it back. Picking new
+  swatches clears the preview. The artwork itself is never changed.
+- **Walkthrough frames recorded, not on a slide yet:** chapter 6 of the scroll walkthrough
+  (`walkthrough.js`, `media/walkthrough/06-poster-003/004.webp`) has a contrast-fix beat, but the
+  deck on `master` no longer shows the walkthrough (it uses the feature loops in `media/loops/`).
+  The clip for the Images feature loop is still to do.
 
 ## 2026-11-10 — Slide transitions: morph by default, prism wipe into Meet PRISM
 
