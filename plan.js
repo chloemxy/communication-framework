@@ -27,7 +27,7 @@ const PLAN_OUTLINE_CHECKS = [
 ];
 const PLAN_FLOWS = {
   video: {
-    label: 'video or animation', fws: ['pematav', 'cci', 'readability', 'plainlang'],
+    label: 'video or animation', fws: ['pematav', 'cci', 'readability'],
     stages: [
       { key:'outline', name:'Outline', line:'Decide what it must say before you write it.' },
       { key:'draft', name:'Script', prism:true, auto:true, line:'Write the words people will hear and read on screen. PRISM checks them as you type.',
@@ -56,7 +56,7 @@ const PLAN_FLOWS = {
     ],
   },
   print: {
-    label: 'printed or web piece', fws: ['pemat', 'cci', 'readability', 'plainlang'],
+    label: 'printed or web piece', fws: ['pemat', 'cci', 'readability'],
     stages: [
       { key:'outline', name:'Outline', line:'Decide what it must say before you write it.' },
       { key:'draft', name:'Draft', prism:true, auto:true, line:'Write the words. PRISM checks them as you type.',

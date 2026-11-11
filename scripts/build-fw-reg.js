@@ -5,7 +5,7 @@ const dir = path.resolve(__dirname, '..'), check = process.argv.includes('--chec
 const R = require(path.join(dir, 'analysis-engine.js')).FRAMEWORK_REGISTRY;
 // studio key -> engine id, from the shared list (frameworks.js) the studio and the Compass both use
 const MAP = Object.fromEntries(require(path.join(dir, 'frameworks.js')).FRAMEWORKS.map(f => [f.key, f.id]));
-const LIVE = ['cci','pemat','readability','plainlang'];
+const LIVE = ['cci','pemat','readability'];
 const file = path.join(dir, 'index.html');
 const html = fs.readFileSync(file, 'utf8');
 const m = html.match(/const FW_REG = (\{.*\});/);

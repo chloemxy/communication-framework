@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261019i">
+<link rel="stylesheet" href="design-system.css?v=20261027a">
 <script src="theme-switch.js?v=20261019e" defer></script>
 <script src="motion.js?v=20261019c" defer></script>
 <style>
@@ -47,13 +47,27 @@
   /* output type: plain caption text, the same as the studio's Frameworks list (no status colour) */
   .fw-out { margin-left: auto; font-size: var(--fs-xs); color: var(--ink-2); white-space: nowrap; }
   .fw-desc { margin-top: var(--sp-1); color: var(--ink); max-width: 70ch; }
+  /* which canvas offers it, then the output type: one caption line */
+  .fw-mode::after { content: '·'; margin-left: var(--sp-3); }
+  /* Cut from the library: collapsed, after the zones */
+  .cut { margin-top: var(--sp-6); }
+  .cut ul { margin-top: var(--sp-2); }
+  .cut li { padding: var(--sp-2) 0; border-bottom: 1px solid var(--rule); }
+  .cut li:last-child { border-bottom: none; }
+  .cut p { font-size: var(--fs-xs); color: var(--ink-2); max-width: 70ch; }
   .fw-tags { display: flex; flex-wrap: wrap; gap: var(--sp-1); margin-top: var(--sp-2); }
   .fw-utag { font-size: var(--fs-xs); font-weight: 400; line-height: 1.4; padding: 0 6px; border: 1px solid var(--rule); border-radius: var(--radius-control); color: var(--ink-2); background: var(--sheet); }
   .fw-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-5); margin-top: var(--sp-1); }
   .fw-source { display: inline-flex; align-items: center; gap: var(--sp-1); min-height: 32px; font-size: var(--fs-xs); font-weight: 600; }
   .fw-source:focus-visible, details.disclose > summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
-  /* Collapsed sections open full width under the row */
-  .fw-foot details[open] { flex-basis: 100%; }
+  /* "How it’s scored" and "All references" are buttons in the row that never move; what they open
+     appears full width under the row (the details elements live there, their own summaries hidden) */
+  .fw-disc { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: var(--sp-2); min-height: 32px; font-size: var(--fs-xs); font-weight: 600; color: var(--ink-2); border-radius: var(--radius-control); }
+  .fw-disc::before { content: ""; width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(-45deg); transition: transform .12s; }
+  .fw-disc[aria-expanded="true"]::before { transform: rotate(45deg); }
+  .fw-disc:hover, .fw-disc[aria-expanded="true"] { color: var(--ink); }
+  .fw-disc:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .fw-panels > details > summary { display: none; }
 
   /* "How it's scored": facts, then the score sheet */
   .sc-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sp-1) var(--sp-4); margin-top: var(--sp-2); }
@@ -119,16 +133,18 @@
 
   <div id="zones"></div>
   <p class="empty" id="empty" hidden>No frameworks match.</p>
+  <details class="disclose cut" id="cut"><summary>Not in the library right now</summary><ul id="cut-list"></ul></details>
 </main>
 
 <script src="analysis-engine.js?v=20261019a"></script>
-<script src="frameworks.js?v=20261019c"></script>
+<script src="frameworks.js?v=20261027d"></script>
 <script>
 'use strict';
 // Built from frameworks.js (what the studio uses) and the engine registry (full references),
 // so the Compass shows exactly the frameworks the studio does.
 (function(){
   const { FRAMEWORKS, ZONES, OUTPUT_LABEL, SITUATIONS } = window.PEA_FRAMEWORKS;
+  const CUT = window.PEA_FRAMEWORKS.CUT || [], MODE_LABEL = window.PEA_FRAMEWORKS.MODE_LABEL || {}, MODE_CANVAS = window.PEA_FRAMEWORKS.MODE_CANVAS || {};
   const REG = window.AnalysisEngine.FRAMEWORK_REGISTRY;
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
@@ -170,7 +186,8 @@
   $('compass-intro').textContent = 'The ' + FRAMEWORKS.length + ' frameworks the studio checks against, each linked to its original source.';
   // one filter: by area, or by situation (the same recommended sets the studio offers)
   $('zone-filter').innerHTML = '<option value="">All frameworks</option>'
-    + '<optgroup label="Situation">' + SITUATIONS.map(x => '<option value="s:' + x.key + '">' + esc(x.name) + '</option>').join('') + '</optgroup>'
+    + '<optgroup label="Situation">' + SITUATIONS.filter(x => x.fws.length).map(x => '<option value="s:' + x.key + '">' + esc(x.name) + '</option>').join('') + '</optgroup>'
+    + '<optgroup label="Canvas">' + [['plan', 'Plan from an idea'], ['evaluate', 'Evaluate a draft']].map(([k, n]) => '<option value="c:' + k + '">' + n + '</option>').join('') + '</optgroup>'
     + '<optgroup label="Area">' + ZONES.map(z => '<option value="z:' + z.key + '">' + esc(z.name) + '</option>').join('') + '</optgroup>';
 
   $('zones').innerHTML = ZONES.map(z => {
@@ -180,9 +197,9 @@
       '<ul class="zone-list surface">' + items.map(f => {
         const reg = REG[f.id] || {};
         const refs = (reg.sources || []).map(s => '<li>' + linkify(s) + '</li>').join('');
-        return '<li class="fw" id="' + f.key + '" data-text="' + esc((f.label + ' ' + f.name + ' ' + f.desc).toLowerCase()) + '">' +
+        return '<li class="fw" id="' + f.key + '" data-canvas="' + esc((MODE_CANVAS[f.modes] || ['plan', 'evaluate']).join(' ')) + '" data-text="' + esc((f.label + ' ' + f.name + ' ' + f.desc).toLowerCase()) + '">' +
           '<div class="fw-top"><span class="fw-label">' + esc(f.label) + '</span><span class="fw-name">' + esc(f.name) + '</span>' +
-            '<span class="fw-out">' + OUTPUT_LABEL[f.output] + '</span></div>' +
+            '<span class="fw-out">' + (MODE_LABEL[f.modes] ? '<span class="fw-mode">' + esc(MODE_LABEL[f.modes]) + '</span> ' : '') + OUTPUT_LABEL[f.output] + '</span></div>' +
           '<p class="fw-desc">' + esc(f.desc) + '</p>' +
           // the same use-case tags the studio shows
           (function(){ const u = SITUATIONS.filter(x => x.fws.includes(f.key)); return u.length ? '<p class="fw-tags">' + u.map(x => '<span class="fw-utag">' + esc(x.tag || x.name) + '</span>').join('') + '</p>' : ''; })() +
@@ -194,6 +211,28 @@
       }).join('') + '</ul></section>';
   }).join('');
 
+  // Turn each row's expanders into fixed buttons; their content opens under the row
+  document.querySelectorAll('.fw-foot').forEach((foot, n) => {
+    const ds = [...foot.querySelectorAll(':scope > details')];
+    if (!ds.length) return;
+    const panels = document.createElement('div'); panels.className = 'fw-panels';
+    ds.forEach((d, i) => {
+      const id = 'fwp-' + n + '-' + i; d.id = id;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'fw-disc';
+      b.textContent = d.querySelector('summary').textContent;
+      b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-controls', id);
+      b.addEventListener('click', () => { d.open = !d.open; });
+      d.addEventListener('toggle', () => b.setAttribute('aria-expanded', String(d.open)));
+      foot.appendChild(b); panels.appendChild(d);
+    });
+    foot.after(panels);
+  });
+
+  // Frameworks the library review cut: why, and when to bring them back
+  $('cut').hidden = !CUT.length;
+  $('cut-list').innerHTML = CUT.map(f => '<li><span class="fw-label">' + esc(f.label) + '</span> <span class="fw-name">' + esc(f.name) + '</span>' +
+    '<p>' + esc(f.cut.why) + (f.cut.revisit && f.cut.revisit !== '—' ? ' Revisit if ' + esc(f.cut.revisit) : '') + '</p></li>').join('');
+
   function apply(){
     const q = $('q').value.trim().toLowerCase(), zf = $('zone-filter').value;
     let shown = 0;
@@ -201,7 +240,8 @@
       let any = 0;
       sec.querySelectorAll('.fw').forEach(li => {
         const sit = zf.startsWith('s:') ? SITUATIONS.find(x => 's:' + x.key === zf) : null;
-        const ok = (!zf || (sit ? sit.fws.includes(li.id) : sec.dataset.zone === zf.slice(2))) && (!q || li.dataset.text.includes(q));
+        const inZf = !zf || (sit ? sit.fws.includes(li.id) : zf.startsWith('c:') ? li.dataset.canvas.split(' ').includes(zf.slice(2)) : sec.dataset.zone === zf.slice(2));
+        const ok = inZf && (!q || li.dataset.text.includes(q));
         li.hidden = !ok; if(ok){ any++; shown++; }
       });
       sec.hidden = !any;

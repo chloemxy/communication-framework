@@ -4,6 +4,41 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-11 — Studio row: "What to do" steps button and Clear all
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **What to do · N of 4:** the four check steps (Brief, material, frameworks, review) are now a
+  button beside the Evaluate / Plan toggle, so they stay one click away after a file fills the card
+  area (the full guide there still shows on an empty Studio). It opens a list: done steps get a tick,
+  the next one is open with its Open Brief / Open Frameworks button. Esc or a click outside closes it.
+  Hidden in Plan from an idea, which has its own stages. (`renderSteps`, `toggleSteps`, fed by `syncGuide`.)
+- **Clear all,** next to it: after a confirm, removes the material, Brief, framework picks, ratings
+  and the plan for a fresh start. Saved versions in History stay. Plain language goes back to its
+  default (on). (`clearAll`.)
+
+## 2026-11-11 — Meet PRISM: logo opening every time, no swipe
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **No swipe:** the Meet PRISM slide no longer comes in with the prism highlighter wipe
+  (`data-wipe="prism"` removed from `#intro`); it uses the normal morph like every other slide. The
+  wipe CSS and code stay in place, unused, for any slide that wants it later.
+- **Logo opening plays every time the slide opens**, going forward or back, not only the first time
+  per showing. When the slide is left, the page and small logo are hidden again (`hold()`), so they
+  never flash before the next opening; a half-finished opening is cancelled cleanly.
+
+## 2026-11-11 — Reopened slide shows its text without a click
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **Fix:** opening or refreshing the deck on a later slide (from the address, e.g. `#question`, or
+  the slide last shown in this browser) used the morph transition while the page was still loading.
+  That transition stalled until the first click or scroll, so slide 1 stayed underneath and the
+  slide's text stayed hidden. The opening slide now appears at once and its text plays in by itself
+  (`presentation/index.html`, start-up code calls `swap()` instead of `show()`). Slide-to-slide
+  transitions are unchanged.
+
 ## 2026-11-10 — Slide transitions: morph by default, prism wipe into Meet PRISM
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`

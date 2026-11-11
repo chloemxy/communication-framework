@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>(function(){var t;try{t=localStorage.getItem('pea.theme')}catch(e){}if(t!=='light')document.documentElement.setAttribute('data-theme','dark')})()</script>
+<title>PRISM Logo History</title>
+<link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../design-system.css?v=20261019i">
+<script src="../../theme-switch.js?v=20261019e" defer></script>
+<style>
+/* Logo history: every logo step, oldest first. Page layout only; tokens from design-system.css. */
+main{max-width:960px;margin:0 auto;padding:var(--sp-8) var(--sp-4) var(--sp-12)}
+.lead{color:var(--ink-2);max-width:66ch;margin-top:var(--sp-2)}
+.timeline{list-style:none;margin:var(--sp-8) 0 0;padding:0;border-left:2px solid var(--rule)}
+.step{position:relative;padding:0 0 var(--sp-8) var(--sp-6)}
+.step::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--sheet);border:2px solid var(--control-border)}
+.step.live::before{background:var(--brand);border-color:var(--brand)}
+.when{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.step h3{font-size:var(--fs-lg);margin-top:2px}
+.step > p{color:var(--ink-2);max-width:66ch;margin-top:var(--sp-1)}
+.step .links{margin-top:var(--sp-2);font-size:var(--fs-xs)}
+.status{display:inline-block;margin-left:var(--sp-2);padding:0 var(--sp-2);border-radius:var(--radius-pill);font-size:var(--fs-xs);font-weight:600;vertical-align:2px}
+.status.on{background:var(--brand);color:var(--on-brand)}
+.status.off{background:var(--sheet-2);color:var(--ink-2);border:1px solid var(--rule)}
+.show{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-6);margin-top:var(--sp-3);padding:var(--sp-5) var(--sp-6);border:1px solid var(--rule);border-radius:var(--radius-sheet);background:var(--sheet)}
+.show .cap{font-size:var(--fs-xs);color:var(--ink-2)}
+.wm{font-size:40px;font-weight:600;line-height:1;color:var(--ink)}
+.show .site-name{font-size:40px;font-weight:600;line-height:1.35}
+.concepts{list-style:none;padding:0;margin:var(--sp-3) 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:var(--sp-3)}
+.concept{display:grid;grid-template-columns:64px minmax(0,1fr);gap:var(--sp-3);padding:var(--sp-4);border:1px solid var(--rule);border-radius:var(--radius-sheet);background:var(--sheet);color:var(--ink)}
+.concept.picked{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
+.concept.dropped{opacity:.7}
+.concept .mark{display:flex;align-items:flex-start;justify-content:center;color:var(--ink)}
+.concept h4{font-size:var(--fs-sm)}
+.concept p{font-size:var(--fs-xs);color:var(--ink-2);margin-top:2px}
+.concept .risk{margin-top:var(--sp-1)}
+.risk-low{color:var(--pass);font-weight:600} .risk-medium{color:var(--warn);font-weight:600} .risk-high{color:var(--fail);font-weight:600}
+.tag-pick{margin-left:var(--sp-1);padding:0 6px;border-radius:var(--radius-control);background:var(--brand);color:var(--on-brand);font-size:var(--fs-xs)}
+.anims{display:flex;flex-wrap:wrap;gap:var(--sp-2);margin-top:var(--sp-3);list-style:none;padding:0}
+.anims li{padding:var(--sp-1) var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);font-size:var(--fs-xs);background:var(--sheet)}
+.anims li.on{background:var(--brand);border-color:var(--brand);color:var(--on-brand);font-weight:600}
+.fav{display:flex;gap:var(--sp-3);align-items:center}
+.fav img{display:block}
+@media (max-width:600px){ .show{padding:var(--sp-4)} .wm, .show .site-name{font-size:32px} }
+</style>
+</head>
+<body>
+<header class="site-bar">
+  <a class="site-name" href="../../index.html"><span><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span></a>
+  <nav class="site-nav" aria-label="Brainstorm">
+    <a href="index.html">Brainstorm</a>
+    <a href="logo-history.html" aria-current="page">Logo history</a>
+  </nav>
+  <span class="bar-divider" aria-hidden="true"></span>
+  <button type="button" class="btn btn-quiet theme-toggle" data-theme-toggle title="Switch theme"><svg class="ts-ico" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"></svg><span class="ts-lbl">Dark</span></button>
+</header>
+<main>
+  <h1>PRISM logo: every attempt</h1>
+  <p class="lead">From a plain wordmark to the animated Flagged I, oldest first. Yellow dots are what is on the site now.</p>
+
+  <ol class="timeline">
+    <li class="step">
+      <span class="when">Before 17 Oct</span>
+      <h3>Plain wordmark <span class="status off">Replaced</span></h3>
+      <p>PRISM in Public Sans 600, no mark and no favicon. Clean, but it had no character, which started the brainstorm.</p>
+      <div class="show"><span class="wm">PRISM</span><span class="cap">Public Sans 600, ink</span></div>
+    </li>
+
+    <li class="step">
+      <span class="when">17 Oct</span>
+      <h3>Brainstorm: six concepts <span class="status off">Explored</span></h3>
+      <p>Each mark was drawn to work at 16px and in one colour, then checked online for look-alikes. Two came out on top: Pilcrow P and Flagged I.</p>
+      <ul class="concepts">
+        <li class="concept">
+          <div class="mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="56" height="56" fill="currentColor" aria-hidden="true" focusable="false"><rect x="6" y="4" width="4" height="24"/><path d="M12 4 H19 L26 9 V13 L19 18 H12 Z"/></svg></div>
+          <div class="c-body">
+            <h4>Facet P</h4>
+            <p>A P whose bowl is a cut glass facet, set apart from the stem.</p>
+            <p class="risk"><span class="risk-medium">Similarity risk: medium</span> Geometric P monograms are common; the first triangle bowl looked like stock &quot;flag P&quot; logos and Prisma, so it was reshaped.</p>
+          </div>
+        </li>
+        <li class="concept">
+          <div class="mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="56" height="56" fill="none" stroke="currentColor" aria-hidden="true" focusable="false"><path d="M5 23 L16 5 L27 23" stroke-width="4" stroke-linejoin="miter" stroke-linecap="butt"/><path d="M1 27 H10 M22 27 H31" stroke-width="2"/></svg></div>
+          <div class="c-body">
+            <h4>Caret</h4>
+            <p>The proofreader&#x27;s insertion caret on a broken line of text: a prism without its base.</p>
+            <p class="risk"><span class="risk-medium">Similarity risk: medium</span> Alone it reads as an up-chevron; the broken baseline keeps it a proof mark.</p>
+          </div>
+        </li>
+        <li class="concept picked">
+          <div class="mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="56" height="56" aria-hidden="true" focusable="false"><defs><clipPath id="band-3-"><path d="M3 24 L7 8 H29 L25 24 Z"/></clipPath></defs><path d="M3 24 L7 8 H29 L25 24 Z" fill="#FFE066"/><rect x="14" y="4" width="4" height="24" fill="currentColor"/><rect x="14" y="4" width="4" height="24" fill="#16181D" clip-path="url(#band-3-)"/></svg></div>
+          <div class="c-body">
+            <h4>Flagged I <span class="tag-pick">Picked</span></h4>
+            <p>The I in PRISM gets the highlighter swipe the studio puts on flagged words.</p>
+            <p class="risk"><span class="risk-low">Similarity risk: low</span> No brand found built on a single highlighted I.</p>
+          </div>
+        </li>
+        <li class="concept">
+          <div class="mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="56" height="56" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M8 20 V5 H16 A6 6 0 0 1 16 17 H8"/><path d="M8 20 C8 26 11 28.5 15 28.5 C20 28.5 22.5 25 20.5 22.5 C18.5 20 14.5 21.5 15.5 24.5 C16.5 27.5 21 28.5 29 27.5"/></g></svg></div>
+          <div class="c-body">
+            <h4>Dele P</h4>
+            <p>A one-stroke P whose stem ends in the editor&#x27;s looped &quot;delete&quot; mark.</p>
+            <p class="risk"><span class="risk-medium">Similarity risk: medium</span> Script P marks (e.g. Pinterest) are the nearest; this has no circle.</p>
+          </div>
+        </li>
+        <li class="concept">
+          <div class="mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="56" height="56" fill="none" stroke="currentColor" aria-hidden="true" focusable="false"><path d="M1 16 H11" stroke-width="4"/><path d="M15 2 V30" stroke-width="2"/><path d="M19 5 H31 M19 10.5 H27 M19 16 H31 M19 21.5 H25 M19 27 H29" stroke-width="2"/></svg></div>
+          <div class="c-body">
+            <h4>Readings</h4>
+            <p>One line meets a lens and leaves as five lines of text: one handout, five frameworks.</p>
+            <p class="risk"><span class="risk-low">Similarity risk: low</span> Same light-splitting idea as Prisma Health and the Pink Floyd prism, but no triangle or spectrum.</p>
+          </div>
+        </li>
+        <li class="concept">
+          <div class="mark"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="56" height="56" fill="currentColor" aria-hidden="true" focusable="false"><rect x="6" y="4" width="4" height="24"/><rect x="12" y="4" width="4" height="24"/><rect x="6" y="4" width="10" height="3"/><path d="M16 4 H19 A7 7 0 0 1 19 18 H16 Z"/></svg></div>
+          <div class="c-body">
+            <h4>Pilcrow P</h4>
+            <p>The P drawn as a reversed pilcrow, the &quot;show formatting&quot; mark.</p>
+            <p class="risk"><span class="risk-medium">Similarity risk: medium</span> Penguin Press&#x27;s PP uses a similar reversed-pilcrow idea; the heavy solid bowl keeps it apart.</p>
+          </div>
+        </li>
+        <li class="concept dropped">
+          <div class="mark"><svg width="56" height="56" viewBox="0 0 32 32" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="3" width="20" height="26" rx="1.5"/><path d="M10 10h12M10 15h12M10 20h7"/><path d="M18 22l2.5 2.5L25 19" stroke-width="2.4"/></svg></div>
+          <div class="c-body">
+            <h4>Score sheet <span class="status off">Dropped</span></h4>
+            <p>A ruled sheet with a margin and a tick.</p>
+            <p class="risk"><span class="risk-high">Similarity risk: high</span> Couldn't be told apart from Google Forms, Microsoft Forms and stock form icons. Replaced by Dele P.</p>
+          </div>
+        </li>
+      </ul>
+      <p class="links"><a href="logo.html">Full concept board</a> · <a href="logo.md">Notes and similarity check</a></p>
+    </li>
+
+    <li class="step live">
+      <span class="when">18 Oct</span>
+      <h3>Flagged I chosen; yellow becomes the theme colour <span class="status on">Live</span></h3>
+      <p>The I in PRISM sits on a slanted highlighter swipe, the same yellow that marks flagged words in the studio. The swipe's slant is the logo's own, so it can't be mistaken for a real flag. The favicon is the I alone on the swipe.</p>
+      <div class="show"><span class="site-name wm-flag"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span><span class="fav"><img src="../../favicon.svg" width="32" height="32" alt="Favicon"><img src="../../favicon.svg" width="16" height="16" alt="Favicon at 16 pixels"></span><span class="cap">Wordmark and favicon</span></div>
+    </li>
+
+    <li class="step">
+      <span class="when">19 Oct</span>
+      <h3>First animation: Swipe <span class="status off">Replaced</span></h3>
+      <p>The swipe drew across the I like a highlighter stroke, on page load and hover (0.6 s).</p>
+    </li>
+
+    <li class="step">
+      <span class="when">19 Oct</span>
+      <h3>Five animations compared</h3>
+      <ul class="anims"><li>1 Swipe</li><li class="on">2 Scan</li><li>3 Stamp</li><li>4 Type-on</li><li>5 Prism fan</li></ul>
+      <p class="links"><a href="logo-animation.html">Play all five</a></p>
+    </li>
+
+    <li class="step live">
+      <span class="when">19 Oct</span>
+      <h3>Scan chosen <span class="status on">Live</span></h3>
+      <p>A thin yellow reading line sweeps across the word and leaves the I highlighted: the tool checking a line (1.2 s). It plays on page load and hover. Hover the logo below to replay it.</p>
+      <div class="show"><span class="site-name wm-flag"><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span><span class="cap">Hover to replay</span></div>
+    </li>
+
+    <li class="step">
+      <span class="when">21 Oct</span>
+      <h3>Front door opening <span class="status off">On localhost, not pushed</span></h3>
+      <p>The front door opens with the logo large in the middle playing its Scan, then it shrinks and glides into the top-left corner while the page rises in.</p>
+      <p class="links"><a href="../../index.html?intro">Watch it on the front door</a></p>
+    </li>
+  </ol>
+</main>
+</body>
+</html>
