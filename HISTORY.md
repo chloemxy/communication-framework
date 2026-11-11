@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-11 — Studio row: "What to do" steps button and Clear all
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **What to do · N of 4:** the four check steps (Brief, material, frameworks, review) are now a
   button beside the Evaluate / Plan toggle, so they stay one click away after a file fills the card
@@ -19,7 +19,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
 
 ## 2026-11-11 — Meet PRISM: logo opening every time, no swipe
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **No swipe:** the Meet PRISM slide no longer comes in with the prism highlighter wipe
   (`data-wipe="prism"` removed from `#intro`); it uses the normal morph like every other slide. The
@@ -30,7 +30,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
 
 ## 2026-11-11 — Reopened slide shows its text without a click
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **Fix:** opening or refreshing the deck on a later slide (from the address, e.g. `#question`, or
   the slide last shown in this browser) used the morph transition while the page was still loading.
@@ -38,6 +38,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
   slide's text stayed hidden. The opening slide now appears at once and its text plays in by itself
   (`presentation/index.html`, start-up code calls `swap()` instead of `show()`). Slide-to-slide
   transitions are unchanged.
+
 ## 2026-11-11 — Contrast card suggests a passing shade
 
 Branch: `claude/focused-stonebraker-69c134` · Vercel: Production (merged to `master`)
