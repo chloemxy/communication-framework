@@ -9,7 +9,7 @@
   'use strict';
   var root = document.querySelector('[data-walkthrough]');
   if (!root || !window.PRISM_WALK_CLIPS) return;
-  var IMG_DIR = 'media/walkthrough/', IMG_V = '?v=20261102h';   // bump when the recorded screens change
+  var IMG_DIR = 'media/walkthrough/', IMG_V = '?v=20261108a';   // bump when the recorded screens change
   var PX_PER_SEC = 150;                       // scroll distance per second of animation
 
   var FW = 1920, FH = 1080, PW = 1600, PH = 900, ZMIN = FW / PW;   // full view fills the stage
@@ -104,14 +104,24 @@
             [9.6,11.3,'Revert to any earlier version','Here, the handout as first loaded',r(H.oldItem)],
             [12.9,15.6,'Back to the original, nothing lost','The version you left stays in History',R(115,195,670,330)]] });
 
-  var CVD = C.poster.cvd.map(mid), ART = r(C.poster.art);
-  S.push({ clip:'poster', dur:8.4, chap:[6,'Posters and images'],
-    frames:[[0,0],[3.35,1,1],[5.45,2,1]],
-    cam:[[0,F],[1.4,F],[2.3,R(15,180,1160,560)],[7.2,R(15,180,1160,560)],[8.0,F]],
-    cursor:[[[2.4,1150,800],[3.05,CVD[1][0],CVD[1][1]],[3.4,CVD[1][0],CVD[1][1]],[4.7,CVD[1][0],CVD[1][1]],[5.15,CVD[4][0],CVD[4][1]],[5.6,CVD[4][0],CVD[4][1]],[6.0,CVD[4][0]+80,CVD[4][1]+60]]],
-    clicks:[3.2,5.3],
+  // ...then a contrast fix: pick text and background from the palette, PRISM names the nearest
+  // shade that passes AAA, and Preview swaps it into the sample (the artwork is not changed)
+  var PO = C.poster, CVD = PO.cvd.map(mid), ART = r(PO.art);
+  var SW1 = mid(PO.sw1), SW0 = mid(PO.sw0), FXB = mid(PO.fixBtn);
+  var CARD = R(PO.pal[0] - 8, PO.pal[1] - 8, PO.pal[2] + 16, PO.prev[1] + PO.prev[3] - PO.pal[1] + 16);
+  var FIX = R(PO.fix[0] - 6, PO.fix[1] - 2, PO.fix[2] + 12, PO.fix[3] + 4);
+  var FXP = R(PO.fix[0] - 6, PO.fix[1] - 2, PO.fix[2] + 12, PO.prev[1] + PO.prev[3] - PO.fix[1] + 6);
+  S.push({ clip:'poster', dur:16.2, chap:[6,'Posters and images'],
+    frames:[[0,0],[3.35,1,1],[5.45,2,1],[8.55,3,1],[12.05,4,1]],
+    cam:[[0,F],[1.4,F],[2.3,R(15,180,1160,560)],[7.2,R(15,180,1160,560)],[7.9,CARD],[15.0,CARD],[15.8,F]],
+    cursor:[[[2.4,1150,800],[3.05,CVD[1][0],CVD[1][1]],[3.4,CVD[1][0],CVD[1][1]],[4.7,CVD[1][0],CVD[1][1]],[5.15,CVD[4][0],CVD[4][1]],[5.6,CVD[4][0],CVD[4][1]],[6.0,CVD[4][0]+80,CVD[4][1]+60]],
+            [[7.4,1100,520],[7.9,SW1[0],SW1[1]],[8.15,SW1[0],SW1[1]],[8.35,SW0[0],SW0[1]],[8.6,SW0[0],SW0[1]],
+             [11.2,SW0[0],SW0[1]],[11.7,FXB[0],FXB[1]],[12.3,FXB[0],FXB[1]],[12.8,FXB[0]+60,FXB[1]+90]]],
+    clicks:[3.2,5.3,8.0,8.45,11.9],
     labels:[[2.4,5.2,'See it through colour blindness','The poster as a reader with deuteranopia sees it',ART],
-            [5.4,7.2,'Or as a greyscale print','Check it still works without colour',ART]] });
+            [5.4,7.2,'Or as a greyscale print','Check it still works without colour',ART],
+            [8.7,11.6,'Fails AAA? PRISM suggests a fix','The nearest shade of the same colour that passes',FIX],
+            [12.1,15.0,'Preview it before you change the art','The sample switches to the suggested shade',FXP,12.05]] });
 
   // Plan from an idea: clear the poster for a new piece, outline it, step to Draft, then send the outline to the
   // editor, where it is scored; the walkthrough ends on the whole Studio
