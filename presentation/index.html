@@ -649,7 +649,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 
 
-  <section class="scene" id="intro" data-chap="Meet PRISM" data-wipe="prism">
+  <section class="scene" id="intro" data-chap="Meet PRISM">
     <iframe class="pm-door" src="../index.html?intro" title="The PRISM front door: Make your health handout easy to read" loading="eager"></iframe>
   </section>
 
@@ -1166,7 +1166,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   // slide is up, until someone drags the slider. Wheel and arrow keys inside it still turn slides.
   (function(){
     var fr = document.querySelector('.pm-door'); if (!fr) return;
-    var sec = fr.closest('.scene'), loop = 0, touched = false, played = false, ready = false;
+    var sec = fr.closest('.scene'), loop = 0, touched = false, ready = false, runs = 0;
     function doc(){ try { return fr.contentDocument; } catch (_) { return null; } }
     function setup(){
       var d = doc(); if (!d) return;
@@ -1186,7 +1186,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
           var lg = d.createElement('span'); lg.className = 'site-name pm-logo';
           lg.innerHTML = '<span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span>';
           copy.insertBefore(lg, copy.firstChild);
-          if (!played) copy.closest('section').classList.add('pm-hold-page', 'pm-hold-logo');
+          hold();
         }
         ready = true;
         var r = d.getElementById('intro-s-range');
@@ -1201,10 +1201,17 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
       })();
     }
     // The first time the slide opens: the PRISM logo plays its scan large in the middle, then
-    // shrinks into its place above the kicker while the page rises in. Only once per showing of the deck.
+    // shrinks into its place above the kicker while the page rises in. Every time the slide opens.
+    // hide the page and the small logo again, ready for the next opening
+    function hold(){
+      var d = doc(), c = d && d.querySelector('.intro-copy'); if (!c) return;
+      runs++;
+      [].forEach.call(d.querySelectorAll('.intro-big'), function(el){ el.remove(); });
+      var b = c.closest('section'); b.classList.remove('intro-reveal'); b.classList.add('pm-hold-page', 'pm-hold-logo');
+    }
     function opening(){
-      var d = doc(); if (!d || !ready || played) return;
-      played = true;
+      var d = doc(); if (!d || !ready) return;
+      hold(); var my = runs;
       var box = d.querySelector('.intro-copy').closest('section'), small = d.querySelector('.pm-logo [aria-hidden]');
       var reveal = function(){ box.classList.remove('intro-reveal'); void box.offsetWidth; box.classList.add('intro-reveal'); };
       if (reduce || !box.animate) { box.classList.remove('pm-hold-page', 'pm-hold-logo'); return; }
@@ -1214,12 +1221,13 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
       box.appendChild(big);
       var word = big.querySelector('.site-name');
       setTimeout(function(){
+        if (my !== runs) return;
         var from = word.querySelector('[aria-hidden]').getBoundingClientRect(), to = small.getBoundingClientRect(), w = word.getBoundingClientRect();
         word.style.transformOrigin = (from.left - w.left) + 'px ' + (from.top - w.top) + 'px';
         word.animate([{ transform:'none' }, { transform:'translate(' + (to.left - from.left) + 'px,' + (to.top - from.top) + 'px) scale(' + (to.height / from.height) + ')' }],
           { duration:720, easing:'cubic-bezier(.65,0,.25,1)', fill:'forwards' });
         box.classList.remove('pm-hold-page'); reveal();
-        setTimeout(function(){ box.classList.remove('pm-hold-logo'); big.remove(); }, 740);
+        setTimeout(function(){ if (my !== runs) return; box.classList.remove('pm-hold-logo'); big.remove(); }, 740);
       }, 1350);
     }
     function step(n){
@@ -1232,7 +1240,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     }
     fr.addEventListener('load', setup);
     if (doc() && doc().readyState === 'complete') setup();
-    new MutationObserver(function(){ if (sec.classList.contains('on')) { opening(); play(); } else clearInterval(loop); })
+    var wasOn = sec.classList.contains('on');
+    new MutationObserver(function(){ var on = sec.classList.contains('on'); if (on === wasOn) return; wasOn = on;
+      if (on) { opening(); play(); } else { clearInterval(loop); hold(); } })
       .observe(sec, { attributes:true, attributeFilter:['class'] });
   })();
   // The updates: the handle nudges each time the slide opens
@@ -1305,7 +1315,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   if (want) slides.forEach(function(s, i){ if (s.el.id === want) start = i; });
   window.scrollTo(0, 0);
   slides[0].el.classList.add('on'); slides[0].el.removeAttribute('aria-hidden');
-  if (start) show(start, 1); else markRail();
+  // the opening slide appears at once (no transition: one started while the page loads stalls until the
+  // first click or scroll, leaving the slide's text hidden), then plays in as if just arrived
+  if (start) swap(slides[0], slides[start], start, 1); else markRail();
 })();
 </script>
 <script src="napkin.js?v=20261104f"></script>

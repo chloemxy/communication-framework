@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload options</title>
+<script>(function(){var t;try{t=localStorage.getItem('pea.theme')}catch(e){}if(t!=='light')document.documentElement.setAttribute('data-theme','dark')})()</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../design-system.css?v=20261017e">
+<script src="../theme-switch.js?v=20261017e" defer></script>
+<style>
+body{background:var(--desk);color:var(--ink);font-family:var(--sans);margin:0}
+.wrap{max-width:1440px;padding:var(--sp-6) var(--inset) var(--sp-12)}
+.top{display:flex;align-items:center;gap:var(--sp-3);flex-wrap:wrap;margin-bottom:var(--sp-4)}
+.top h1{font-size:var(--fs-2xl);font-weight:600;margin:0;flex:1 1 auto}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2);font-size:var(--fs-sm);color:var(--ink-2);margin-bottom:var(--sp-6)}
+.intro{max-width:72ch;font-size:var(--fs-sm);line-height:1.6;color:var(--ink);margin:0 0 var(--sp-6)}
+.intro h2{font-size:var(--fs-lg);font-weight:600;margin:0 0 var(--sp-2)}
+.intro ul{margin:0 0 var(--sp-4);padding-left:var(--sp-5)}
+.intro li{margin-bottom:var(--sp-1)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,var(--w,440px)),1fr));gap:var(--sp-6);align-items:start}
+.opt h2{font-size:var(--fs-lg);font-weight:600;margin:0 0 var(--sp-1)}
+.opt .why{min-height:7.5em;font-size:var(--fs-sm);line-height:1.5;color:var(--ink-2);margin:0 0 var(--sp-3);max-width:60ch}
+.opt .why b{color:var(--ink);font-weight:600}
+
+/* mock Material panel, same chrome as the studio */
+.mp{position:relative;width:100%;max-width:var(--w,440px);height:540px;display:flex;flex-direction:column;background:var(--sheet);
+  border:1px solid var(--rule);border-radius:var(--radius-sheet);overflow:hidden}
+.mp-hdr{padding:var(--sp-3) var(--inset);font-size:var(--fs-sm);font-weight:600;border-bottom:1px solid var(--rule)}
+.mp-tools{height:36px;border-bottom:1px solid var(--rule);background:var(--sheet)}
+.mp-body{flex:1 1 auto;min-height:0;overflow-y:auto;position:relative}
+.mp-foot{display:flex;justify-content:space-between;padding:var(--sp-2) var(--inset);border-top:1px solid var(--rule);font-size:var(--fs-xs);color:var(--ink-2)}
+.hint{font-size:var(--fs-sm);line-height:1.5;color:var(--ink-2);margin:0}
+.samples{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-1) var(--sp-2);font-size:var(--fs-sm);color:var(--ink-2)}
+.samples .btn{font-size:var(--fs-sm);text-decoration:underline;text-underline-offset:3px;color:var(--ink)}
+.privacy{display:flex;align-items:flex-start;line-height:1.5;gap:var(--sp-2);font-size:var(--fs-sm);color:var(--ink-2);margin:0}
+.privacy svg{flex-shrink:0;margin-top:.25em}
+
+/* A — the blank sheet is the target */
+.a-bar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--sp-2) var(--sp-3);padding:var(--sp-4) var(--inset);border-bottom:1px solid var(--rule)}
+.a-bar .btn{min-height:40px;padding:0 var(--sp-5);font-size:var(--fs-sm)}
+.a-paper{padding:var(--sp-8) var(--sp-6);font-family:var(--serif);font-size:var(--fs-md);line-height:1.6;color:var(--ink-2);cursor:text;flex:1 1 auto;min-height:120px}
+.a-paper .drop{display:none;font-family:var(--sans);font-size:var(--fs-lg);font-weight:600}
+.a-foot{padding:0 var(--inset) var(--sp-5);display:grid;gap:var(--sp-2)}
+.dragging .a-paper{outline:2px dashed var(--form-blue);outline-offset:-8px;background:var(--selected);color:var(--form-blue)}
+.dragging .a-paper .ph{display:none}
+.dragging .a-paper .drop{display:block}
+
+/* B — two large doors */
+.b-in{padding:var(--sp-4) var(--inset);display:grid;gap:var(--sp-4)}
+.b-doors{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:var(--sp-3)}
+.door{display:flex;flex-direction:column;align-items:flex-start;gap:var(--sp-2);min-height:120px;padding:var(--sp-4);text-align:left;
+  background:var(--sheet);border:1px solid var(--control-border);border-radius:var(--radius-sheet);color:var(--ink);font:inherit;cursor:pointer}
+.door:hover{background:var(--hover)}
+.door:focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
+.door{border-width:2px}
+.door.up{border:2px dashed var(--control-border);background:var(--sheet-2)}
+.door b{font-size:var(--fs-lg);font-weight:600}
+.door span{font-size:var(--fs-sm);line-height:1.5;color:var(--ink-2)}
+.door svg{margin-bottom:var(--sp-1);color:var(--ink)}
+.dragging .door.up{border-color:var(--form-blue);background:var(--selected)}
+.dragging .door.up b,.dragging .door.up svg{color:var(--form-blue)}
+
+/* C — big upload, samples as pictures */
+.c-in{padding:var(--sp-4) var(--inset);display:grid;gap:var(--sp-2);align-content:start}
+.c-up{width:100%;max-width:400px;min-height:56px;font-size:var(--fs-lg);gap:var(--sp-3)}
+.c-alt{justify-self:start;min-height:40px;font-size:var(--fs-sm);padding:0 var(--sp-4)}
+.c-hr{border:0;border-top:1px solid var(--rule);margin:var(--sp-2) 0 0}
+.c-try{font-size:var(--fs-sm);font-weight:600;margin:0}
+.thumbs{display:flex;flex-wrap:wrap;gap:var(--sp-4)}
+.thumb{display:grid;gap:var(--sp-2);justify-items:start;width:84px;padding:0;background:none;border:0;font:inherit;color:var(--ink);text-align:left;cursor:pointer}
+.thumb svg{display:block;width:84px;height:108px;border:1px solid var(--rule);border-radius:var(--radius-control);background:#fff}
+.thumb:hover svg{border-color:var(--control-border);box-shadow:var(--shadow-float)}
+.thumb:focus-visible{outline:2px solid var(--focus-ring);outline-offset:4px}
+.thumb b{font-size:var(--fs-sm);font-weight:600}
+.thumb span{font-size:var(--fs-xs);color:var(--ink-2)}
+.thumb{gap:var(--sp-1)}
+.thumb b{margin-top:var(--sp-1)}
+:root[data-theme="dark"] .thumb svg{filter:brightness(.85)}
+.c-in .privacy{margin-bottom:var(--sp-1)}
+.c-drop{position:absolute;inset:8px;display:none;align-items:center;padding:0 calc(var(--inset) - 10px);border:2px dashed var(--form-blue);border-radius:var(--radius-sheet);
+  background:var(--selected);color:var(--form-blue);font-size:var(--fs-lg);font-weight:600}
+.dragging .c-drop{display:flex}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <h1>Empty Material panel: three options</h1>
+    <button type="button" class="btn btn-quiet theme-toggle" data-theme-toggle aria-pressed="false" title="Dark mode"><span class="ts-lbl">Dark</span></button>
+  </div>
+
+  <div class="intro">
+    <h2>What the panel has to do</h2>
+    <ul>
+      <li><b>Get a file in.</b> Upload is the main action. Dropping a file and pasting text are the other two ways.</li>
+      <li><b>Say what files work</b>, so nobody tries a format that fails.</li>
+      <li><b>Say the file stays in the browser.</b> These are patient materials, so this matters.</li>
+      <li><b>Offer a sample</b> for people who just want to try it.</li>
+    </ul>
+    <h2>What it no longer needs</h2>
+    <ul>
+      <li>A title. The panel is already called Material, and step 2 of the Guide says “Add your material”.</li>
+      <li>“Checks / Edit / Save”. The Guide on the right already explains the steps, and saving is explained where Export is.</li>
+    </ul>
+    <h2>What’s wrong with the current one</h2>
+    <ul>
+      <li>It’s a stock drop zone: a grey dashed box inside a panel inside the page (boxes in boxes), with a generic upload icon.</li>
+      <li>The two big buttons have the same size and weight, so it isn’t clear which comes first.</li>
+      <li>The samples look like plain text, so they’re easy to miss.</li>
+      <li>The notes underneath aren’t attached to anything and repeat the Guide.</li>
+    </ul>
+    <h2>Changes after review (all three options)</h2>
+    <ul>
+      <li>“Upload” became <b>Open a file</b>: to people handling patient materials, “upload” sounds like the file is sent to a server.</li>
+      <li>The privacy line now says plainly: “Nothing is sent anywhere. PRISM reads it in this browser.”</li>
+      <li>Every option fits a 340px panel without the privacy line dropping out of view.</li>
+    </ul>
+    <p><b>Recommended: C.</b> It has the clearest order and the biggest button, and its pictures show what the samples are. In the real panel I’d also accept a drop or Ctrl+V anywhere on the panel.</p>
+  </div>
+
+  <div class="ctl">
+    <span>Panel width:</span>
+    <button type="button" class="btn btn-secondary" data-w="440px" aria-pressed="true">Studio (440px)</button>
+    <button type="button" class="btn btn-secondary" data-w="340px" aria-pressed="false">Narrow (340px)</button>
+    <button type="button" class="btn btn-secondary" data-w="620px" aria-pressed="false">Wide (620px)</button>
+    <span style="width:var(--sp-4)"></span>
+    <button type="button" class="btn btn-secondary" id="drag" aria-pressed="false">Show a file being dragged over</button>
+  </div>
+
+  <div class="opts">
+    <!-- A -->
+    <section class="opt">
+      <h2>A. The blank page</h2>
+      <p class="why"><b>Idea:</b> the empty panel is the editor’s blank page, ready to type on. Open a file sits in a bar above it, and dropping anywhere on the page works.
+        <b>Good:</b> fewest words; it matches the paper-on-a-desk look; typing needs no extra click.
+        <b>Risk:</b> the upload button is the smallest of the three.</p>
+      <div class="mp">
+        <div class="mp-hdr">Material</div>
+        <div class="mp-tools"></div>
+        <div class="mp-body" style="display:flex;flex-direction:column">
+          <div class="a-bar">
+            <button type="button" class="btn btn-primary">Open a file</button>
+            <span class="hint">or drop one on the page. Word, PDF, plain text or an image.</span>
+          </div>
+          <div class="a-paper"><span class="ph">Click here to paste or type your text.</span><span class="drop">Drop to open it</span></div>
+          <div class="a-foot">
+            <p class="samples">Try a sample: <button type="button" class="btn btn-quiet">Handout</button><button type="button" class="btn btn-quiet">Poster</button></p>
+            <p class="privacy"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>Nothing is sent anywhere. PRISM reads it in this browser.</p>
+          </div>
+        </div>
+        <div class="mp-foot"><span>0 versions</span><span>unsaved draft</span></div>
+      </div>
+    </section>
+
+    <!-- B -->
+    <section class="opt">
+      <h2>B. Two big choices</h2>
+      <p class="why"><b>Idea:</b> two large tiles, Open and Paste. The Open tile has the dashed edge, so it reads as the place to drop a file.
+        <b>Good:</b> the biggest targets; the choice is obvious.
+        <b>Risk:</b> tiles look like a template, and both choices look equally important.</p>
+      <div class="mp">
+        <div class="mp-hdr">Material</div>
+        <div class="mp-tools"></div>
+        <div class="mp-body">
+          <div class="b-in">
+            <div class="b-doors">
+              <button type="button" class="door up">
+                <svg width="28" height="32" viewBox="0 0 28 32" aria-hidden="true"><path d="M2 1.5h16l8 8v21H2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 25V14m-5 5 5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <b>Open a file</b>
+                <span>Or drop it here. Word, PDF, plain text or an image.</span>
+              </button>
+              <button type="button" class="door">
+                <svg width="28" height="32" viewBox="0 0 28 32" aria-hidden="true"><path d="M5 8h18M5 14h18M5 20h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M20 18v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <b>Paste or type</b>
+                <span>Start with a blank page.</span>
+              </button>
+            </div>
+            <p class="samples">Try a sample: <button type="button" class="btn btn-quiet">Handout</button><button type="button" class="btn btn-quiet">Poster</button></p>
+            <p class="privacy"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>Nothing is sent anywhere. PRISM reads it in this browser.</p>
+          </div>
+        </div>
+        <div class="mp-foot"><span>0 versions</span><span>unsaved draft</span></div>
+      </div>
+    </section>
+
+    <!-- C -->
+    <section class="opt">
+      <h2>C. Upload first, samples as pictures</h2>
+      <p class="why"><b>Idea:</b> one big Open button, with the privacy line right under it and Paste as a smaller second choice. Below, the two samples appear as small pictures of the real handout and poster.
+        <b>Good:</b> a clear order (big button first); the pictures show what PRISM checks.
+        <b>Risk:</b> the most elements; the pictures need room.</p>
+      <div class="mp">
+        <div class="mp-hdr">Material</div>
+        <div class="mp-tools"></div>
+        <div class="mp-body">
+          <div class="c-in">
+            <button type="button" class="btn btn-primary c-up">
+              <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 13V3M4.5 7.5 9 3l4.5 4.5M3 15h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Open a file
+            </button>
+            <p class="hint">Or drop it here. Word, PDF, plain text or an image.</p>
+            <p class="privacy"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="2.5" y="6" width="9" height="6.5" rx="1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>Nothing is sent anywhere. PRISM reads it in this browser.</p>
+            <button type="button" class="btn btn-secondary c-alt">Paste or type text</button>
+            <hr class="c-hr">
+            <p class="c-try">No file? Try a sample</p>
+            <div class="thumbs">
+              <button type="button" class="thumb">
+                <svg viewBox="0 0 128 164" aria-hidden="true">
+                  <rect x="14" y="16" width="80" height="8" rx="1" fill="#16181D"/>
+                  <rect x="14" y="32" width="100" height="4" rx="1" fill="#4A5059"/><rect x="14" y="40" width="92" height="4" rx="1" fill="#4A5059"/>
+                  <rect x="14" y="52" width="100" height="3" rx="1" fill="#B8BEC6"/><rect x="14" y="59" width="100" height="3" rx="1" fill="#B8BEC6"/><rect x="14" y="66" width="70" height="3" rx="1" fill="#B8BEC6"/>
+                  <rect x="14" y="80" width="54" height="5" rx="1" fill="#16181D"/>
+                  <circle cx="17" cy="94" r="1.6" fill="#4A5059"/><rect x="22" y="92" width="80" height="3" rx="1" fill="#B8BEC6"/>
+                  <circle cx="17" cy="102" r="1.6" fill="#4A5059"/><rect x="22" y="100" width="72" height="3" rx="1" fill="#B8BEC6"/>
+                  <circle cx="17" cy="110" r="1.6" fill="#4A5059"/><rect x="22" y="108" width="64" height="3" rx="1" fill="#B8BEC6"/>
+                  <rect x="14" y="124" width="62" height="5" rx="1" fill="#16181D"/>
+                  <rect x="14" y="136" width="100" height="3" rx="1" fill="#B8BEC6"/><rect x="14" y="143" width="84" height="3" rx="1" fill="#B8BEC6"/>
+                </svg>
+                <b>Handout</b><span>Word file</span>
+              </button>
+              <button type="button" class="thumb">
+                <svg viewBox="0 0 128 164" aria-hidden="true">
+                  <rect width="128" height="164" fill="#f6f1e8"/>
+                  <rect width="128" height="46" fill="#b3261e"/>
+                  <text x="10" y="21" font-family="Helvetica,Arial,sans-serif" font-weight="800" font-size="13" fill="#fff">Know Your</text>
+                  <text x="10" y="36" font-family="Helvetica,Arial,sans-serif" font-weight="800" font-size="13" fill="#fff">Numbers</text>
+                  <rect x="10" y="58" width="80" height="6" rx="1" fill="#2c2420"/>
+                  <circle cx="17" cy="78" r="5" fill="#1d6fa8"/><rect x="27" y="76" width="70" height="4" rx="1" fill="#2c2420"/>
+                  <circle cx="17" cy="93" r="5" fill="#1d6fa8"/><rect x="27" y="91" width="62" height="4" rx="1" fill="#2c2420"/>
+                  <circle cx="17" cy="108" r="5" fill="#1d6fa8"/><rect x="27" y="106" width="74" height="4" rx="1" fill="#2c2420"/>
+                  <rect x="10" y="126" width="108" height="18" fill="#1d6fa8"/>
+                  <rect x="10" y="152" width="60" height="3" rx="1" fill="#c9c2b8"/>
+                </svg>
+                <b>Poster</b><span>Image</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="c-drop">Drop to open it</div>
+        <div class="mp-foot"><span>0 versions</span><span>unsaved draft</span></div>
+      </div>
+    </section>
+  </div>
+</div>
+<script>
+document.querySelectorAll('[data-w]').forEach(b => b.addEventListener('click', () => {
+  document.documentElement.style.setProperty('--w', b.dataset.w);
+  document.querySelectorAll('[data-w]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+}));
+document.getElementById('drag').addEventListener('click', e => {
+  const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+  e.currentTarget.setAttribute('aria-pressed', String(on));
+  document.querySelectorAll('.mp').forEach(m => m.classList.toggle('dragging', on));
+});
+</script>
+</body>
+</html>
