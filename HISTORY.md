@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-12 — New "Why AI?" slide; camera-phone slide hidden
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **New slide (`#why`, chapter "Why AI?")** after "Two posts", option A: a grey setup line, "Normally:
   developers, a budget, months of work. I had none of those.", then the big serif line "If you
@@ -17,7 +17,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-12 — "Two posts": how Sonia and Chloe met
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **New slide (`#posts`, chapter "Two posts")** right after "A confession", following Sonia's
   script. Option E (after trying A, side by side): on the left the title "Two posts. One
@@ -37,7 +37,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-12 — Take-home divider before the three points
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **New divider slide (`#three`, chapter "Take-home")** just before "Intent first". Option E5: the
   title sits low on the left, "From napkin to **prototype,**" (highlighted), with "in three steps."
@@ -47,7 +47,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-12 — "Dropped" falls less, clear of the line below
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **"Dropped" (`#top`)** came to rest at 8°, with its highlight over "prototype" in the blurb
   below. The fall now peaks at 4° and settles at 3°, and the word no longer shifts down 0.16em.
@@ -56,7 +56,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-12 — Title background: napkin sketch turns into the screen
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **New title slide background (`#top`):** the PRISM prototype sketched on a napkin
   (`media/bg/n2s-napkin.webp`) becomes the same prototype on a monitor (`media/bg/n2s-screen.webp`).
@@ -71,7 +71,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-12 — Title slide: "Dropped" sweeps, creaks, then falls
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **"Dropped" on the title slide (`#top`)** is now animated, every time the slide is shown. First the
   yellow highlight sweeps left to right across the word (0.7 s). Then the word sags for a beat, its
@@ -81,7 +81,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-12 — Slide 2 background: clinic front desk still
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **"A confession" (`#question`)** now sits on a still of a busy clinic front desk
   (`media/bg/clinic-room.jpg`) in place of the handoffs video, behind the same dark fade. Credit:
@@ -89,7 +89,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-12 — Closing slide split into one slide per point; "What's your view" back
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
 
 - **Three point slides replace the closing slide (`#wrap`):** Intent first (`#intent`), Build fast
   (`#build`) and Iterate (`#iterate`), each with a big faint serif numeral (1, 2, 3, hero size, light ink at 16%) set behind the top of the title in place of a "1 of 3" label (screen readers still hear "1 of 3"), the point as the title and its line
