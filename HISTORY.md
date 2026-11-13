@@ -4,6 +4,114 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-12 — New "Why AI?" slide; camera-phone slide hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide (`#why`, chapter "Why AI?")** after "Two posts", option A: a grey setup line, "Normally:
+  developers, a budget, months of work. I had none of those.", then the big serif line "If you
+  understand the problem, you can **build the tool yourself.**" (highlighted). It carries the
+  spoken script about maternity leave, vibe coding and the three-week course. No image, so no
+  source line.
+- **Camera-phone analogy (`#analogy`)** hidden for now; the markup stays in place.
+
+## 2026-11-12 — "Two posts": how Sonia and Chloe met
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide (`#posts`, chapter "Two posts")** right after "A confession", following Sonia's
+  script. Option E (after trying A, side by side): on the left the title "Two posts. One
+  **project.**" (highlighted) and four lines, each led by a grey date: "April Nati's post led Sonia
+  to the CDC Clear Communication Index, then to 26 frameworks." / "Around then Sonia saw Chloe's
+  post on AI design certification and reached out." / "Summer We scoped it and talked to our
+  networks." / "August Chloe started building." On the right, the two posts overlap like pinned
+  printouts, tilted -4° and 3°, each arriving with its line.
+- **Colour edges (option 5):** Nati's post, the one Sonia found, has a border in Sonia's blue; the
+  GoInvo post has Chloe's yellow, the same pair as "What we brought". Corners are rounder (8px).
+  The yellow post sits a little further in so it clears the chapter dots.
+- The posts are shown whole (Sonia's collapsed captures: the dino drawing and the certification
+  photo), at about their own pixel size so they stay sharp. Each post, and each name in the credit
+  line, links to it on LinkedIn (opens in a new tab). Images: `presentation/img/post-nati-chen.png`
+  and `post-goinvo-certification.png`.
+- The hidden "What we brought" slide is unchanged.
+
+## 2026-11-12 — Take-home divider before the three points
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New divider slide (`#three`, chapter "Take-home")** just before "Intent first". Option E5: the
+  title sits low on the left, "From napkin to **prototype,**" (highlighted), with "in three steps."
+  under it, picking up the title slide's "napkin to prototype". A giant dim serif "3" bleeds off the
+  bottom on the right, stopping short of the chapter dots so they stay clear. It echoes the "1 of 3"
+  on each point slide.
+
+## 2026-11-12 — "Dropped" falls less, clear of the line below
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"Dropped" (`#top`)** came to rest at 8°, with its highlight over "prototype" in the blurb
+  below. The fall now peaks at 4° and settles at 3°, and the word no longer shifts down 0.16em.
+  Measured gap to the blurb at rest / at the bottom of the fall: 11 / 3 px at 1920×1080,
+  8 / 2 px at 1280×720, 7 / 2 px at 1024×768. Same sweep, creak and bounce timing as before.
+
+## 2026-11-12 — Title background: napkin sketch turns into the screen
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New title slide background (`#top`):** the PRISM prototype sketched on a napkin
+  (`media/bg/n2s-napkin.webp`) becomes the same prototype on a monitor (`media/bg/n2s-screen.webp`).
+  The two images line up pixel for pixel. The drawing itself never moves or fades: a copy cut from
+  the napkin image (`.n2s-lock`) stays on top while the monitor fades in around it. It plays once
+  per showing, 4 s in (after "Dropped" settles), over 1.8 s. With reduced motion turned on, the
+  monitor shows straight away. The dark wash and the brightness are unchanged.
+- **Retired:** the self-drawing napkin photo with the cursor clicking "Open". `napkin.js` and its
+  media files stay in the repo but are no longer loaded.
+- **Credit line** now reads "napkin and screen sketches generated with Nano Banana (Google Gemini)".
+- Options mockup: `design/brainstorm/napkin-to-screen/`.
+
+## 2026-11-12 — Title slide: "Dropped" sweeps, creaks, then falls
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"Dropped" on the title slide (`#top`)** is now animated, every time the slide is shown. First the
+  yellow highlight sweeps left to right across the word (0.7 s). Then the word sags for a beat, its
+  right end falls fast, bounces once and settles at 8° (was a static 2° tilt). The pivot is the
+  word's bottom-left corner. CSS only: `dw-sweep` and `dw-fall` keyframes on `.title.on h1 .dw`.
+  With reduced motion turned on, the word just sits at the final tilt.
+
+## 2026-11-12 — Slide 2 background: clinic front desk still
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"A confession" (`#question`)** now sits on a still of a busy clinic front desk
+  (`media/bg/clinic-room.jpg`) in place of the handoffs video, behind the same dark fade. Credit:
+  "Image: generated with Midjourney". `question-bg.js` now only drives videos (`video.clip-bg`).
+
+## 2026-11-12 — Closing slide split into one slide per point; "What's your view" back
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Three point slides replace the closing slide (`#wrap`):** Intent first (`#intent`), Build fast
+  (`#build`) and Iterate (`#iterate`), each with a big faint serif numeral (1, 2, 3, hero size, light ink at 16%) set behind the top of the title in place of a "1 of 3" label (screen readers still hear "1 of 3"), the point as the title and its line
+  below, top left on bare paper. The art fills the rest of the slide, pushed right and down on its own
+  paper colour, with a soft fade at its left edge. A smooth dark fade (`.pt-wash`, like slide 2's)
+  covers the left of each slide, easing out before the art, so the text is the deck's light type on dark
+  and the pots and gardeners stay bright.
+- **Art:** one still per point, the same blue pot and a small gnome-hatted gardener in each: a
+  seedling in front of an open book of bonsai sketches for Intent first (`media/bg/point-1-sprout.jpg`,
+  with a slow 14 s zoom and drift, off for reduced motion), the gardener sitting on the rim of an
+  overgrown tree for Build fast (`point-2-messy.jpg`) and the gardener with scissors beside the trimmed
+  tree for Iterate (`point-3-neat.jpg`). The pot is the same size and in the same spot on all three:
+  Intent first's image is the reference, and the other two are scaled (122% and 113.6%) about their
+  own pot's base and moved onto it, so flipping through the slides only the tree changes. Build fast's
+  tree may rise past its art box. Intent first's blues (pot, gardener) are toned down to the muted
+  teal-blue of Iterate (hue 201°→185°, less saturated and darker), and the gardener's trousers are
+  filled solid blue like on the other two. Each slide's paper colour matches its image. Each slide credits Midjourney at
+  its foot.
+- **"What's your view on our approach?" (`#next`) is back** as the last slide, as it was before
+  2026-11-10, on the dot background. The "AI gives you the average. You're the designer." title, the
+  "Your turn" footer and the hidden thesis slide's text are no longer shown.
+
 ## 2026-11-11 — Studio row: "What to do" steps button and Clear all
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -27,6 +135,45 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - **Logo opening plays every time the slide opens**, going forward or back, not only the first time
   per showing. When the slide is left, the page and small logo are hidden again (`hold()`), so they
   never flash before the next opening; a half-finished opening is cancelled cleanly.
+
+## 2026-11-12 — Slide 2: slow push-in toward the handouts
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **Slide 2's clinic still now moves.** When the click plays the quote, the background eases in 12%
+  toward the pile of handouts on the desk over 12 s, then holds. Stepping back to before the text, or
+  leaving the slide, resets it at once. Reduced motion keeps the still.
+- `presentation/question-bg.js` adds `.push` to `#question img.clip-bg` once the slide's text has
+  played; CSS in `presentation/index.html` does the 12 s scale (transform-origin 64% 40%). Script
+  version bumped to `20261112b`. Credit now reads "Image: generated with Midjourney, animated in code".
+
+## 2026-11-12 — AI certification art on a solid cream background
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **Certify the work, not the AI.** The illustration's peach backdrop, its glow and the insides of
+  its circles are now one flat cream, `#F5F2DE`, the same as the bonsai image. Skin, hands, hair,
+  the gold rings and the stamp keep their colors; the paper ribbon's lightest parts now share the
+  cream and read by their outlines and shading.
+- Recolored frame by frame (all 478 frames) in `presentation/media/bg/ai-certification-loop.mp4`
+  and its poster `ai-certification-loop.jpg`; cache version bumped to `20261112a`. The narrow-screen
+  band behind the art (`.cert-band`) is now the same cream. The original `AI certification.mp4` is
+  unchanged.
+
+## 2026-11-12 — Slide 2 waits for a click before its text plays
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **Slide 2 ("Did my visual actually make a difference?")** now arrives showing only its background.
+  The next click (clicker, arrow key, Page Down, scroll) plays the quote, the highlight, the line and
+  "Sonia" in their usual order; the click after that goes to slide 3. Going back from slide 3 shows
+  slide 2 with its text in place; one more step back hides the text again.
+- New slide option `data-wait` (`presentation/index.html`): adds an empty first step to a slide, and
+  that slide is entered with the plain fade, so slide 1's title no longer glides into the quote.
+  Only `#question` uses it.
+- **All at once on the click:** the quote, the line and "Sonia" now fade in together over 0.5 s
+  (`data-in="0 1"`, `data-dur="500"`), and the highlight behind "make a difference?" is already filled
+  in (`data-in="0 0"`, no sweep). Before, they played one after another over 1.6 s.
 
 ## 2026-11-11 — Reopened slide shows its text without a click
 

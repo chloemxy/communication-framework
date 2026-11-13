@@ -1,9 +1,8 @@
-/* Slide background clips: slide 2's leaflets landing on a desk, which plays once and holds on the pile,
-   and slide 3's flowers on The Creation of Adam, which loop. Each plays only while its slide is on
+/* Slide background clips (videos only; slide 2 is now a still): slide 3's flowers on The Creation of Adam, which loop. Each plays only while its slide is on
    screen, and stays on its poster frame for people who prefer reduced motion. */
 (function(){
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  [].forEach.call(document.querySelectorAll('.scene .clip-bg'), function(video){
+  [].forEach.call(document.querySelectorAll('.scene video.clip-bg'), function(video){
     var scene = video.closest('.scene'), was = false;
     function sync(){
       var on = scene.classList.contains('on');
@@ -18,4 +17,20 @@
     document.addEventListener('visibilitychange', sync);
     sync();
   });
+})();
+
+/* Slide 2's still: once the click plays its text, the view eases in toward the handouts on the desk
+   over 12 s and holds. Leaving the slide, or stepping back to before the text, resets it at once. */
+(function(){
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var scene = document.getElementById('question'), img = scene && scene.querySelector('img.clip-bg');
+  if (!img) return;
+  function sync(){
+    var go = scene.classList.contains('on') && parseFloat(scene.style.getPropertyValue('--t')) > 0;
+    if (go === img.classList.contains('push')) return;
+    if (!go) { img.style.transition = 'none'; img.classList.remove('push'); void img.offsetWidth; img.style.transition = ''; }
+    else img.classList.add('push');
+  }
+  new MutationObserver(sync).observe(scene, { attributes: true, attributeFilter: ['class', 'style'] });
+  sync();
 })();
