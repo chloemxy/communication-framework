@@ -489,15 +489,16 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
    lines sit on its cream left half, and each whole LinkedIn post fills one of the two picture frames.
    .cab keeps the illustration's own 1456x816 box (cover-sized), so the posts, placed in % of it,
    stay in their frames at any screen shape. */
-#posts{--ink:#16181D;--ink-2:#565C66;--rule:rgba(22,24,29,.18);--hl:#F5CF4A;background:#EFF0D6;color:var(--ink)}
+#posts{overflow:hidden}
 #posts .stage{z-index:1}
-.cab{position:absolute;left:50%;top:50%;width:max(100vw,100dvh * 1456 / 816);aspect-ratio:1456/816;transform:translate(-50%,-50%)}
-.cab>img{width:100%;height:100%}
+.cab{position:absolute;left:50%;top:50%;width:max(100vw,100dvh * 16 / 9);aspect-ratio:16/9;transform:translate(-50%,-50%)}
+.cab .pair{position:absolute;left:50%;top:15.5%;width:50%;aspect-ratio:722/816}
+.pair>img{width:100%;height:100%;display:block}
 .cab .post-shot{position:absolute;z-index:2;display:flex;align-items:center;justify-content:center;background:#fff}
 .cab .post-shot img{max-width:100%;max-height:100%;width:auto;height:auto}
 .cab .post-shot[data-in]{transform:none}
-.cab .s1{left:55.63%;top:15.07%;width:13.26%;height:29.17%}
-.cab .s2{left:79.88%;top:15.69%;width:13.53%;height:30.27%}
+.cab .s1{left:11.08%;top:15.07%;width:26.73%;height:29.17%}
+.cab .s2{left:59.97%;top:15.69%;width:27.29%;height:30.27%}
 .met{max-width:46%}
 #posts .stage{text-shadow:none}
 .story{margin-top:24px;max-width:40ch}
@@ -795,11 +796,11 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   </section>
 
   <section class="scene" id="posts" data-chap="Two posts">
-    <div class="cab">
-      <img src="media/bg/blue%20cabinets.png?v=20261116a" alt="" aria-hidden="true">
+    <div class="cab"><div class="pair">
+      <img src="media/bg/blue-cabinets-pair.jpg?v=20261116a" alt="" aria-hidden="true">
       <a class="post-shot s1" data-in="0.15 0.35" href="https://lnkd.in/p/gsauNRxE" target="_blank" rel="noopener"><img src="img/post-nati-chen.png?v=20261112b" alt="Nati Chen’s LinkedIn post: a cute dinosaur helped cut pediatric hospital readmissions by 15%, with the Out the Door Dinosaur drawing."></a>
       <a class="post-shot s2" data-in="0.35 0.55" href="https://www.linkedin.com/posts/goinvo_goinvo-ai-certification-activity-7444491516758351873-iW7M" target="_blank" rel="noopener"><img src="img/post-goinvo-certification.png?v=20261112b" alt="GoInvo’s LinkedIn post: if AI can generate a design, who decides if it’s safe to use? With a photo titled What does it mean to certify AI-generated design?"></a>
-    </div>
+    </div></div>
     <div class="stage"><div class="inner">
       <div class="met">
         <h2 class="h2" data-in="0 0.15">How we <mark>met.</mark></h2>
@@ -1725,7 +1726,7 @@ var toggleTheme = (function(){
 </script>
 <script src="analogy-bg.js?v=20261104b"></script>
 <script src="question-bg.js?v=20261116a"></script>
-<script src="lego-bg.js?v=20261116c"></script>
+<script src="lego-bg.js?v=20261116d"></script>
 <script src="dot-bg.js?v=20261110a"></script>
 <script>
 /* Verification: the spreadsheet pans across its columns by itself while the slide is up;
