@@ -167,7 +167,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-16 — Homepage slider: new 18 h quote
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **The 18 h (Oct 19) quote now matches its screenshot.** It was "make button center, make where
   to type and paste more obvious, show where history log/change log is", but no history log shows
