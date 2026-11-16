@@ -4,6 +4,30 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — Title: napkin turns into the screen as "Dropped" falls
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Title slide (`#top`):** the napkin-to-screen crossfade now runs with the "Dropped" fall instead
+  of after it. It starts at 1.45 s, as the word begins to creak (right after the highlight sweep),
+  and finishes at 3.65 s, as the word settles. Was 4 s to 5.8 s. `n2s-in` is now 2.2 s with a
+  1.45 s delay.
+
+## 2026-11-16 — Slide 2: background waits 10 s
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 2's background now waits 10 seconds** after the slide arrives, holding on the still
+  first frame. Then the clinic clip plays once and the slow push-in toward the desk starts
+  (`presentation/question-bg.js`, cache key `20261116e`). Leaving the slide resets both.
+
+## 2026-11-16 — "How we met" hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#posts` ("How we met.") is hidden** for now, like "What we brought"; the markup, the cabinet
+  pair and the two post images stay in place, so it can come back by removing `hidden`.
+
 ## 2026-11-16 — "How we met": bigger cabinets, follows light and dark mode
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`

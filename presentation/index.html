@@ -74,7 +74,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .n2s img{position:absolute;inset:0;width:100%;height:100%;display:block}
 .n2s .n2s-screen{opacity:0}
 .n2s .n2s-lock{clip-path:polygon(46.88% 8.6%,89.54% 8.6%,89.54% 27.57%,85.73% 27.57%,85.73% 86.27%,46.88% 86.27%)}
-@media (prefers-reduced-motion:no-preference){#top.on .n2s-screen{animation:n2s-in 1.8s 4s ease-in-out both}}
+@media (prefers-reduced-motion:no-preference){#top.on .n2s-screen{animation:n2s-in 2.2s 1.45s ease-in-out both}}
 @media (prefers-reduced-motion:reduce){.n2s .n2s-screen{opacity:1}}
 @keyframes n2s-in{from{opacity:0}to{opacity:1}}
 .napkin-wash{position:absolute;inset:0;pointer-events:none;
@@ -108,7 +108,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .clip-wash{position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(90deg,rgb(var(--scrim) / .85) 0%,rgb(var(--scrim) / .7) 45%,rgb(var(--scrim) / .4) 66%,rgb(var(--scrim) / .05) 88%,rgb(var(--scrim) / 0) 100%)}
 #question .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
-/* the push-in toward the desk pile, from the moment the slide arrives (question-bg.js adds .push) */
+/* the push-in toward the desk pile, 10 s after the slide arrives (question-bg.js adds .push) */
 #question .clip-bg{transform-origin:64% 40%;transition:transform 8s cubic-bezier(.25,.6,.35,1)}
 #question .clip-bg.push{transform:scale(1.15)}
 /* The proof: days race past in the office behind the numbers */
@@ -795,7 +795,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     </div></div>
   </section>
 
-  <section class="scene" id="posts" data-chap="Two posts">
+  <section class="scene" id="posts" data-chap="Two posts" hidden>
     <div class="cab"><div class="pair">
       <img src="media/bg/blue-cabinets-pair.jpg?v=20261116a" alt="" aria-hidden="true">
       <a class="post-shot s1" data-in="0.15 0.35" href="https://lnkd.in/p/gsauNRxE" target="_blank" rel="noopener"><img src="img/post-nati-chen.png?v=20261112b" alt="Nati Chen’s LinkedIn post: a cute dinosaur helped cut pediatric hospital readmissions by 15%, with the Out the Door Dinosaur drawing."></a>
@@ -1725,7 +1725,7 @@ var toggleTheme = (function(){
 })();
 </script>
 <script src="analogy-bg.js?v=20261104b"></script>
-<script src="question-bg.js?v=20261116a"></script>
+<script src="question-bg.js?v=20261116e"></script>
 <script src="lego-bg.js?v=20261116d"></script>
 <script src="dot-bg.js?v=20261110a"></script>
 <script>
