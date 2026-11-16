@@ -4,6 +4,20 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — "How we met": the two posts hang in the blue cabinets
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **`#posts` is now a light slide** on the new illustration `presentation/media/bg/blue cabinets.png`:
+  cream on the left, two blue cabinets with an empty picture frame each on the right. The title
+  "How we **met.**" and the four dated rows sit on the cream half in dark ink.
+- **Each whole post fills one frame**, Nati's on the left and GoInvo's on the right, as a clean white
+  rectangle with no border stroke, still linked to LinkedIn. The illustration keeps its own shape
+  (cover-sized) and the posts are placed in % of it, so they stay in their frames on any screen
+  shape; at 4:3 the right frame is cut off at the edge.
+- The tilted pile and the blue / yellow post borders are gone. The slide stays light in both deck
+  themes. Credit line: the two posts, then "Background: generated with Midjourney".
+
 ## 2026-11-16 — Slides: light mode for bright rooms
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -310,6 +324,34 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - **Logo opening plays every time the slide opens**, going forward or back, not only the first time
   per showing. When the slide is left, the page and small logo are hidden again (`hold()`), so they
   never flash before the next opening; a half-finished opening is cancelled cleanly.
+
+## 2026-11-16 — Why AI?: Lego pieces lock together as solid parts
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **No morph at the end.** The built figure is now the start drawing's own nine pieces pushed
+  together (head onto the neck, arms in, hips and legs up), so the pieces simply stop where they
+  lock and nothing swaps. `Lego end.png` is no longer used; `media/bg/lego/figure.png` removed.
+- **Solid pieces.** Each piece is filled with the blueprint blue inside its outline and drawn back to
+  front (legs, hips, torso, head and hands, arms), so parts hide what is behind them instead of
+  showing through. The hands sit behind the arms with their pegs inside the cuffs.
+- `scripts/lego-pieces.py` (moves and stacking order per piece) and `presentation/lego-bg.js`
+  (version `20261116c`).
+
+## 2026-11-16 — Why AI?: a blueprint Lego figure builds itself
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **"If you understand the problem, you can build the tool yourself."** now sits on a blue blueprint
+  sheet. When the slide arrives, the Lego figure's nine pieces (from `Lego start.png`) glide one
+  after another into place and morph into the finished drawing (`Lego end.png`), which holds. About
+  4 s; the grid stays still and nothing is left behind where the pieces started. Replays on each
+  visit; reduced motion shows the finished figure.
+- The figure is pinned near the right edge and sized to the slide's height, so the headline never
+  runs into it. The small line above the title is lighter (`#DCE8F6`) and the highlight is solid
+  (`#5A5114`) so both read on blue. Credit: "Drawings: generated with Midjourney, assembled in code".
+- New `presentation/lego-bg.js` (canvas) and assets in `presentation/media/bg/lego/` (clean grid,
+  figure, nine pieces, `pieces.json`), made by `scripts/lego-pieces.py`.
 
 ## 2026-11-16 — Slide 2: clinic clip, push-in from arrival
 

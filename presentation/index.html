@@ -92,6 +92,13 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* a quiet setup line, then the payoff bigger than any other headline; on a phone it wraps freely */
 #analogy .setup{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
 #why .setup{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
+/* Why AI?: a blueprint Lego figure builds itself behind the line (lego-bg.js); the blue sheet is
+   the slide, so the small line above the title goes lighter to stay readable on it */
+#why{background:#025A9E}
+#why .lego-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+#why .stage{z-index:1;text-shadow:0 1px 14px rgb(0 30 70 / .55)}
+#why .setup{color:#DCE8F6}
+#why mark{background-color:#5A5114}
 @media (min-width:721px){#why .big-line{max-width:none;white-space:nowrap;line-height:1.08;margin-top:calc(.8 * var(--u))}}
 @media (max-width:720px){#why .big-line br{display:none}}
 @media (min-width:721px){#analogy .big-line{max-width:none;white-space:nowrap;line-height:1.08;margin-top:calc(.8 * var(--u))}}
@@ -478,30 +485,30 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .origin p{color:var(--ink-2);margin-top:10px}
 @media (max-width:860px){.origin{grid-template-columns:1fr;gap:10px;margin-top:16px}.origin li{padding:14px 16px}.origin p{margin-top:6px}.origin h4{margin-top:6px}}
 
-/* how we met: title and four dated lines on the left, the two LinkedIn posts overlapping on the right */
-.met{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:32px;align-items:center}
+/* how we met: a light slide. The blue-cabinets illustration covers the slide, the title and four dated
+   lines sit on its cream left half, and each whole LinkedIn post fills one of the two picture frames.
+   .cab keeps the illustration's own 1456x816 box (cover-sized), so the posts, placed in % of it,
+   stay in their frames at any screen shape. */
+#posts{--ink:#16181D;--ink-2:#565C66;--rule:rgba(22,24,29,.18);--hl:#F5CF4A;background:#EFF0D6;color:var(--ink)}
+#posts .stage{z-index:1}
+.cab{position:absolute;left:50%;top:50%;width:max(100vw,100dvh * 1456 / 816);aspect-ratio:1456/816;transform:translate(-50%,-50%)}
+.cab>img{width:100%;height:100%}
+.cab .post-shot{position:absolute;z-index:2;display:flex;align-items:center;justify-content:center;background:#fff}
+.cab .post-shot img{max-width:100%;max-height:100%;width:auto;height:auto}
+.cab .post-shot[data-in]{transform:none}
+.cab .s1{left:55.63%;top:15.07%;width:13.26%;height:29.17%}
+.cab .s2{left:79.88%;top:15.69%;width:13.53%;height:30.27%}
+.met{max-width:46%}
+#posts .stage{text-shadow:none}
 .story{margin-top:24px;max-width:40ch}
 .story li{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--rule)}
 .story li:last-child{border-bottom:1px solid var(--rule)}
 .story b{font-weight:400;color:var(--ink-2)}
-.pile{position:relative;height:min(70vw,520px)}
-.pile>div{position:absolute;height:78%}
-.pile>div:first-child{left:0;top:0;z-index:1}
-.pile>div:last-child{right:0;bottom:0;z-index:2}
-.post-shot{display:block;height:100%;border-radius:8px;overflow:hidden;background:#fff;box-shadow:var(--shadow);
-  border:max(3px,.3 * var(--u,10px)) solid var(--sonia)}
-.pile>div:last-child .post-shot{border-color:var(--brand)}
-.post-shot img{height:100%;width:auto}
-.pile>div:first-child .post-shot{transform:rotate(-4deg)}
-.pile>div:last-child .post-shot{transform:rotate(3deg)}
-@media (max-width:720px){.met{grid-template-columns:1fr}}
+@media (max-width:720px){.cab{display:none}.met{max-width:none}}
 @media (min-width:721px){
-  .met{gap:calc(3 * var(--u));height:100%}
-  .story{margin-top:calc(3 * var(--u));max-width:calc(46 * var(--u))}
-  .story li{grid-template-columns:calc(9.5 * var(--u)) minmax(0,1fr);gap:calc(1.2 * var(--u));padding:calc(.9 * var(--u)) 0}
-  .pile{height:calc(44 * var(--u))}
-  .pile>div:first-child{left:calc(-3 * var(--u))}
-  .pile>div:last-child{right:calc(-1 * var(--u))}}
+  .met{height:100%;display:flex;flex-direction:column;justify-content:center;max-width:calc(50vw - 7 * var(--u))}
+  .story{margin-top:calc(3 * var(--u));max-width:none}
+  .story li{grid-template-columns:calc(8.5 * var(--u)) minmax(0,1fr);gap:calc(1 * var(--u));padding:calc(.9 * var(--u)) 0}}
 
 /* closing lines */
 .real-q{margin-top:28px;padding-top:20px;border-top:2px solid var(--ink);color:var(--ink-2)}
@@ -788,30 +795,31 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   </section>
 
   <section class="scene" id="posts" data-chap="Two posts">
+    <div class="cab">
+      <img src="media/bg/blue%20cabinets.png?v=20261116a" alt="" aria-hidden="true">
+      <a class="post-shot s1" data-in="0.15 0.35" href="https://lnkd.in/p/gsauNRxE" target="_blank" rel="noopener"><img src="img/post-nati-chen.png?v=20261112b" alt="Nati Chen’s LinkedIn post: a cute dinosaur helped cut pediatric hospital readmissions by 15%, with the Out the Door Dinosaur drawing."></a>
+      <a class="post-shot s2" data-in="0.35 0.55" href="https://www.linkedin.com/posts/goinvo_goinvo-ai-certification-activity-7444491516758351873-iW7M" target="_blank" rel="noopener"><img src="img/post-goinvo-certification.png?v=20261112b" alt="GoInvo’s LinkedIn post: if AI can generate a design, who decides if it’s safe to use? With a photo titled What does it mean to certify AI-generated design?"></a>
+    </div>
     <div class="stage"><div class="inner">
       <div class="met">
-        <div>
-          <h2 class="h2" data-in="0 0.15">How we <mark>met.</mark></h2>
-          <ul class="story">
-            <li data-in="0.15 0.35"><b>April</b><span>Nati’s post. Then 26 frameworks.</span></li>
-            <li data-in="0.35 0.55"><b>Spring</b><span>Chloe’s post. Sonia reaches out.</span></li>
-            <li data-in="0.6 0.75"><b>Summer</b><span>We scope it with our networks.</span></li>
-            <li data-in="0.75 0.9"><b>August</b><span>We start building.</span></li>
-          </ul>
-        </div>
-        <div class="pile">
-          <div data-in="0.15 0.35"><a class="post-shot" href="https://lnkd.in/p/gsauNRxE" target="_blank" rel="noopener"><img src="img/post-nati-chen.png?v=20261112b" alt="Nati Chen’s LinkedIn post: a cute dinosaur helped cut pediatric hospital readmissions by 15%, with the Out the Door Dinosaur drawing."></a></div>
-          <div data-in="0.35 0.55"><a class="post-shot" href="https://www.linkedin.com/posts/goinvo_goinvo-ai-certification-activity-7444491516758351873-iW7M" target="_blank" rel="noopener"><img src="img/post-goinvo-certification.png?v=20261112b" alt="GoInvo’s LinkedIn post: if AI can generate a design, who decides if it’s safe to use? With a photo titled What does it mean to certify AI-generated design?"></a></div>
-        </div>
+        <h2 class="h2" data-in="0 0.15">How we <mark>met.</mark></h2>
+        <ul class="story">
+          <li data-in="0.15 0.35"><b>April</b><span>Nati’s post. Then 26 frameworks.</span></li>
+          <li data-in="0.35 0.55"><b>Spring</b><span>Chloe’s post. Sonia reaches out.</span></li>
+          <li data-in="0.6 0.75"><b>Summer</b><span>We scope it with our networks.</span></li>
+          <li data-in="0.75 0.9"><b>August</b><span>We start building.</span></li>
+        </ul>
       </div>
-      <p class="credit">Posts: <a href="https://lnkd.in/p/gsauNRxE">Nati Chen</a> and <a href="https://www.linkedin.com/posts/goinvo_goinvo-ai-certification-activity-7444491516758351873-iW7M">GoInvo</a> on LinkedIn, April 2026</p>
+      <p class="credit">Posts: <a href="https://lnkd.in/p/gsauNRxE">Nati Chen</a> and <a href="https://www.linkedin.com/posts/goinvo_goinvo-ai-certification-activity-7444491516758351873-iW7M">GoInvo</a> on LinkedIn, April 2026. Background: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
     </div></div>
   </section>
 
   <section class="scene" id="why" data-chap="Why AI?">
+    <canvas class="lego-bg" aria-hidden="true"></canvas>
     <div class="stage"><div class="inner">
       <p class="setup" data-in="0 0.25">Normally: developers, a budget, months of work. I had none of those.</p>
-      <p class="big-line" data-in="0.2 0.5">If you understand the problem,<br> you can <mark>build the tool yourself.</mark></p>
+      <p class="big-line" data-in="0.2 0.5">If you understand<br> the problem, you can<br> <mark>build the tool yourself.</mark></p>
+      <p class="credit">Drawings: generated with <a href="https://www.midjourney.com">Midjourney</a>, assembled in code</p>
     </div></div>
   </section>
 
@@ -1717,6 +1725,7 @@ var toggleTheme = (function(){
 </script>
 <script src="analogy-bg.js?v=20261104b"></script>
 <script src="question-bg.js?v=20261116a"></script>
+<script src="lego-bg.js?v=20261116c"></script>
 <script src="dot-bg.js?v=20261110a"></script>
 <script>
 /* Verification: the spreadsheet pans across its columns by itself while the slide is up;
