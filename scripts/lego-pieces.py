@@ -55,8 +55,8 @@ P = [('head',      (1092, 104, 1236, 248), (  0,  77), 3),   # collar sits on th
      ('torso',     (1068, 250, 1232, 452), (  0,   0), 2),
      ('left arm',  ( 990, 290, 1092, 430), ( 26,   6), 1.8), # behind the torso: its sides cover the shoulder joints
      ('right arm', (1212, 284, 1314, 428), (-26,   6), 1.8),
-     ('left hand', ( 994, 430, 1060, 524), ( 19, -62), 4),   # in front of the arm, its top over the cuff's round hole
-     ('right hand',(1246, 428, 1312, 524), (-14, -63), 4),
+     ('left hand', ( 994, 430, 1060, 524), ( 19, -62), 1.7), # behind the arm, so the sleeve hides the hand's tube
+     ('right hand',(1246, 428, 1312, 524), (-14, -63), 1.7),
      ('hips',      (1080, 452, 1220, 612), ( -2, -87), 1),   # studs up inside the torso, bar under it
      ('left leg',  (1002, 536, 1094, 712), ( 74, -80), 1.5), # tops under the bar, hiding the hip pin
      ('right leg', (1212, 536, 1302, 712), (-72, -80), 1.5)]

@@ -20,13 +20,13 @@
   });
 })();
 
-/* Slide 2's clip: the slide arrives on the still first frame; 10 s later the clip plays once while
+/* Slide 2's clip: the slide arrives on the still first frame; 3 s later the clip plays once while
    the view eases in toward the handouts on the desk over 8 s and holds. Leaving the slide resets it. */
 (function(){
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var scene = document.getElementById('question'), video = scene && scene.querySelector('.clip-bg');
   if (!video) return;
-  var DELAY = 10000, timer = 0, started = false, was = false;
+  var DELAY = 3000, timer = 0, started = false, was = false;
   function begin(){
     timer = 0; started = true;
     video.classList.add('push');

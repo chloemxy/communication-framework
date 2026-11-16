@@ -1,14 +1,14 @@
 /* The "Why AI?" slide's background: a blueprint Lego figure builds itself. The pieces start apart
  * (from media/bg/Lego start.png) and glide one after another until they lock together; the built
  * figure is those same pieces, so nothing swaps at the end. Each piece is solid, drawn back to front
- * (legs, hips, torso, head and hands, arms), so it hides what is behind it. The grid stays still.
+ * (hips, legs, hands, arms, torso, head), so it hides what is behind it. The grid stays still.
  * Plays from the start each time the slide arrives; reduced motion shows the built figure.
  * Assets in media/bg/lego/ come from scripts/lego-pieces.py. */
 (function(){
   'use strict';
   var scene = document.getElementById('why'), cv = scene && scene.querySelector('.lego-bg');
   if (!cv) return;
-  var ctx = cv.getContext('2d'), DIR = 'media/bg/lego/', V = '?v=20261116f';
+  var ctx = cv.getContext('2d'), DIR = 'media/bg/lego/', V = '?v=20261116g';
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var W = 1456, H = 816;
   var CX = 1152, CY = 408, FX = .875, FIG = .86;   // figure centre in the drawing; its spot and size on the slide

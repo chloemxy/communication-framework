@@ -108,7 +108,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .clip-wash{position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(90deg,rgb(var(--scrim) / .85) 0%,rgb(var(--scrim) / .7) 45%,rgb(var(--scrim) / .4) 66%,rgb(var(--scrim) / .05) 88%,rgb(var(--scrim) / 0) 100%)}
 #question .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
-/* the push-in toward the desk pile, 10 s after the slide arrives (question-bg.js adds .push) */
+/* the push-in toward the desk pile, 3 s after the slide arrives (question-bg.js adds .push) */
 #question .clip-bg{transform-origin:64% 40%;transition:transform 8s cubic-bezier(.25,.6,.35,1)}
 #question .clip-bg.push{transform:scale(1.15)}
 /* After slide 2: the designer waits in her chair, outlined, the room dimmed around her (baked into
@@ -1750,8 +1750,8 @@ window.deckStart = function(){
 (window.deckEdits ? deckEdits.ready : function(f){ f(); })(window.deckStart);
 </script>
 <script src="analogy-bg.js?v=20261104b"></script>
-<script src="question-bg.js?v=20261116g"></script>
-<script src="lego-bg.js?v=20261116f"></script>
+<script src="question-bg.js?v=20261116h"></script>
+<script src="lego-bg.js?v=20261116g"></script>
 <script src="dot-bg.js?v=20261110a"></script>
 <script>
 /* Verification: the spreadsheet pans across its columns by itself while the slide is up;
