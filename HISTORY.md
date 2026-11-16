@@ -4,6 +4,23 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — Why AI?: arms hide the hands' tubes
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Lego figure (`#why`):** the hands were drawn in front of the arms, so each hand's small tube
+  showed over the arm's cuff. The hands now sit behind the arms (z 1.7, arms 1.8) in
+  `scripts/lego-pieces.py` and `media/bg/lego/pieces.json`, so the cuff and its round hole cover
+  the tube and only the hand's grip shows below. The cache version is bumped in `lego-bg.js` and in
+  the page's `<script>` tag, so browsers fetch the new piece order.
+
+## 2026-11-16 — Slide 2: background waits 3 s
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 2's clip and push-in now start 3 seconds** after the slide arrives, down from 10
+  (`presentation/question-bg.js`, cache key `20261116h`).
+
 ## 2026-11-16 — Slide 2 and the designer slide morph into each other
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
