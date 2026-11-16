@@ -4,6 +4,177 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — Slides: light mode for bright rooms
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Light / dark switch for the whole deck.** Press **T**, or click the sun/moon under the chapter
+  dots. The deck starts dark; the choice is remembered in the browser (`talk.theme`) and applied
+  before the first paint, so there is no flash.
+- **Light palette:** cream desk (#F6F4EF), near-black ink, the same yellow highlight. Every wash over
+  footage (napkin, clinic desk, certification art, demo-clip captions, Intent/Build/Iterate) now
+  draws from one `--scrim` colour, cream in light mode, so dark text reads on it. Text over footage
+  gets a soft cream glow instead of the dark shadow.
+- **Exceptions, on purpose:** "From napkin to prototype" keeps its dark cover in light mode (the
+  letters are cut out of it to show the pale napkin film and vanish on cream). The Meet PRISM frame
+  gets the deck's theme, but PRISM's own front door is dark in both themes.
+- Checked all 15 slides in light at 1024×768, and the title slide back in dark; no console errors.
+
+## 2026-11-16 — Demo slides: bigger clips with overlaid captions, fuller clips; Studio fixes
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Studio: the score cards line up with the Frameworks bar.** The results column's scrollbar (and
+  its 4 px padding) now hang outside the column, so the cards end exactly where the Frameworks bar
+  ends (they stopped 19 px short). The scrollbar width is measured on load (`--sbw`, 0 where
+  scrollbars overlay). Checked at 1040 and 1440 wide, no sideways scroll.
+- **Studio: contrast fixes can change the background.** For each failing target (AA body, AAA) both
+  sides are tried, the text colour and the background, and the one that needs the smaller lightness
+  change leads; the other is offered under it ("or darken text to …"). Preview shows either. White
+  text on the UHN poster's light-blue band now gets "Darken background to #2b7f97 (4.50:1)" instead
+  of grey text (#515151).
+- **Demo slides, layout B:** slimmer side margins (2.5u) and strips (3u), so the open clip shows the
+  whole Studio at 1582×896 on a 1920×1080 screen (was 1384×743). The caption sits on a dark
+  gradient over the bottom of the clip instead of under it, in the theme's text colours.
+- **Fuller clips** (all eight re-recorded with the aligned cards):
+  - 3 · Frameworks (20 s): the list opens with the Brief's picks ticked, scrolls through every use
+    case, is sorted By area and then Recommended, and is filtered to frameworks that give a score.
+  - 4 · Plain language (31 s): the counts, the cards scrolling by, a card jumping to its sentence, one
+    rewrite applied, a highlighted word retyped by hand ("access" → "get to"), Apply all (grade
+    12.3 → 11.8), then Undo and Revert in History.
+  - 6 · Alt text and colour contrast (25 s): alt text typed, white on blue passes, white on the
+    light-blue band fails, and Preview shows the darker band.
+  - 7 · Colour blindness (16 s): all four views, then back to normal.
+  - 8 · Framework Compass (28 s): scrolls through all 14 frameworks, then CCI's formula, items,
+    references and the cdc.gov link.
+- **Poster slide order:** New example, Alt text and contrast, Colour blindness, Compass.
+- Checked at 1920×1080 (headless Chrome screenshots after the clips play): both slides, caption over
+  the clip, the Brief targets clear of the caption.
+
+## 2026-11-16 — Demo clips: bigger text, standard encoding, stop on the last frame
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Clips looked soft for two reasons:** the Studio was recorded 1200 px wide, so its 13–14 px text
+  came out small on the slide, and the MP4s were encoded as 4:4:4 full-range video (from the JPEG
+  frames), which many players handle poorly.
+- **Now recorded at 1040×590** (the narrowest width before the Studio stacks into one column). The
+  Studio shows the document beside one wide results column, and every word in the clip is about
+  15% bigger. Captured at 2.4× (2496×1416), encoded as standard 4:2:0 H.264 High, CRF 14,
+  tuned for flat UI. 11 MB for all eight.
+- **Each clip plays once and stops on its last frame** (the fade back to the first frame is gone).
+  The first frame is still the still shown before a clip starts.
+- The poster looks smaller in clips 5–7 in this layout (16% zoom, was 26%).
+- Checked at 1920×1080: clips 1 and 2 play to the end and stay on their last frame, 2496 px source
+  shown at 1384 px, no console errors.
+
+## 2026-11-16 — Demo slides: no titles, taller and sharper clips, TLC guide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Titles off** on both demo slides ("Check a draft.", "Check a poster." stay as hidden headings for
+  screen readers). The row starts where the title was.
+- **Taller clips:** each clip now shows the whole Studio window (1.765:1, was a 2.1:1 strip), so the
+  open panel is 1384×743 at 1920×1080 (was 1384×592). The caption ends about 40 px above the credit.
+- **Sharper:** recorded at 2× (2400×1360, was 1920×914), JPEG frames at quality 98, H.264 at CRF 15
+  (was 20). 14 MB for all eight.
+- **Longer:** every step waits 0.4 s longer, and each clip holds about 2 s more on its last state
+  before the fade, so no clip loops back in the middle of a move. Clips run 6.5–18 s.
+- **File demo now uses The Light Collective's guide**, "A Guide to Negotiating Patient Digital
+  Rights" (CC BY 4.0). The PDF opens read-only in the Studio (no Apply all, Undo or History), so the
+  clips drop a Word copy made from its text: `presentation/demo-files/TLC_guide_v6_final.docx`
+  (8,075 words). The PDF is beside it. The Brief is now Patients + **Manual** (grade 6 or lower,
+  600–6,000 words); the caption and credit say so. The guide is over 6,000 words, so it's flagged
+  as too long.
+
+## 2026-11-16 — Take-home divider: the title itself is the cut-out
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The 3 is gone.** The divider (`#three`) is now just "From napkin / to prototype" in heavy Newsreader
+  (800), cut out of the dark, centred, and as wide as the slide's margins allow (capped at about a
+  third of the height). "Intent first" shows through the letters. The comma, the highlight and
+  "in three steps." are removed. The title stays in the page as hidden text for screen readers and
+  the chapter dots. On phones the cut-out is off and that title shows as normal text.
+- **Going forward zooms through the letters**, from the thickest spot in the type, into Intent first.
+- **Under the divider, Intent first drops its dark left-hand wash**, so the letters show the paper and
+  the drawing; the wash fades back in (0.6 s) once the slide lands.
+- **The cut-out title sits at the foot of the slide** (its ink ends one margin above the bottom),
+  over Intent first's drawing, so the letters show the pot, the gardener and the book.
+- **Intent first fades in with the divider** (it used to show in full for a moment before the dark
+  arrived). On phones, nothing waits underneath the divider.
+- **Smoother zoom through the letters.** The letters used to grow by v³ over a linear 1.3 s, so they
+  crawled for half the time (×1.06 at 0.25 s) and then jumped from ×8 to ×50 in the last 0.15 s. The
+  zoom is now geometric, with the same growth ratio from frame to frame, and eases in: about ×1.2 at
+  0.24 s, ×3 at 0.6 s, ×15 at 0.96 s and ×49 at 1.2 s, so the speed rises evenly and peaks at the cut.
+  The cover sits on its own layer while it redraws.
+- **No more glitch at the end of the zoom.** The letters used to grow to ×40–50, where the browser
+  redraws the huge mask badly and the page flickered just as Intent first filled the screen. They now
+  stop at ×14. Over the last 45% of the 1.2 s, the dark cover dissolves instead, while Intent first's
+  wash and its "1 of 3", title and line fade in under it. The slide is complete at the cut, so nothing
+  animates after it: no cascade and no wash fade-in. The extra layer hint on the cover is removed.
+- **The zoom grows out of the drawing.** It used to start from the thickest stroke anywhere, which was
+  the "F" at the far left. Now it starts from the stroke nearest the gardener: of the strokes at
+  least 60% as thick as the thickest, the one closest to a point 60% across and 45% down Intent
+  first's art. At 1280×720 that's the "k" of "napkin", so the hole opens onto the gardener and the
+  book.
+- Checked at 1280×720: cut-out at rest, and landing on Intent first with its title and wash.
+
+## 2026-11-16 — Demo slides re-recorded with real examples
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slides 5–6 (`#features`, `#features-2`) now follow the demo script**, four clips each in its
+  order (option A). Chapter name is now "Demo". Slide 5, "Check a draft.": Drop it in (with the
+  Private note), Brief (Patients + Handout: grade 6 or lower, 150–700 words), Frameworks (four picked
+  for the Brief), Fix and undo (one fix, Apply all, Undo last change, Revert in History). Slide 6,
+  "Check a poster.": New example (Clear all, drop the poster), Colour contrast (white on the poster
+  blue passes at 5.13:1; white on the light-blue band fails at 1.73:1 with darker shades
+  suggested), Colour blindness and alt text, Framework Compass (CCI: formula, pass mark,
+  references with links).
+- **Real material instead of the sample:** the draft is GoInvo's FasterCures case study
+  ("Engaging Patients to Understand Health Data", 943 words in the body, so it's over the
+  700-word target), saved as `presentation/demo-files/health-data-basics.docx`. The poster is
+  Sonia Seto's COVID welcome poster for UHN, shrunk to 1500×1997 as
+  `presentation/demo-files/uhn-welcome-poster.png` (the original is 7250×9650). Both files can be
+  used for a live demo too.
+- **Clips** are `presentation/media/loops/d1-drop` … `d8-compass` (MP4 plus first-frame still,
+  6.9 MB in all), recorded the same way as before: headless Chrome, light mode, 1200×680 Studio with
+  the document panel at 40%, a 1920×914 window, a drawn cursor with a yellow click ring, a 0.35 s
+  fade back to the first frame. The old clips stay in the folder.
+- **Credits:** each slide credits its material at the bottom. To make room, a row with a credit
+  under it gives up 3.3u of video height, so the caption ends about 50 px above the credit.
+- The script now says "accessibility checks" instead of "508 Checker" (the Studio's panels are
+  Alt text and Colour and contrast), and the audience is Patients, grade 6.
+- Checked at 1920×1080: both slides, every panel step, no console errors.
+
+## 2026-11-16 — Take-home divider: zoom through the 3 into Intent first
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The giant 3 on the divider (`#three`) is now a cut-out**, in heavy Newsreader (800, newly
+  loaded). It's a hole in the dark slide, and the next slide, "Intent first", waits underneath it,
+  so its artwork shows through the 3. The page keeps "Intent first" shown under the divider whenever
+  the divider is on (`.peek`); any slide marked `data-zoom` does the same with the slide after it.
+- **Going forward zooms through the 3** (a text-mask zoom): the hole grows from the thickest point
+  of its stroke (found by sampling the glyph) until it covers the screen. The title fades out in
+  the first third. Then "Intent first" plays its own fade-in. It takes 1.3 s. A click during the
+  zoom just jumps to its end. Going back, reduced motion, and phone widths use the normal change.
+- **The 3 is centred on the page height** (measured from the glyph itself), so the whole numeral
+  shows and holds more of Intent first's illustration. It no longer bleeds off the bottom.
+- Checked at 1280×720: cut-out at rest, a frame mid-zoom, landing on Intent first with its title,
+  and going back to the divider and on to AI certification.
+
+## 2026-11-16 — Homepage slider: new 18 h quote
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The 18 h (Oct 19) quote now matches its screenshot.** It was "make button center, make where
+  to type and paste more obvious, show where history log/change log is", but no history log shows
+  in that screenshot. It now joins two of Chloe's Oct 19 prompts: "make button center, make where
+  to type and paste more obvious … nothing's uploaded to anywhere, others can't access your data"
+  (the centred Open a file button, the Type or paste text button, and the lock line under them).
+
 ## 2026-11-12 — New "Why AI?" slide; camera-phone slide hidden
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) · GitHub Pages: updated from `master`
@@ -29,6 +200,10 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #38) �
 - **Colour edges (option 5):** Nati's post, the one Sonia found, has a border in Sonia's blue; the
   GoInvo post has Chloe's yellow, the same pair as "What we brought". Corners are rounder (8px).
   The yellow post sits a little further in so it clears the chapter dots.
+- **New title and date table:** the title is now "How we **met.**" (highlighted), and the four
+  lines became a table with the date in its own grey column and hairlines between rows, each one
+  line: April "Nati's post. Then 26 frameworks." / Spring "Chloe's post. Sonia reaches out." /
+  Summer "We scope it with our networks." / August "We start building."
 - The posts are shown whole (Sonia's collapsed captures: the dino drawing and the certification
   photo), at about their own pixel size so they stay sharp. Each post, and each name in the credit
   line, links to it on LinkedIn (opens in a new tab). Images: `presentation/img/post-nati-chen.png`
@@ -135,6 +310,21 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - **Logo opening plays every time the slide opens**, going forward or back, not only the first time
   per showing. When the slide is left, the page and small logo are hidden again (`hold()`), so they
   never flash before the next opening; a half-finished opening is cancelled cleanly.
+
+## 2026-11-16 — Slide 2: clinic clip, push-in from arrival
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **Slide 2's background is now a clip** (`presentation/media/bg/clinic-room.mp4`, silent web copy of
+  the 10 s `cinic room.mp4`; poster `clinic-room-first.jpg`): the passers-by walk through, the clerk
+  types, and a cricket lands on the pile of handouts. It plays once, muted, from the moment the slide
+  arrives and holds on its last frame; each visit starts it over.
+- **The push-in now starts on arrival**, before the click, and is easy to see: 15% toward the
+  handouts over 8 s, moving from the first moment and slowing as it lands (was 12% over 12 s after
+  the click, which barely moved at first). The text still waits for the click.
+- `presentation/question-bg.js` (version `20261116a`) and slide 2's CSS and credit in
+  `presentation/index.html`: "Image: generated with Midjourney, animated with Veo (Google Gemini) and
+  in code".
 
 ## 2026-11-12 — Slide 2: slow push-in toward the handouts
 
@@ -316,6 +506,24 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
   line ("This screen, this flow, this version: fit for purpose, under these conditions.") didn't
   read as a sentence; the new one fits on one row and leads into the list of seven standards below
   it (`presentation/index.html`).
+
+## 2026-11-16 — Verification: the spreadsheet and the decision list are one slide
+
+Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
+
+- **"AI drafted it. We reviewed it." is now a single slide** (`presentation/index.html`). Scrolling
+  inside the spreadsheet scrolls it; a fresh scroll past its last row (WHO ERC, row 24) fades the
+  sheet out and the five-column decision list (Keep · 7 … Cut · 9) in, in the same place, while the
+  title stays still. Scrolling up returns to the sheet; a fresh scroll up from its top goes to the
+  previous slide. Trackpad momentum on hitting either end never turns the slide by itself.
+- **With keys or a clicker**, the first press glides the sheet to its last row and the next brings up
+  the decision list. The separate decision-list slide (`#decided`) is gone.
+- The sheet still pans across its columns by itself until someone scrolls, clicks or touches it.
+- **The spreadsheet now looks like the deck.** The Excel frame (green bar, column letters, row numbers,
+  sheet tabs) is gone; it is a plain dark table ruled like the decision list, in Public Sans, under a
+  small "▦ framework-compass-library-review-v2.xlsx · 23 rows" tag. The header row has a gold
+  underline, the frozen #, Framework and Full name columns end at a thin gold line, and each decision
+  is a tag: solid gold for "Keep", gold outline for the rest. All 13 columns and 23 rows still scroll.
 
 ## 2026-11-09 — Verification: the two "We reviewed it" slides flip cleanly
 

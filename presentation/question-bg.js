@@ -19,18 +19,18 @@
   });
 })();
 
-/* Slide 2's still: once the click plays its text, the view eases in toward the handouts on the desk
-   over 12 s and holds. Leaving the slide, or stepping back to before the text, resets it at once. */
+/* Slide 2's clip: from the moment the slide arrives, the view eases in toward the handouts on the
+   desk over 8 s and holds, while the clip plays once. Leaving the slide resets it at once. */
 (function(){
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var scene = document.getElementById('question'), img = scene && scene.querySelector('img.clip-bg');
+  var scene = document.getElementById('question'), img = scene && scene.querySelector('.clip-bg');
   if (!img) return;
   function sync(){
-    var go = scene.classList.contains('on') && parseFloat(scene.style.getPropertyValue('--t')) > 0;
+    var go = scene.classList.contains('on');
     if (go === img.classList.contains('push')) return;
     if (!go) { img.style.transition = 'none'; img.classList.remove('push'); void img.offsetWidth; img.style.transition = ''; }
     else img.classList.add('push');
   }
-  new MutationObserver(sync).observe(scene, { attributes: true, attributeFilter: ['class', 'style'] });
+  new MutationObserver(sync).observe(scene, { attributes: true, attributeFilter: ['class'] });
   sync();
 })();

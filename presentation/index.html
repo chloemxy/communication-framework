@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>(function(){var t;try{t=localStorage.getItem('talk.theme')}catch(e){}if(t==='light')document.documentElement.setAttribute('data-theme','light')})()</script>
 <title>The Barrier Just Dropped</title>
 <meta name="description" content="The Barrier Just Dropped, told as a scroll story: one screen that changes as you scroll, from the question that started PRISM to what Claude did and what stayed ours.">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,800;1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;600&display=swap">
 <style>
 /* The talk as slides. Each scene is a full-screen slide; one scroll, swipe or key press moves to
    the next slide and plays everything on it (the walkthrough still steps through its labels). Within a slide, the script runs a
@@ -27,7 +28,8 @@
   /* type: five sizes (see the type system at the end of this sheet) */
   --fs-hero:clamp(72px,15vw,190px); --fs-display:clamp(34px,6vw,80px); --fs-title:var(--fs-display); --fs-head:clamp(19px,2.4vw,30px);
   --fs-body:clamp(15px,1.7vw,20px); --fs-tag:12px; --fs-fine:12px;
-  color-scheme:dark;   /* the talk is always dark; no light mode */
+  --scrim:18 20 23;   /* the washes over footage, as "r g b" so each wash can set its own alpha */
+  color-scheme:dark;
 }
 
 *{box-sizing:border-box}
@@ -76,8 +78,8 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 @media (prefers-reduced-motion:reduce){.n2s .n2s-screen{opacity:1}}
 @keyframes n2s-in{from{opacity:0}to{opacity:1}}
 .napkin-wash{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgb(18 20 23 / .92) 0%,rgb(18 20 23 / .88) 40%,rgb(18 20 23 / .74) 54%,rgb(18 20 23 / .22) 70%,rgb(18 20 23 / 0) 84%),
-    linear-gradient(180deg,rgb(18 20 23 / 0) 62%,rgb(18 20 23 / .65) 100%)}
+  background:linear-gradient(90deg,rgb(var(--scrim) / .92) 0%,rgb(var(--scrim) / .88) 40%,rgb(var(--scrim) / .74) 54%,rgb(var(--scrim) / .22) 70%,rgb(var(--scrim) / 0) 84%),
+    linear-gradient(180deg,rgb(var(--scrim) / 0) 62%,rgb(var(--scrim) / .65) 100%)}
 #top .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .5)}
 /* slide 3 background: a muted phone commercial (analogy-bg.js), cropped to cover the slide and faded
    in once it plays; a dark wash keeps the lines readable */
@@ -85,7 +87,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .yt-bg.live{opacity:1}
 .yt-bg iframe{position:absolute;top:50%;left:50%;width:max(100vw,177.78vh);height:max(100vh,56.25vw);transform:translate(-50%,-50%);border:0}
 .yt-wash{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgb(18 20 23 / .86) 0%,rgb(18 20 23 / .7) 50%,rgb(18 20 23 / .45) 100%)}
+  background:linear-gradient(90deg,rgb(var(--scrim) / .86) 0%,rgb(var(--scrim) / .7) 50%,rgb(var(--scrim) / .45) 100%)}
 #analogy .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
 /* a quiet setup line, then the payoff bigger than any other headline; on a phone it wraps freely */
 #analogy .setup{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
@@ -97,13 +99,13 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* slide 2 background: a still of a busy clinic front desk, cropped so the desk sits right of the text */
 .clip-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%}
 .clip-wash{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,rgb(18 20 23 / .85) 0%,rgb(18 20 23 / .7) 45%,rgb(18 20 23 / .4) 66%,rgb(18 20 23 / .05) 88%,rgb(18 20 23 / 0) 100%)}
+  background:linear-gradient(90deg,rgb(var(--scrim) / .85) 0%,rgb(var(--scrim) / .7) 45%,rgb(var(--scrim) / .4) 66%,rgb(var(--scrim) / .05) 88%,rgb(var(--scrim) / 0) 100%)}
 #question .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
-/* the push-in toward the desk pile (question-bg.js adds .push on the click) */
-#question img.clip-bg{transform-origin:64% 40%;transition:transform 12s cubic-bezier(.42,0,.2,1)}
-#question img.clip-bg.push{transform:scale(1.12)}
+/* the push-in toward the desk pile, from the moment the slide arrives (question-bg.js adds .push) */
+#question .clip-bg{transform-origin:64% 40%;transition:transform 8s cubic-bezier(.25,.6,.35,1)}
+#question .clip-bg.push{transform:scale(1.15)}
 /* The proof: days race past in the office behind the numbers */
-.proof-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgb(18 20 23 / .66) 0%,rgb(18 20 23 / .66) 40%,rgb(18 20 23 / .82) 100%)}
+.proof-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgb(var(--scrim) / .66) 0%,rgb(var(--scrim) / .66) 40%,rgb(var(--scrim) / .82) 100%)}
 #proof .stage{z-index:1;text-shadow:0 1px 14px rgb(0 0 0 / .7)}
 /* one big number, the rest in ruled rows beside it, so the numbers line up in one column */
 .ledger{margin-top:20px;list-style:none;padding:0}
@@ -139,9 +141,9 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 #certify .inner{padding-top:calc(100vw * .558)}
 .cert-std{margin-top:14px}
 @media (min-width:721px){#review .stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media (min-width:721px){.cert-band{inset:0;height:100%;background:#121417}
+@media (min-width:721px){.cert-band{inset:0;height:100%;background:var(--desk)}
   .cert-art{height:100%;aspect-ratio:auto}
-  .cert-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(18 20 23 / 0) 38%,rgb(18 20 23 / .62) 60%,rgb(18 20 23 / .86) 100%)}
+  .cert-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(var(--scrim) / 0) 38%,rgb(var(--scrim) / .62) 60%,rgb(var(--scrim) / .86) 100%)}
   #certify .inner{justify-content:flex-end;padding:58dvh 0 calc(5 * var(--u))}
   #certify .h2{margin:0}
   #certify .lead{max-width:none;margin-top:calc(.8 * var(--u))}
@@ -209,31 +211,42 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
   .hs-v{left:0;right:0;margin:0;width:auto;max-width:none}
   .hs-v img{width:100%;height:100%;max-width:none;aspect-ratio:auto}
 }
-/* Verification: the real review spreadsheet, panning across every column while the slide is up */
-.xl{margin-top:24px;background:#fff;border-radius:4px;overflow:hidden;box-shadow:0 10px 40px rgb(0 0 0 / .45);color:#1d1d1d;font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;text-shadow:none}
-.xl-bar{background:#217346;color:#fff;font:600 13px/2 "Segoe UI",Arial,sans-serif;padding:0 12px}
-.xl-win{overflow:auto;overscroll-behavior:contain;height:min(52vh,560px);scrollbar-width:thin;scrollbar-color:#b9b9b9 #f3f3f3}
-.xl-grid{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content;font-size:14px;line-height:1.25}
-/* the column letters and the header row stay put on scroll, like Freeze Panes */
-.xl-grid thead{position:sticky;top:0;z-index:3}.xl-grid th:first-child{position:sticky;left:0;z-index:1}.xl-grid thead > tr > :first-child{z-index:3}
-.xl-grid th{background:#f3f3f3;color:#555;font-weight:400;border-right:1px solid #d4d4d4;border-bottom:1px solid #d4d4d4;padding:2px 4px;text-align:center}
-.xl-grid td{background:#fff;border-right:1px solid #e1e1e1;border-bottom:1px solid #e1e1e1;padding:3px 6px;vertical-align:top}
-/* columns A to C stay put, as Excel's frozen panes do; a darker line marks where they end */
-.xl-grid tr > :nth-child(2),.xl-grid tr > :nth-child(3),.xl-grid tr > :nth-child(4){position:sticky;z-index:1}
-.xl-grid tr > :nth-child(2){left:calc(3 * var(--u))}.xl-grid tr > :nth-child(3){left:calc(6.5 * var(--u))}.xl-grid tr > :nth-child(4){left:calc(16.5 * var(--u));border-right:2px solid #9a9a9a}
-.xl-grid thead > tr > :nth-child(2),.xl-grid thead > tr > :nth-child(3),.xl-grid thead > tr > :nth-child(4){z-index:3}
-.xl-grid td div{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:2.5em}
-.xl-h td{background:#e8f1ea;font-weight:700}
-.xl-tabs{display:flex;gap:18px;background:#f3f3f3;border-top:1px solid #d4d4d4;font:13px/2 "Segoe UI",Arial,sans-serif;color:#333;padding-left:36px}
-.xl-tabs b{background:#fff;padding:0 12px;border-bottom:2px solid #217346;font-weight:600}
-@media (min-width:721px){.xl{margin-top:calc(2 * var(--u))}.xl-bar,.xl-tabs{font-size:max(12px,calc(.75 * var(--u)))}.xl-grid{font-size:max(12px,calc(1.05 * var(--u)))}.xl-win{height:calc(31 * var(--u))}
+/* Verification: the real review spreadsheet as a plain table on the slide, ruled like the decision list
+   that follows; it still scrolls both ways and pans across every column while the slide is up */
+.xl{margin-top:24px;color:var(--ink);font-family:var(--f-ui)}
+.xl-bar{color:var(--ink-2);font:400 13px/1 var(--f-ui);letter-spacing:.02em;margin:0 0 .9em}
+.xl-bar span{color:var(--brand);margin-right:.35em}
+.xl-win{overflow:auto;overscroll-behavior:contain;height:min(52vh,560px);scrollbar-width:thin;scrollbar-color:var(--rule) transparent}
+.xl-grid{border-collapse:separate;border-spacing:0;table-layout:fixed;width:max-content;font-size:14px;line-height:1.3}
+.xl-grid td{background:var(--desk);border-bottom:1px solid var(--rule);padding:.55em 1.2em .55em 0;vertical-align:top}
+/* the header row stays put on scroll, underlined in the deck's gold */
+.xl-grid thead{position:sticky;top:0;z-index:3}
+.xl-h td{color:var(--ink-2);font-weight:600;border-bottom:2px solid var(--brand);padding-top:0}
+/* #, Framework and Full name stay put on the left; a thin gold line marks where they end */
+.xl-grid tr > :nth-child(1),.xl-grid tr > :nth-child(2),.xl-grid tr > :nth-child(3){position:sticky;z-index:1}
+.xl-grid tr > :nth-child(1){left:0}.xl-grid tr > :nth-child(2){left:calc(3.5 * var(--u))}
+.xl-grid tr > :nth-child(3){left:calc(13.5 * var(--u));box-shadow:inset -1px 0 0 rgb(245 207 74 / .55)}
+.xl-grid tr > :nth-child(4){padding-left:1.2em}
+.xl-grid tr > :nth-child(1){color:var(--ink-2)}
+.xl-grid tbody tr > :nth-child(2){font-weight:600}
+.xl-grid td div{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;height:2.6em}
+/* the decision as a tag: gold for a straight keep, outlined for the rest */
+.xl-tag{display:inline-block;font-size:.86em;line-height:1.35;padding:.05em .7em;border:1px solid var(--brand);border-radius:1em;color:var(--brand);white-space:nowrap}
+.xl-tag.k{background:var(--brand);color:var(--on-brand)}
+.xl-grid td div:has(> .xl-tag){height:auto;overflow:visible}
+@media (min-width:721px){.xl{margin-top:calc(2 * var(--u))}.xl-bar{font-size:max(12px,calc(.8 * var(--u)))}.xl-grid{font-size:max(12px,calc(1.05 * var(--u)))}.xl-win{height:calc(31 * var(--u))}
   /* the sheet runs to the bottom edge of the slide */
   #review .stage{padding-bottom:0}
-  #review .xl{flex:1;min-height:0;display:flex;flex-direction:column;border-radius:4px 4px 0 0}
-  #review .xl-win{flex:1;height:auto;min-height:0}}
+  #review .xl{flex:1;min-height:0;display:flex;flex-direction:column}
+  #review .xl-win{flex:1;height:auto;min-height:0}
+  #review .rv-swap{flex:1;min-height:0;display:flex;flex-direction:column}}
+/* Verification: on its last step the decision list takes the sheet's place under the same title */
+#review .rv-swap{position:relative}
+#review .wall{position:absolute;left:0;right:0;top:0;pointer-events:none}
+@media (min-width:721px){#review .wall{margin-top:calc(2 * var(--u))}}
 /* Verification summary: every framework, one column per decision; the cut ones struck through */
 .wall{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;margin-top:32px;list-style:none;padding:0}
-#decided .h2{max-width:none;white-space:nowrap}
+#review .h2{max-width:none;white-space:nowrap}
 .wall h3{font:600 var(--fs-body)/1.25 var(--f-ui);color:var(--ink);border-bottom:2px solid var(--brand);padding-bottom:.4em;margin:0 0 .6em;display:flex;align-items:flex-end}
 /* each heading stays on one row */
 .wall h3 b{font:inherit;white-space:nowrap}.wall h3 span{color:var(--ink-2);font-weight:400;white-space:nowrap}
@@ -241,7 +254,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .wall ul li{font:400 var(--fs-body)/1.5 var(--f-ui);color:var(--ink-2)}
 .wall .cut h3{border-color:var(--ink-2)}
 .wall .cut ul li{text-decoration:line-through;text-decoration-thickness:1px;color:#80868e}
-@media (max-width:720px){.wall{grid-template-columns:1fr 1fr;gap:16px}#decided .h2{white-space:normal}}
+@media (max-width:720px){.wall{grid-template-columns:1fr 1fr;gap:16px}#review .h2{white-space:normal}}
 @media (min-width:721px){.wall{gap:calc(2.4 * var(--u));margin-top:calc(3.2 * var(--u))}.wall ul li{font-size:calc(1.75 * var(--u))}}
 /* Meet PRISM: the real front door of the app, without its top bar, filling the slide */
 .pm-door{position:absolute;left:0;top:0;width:calc(100% / 1.35);height:calc(100% / 1.35);border:0;display:block;background:var(--desk);transform:scale(1.35);transform-origin:0 0}
@@ -422,6 +435,19 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   --open:calc(100cqw - 15.6 * var(--u,1vw));
   --vh:min(var(--open) / 2.1, 100dvh - 22.1 * var(--u,1vw));
   --shut:calc(4 * var(--u,1vw))}
+/* a credit line under the row takes its height from the video */
+.fp-row:has(+ .credit){--vh:min(var(--open) / 2.1, 100dvh - 25.4 * var(--u,1vw))}
+/* Demo slides: no title, and the clips show the whole Studio window (2400x1360, 1.765:1) */
+.fp-row.fp-tall{margin-top:0;--vh:min(var(--open) / 1.765, 100dvh - 17 * var(--u,1vw))}
+/* Demo slides, layout B: slimmer margins and strips so the clip shows the whole Studio, larger; the
+   caption sits on a dark gradient over the bottom of the clip instead of under it */
+.scene.demo .stage{padding:calc(2.5 * var(--u)) calc(2.5 * var(--u)) calc(5 * var(--u))}
+.scene.demo .inner{max-width:none}
+.fp-row.fp-tall{--shut:calc(3 * var(--u,1vw));--open:calc(100cqw - 12.6 * var(--u,1vw));--vh:min(var(--open) / 1.765, 100dvh - 7.5 * var(--u,1vw))}
+.fp-tall .fp-in{position:relative}
+.fp-tall .fp-cap{position:absolute;left:0;right:0;bottom:0;margin:0;padding:calc(3.6 * var(--u)) calc(2 * var(--u)) calc(1.4 * var(--u));
+  background:linear-gradient(to bottom,rgb(var(--scrim) / 0),rgb(var(--scrim) / .9) 34%,rgb(var(--scrim) / .96));border-radius:0 0 var(--r2) var(--r2);pointer-events:none}
+.fp-tall .fp-cap b{color:var(--ink)}.fp-tall .fp-cap span{color:var(--ink-2)}
 .fp{position:relative;overflow:hidden;min-width:0;flex:0 0 calc(var(--k,0) * var(--open) + (1 - var(--k,0)) * var(--shut))}
 .fp-in{width:var(--open)}
 .fp{cursor:pointer;border-radius:var(--r2);clip-path:inset(0 round var(--r2))}
@@ -436,7 +462,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .fp-cap b{color:var(--ink)}.fp-cap span{color:var(--ink-2);max-width:56ch}
 /* each caption line stays on one line on slides */
 @media (min-width:721px){.fp-cap b,.fp-cap span{white-space:nowrap;max-width:none}}
-.fp-strip{position:absolute;left:0;right:0;top:0;aspect-ratio:auto;height:var(--vh);display:flex;align-items:flex-end;justify-content:center;padding-bottom:calc(1.6 * var(--u,1vw));background:rgb(18 20 23 / .74);border-radius:var(--r2);opacity:calc(1 - var(--k,0));pointer-events:none}
+.fp-strip{position:absolute;left:0;right:0;top:0;aspect-ratio:auto;height:var(--vh);display:flex;align-items:flex-end;justify-content:center;padding-bottom:calc(1.6 * var(--u,1vw));background:rgb(var(--scrim) / .74);border-radius:var(--r2);opacity:calc(1 - var(--k,0));pointer-events:none}
 /* a closed panel is narrower than its video, so the video has no rounded corner at the panel's
    bottom-right; paint the slide colour outside the curve there */
 .fp-strip::after{content:"";position:absolute;right:0;bottom:0;width:var(--r2);height:var(--r2);background:radial-gradient(circle at 0 0,transparent calc(var(--r2) - .5px),var(--desk) var(--r2))}
@@ -454,8 +480,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 /* how we met: title and four dated lines on the left, the two LinkedIn posts overlapping on the right */
 .met{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:32px;align-items:center}
-.story{display:grid;gap:10px;margin-top:24px}
-.story li{max-width:42ch}
+.story{margin-top:24px;max-width:40ch}
+.story li{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;padding:8px 0;border-top:1px solid var(--rule)}
+.story li:last-child{border-bottom:1px solid var(--rule)}
 .story b{font-weight:400;color:var(--ink-2)}
 .pile{position:relative;height:min(70vw,520px)}
 .pile>div{position:absolute;height:78%}
@@ -470,7 +497,8 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 @media (max-width:720px){.met{grid-template-columns:1fr}}
 @media (min-width:721px){
   .met{gap:calc(3 * var(--u));height:100%}
-  .story{gap:calc(1 * var(--u));margin-top:calc(3 * var(--u))}
+  .story{margin-top:calc(3 * var(--u));max-width:calc(46 * var(--u))}
+  .story li{grid-template-columns:calc(9.5 * var(--u)) minmax(0,1fr);gap:calc(1.2 * var(--u));padding:calc(.9 * var(--u)) 0}
   .pile{height:calc(44 * var(--u))}
   .pile>div:first-child{left:calc(-3 * var(--u))}
   .pile>div:last-child{right:calc(-1 * var(--u))}}
@@ -513,19 +541,32 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .visit .goinvo{width:72px;color:var(--ink-2);margin-bottom:18px}
 .visit a.big + b{margin-top:calc(1.4 * var(--u))}
 .dot-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-/* take-home divider: the title sits low on the left, a giant dim 3 bleeds off the bottom right */
+/* take-home divider: the title, "From napkin to prototype", is cut out of the dark in heavy type, centred
+   and as wide as the slide allows: a window onto the next slide (Intent first), which waits underneath.
+   Going forward zooms through the letters. */
 #three .stage{z-index:1}
 #three .inner{justify-content:flex-end}
 #three .lead{margin-top:var(--u)}
-.three-n{position:absolute;right:calc(5 * var(--u,1vw) + 44px);bottom:-.26em;z-index:0;font:500 min(92dvh,50vw)/1 var(--f-display);color:var(--rule);pointer-events:none;font-variant-numeric:lining-nums}
+.three-cover{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.three-cover rect.dark{fill:var(--desk)}
+.three-t{font-family:var(--f-display);font-weight:800;font-variant-numeric:lining-nums}
+/* the slide after a zoom divider stays shown underneath it, below it in the stack */
+/* it fades in with the divider, so it never shows on its own before the dark arrives */
+.scene.peek{opacity:1!important;visibility:visible!important;transform:none!important;transition:opacity .6s ease .12s,visibility 0s!important;z-index:4}
+@media (max-width:720px){#three .three-cover text{display:none}#three .visually-hidden{position:static;width:auto;height:auto;clip:auto;overflow:visible;white-space:normal}}
+/* under the divider, Intent first shows only its art, with no dark wash; the wash fades in once it lands */
+.pt-wash{transition:opacity .6s ease}
+.scene.peek .pt-wash{opacity:0}
+/* on phones the divider is plain text, so nothing waits underneath */
+@media (max-width:720px){.scene.peek:not(.on){opacity:0!important;visibility:hidden!important}}
 /* Intent first, Build fast, Iterate: one point per slide. The art fills the slide on its own paper colour,
    pushed right and down so the title sits on bare paper at the top left; the text turns dark ink here. */
 .scene.point{background:#F5F2DF}
 /* a smooth dark fade over the left of the slide, like slide 2's, so the light text sits on the deck's dark;
    it eases out before the art, so the pots and gardeners stay bright */
 .pt-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,
-  rgb(18 20 23 / .9) 0%,rgb(18 20 23 / .88) 8%,rgb(18 20 23 / .83) 16%,rgb(18 20 23 / .74) 24%,rgb(18 20 23 / .62) 31%,
-  rgb(18 20 23 / .48) 38%,rgb(18 20 23 / .34) 45%,rgb(18 20 23 / .21) 52%,rgb(18 20 23 / .11) 59%,rgb(18 20 23 / .04) 66%,rgb(18 20 23 / 0) 74%)}
+  rgb(var(--scrim) / .9) 0%,rgb(var(--scrim) / .88) 8%,rgb(var(--scrim) / .83) 16%,rgb(var(--scrim) / .74) 24%,rgb(var(--scrim) / .62) 31%,
+  rgb(var(--scrim) / .48) 38%,rgb(var(--scrim) / .34) 45%,rgb(var(--scrim) / .21) 52%,rgb(var(--scrim) / .11) 59%,rgb(var(--scrim) / .04) 66%,rgb(var(--scrim) / 0) 74%)}
 #intent{background:#F9F5E3}
 #iterate{background:#F5F3DE}
 .scene.point .stage{z-index:1}
@@ -678,10 +719,40 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 /* short screens (landscape phones, small laptops) */
 @media (max-height:620px) and (max-width:720px){.lead{display:none}}
+/* Light mode, for a bright room: the T key or the sun/moon button under the dots switches the whole
+   deck; the choice is remembered in localStorage 'talk.theme'. The same tokens, inverted, and every
+   wash over footage turns cream so dark text reads on it */
+:root[data-theme="light"]{
+  --desk:#F6F4EF; --sheet:#FFFFFF; --sheet-2:#EEEBE4; --rule:#CFC9BE;
+  --ink:#16181D; --ink-2:#454B54; --blue:#2F5FA8; --hl:rgba(245,207,74,.6); --brand:#F5CF4A; --on-brand:#16181D;
+  --sonia:#2F5FA8; --sonia-bg:#E3ECF8;
+  --shadow:0 12px 40px rgba(22,24,29,.18);
+  --scrim:246 244 239;
+  color-scheme:light}
+[data-theme="light"] body{background:var(--desk)}
+[data-theme="light"] .n2s{filter:none}
+[data-theme="light"] #top .stage,[data-theme="light"] #analogy .stage,[data-theme="light"] #question .stage,
+[data-theme="light"] #proof .stage,[data-theme="light"] #certify .stage{text-shadow:0 0 18px rgb(var(--scrim) / .9),0 0 4px rgb(var(--scrim) / .8)}
+[data-theme="light"] .ledger li{border-top-color:rgb(22 24 29 / .25)}
+[data-theme="light"] .ledger li:last-child{border-bottom-color:rgb(22 24 29 / .25)}
+[data-theme="light"] .fp-tall .fp-cap b{color:var(--ink)}
+[data-theme="light"] .fp-tall .fp-cap span{color:var(--ink-2)}
+[data-theme="light"] .pt-n{color:rgb(22 24 29 / .12)}
+/* "From napkin to prototype" is cut out of the cover to show the napkin film; that film is pale, so
+   the cover stays dark in light mode or the letters vanish */
+[data-theme="light"] .three-cover rect.dark{fill:#16181D}
+[data-theme="light"] .xl-tag{color:#7A5B00;border-color:#C9A227}
+/* the switch: a sun/moon under the chapter dots */
+.theme-btn{all:unset;cursor:pointer;position:fixed;right:max(6px,env(safe-area-inset-right,0px));bottom:16px;z-index:20;width:27px;height:27px;display:flex;align-items:center;justify-content:center;color:var(--ink-2);border-radius:50%}
+.theme-btn:hover,.theme-btn:focus-visible{color:var(--ink)}
+.theme-btn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.theme-btn svg{width:16px;height:16px}
+.theme-switching *,.theme-switching *::before,.theme-switching *::after{transition:none!important}
 </style>
 </head>
 <body>
 <nav class="rail" aria-label="Chapters"></nav>
+<button type="button" class="theme-btn" data-theme-btn title="Switch to light mode (T)" aria-label="Switch to light mode"></button>
 
 <main>
   <section class="scene title" id="top" data-chap="The Barrier Just Dropped" data-tone="warm">
@@ -706,13 +777,13 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   </section>
 
   <section class="scene question" id="question" data-chap="A confession" data-wait data-dur="500">
-    <img class="clip-bg" src="media/bg/clinic-room.jpg?v=20261112a" alt="" aria-hidden="true"><div class="clip-wash" aria-hidden="true"></div>
+    <video class="clip-bg" src="media/bg/clinic-room.mp4?v=20261116a" poster="media/bg/clinic-room-first.jpg?v=20261116a" muted playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <h2 class="visually-hidden">The question that started it</h2>
       <q class="pop" data-in="0 1">Did my visual actually <mark class="wipe drive" data-in="0 0">make a difference?</mark></q>
       <p data-in="0 1">My work left at handoff. I never learned if it helped.</p>
       <cite data-in="0 1">Sonia</cite>
-      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a>, animated in code</p>
+      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a>, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a> and in code</p>
     </div></div>
   </section>
 
@@ -720,12 +791,12 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     <div class="stage"><div class="inner">
       <div class="met">
         <div>
-          <h2 class="h2" data-in="0 0.15">Two posts.<br>One <mark>project.</mark></h2>
+          <h2 class="h2" data-in="0 0.15">How we <mark>met.</mark></h2>
           <ul class="story">
-            <li data-in="0.15 0.35"><b>April</b> Nati’s post led Sonia to the CDC Clear Communication Index, then to 26 frameworks.</li>
-            <li data-in="0.35 0.55"><b>Around then</b> Sonia saw Chloe’s post on AI design certification and reached out.</li>
-            <li data-in="0.6 0.75"><b>Summer</b> We scoped it and talked to our networks.</li>
-            <li data-in="0.75 0.9"><b>August</b> Chloe started building.</li>
+            <li data-in="0.15 0.35"><b>April</b><span>Nati’s post. Then 26 frameworks.</span></li>
+            <li data-in="0.35 0.55"><b>Spring</b><span>Chloe’s post. Sonia reaches out.</span></li>
+            <li data-in="0.6 0.75"><b>Summer</b><span>We scope it with our networks.</span></li>
+            <li data-in="0.75 0.9"><b>August</b><span>We start building.</span></li>
           </ul>
         </div>
         <div class="pile">
@@ -784,75 +855,77 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     <iframe class="pm-door" src="../index.html?intro" title="The PRISM front door: Make your health handout easy to read" loading="eager"></iframe>
   </section>
 
-  <section class="scene pin" id="features" data-chap="What PRISM does" data-beats="4">
+  <section class="scene pin demo" id="features" data-chap="Demo" data-beats="4">
     <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.0625">Bring your draft.</h2>
-      <div class="fp-row">
+      <h2 class="h2 visually-hidden">Check a draft.</h2>
+      <div class="fp-row fp-tall">
         <div class="fp drive" data-in="0 0.0625" data-out="0.2500 0.3250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/1-private.jpg?v=20261110" src="media/loops/1-private.mp4?v=20261110" aria-label="The privacy note opening from the Private button: nothing is uploaded, files and text are saved only in this browser."></video></div>
-            <p class="fp-cap"><b>Private by default</b><span>Files and text never leave your browser.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d1-drop.jpg?v=20261116d" src="media/loops/d1-drop.mp4?v=20261116d" aria-label="A Word copy of the Light Collective guide to negotiating patient digital rights is dragged into the empty Material panel and opens as an editable handout. Then the Private button opens the note: nothing is uploaded, work is saved only in this browser."></video></div>
+            <p class="fp-cap"><b>Drop it in</b><span>Your file stays on this computer. Nothing is uploaded.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>1 · Private</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>1 · Drop it in</span></div>
         </div>
         <div class="fp drive" data-in="0.2500 0.3250" data-out="0.5000 0.5750" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/2-brief.jpg?v=20261110" src="media/loops/2-brief.mp4?v=20261110" aria-label="Opening the Brief and picking Patients and Handout; a reading target of grade 6 or lower appears."></video></div>
-            <p class="fp-cap"><b>Brief</b><span>Choose audience and format. PRISM sets the reading target.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d2-brief.jpg?v=20261116d" src="media/loops/d2-brief.mp4?v=20261116d" aria-label="The Brief opens and Patients and Manual are picked. The targets appear: grade 6 or lower, sentences up to 15 words, 600 to 6,000 words."></video></div>
+            <p class="fp-cap"><b>Brief</b><span>Patients, manual: grade 6 or lower, 6,000 words at most.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>2 · Brief</span></div>
         </div>
         <div class="fp drive" data-in="0.5000 0.5750" data-out="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/6-frameworks-area.jpg?v=20261110" src="media/loops/6-frameworks-area.mp4?v=20261110" aria-label="The Frameworks list is sorted By area and scrolled through every area, CCI is ticked, then the list closes and the frameworks show as cards: Readability collapses, the CCI card scrolls through its items, and Readability opens again."></video></div>
-            <p class="fp-cap"><b>Frameworks</b><span>Pick from 14 published frameworks, grouped by area.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d3-frameworks.jpg?v=20261116d" src="media/loops/d3-frameworks.mp4?v=20261116d" aria-label="The Frameworks bar shows four picked for the Brief. Show all opens the list with them ticked; it scrolls through every use case, is sorted by area and then Recommended, and is filtered to frameworks that give a score."></video></div>
+            <p class="fp-cap"><b>Frameworks</b><span>Picked for your Brief. Browse all 14, sort them, filter to scored.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>3 · Frameworks</span></div>
         </div>
         <div class="fp drive" data-in="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/4-fixes.jpg?v=20261110" src="media/loops/4-fixes.mp4?v=20261110" aria-label="Hard words are highlighted. One suggested rewrite is applied from its card, a word is retyped in the text, then Apply all fixes the rest. History lists every change, and Revert brings back the handout as first loaded."></video></div>
-            <p class="fp-cap"><b>Plain language, on by default</b><span>Fix one, edit in the text, or apply all. Revert any change from History.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d4-fixes.jpg?v=20261116d" src="media/loops/d4-fixes.mp4?v=20261116d" aria-label="Plain language shows 120 to fix and 68 suggested changes. The cards scroll by, one card jumps to its sentence in the text, a rewrite is applied, a highlighted word is retyped by hand, and Apply all fixes the rest; the grade drops from 12.3 to 11.8. History opens: Undo last change, then Revert to the file as first opened."></video></div>
+            <p class="fp-cap"><b>Plain language</b><span>Jump to a flag, fix one, edit by hand or apply all. Undo or revert.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>4 · Plain language</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>4 · Fix and undo</span></div>
         </div>
       </div>
+      <p class="credit">Material: A Guide to Negotiating Patient Digital Rights, The Light Collective and Digital Public, CC BY 4.0</p>
     </div></div>
   </section>
 
-  <section class="scene pin" id="features-2" data-chap="What PRISM does" data-beats="4">
+  <section class="scene pin demo" id="features-2" data-chap="Demo" data-beats="4">
     <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.0625">Check it, or plan it.</h2>
-      <div class="fp-row">
+      <h2 class="h2 visually-hidden">Check a poster.</h2>
+      <div class="fp-row fp-tall">
         <div class="fp drive" data-in="0 0.0625" data-out="0.2500 0.3250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/5-images.jpg?v=20261110" src="media/loops/5-images.mp4?v=20261110" aria-label="On the sample poster, alt text is typed, two palette colours pass a 5.81 to 1 contrast check, and the poster switches to deuteranopia and then greyscale views."></video></div>
-            <p class="fp-cap"><b>Images</b><span>Checks contrast and alt text, with colour-blind and greyscale views.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d5-poster.jpg?v=20261116d" src="media/loops/d5-poster.mp4?v=20261116d" aria-label="Clear all empties the Studio, then the UHN welcome poster is dropped in and opens as an image."></video></div>
+            <p class="fp-cap"><b>New example</b><span>Clear all, then drop in a poster.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>5 · Images</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>5 · New example</span></div>
         </div>
         <div class="fp drive" data-in="0.2500 0.3250" data-out="0.5000 0.5750" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/3-drop.jpg?v=20261110" src="media/loops/3-drop.mp4?v=20261110" aria-label="A Word file dragged into the empty Material panel opens as an editable handout."></video></div>
-            <p class="fp-cap"><b>Drop or paste</b><span>Word, PDF or text opens as an editable draft.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d6-contrast.jpg?v=20261116d" src="media/loops/d6-contrast.mp4?v=20261116d" aria-label="Alt text is typed and counted. Then two palette colours are picked: white on the poster blue passes at 5.13 to 1; white on the light-blue band fails at 1.73 to 1. The suggested fix darkens the band to #2b7f97, and Preview shows white text on it."></video></div>
+            <p class="fp-cap"><b>Alt text and colour contrast</b><span>Write alt text. Check colour pairs; a fail comes with a fix to preview.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>6 · Drop or paste</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>6 · Alt text, contrast</span></div>
         </div>
         <div class="fp drive" data-in="0.5000 0.5750" data-out="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/7-compass-studio.jpg?v=20261110" src="media/loops/7-compass-studio.mp4?v=20261110" aria-label="In the Studio, Framework Compass is clicked in the top bar and the Compass opens in place. It scrolls to PEMAT-A/V, opens All references and then How it’s scored."></video></div>
-            <p class="fp-cap"><b>Framework Compass</b><span>From the Studio: how each of 14 frameworks is scored, and its source.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d7-views.jpg?v=20261116d" src="media/loops/d7-views.mp4?v=20261116d" aria-label="The poster switches through deuteranopia, protanopia, tritanopia and greyscale, then back to normal."></video></div>
+            <p class="fp-cap"><b>Colour blindness</b><span>See it as colour-blind readers do, and in greyscale.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>7 · Compass</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>7 · Colour blindness</span></div>
         </div>
         <div class="fp drive" data-in="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/8-plan.jpg?v=20261110" src="media/loops/8-plan.mp4?v=20261110" aria-label="A filled-in video storyboard; the scene checks are ticked, each citing its framework item, such as CDC IDD/ELL 4 and PEMAT-A/V 10."></video></div>
-            <p class="fp-cap"><b>Plan from an idea</b><span>Storyboard a new piece. Each check cites its framework item.</span></p>
+            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d8-compass.jpg?v=20261116d" src="media/loops/d8-compass.mp4?v=20261116d" aria-label="Framework Compass opens from the Studio and scrolls through all 14 frameworks. On CCI, How it’s scored shows the formula, pass mark and items, and All references lists the sources with links to cdc.gov."></video></div>
+            <p class="fp-cap"><b>Framework Compass</b><span>All 14 frameworks: how each is scored, and where it comes from.</span></p>
           </div>
-          <div class="fp-strip" aria-hidden="true"><span>8 · Plan</span></div>
+          <div class="fp-strip" aria-hidden="true"><span>8 · Compass</span></div>
         </div>
       </div>
+      <p class="credit">Poster: COVID welcome poster for UHN (June 2022), designed by Sonia Seto</p>
     </div></div>
   </section>
 
@@ -865,7 +938,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
           <div class="fade" data-in="0.0000 0.2500" data-out="0.3750 0.5000"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">Chloe · 0 h · Jul 31</p></div>
           <div class="fade" data-in="0.3750 0.5000" data-out="0.6250 0.7500"><blockquote>merge studio into the main page, make it feel like a [workspace], brief on one side, material in the middle, checklists on the other</blockquote><p class="hs-who">Chloe · 1 h · Aug 17</p></div>
           <div class="fade" data-in="0.6250 0.7500" data-out="0.8750 1.0000"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">Chloe · 10 h · Oct 16</p></div>
-          <div class="fade" data-in="0.8750 1.0000"><blockquote>make button center, make where to type and paste more obvious, show where history log/change log is</blockquote><p class="hs-who">Chloe · 18 h · Oct 19</p></div>
+          <div class="fade" data-in="0.8750 1.0000"><blockquote>make button center, make where to type and paste more obvious … nothing's uploaded to anywhere, others can't access your data</blockquote><p class="hs-who">Chloe · 18 h · Oct 19</p></div>
         </div>
         <ul class="ledger hs-ledger">
           <li><b>131</b><span>commits</span></li>
@@ -907,55 +980,50 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 
 
-  <section class="scene pin" id="review" data-chap="Verification" data-title="verify">
+  <section class="scene pin" id="review" data-chap="Verification" data-beats="2">
     <div class="stage"><div class="inner">
       <h2 class="h2" data-in="0 0.15">AI drafted it. <mark>We reviewed it.</mark></h2>
-      <div class="xl" aria-label="The Framework Compass library review spreadsheet: 23 frameworks across 13 columns, from name and zone to decision, notes, what to verify and source.">
-        <div class="xl-bar">framework-compass-library-review-v2.xlsx</div>
-        <div class="xl-win" data-scroll tabindex="0" aria-label="Spreadsheet, scrolls left, right, up and down"><table class="xl-grid"><colgroup><col style="width:calc(3 * var(--u))"><col style="width:calc(3.5 * var(--u))"><col style="width:calc(10 * var(--u))"><col style="width:calc(22 * var(--u))"><col style="width:calc(13 * var(--u))"><col style="width:calc(9 * var(--u))"><col style="width:calc(11 * var(--u))"><col style="width:calc(7 * var(--u))"><col style="width:calc(13 * var(--u))"><col style="width:calc(24 * var(--u))"><col style="width:calc(24 * var(--u))"><col style="width:calc(30 * var(--u))"><col style="width:calc(30 * var(--u))"><col style="width:calc(20 * var(--u))"></colgroup>
-          <thead><tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th></tr>
-          <tr class="xl-h"><th>1</th><td><div>#</div></td><td><div>Framework</div></td><td><div>Full name</div></td><td><div>Zone</div></td><td><div>Output</div></td><td><div>Modes</div></td><td><div>Role</div></td><td><div>Decision</div></td><td><div>Plan mode use</div></td><td><div>Evaluate mode use</div></td><td><div>Why / notes</div></td><td><div>To verify</div></td><td><div>Source</div></td></tr></thead><tbody>
-          <tr><th>2</th><td><div>1</div></td><td><div>CCI</div></td><td><div>CDC Clear Communication Index</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Design target: main message, behavioural guidance, numbers presented clearly.</div></td><td><div>Scores the draft against the 20 items.</div></td><td><div>The most unambiguous of the set; natural anchor for the Document Audit screen.</div></td><td><div>Confirm the 20-item count and the 90% pass threshold against the CDC source.</div></td><td><div>CDC Clear Communication Index</div></td></tr>
-          <tr><th>3</th><td><div>2</div></td><td><div>PEMAT-P</div></td><td><div>Patient Education Materials Assessment Tool (printable)</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Design target for understandability and actionability.</div></td><td><div>Two scores: understandability and actionability.</div></td><td><div>Built for exactly this use; separates &#x27;can they understand it&#x27; from &#x27;can they act on it&#x27;.</div></td><td><div>Confirm item count and the 70% threshold.</div></td><td><div>AHRQ PEMAT-P</div></td></tr>
-          <tr><th>4</th><td><div>3</div></td><td><div>SAM</div></td><td><div>Suitability Assessment of Materials</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Design target for graphics, layout and literacy demand.</div></td><td><div>Scores the draft factor by factor.</div></td><td><div>Most granular on graphics and layout. Some factors (e.g., cultural fit) need rater judgment.</div></td><td><div>Item count: earlier in this thread I cited 26 criteria; 22 factors is the commonly cited count. Confirm against the source.</div></td><td><div>Doak, Doak &amp; Root (1996), via KP Washington Research</div></td></tr>
-          <tr><th>5</th><td><div>4</div></td><td><div>CDC Inclusive Comms</div></td><td><div>CDC Health Equity Guiding Principles for Inclusive Communication</div></td><td><div>Clarity &amp; content</div></td><td><div>Checklist</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Preferred terms and principles to write with.</div></td><td><div>Checks the draft&#x27;s language against the principles.</div></td><td><div>Covers equity, which the scored tools miss. Preferred-term checks could be partly automated.</div></td><td><div>Confirm the current version.</div></td><td><div>Calanan et al., Preventing Chronic Disease (2023)</div></td></tr>
-          <tr><th>6</th><td><div>5</div></td><td><div>UPL</div></td><td><div>Universal Patient Language Best Practices (Bristol Myers Squibb)</div></td><td><div>Clarity &amp; content</div></td><td><div>Checklist</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>Best practices to build the content around.</div></td><td><div>Yes/no checks against the draft.</div></td><td><div>Relevant to pharma; overlaps somewhat with CCI.</div></td><td><div>Your file says 9 best practices; an earlier search described 7 principles. Check the guidance document.</div></td><td><div>UPL Guidance Document (PDF)</div></td></tr>
-          <tr><th>7</th><td><div>6</div></td><td><div>EPPM</div></td><td><div>Extended Parallel Process Model</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Both</div></td><td><div>Lens</div></td><td><div>Keep</div></td><td><div>Pair every risk message with a clear, doable action.</div></td><td><div>Checks whether risk messages in the draft come with an action.</div></td><td><div>The one behaviour model that can be checked at message level.</div></td><td><div></div></td><td><div>Witte (1992)</div></td></tr>
-          <tr><th>8</th><td><div>7</div></td><td><div>IPDAS</div></td><td><div>International Patient Decision Aid Standards</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Partial</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep (conditional)</div></td><td><div>Standards to design a decision aid to.</div></td><td><div>Checks a decision aid against the criteria.</div></td><td><div>Only applies to decision aids; output is partial rather than a clean score.</div></td><td><div></div></td><td><div>Ottawa Hospital Research Institute</div></td></tr>
-          <tr><th>9</th><td><div>8</div></td><td><div>PEMAT-A/V</div></td><td><div>PEMAT for audiovisual materials</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep (conditional)</div></td><td><div>Design target for video and multimedia.</div></td><td><div>Scores a video or multimedia draft.</div></td><td><div>Same logic as PEMAT-P. Only matters if the tool will accept video.</div></td><td><div>Scope decision for you and Chloe: will the tool accept video?</div></td><td><div>AHRQ PEMAT-A/V</div></td></tr>
-          <tr><th>10</th><td><div>9</div></td><td><div>CDC IDD/ELL</div></td><td><div>CDC tool for adults with intellectual disability or extreme low literacy</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div>Keep (conditional)</div></td><td><div>Design target for very-low-literacy audiences.</div></td><td><div>Scores the draft on the score sheet.</div></td><td><div>Only for readers with IDD or very low literacy. Keep if the intake can route to it.</div></td><td><div>Confirm the 27-item count and that the niche fits your users.</div></td><td><div>CDC Stacks (PDF)</div></td></tr>
-          <tr><th>11</th><td><div>10</div></td><td><div>Readability</div></td><td><div>Flesch Reading Ease and Flesch-Kincaid Grade</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Evaluate only</div></td><td><div>Audit</div></td><td><div>Keep</div></td><td><div>At most, set a target reading grade.</div></td><td><div>Computes grade and ease automatically.</div></td><td><div>The only fully automatable entry. Narrow but cheap and reliable. Candidate to expand with other formulas (see Consider adding tab).</div></td><td><div></div></td><td><div>Flesch (1948)</div></td></tr>
-          <tr><th>12</th><td><div>11</div></td><td><div>DISCERN</div></td><td><div>Quality of written information about treatment choices</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Evaluate only</div></td><td><div>Audit</div></td><td><div>Keep (conditional)</div></td><td><div>—</div></td><td><div>Rates the quality of treatment-choice information.</div></td><td><div>Needs subject-matter judgment, and only applies to treatment-choice material.</div></td><td><div></div></td><td><div>University of Oxford</div></td></tr>
-          <tr><th>13</th><td><div>12</div></td><td><div>COM-B</div></td><td><div>Capability, Opportunity, Motivation – Behaviour model</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div>Keep (judgment call)</div></td><td><div>Diagnose capability, opportunity and motivation before designing.</div></td><td><div>—</div></td><td><div>Most usable behaviour model for design work. First to cut if the library goes strictly document-centred.</div></td><td><div></div></td><td><div>Michie, van Stralen &amp; West (2011)</div></td></tr>
-          <tr><th>14</th><td><div>13</div></td><td><div>HBM</div></td><td><div>Health Belief Model</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div>Bring back</div></td><td><div>Shape the message around beliefs about risk, barriers and benefits.</div></td><td><div>—</div></td><td><div>Was parked because it can&#x27;t score a document. It clearly helps someone planning a resource.</div></td><td><div></div></td><td><div>Rosenstock (1974)</div></td></tr>
-          <tr><th>15</th><td><div>14</div></td><td><div>TTM</div></td><td><div>Transtheoretical Model (Stages of Change)</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div>Bring back</div></td><td><div>Match the message to the audience&#x27;s readiness to change.</div></td><td><div>—</div></td><td><div>Was parked because it can&#x27;t score a document. It clearly helps someone planning a resource.</div></td><td><div></div></td><td><div>Prochaska &amp; Velicer (1997)</div></td></tr>
-          <tr><th>16</th><td><div>15</div></td><td><div>Ottawa DSF</div></td><td><div>Ottawa Decision Support Framework</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Partial</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div>Keep (judgment call)</div></td><td><div>Identify decisional needs before building a decision aid.</div></td><td><div>—</div></td><td><div>Underpins decision aids; sits next to IPDAS. Could be cut for a strictly document-centred library.</div></td><td><div></div></td><td><div>Ottawa Hospital Research Institute</div></td></tr>
-          <tr><th>17</th><td><div>16</div></td><td><div>Teach-Back</div></td><td><div>Teach-Back Method</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div>Keep (judgment call)</div></td><td><div>Design materials that support teach-back.</div></td><td><div>—</div></td><td><div>A technique, not a rubric. A draft can only be partly checked for prompts that support it. Practitioners recognise it immediately.</div></td><td><div></div></td><td><div>AHRQ Toolkit, Tool 5</div></td></tr>
-          <tr><th>18</th><td><div>17</div></td><td><div>NCI Pink Book</div></td><td><div>Making Health Communication Programs Work (National Cancer Institute)</div></td><td><div>Clarity &amp; content</div></td><td><div>Method / guide</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div>Bring back</div></td><td><div>Audience research, message pretesting and evaluation planning for a communication program.</div></td><td><div>—</div></td><td><div>Back from the old chart. A planning guide whose pretesting step leads naturally into evaluate mode. Program-level rather than single-handout.</div></td><td><div>This is the 2002 edition; check whether NCI has published a newer one.</div></td><td><div>NCI Pink Book (PDF)</div></td></tr>
-          <tr><th>19</th><td><div>18</div></td><td><div>EBCD</div></td><td><div>Experience-Based Co-Design</div></td><td><div>Experience &amp; partnership</div></td><td><div>Method / guide</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div>Bring back</div></td><td><div>Co-design improvements with patients and staff; closest match to the human-centred design methods you wanted to name for your work sample.</div></td><td><div>—</div></td><td><div>Back from the old chart. Fits best for care pathways and services, less for a single handout. Replaces PCORI as the patient-partnership entry.</div></td><td><div>Toolkit was last updated in 2013; a King&#x27;s College London / Picker project describes a planned redesign, so check for the current version.</div></td><td><div>Point of Care Foundation EBCD toolkit</div></td></tr>
-          <tr><th>20</th><td><div>19</div></td><td><div>PAM</div></td><td><div>Patient Activation Measure</div></td><td><div>Experience &amp; partnership</div></td><td><div>Score</div></td><td><div>Plan only</div></td><td><div>Outcome</div></td><td><div>Keep (check licensing)</div></td><td><div>Choose how you will measure patient impact after launch.</div></td><td><div>—</div></td><td><div>Measures the patient, not the resource, so it can&#x27;t evaluate a draft. It is the bridge from &#x27;was the resource well made&#x27; to &#x27;did it help patients&#x27;.</div></td><td><div>Licensed instrument (Insignia Health charges a licensing fee): confirm what you can include beyond a reference link. DOI confirmed.</div></td><td><div>Hibbard et al. (2004), Health Services Research</div></td></tr>
-          <tr><th>21</th><td><div>20</div></td><td><div>SHARE</div></td><td><div>The SHARE Approach</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div>Scope-dependent</div></td><td><div>Frame shared decision-making conversations around the resource.</div></td><td><div>—</div></td><td><div>Structures a clinical conversation. Only relevant if plan mode covers care pathways or programs.</div></td><td><div></div></td><td><div>AHRQ</div></td></tr>
-          <tr><th>22</th><td><div>21</div></td><td><div>AHRQ Toolkit</div></td><td><div>AHRQ Health Literacy Universal Precautions Toolkit</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div>Scope-dependent</div></td><td><div>Organisational practices around a resource; includes tools on designing materials.</div></td><td><div>—</div></td><td><div>Organisational practice change. Only relevant if plan mode covers programs or services.</div></td><td><div></div></td><td><div>AHRQ</div></td></tr>
-          <tr><th>23</th><td><div>22</div></td><td><div>Picker</div></td><td><div>Picker Principles of Person Centred Care</div></td><td><div>Experience &amp; partnership</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div>Scope-dependent</div></td><td><div>Principles for designing care pathways and services.</div></td><td><div>—</div></td><td><div>Care-model principles, closest to &#x27;experience as a whole&#x27;. Fits only if plan mode covers pathways or services.</div></td><td><div></div></td><td><div>Picker</div></td></tr>
-          <tr><th>24</th><td><div>23</div></td><td><div>WHO ERC</div></td><td><div>WHO Emergency Risk Communication guideline</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div>Scope-dependent</div></td><td><div>Principles for planning urgent or crisis communications.</div></td><td><div>—</div></td><td><div>Agency-level emergency communication. Relevant only if practitioners write urgent or crisis materials.</div></td><td><div>Add an interview question: do practitioners write urgent or crisis communications?</div></td><td><div>World Health Organization (2017)</div></td></tr>
+      <div class="rv-swap">
+      <div class="xl fade" data-in="0 0" data-out="0.5 0.68" aria-label="The Framework Compass library review spreadsheet: 23 frameworks across 13 columns, from name and zone to decision, notes, what to verify and source.">
+        <p class="xl-bar"><span aria-hidden="true">▦</span>framework-compass-library-review-v2.xlsx · 23 rows</p>
+        <div class="xl-win" data-scroll tabindex="0" aria-label="Spreadsheet, scrolls left, right, up and down; scrolling past its last row brings up the decisions"><table class="xl-grid"><colgroup><col style="width:calc(3.5 * var(--u))"><col style="width:calc(10 * var(--u))"><col style="width:calc(22 * var(--u))"><col style="width:calc(13 * var(--u))"><col style="width:calc(9 * var(--u))"><col style="width:calc(11 * var(--u))"><col style="width:calc(7 * var(--u))"><col style="width:calc(13 * var(--u))"><col style="width:calc(24 * var(--u))"><col style="width:calc(24 * var(--u))"><col style="width:calc(30 * var(--u))"><col style="width:calc(30 * var(--u))"><col style="width:calc(20 * var(--u))"></colgroup>
+          <thead><tr class="xl-h"><td><div>#</div></td><td><div>Framework</div></td><td><div>Full name</div></td><td><div>Zone</div></td><td><div>Output</div></td><td><div>Modes</div></td><td><div>Role</div></td><td><div>Decision</div></td><td><div>Plan mode use</div></td><td><div>Evaluate mode use</div></td><td><div>Why / notes</div></td><td><div>To verify</div></td><td><div>Source</div></td></tr></thead><tbody>
+          <tr><td><div>1</div></td><td><div>CCI</div></td><td><div>CDC Clear Communication Index</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag k">Keep</span></div></td><td><div>Design target: main message, behavioural guidance, numbers presented clearly.</div></td><td><div>Scores the draft against the 20 items.</div></td><td><div>The most unambiguous of the set; natural anchor for the Document Audit screen.</div></td><td><div>Confirm the 20-item count and the 90% pass threshold against the CDC source.</div></td><td><div>CDC Clear Communication Index</div></td></tr>
+          <tr><td><div>2</div></td><td><div>PEMAT-P</div></td><td><div>Patient Education Materials Assessment Tool (printable)</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag k">Keep</span></div></td><td><div>Design target for understandability and actionability.</div></td><td><div>Two scores: understandability and actionability.</div></td><td><div>Built for exactly this use; separates &#x27;can they understand it&#x27; from &#x27;can they act on it&#x27;.</div></td><td><div>Confirm item count and the 70% threshold.</div></td><td><div>AHRQ PEMAT-P</div></td></tr>
+          <tr><td><div>3</div></td><td><div>SAM</div></td><td><div>Suitability Assessment of Materials</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag k">Keep</span></div></td><td><div>Design target for graphics, layout and literacy demand.</div></td><td><div>Scores the draft factor by factor.</div></td><td><div>Most granular on graphics and layout. Some factors (e.g., cultural fit) need rater judgment.</div></td><td><div>Item count: earlier in this thread I cited 26 criteria; 22 factors is the commonly cited count. Confirm against the source.</div></td><td><div>Doak, Doak &amp; Root (1996), via KP Washington Research</div></td></tr>
+          <tr><td><div>4</div></td><td><div>CDC Inclusive Comms</div></td><td><div>CDC Health Equity Guiding Principles for Inclusive Communication</div></td><td><div>Clarity &amp; content</div></td><td><div>Checklist</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag k">Keep</span></div></td><td><div>Preferred terms and principles to write with.</div></td><td><div>Checks the draft&#x27;s language against the principles.</div></td><td><div>Covers equity, which the scored tools miss. Preferred-term checks could be partly automated.</div></td><td><div>Confirm the current version.</div></td><td><div>Calanan et al., Preventing Chronic Disease (2023)</div></td></tr>
+          <tr><td><div>5</div></td><td><div>UPL</div></td><td><div>Universal Patient Language Best Practices (Bristol Myers Squibb)</div></td><td><div>Clarity &amp; content</div></td><td><div>Checklist</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag k">Keep</span></div></td><td><div>Best practices to build the content around.</div></td><td><div>Yes/no checks against the draft.</div></td><td><div>Relevant to pharma; overlaps somewhat with CCI.</div></td><td><div>Your file says 9 best practices; an earlier search described 7 principles. Check the guidance document.</div></td><td><div>UPL Guidance Document (PDF)</div></td></tr>
+          <tr><td><div>6</div></td><td><div>EPPM</div></td><td><div>Extended Parallel Process Model</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Both</div></td><td><div>Lens</div></td><td><div><span class="xl-tag k">Keep</span></div></td><td><div>Pair every risk message with a clear, doable action.</div></td><td><div>Checks whether risk messages in the draft come with an action.</div></td><td><div>The one behaviour model that can be checked at message level.</div></td><td><div></div></td><td><div>Witte (1992)</div></td></tr>
+          <tr><td><div>7</div></td><td><div>IPDAS</div></td><td><div>International Patient Decision Aid Standards</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Partial</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag">Keep (conditional)</span></div></td><td><div>Standards to design a decision aid to.</div></td><td><div>Checks a decision aid against the criteria.</div></td><td><div>Only applies to decision aids; output is partial rather than a clean score.</div></td><td><div></div></td><td><div>Ottawa Hospital Research Institute</div></td></tr>
+          <tr><td><div>8</div></td><td><div>PEMAT-A/V</div></td><td><div>PEMAT for audiovisual materials</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag">Keep (conditional)</span></div></td><td><div>Design target for video and multimedia.</div></td><td><div>Scores a video or multimedia draft.</div></td><td><div>Same logic as PEMAT-P. Only matters if the tool will accept video.</div></td><td><div>Scope decision for you and Chloe: will the tool accept video?</div></td><td><div>AHRQ PEMAT-A/V</div></td></tr>
+          <tr><td><div>9</div></td><td><div>CDC IDD/ELL</div></td><td><div>CDC tool for adults with intellectual disability or extreme low literacy</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Both</div></td><td><div>Audit</div></td><td><div><span class="xl-tag">Keep (conditional)</span></div></td><td><div>Design target for very-low-literacy audiences.</div></td><td><div>Scores the draft on the score sheet.</div></td><td><div>Only for readers with IDD or very low literacy. Keep if the intake can route to it.</div></td><td><div>Confirm the 27-item count and that the niche fits your users.</div></td><td><div>CDC Stacks (PDF)</div></td></tr>
+          <tr><td><div>10</div></td><td><div>Readability</div></td><td><div>Flesch Reading Ease and Flesch-Kincaid Grade</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Evaluate only</div></td><td><div>Audit</div></td><td><div><span class="xl-tag k">Keep</span></div></td><td><div>At most, set a target reading grade.</div></td><td><div>Computes grade and ease automatically.</div></td><td><div>The only fully automatable entry. Narrow but cheap and reliable. Candidate to expand with other formulas (see Consider adding tab).</div></td><td><div></div></td><td><div>Flesch (1948)</div></td></tr>
+          <tr><td><div>11</div></td><td><div>DISCERN</div></td><td><div>Quality of written information about treatment choices</div></td><td><div>Clarity &amp; content</div></td><td><div>Score</div></td><td><div>Evaluate only</div></td><td><div>Audit</div></td><td><div><span class="xl-tag">Keep (conditional)</span></div></td><td><div>—</div></td><td><div>Rates the quality of treatment-choice information.</div></td><td><div>Needs subject-matter judgment, and only applies to treatment-choice material.</div></td><td><div></div></td><td><div>University of Oxford</div></td></tr>
+          <tr><td><div>12</div></td><td><div>COM-B</div></td><td><div>Capability, Opportunity, Motivation – Behaviour model</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Keep (judgment call)</span></div></td><td><div>Diagnose capability, opportunity and motivation before designing.</div></td><td><div>—</div></td><td><div>Most usable behaviour model for design work. First to cut if the library goes strictly document-centred.</div></td><td><div></div></td><td><div>Michie, van Stralen &amp; West (2011)</div></td></tr>
+          <tr><td><div>13</div></td><td><div>HBM</div></td><td><div>Health Belief Model</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Bring back</span></div></td><td><div>Shape the message around beliefs about risk, barriers and benefits.</div></td><td><div>—</div></td><td><div>Was parked because it can&#x27;t score a document. It clearly helps someone planning a resource.</div></td><td><div></div></td><td><div>Rosenstock (1974)</div></td></tr>
+          <tr><td><div>14</div></td><td><div>TTM</div></td><td><div>Transtheoretical Model (Stages of Change)</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Bring back</span></div></td><td><div>Match the message to the audience&#x27;s readiness to change.</div></td><td><div>—</div></td><td><div>Was parked because it can&#x27;t score a document. It clearly helps someone planning a resource.</div></td><td><div></div></td><td><div>Prochaska &amp; Velicer (1997)</div></td></tr>
+          <tr><td><div>15</div></td><td><div>Ottawa DSF</div></td><td><div>Ottawa Decision Support Framework</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Partial</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Keep (judgment call)</span></div></td><td><div>Identify decisional needs before building a decision aid.</div></td><td><div>—</div></td><td><div>Underpins decision aids; sits next to IPDAS. Could be cut for a strictly document-centred library.</div></td><td><div></div></td><td><div>Ottawa Hospital Research Institute</div></td></tr>
+          <tr><td><div>16</div></td><td><div>Teach-Back</div></td><td><div>Teach-Back Method</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Checklist</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Keep (judgment call)</span></div></td><td><div>Design materials that support teach-back.</div></td><td><div>—</div></td><td><div>A technique, not a rubric. A draft can only be partly checked for prompts that support it. Practitioners recognise it immediately.</div></td><td><div></div></td><td><div>AHRQ Toolkit, Tool 5</div></td></tr>
+          <tr><td><div>17</div></td><td><div>NCI Pink Book</div></td><td><div>Making Health Communication Programs Work (National Cancer Institute)</div></td><td><div>Clarity &amp; content</div></td><td><div>Method / guide</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Bring back</span></div></td><td><div>Audience research, message pretesting and evaluation planning for a communication program.</div></td><td><div>—</div></td><td><div>Back from the old chart. A planning guide whose pretesting step leads naturally into evaluate mode. Program-level rather than single-handout.</div></td><td><div>This is the 2002 edition; check whether NCI has published a newer one.</div></td><td><div>NCI Pink Book (PDF)</div></td></tr>
+          <tr><td><div>18</div></td><td><div>EBCD</div></td><td><div>Experience-Based Co-Design</div></td><td><div>Experience &amp; partnership</div></td><td><div>Method / guide</div></td><td><div>Plan only</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Bring back</span></div></td><td><div>Co-design improvements with patients and staff; closest match to the human-centred design methods you wanted to name for your work sample.</div></td><td><div>—</div></td><td><div>Back from the old chart. Fits best for care pathways and services, less for a single handout. Replaces PCORI as the patient-partnership entry.</div></td><td><div>Toolkit was last updated in 2013; a King&#x27;s College London / Picker project describes a planned redesign, so check for the current version.</div></td><td><div>Point of Care Foundation EBCD toolkit</div></td></tr>
+          <tr><td><div>19</div></td><td><div>PAM</div></td><td><div>Patient Activation Measure</div></td><td><div>Experience &amp; partnership</div></td><td><div>Score</div></td><td><div>Plan only</div></td><td><div>Outcome</div></td><td><div><span class="xl-tag">Keep (check licensing)</span></div></td><td><div>Choose how you will measure patient impact after launch.</div></td><td><div>—</div></td><td><div>Measures the patient, not the resource, so it can&#x27;t evaluate a draft. It is the bridge from &#x27;was the resource well made&#x27; to &#x27;did it help patients&#x27;.</div></td><td><div>Licensed instrument (Insignia Health charges a licensing fee): confirm what you can include beyond a reference link. DOI confirmed.</div></td><td><div>Hibbard et al. (2004), Health Services Research</div></td></tr>
+          <tr><td><div>20</div></td><td><div>SHARE</div></td><td><div>The SHARE Approach</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Scope-dependent</span></div></td><td><div>Frame shared decision-making conversations around the resource.</div></td><td><div>—</div></td><td><div>Structures a clinical conversation. Only relevant if plan mode covers care pathways or programs.</div></td><td><div></div></td><td><div>AHRQ</div></td></tr>
+          <tr><td><div>21</div></td><td><div>AHRQ Toolkit</div></td><td><div>AHRQ Health Literacy Universal Precautions Toolkit</div></td><td><div>Decisions &amp; conversations</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Scope-dependent</span></div></td><td><div>Organisational practices around a resource; includes tools on designing materials.</div></td><td><div>—</div></td><td><div>Organisational practice change. Only relevant if plan mode covers programs or services.</div></td><td><div></div></td><td><div>AHRQ</div></td></tr>
+          <tr><td><div>22</div></td><td><div>Picker</div></td><td><div>Picker Principles of Person Centred Care</div></td><td><div>Experience &amp; partnership</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Scope-dependent</span></div></td><td><div>Principles for designing care pathways and services.</div></td><td><div>—</div></td><td><div>Care-model principles, closest to &#x27;experience as a whole&#x27;. Fits only if plan mode covers pathways or services.</div></td><td><div></div></td><td><div>Picker</div></td></tr>
+          <tr><td><div>23</div></td><td><div>WHO ERC</div></td><td><div>WHO Emergency Risk Communication guideline</div></td><td><div>Behaviour change</div></td><td><div>Checklist</div></td><td><div>Plan only (if scope fits)</div></td><td><div>Lens</div></td><td><div><span class="xl-tag">Scope-dependent</span></div></td><td><div>Principles for planning urgent or crisis communications.</div></td><td><div>—</div></td><td><div>Agency-level emergency communication. Relevant only if practitioners write urgent or crisis materials.</div></td><td><div>Add an interview question: do practitioners write urgent or crisis communications?</div></td><td><div>World Health Organization (2017)</div></td></tr>
         </tbody></table></div>
-        <div class="xl-tabs"><b>Library</b><span>Cut</span><span>Consider adding</span><span>Summary</span></div>
       </div>
-    </div></div>
-  </section>
-
-  <section class="scene pin" id="decided" data-chap="Verification" data-title="verify">
-    <div class="stage"><div class="inner">
-      <h2 class="h2">AI drafted it. <mark>We reviewed it.</mark></h2>
-      <ol class="wall" aria-label="Every framework in the review, grouped by decision">
+      <ol class="wall fade" data-in="0.58 0.88" aria-label="Every framework in the review, grouped by decision">
         <li><h3><b>Keep <span>· 7</span></b></h3><ul><li>CCI</li><li>PEMAT-P</li><li>SAM</li><li>CDC Inclusive</li><li>UPL</li><li>EPPM</li><li>Readability</li></ul></li>
         <li><h3><b>With caveats <span>· 8</span></b></h3><ul><li>IPDAS</li><li>PEMAT-A/V</li><li>CDC IDD/ELL</li><li>DISCERN</li><li>COM-B</li><li>Ottawa DSF</li><li>Teach-Back</li><li>PAM</li></ul></li>
         <li><h3><b>Brought back <span>· 4</span></b></h3><ul><li>HBM</li><li>TTM</li><li>NCI Pink Book</li><li>EBCD</li></ul></li>
         <li><h3><b>If in scope <span>· 4</span></b></h3><ul><li>SHARE</li><li>AHRQ Toolkit</li><li>Picker</li><li>WHO ERC</li></ul></li>
         <li class="cut"><h3><b>Cut <span>· 9</span></b></h3><ul><li>EQIP</li><li>Plain Language</li><li>PCORI</li><li>OPTION</li><li>CAHPS</li><li>NPS</li><li>Beryl PX</li><li>Planetree</li><li>SEIPS</li></ul></li>
       </ol>
+      </div>
     </div></div>
   </section>
+
 
   <section class="scene" id="certify" data-chap="AI certification" data-dur="4500">
     <div class="cert-band">
@@ -983,11 +1051,10 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     </div></div>
   </section>
 
-  <section class="scene" id="three" data-chap="Take-home">
-    <div class="three-n" aria-hidden="true">3</div>
+  <section class="scene" id="three" data-chap="Take-home" data-zoom>
+    <svg class="three-cover" aria-hidden="true"><defs><mask id="three-hole" maskUnits="userSpaceOnUse"><rect class="three-m" fill="#fff"/><text class="three-t" fill="#000" text-anchor="middle"><tspan>From napkin</tspan><tspan>to prototype</tspan></text></mask></defs><rect class="dark three-m" mask="url(#three-hole)"/></svg>
     <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.25">From napkin<br>to <mark>prototype,</mark></h2>
-      <p class="lead" data-in="0 0.25">in three steps.</p>
+      <h2 class="h2 visually-hidden">From napkin to prototype</h2>
     </div></div>
   </section>
 
@@ -1045,6 +1112,40 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   </section>
 </main>
 
+<script>
+/* light / dark switch for the whole deck (T key or the button under the dots) */
+var toggleTheme = (function(){
+  var root = document.documentElement, btn = document.querySelector('[data-theme-btn]'), sid = 0;
+  var MOON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>';
+  var SUN = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  function light(){ return root.getAttribute('data-theme') === 'light'; }
+  // the Meet PRISM frame is the app itself: give it the same theme
+  function syncFrames(){
+    document.querySelectorAll('iframe').forEach(function(f){
+      try { var d = f.contentDocument; if (!d) return;
+        if (light()) d.documentElement.removeAttribute('data-theme'); else d.documentElement.setAttribute('data-theme', 'dark');
+      } catch (_) {}
+    });
+  }
+  function sync(){
+    var l = light();
+    if (btn){ btn.innerHTML = l ? MOON : SUN; var t = l ? 'Switch to dark mode' : 'Switch to light mode';
+      btn.setAttribute('aria-label', t); btn.title = t + ' (T)'; }
+    syncFrames();
+  }
+  function toggle(){
+    root.classList.add('theme-switching'); var id = ++sid;
+    if (light()) root.removeAttribute('data-theme'); else root.setAttribute('data-theme', 'light');
+    try { localStorage.setItem('talk.theme', light() ? 'light' : 'dark'); } catch (_) {}
+    sync();
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ if (id === sid) root.classList.remove('theme-switching'); }); });
+  }
+  if (btn) btn.addEventListener('click', toggle);
+  document.querySelectorAll('iframe').forEach(function(f){ f.addEventListener('load', syncFrames); });
+  sync();
+  return toggle;
+})();
+</script>
 <script>
 (function(){
   'use strict';
@@ -1163,13 +1264,101 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   var cur = 0, keepSettle = null, vtSeq = 0;
   function show(i, dir){
     finish();
+    // a click during the zoom only hurries it to its end
+    if (zooming) return;
     var a = slides[cur], b = slides[i];
+    if (dir > 0 && i === cur + 1 && a.el.hasAttribute('data-zoom') && b.el.classList.contains('peek') && !reduce &&
+        window.innerWidth > 720 && a.el._zoom) return zoomThrough(a, b, i);
     // morph is the default: browsers with View Transitions glide shared parts (the title, anything marked
     // data-morph) to their new place. Slides that share data-title, the walkthrough, and reduced motion
     // keep the plain fade, as does a slide marked data-wait, whose title waits for its click.
     if (a === b || !document.startViewTransition || reduce || a.walk || b.walk || b.el.hasAttribute('data-wait') ||
         (a.el.dataset.title && a.el.dataset.title === b.el.dataset.title)) return swap(a, b, i, dir);
     morph(a, b, i, dir);
+  }
+  // zoom divider: lay the cut-out numeral out for this screen, and find the thickest spot in its stroke
+  // (sampled on a small canvas) to zoom about, so the hole grows to cover the whole screen
+  function zoomLayout(el){
+    var W = innerWidth, H = innerHeight, svg = el.querySelector('.three-cover'), t = el.querySelector('.three-t');
+    if (!svg || !t) return;
+    var u = W > 720 ? Math.min(W / 100, H * 1.78 / 100) : W / 100;
+    // the title is as wide as the space between the slide's margins allows (capped by the height), centred
+    // across it; its ink, descenders included, ends one margin above the bottom
+    var L = ['From napkin', 'to prototype'], m = document.createElement('canvas').getContext('2d');
+    m.font = '800 100px Newsreader, Georgia, serif';
+    var left = 5 * u, right = W - (5 * u + 44), x = (left + right) / 2;
+    var wide = Math.max(m.measureText(L[0]).width, m.measureText(L[1]).width);
+    var fs = Math.min(100 * (right - left) / wide, .34 * H), lh = fs * .98;
+    m.font = '800 ' + fs + 'px Newsreader, Georgia, serif';
+    var A = m.measureText(L[0]).actualBoundingBoxAscent, D = m.measureText(L[1]).actualBoundingBoxDescent;
+    // it sits at the foot of the slide, where Intent first's drawing is, so the letters show the most of it
+    var y = H - 5 * u - lh - D;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    [].forEach.call(el.querySelectorAll('.three-m'), function(r){ r.setAttribute('width', W); r.setAttribute('height', H); });
+    t.setAttribute('font-size', fs); t.removeAttribute('transform');
+    [].forEach.call(t.querySelectorAll('tspan'), function(sp, k){ sp.setAttribute('x', x); sp.setAttribute('y', y + k * lh); });
+    var q = 4, c = document.createElement('canvas'), w = Math.ceil(W / q), h = Math.ceil(H / q), g = c.getContext('2d');
+    c.width = w; c.height = h;
+    g.font = '800 ' + (fs / q) + 'px Newsreader, Georgia, serif'; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+    L.forEach(function(line, k){ g.fillText(line, x / q, (y + k * lh) / q); });
+    var d = g.getImageData(0, 0, w, h).data, on = function(px, py){ return d[(py * w + px) * 4 + 3] > 128; };
+    // the zoom grows out of the drawing: of the strokes at least 60% as thick as the thickest, take the one
+    // nearest the gardener (about 60% across and 45% down the next slide's art)
+    var art = el.nextElementSibling && el.nextElementSibling.querySelector('.pt-art'), ab = art && art.getBoundingClientRect();
+    var tx = ab && ab.width ? ab.left + ab.width * .6 : W * .7, ty = ab && ab.height ? ab.top + ab.height * .45 : H * .6;
+    var spots = [], top = 0;
+    for (var py = 1; py < h - 1; py += 2) for (var px = 1; px < w - 1; px += 2) {
+      if (!on(px, py)) continue;
+      var l = 0, r = 0, up = 0, dn = 0;
+      while (px - l > 0 && on(px - l - 1, py)) l++;
+      while (px + r < w - 1 && on(px + r + 1, py)) r++;
+      while (py - up > 0 && on(px, py - up - 1)) up++;
+      while (py + dn < h - 1 && on(px, py + dn + 1)) dn++;
+      var k = Math.min(l, r, up, dn);
+      spots.push([k, px * q, py * q]); if (k > top) top = k;
+    }
+    var best = { r:0, x:x, y:y, d:Infinity };
+    spots.forEach(function(p){
+      if (p[0] < top * .6) return;
+      var dd = Math.hypot(p[1] - tx, p[2] - ty);
+      if (dd < best.d) best = { r:p[0], x:p[1], y:p[2], d:dd };
+    });
+    var rr = Math.max(best.r * q, 4), far = 0;
+    [[0, 0], [W, 0], [0, H], [W, H]].forEach(function(p){ far = Math.max(far, Math.hypot(p[0] - best.x, p[1] - best.y)); });
+    el._zoom = { x:best.x, y:best.y, s:far / rr * 1.15 };
+  }
+  addEventListener('resize', function(){ var s = slides[cur]; if (s && s.el.hasAttribute && s.el.hasAttribute('data-zoom')) zoomLayout(s.el); });
+  if (document.fonts) document.fonts.load('800 100px Newsreader').then(function(){ var s = slides[cur]; if (s && s.el.hasAttribute && s.el.hasAttribute('data-zoom')) zoomLayout(s.el); }, function(){});
+  var zooming = false;
+  function zoomThrough(a, b, i){
+    zooming = true;
+    var z = a.el._zoom, t = a.el.querySelector('.three-t'), cover = a.el.querySelector('.three-cover'), done = false;
+    var wash = b.el.querySelector('.pt-wash'), last = b.beats.length ? b.beats[b.beats.length - 1] : 1;
+    // the letters grow only so far (x14): beyond that the browser redraws the huge mask badly and the page
+    // flickers. Over the last 45% the dark cover fades out instead, while Intent first's wash and text fade
+    // in under it, so the slide is complete when the divider goes and nothing moves after the cut.
+    var top = Math.min(z.s, 14);
+    if (wash) wash.style.transition = 'none';
+    tween(function(v){
+      var s = Math.exp(Math.log(top) * (1 - Math.cos(v * Math.PI / 2))), f = clamp((v - .55) / .45);
+      t.setAttribute('transform', 'translate(' + z.x + ' ' + z.y + ') scale(' + s + ') translate(' + -z.x + ' ' + -z.y + ')');
+      cover.style.opacity = 1 - f;
+      if (wash) wash.style.opacity = f;
+      paintSlide(b, last * f);
+      if (v >= 1 && !done) {
+        done = true;
+        // runs once the zoom's own frame has ended; the next slide is shown already finished, with no cascade
+        Promise.resolve().then(function(){
+          a.el.style.transition = 'none';
+          swap(a, b, i, 1);
+          finish();
+          void a.el.offsetWidth; a.el.style.transition = '';
+          t.removeAttribute('transform'); cover.style.opacity = '';
+          if (wash) { wash.style.opacity = ''; void wash.offsetWidth; wash.style.transition = ''; }
+          zooming = false;
+        });
+      }
+    }, 0, 1, 1200, 0, function(k){ return k; });
   }
   function shown(el){
     if (!el || el.classList.contains('visually-hidden')) return false;
@@ -1253,17 +1442,24 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
       b.el.classList.add('on');
       b.el.removeAttribute('aria-hidden');
     }
+    // a slide marked data-zoom is a window onto the next one, which waits underneath it
+    [].forEach.call(document.querySelectorAll('.scene.peek'), function(e){ e.classList.remove('peek'); });
+    if (b.el.hasAttribute('data-zoom') && slides[i + 1] && !slides[i + 1].walk) {
+      paintSlide(slides[i + 1], 0); slides[i + 1].el.classList.add('peek'); zoomLayout(b.el);
+    }
     cur = i;
     // the address names the slide, so a refresh opens the same one
     if (b.el.id && location.hash !== '#' + b.el.id) history.replaceState(null, '', '#' + b.el.id);
     var n = count(b);
     if (dir > 0) {
       if (b.walk) window.scrollTo(0, walkTop()); else paintSlide(b, 0);
+      [].forEach.call(b.el.querySelectorAll('[data-scroll]'), function(el){ el.scrollTop = 0; });
       b.beat = n ? 0 : -1;
       if (n) playBeat(b, false, 160);
     } else {
       b.beat = n - 1;
       if (b.walk) window.scrollTo(0, walkStops()[n - 1]); else paintSlide(b, n ? b.beats[n - 1] : 1);
+      [].forEach.call(b.el.querySelectorAll('[data-scroll]'), function(el){ el.scrollTop = el.scrollHeight; });
     }
     markRail();
     remember(b.el.id);
@@ -1272,8 +1468,17 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   var KEEP = 'prism-talk-slide';
   function remember(id){ try { localStorage.setItem(KEEP, id); } catch (e) {} }
   function recalled(){ try { return localStorage.getItem(KEEP); } catch (e) { return null; } }
+  // the slide's scrolling panel (data-scroll: the review sheet), while it is showing
+  function scroller(s){
+    var el = s && !s.walk && s.el.querySelector('[data-scroll]');
+    return el && +getComputedStyle(el.closest('[data-in]') || el).opacity > .5 ? el : null;
+  }
+  function canScroll(el, down){ return down ? el.scrollTop + el.clientHeight < el.scrollHeight - 2 : el.scrollTop > 1; }
   function next(){
     var s = slides[cur]; finish();
+    // a click or key first glides the sheet to its last row; the next one moves on
+    var sc = scroller(s);
+    if (sc && canScroll(sc, true)) { tween(function(v){ sc.scrollTop = v; }, sc.scrollTop, sc.scrollHeight - sc.clientHeight, 900); return; }
     if (s.beat < count(s) - 1) { s.beat++; playBeat(s, false); }
     else if (cur < slides.length - 1) show(cur + 1, 1);
   }
@@ -1303,19 +1508,28 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   var lastWheel = 0;
   addEventListener('wheel', function(e){
     if (e.ctrlKey) return;
-    // a panel marked data-scroll (the review spreadsheet) scrolls itself instead of turning the slide
-    if (e.target.closest && e.target.closest('[data-scroll]')) return;
-    e.preventDefault();
     var now = performance.now(), fresh = now - lastWheel > 220;
     lastWheel = now;
+    // over a panel marked data-scroll (the review spreadsheet) the wheel scrolls the panel; once it is at
+    // its end, a fresh gesture turns the slide (momentum from the scroll itself never does)
+    var sc = e.target.closest && e.target.closest('[data-scroll]');
+    if (sc && sc === scroller(slides[cur]) && (Math.abs(e.deltaX) > Math.abs(e.deltaY) || canScroll(sc, e.deltaY > 0))) return;
+    e.preventDefault();
     if (fresh && Math.abs(e.deltaY) > 2) (e.deltaY > 0 ? next : prev)();
   }, { passive:false });
-  var touchY = null;
-  addEventListener('touchstart', function(e){ touchY = e.target.closest && e.target.closest('[data-scroll]') ? null : e.touches[0].clientY; }, { passive:true });
-  addEventListener('touchmove', function(e){ if (touchY !== null) e.preventDefault(); }, { passive:false });
+  var touchY = null, touchSc = null, touchCan = null;
+  addEventListener('touchstart', function(e){
+    touchY = e.touches[0].clientY;
+    var sc = e.target.closest && e.target.closest('[data-scroll]');
+    touchSc = sc && sc === scroller(slides[cur]) ? sc : null;
+    touchCan = touchSc ? { down:canScroll(touchSc, true), up:canScroll(touchSc, false) } : null;
+  }, { passive:true });
+  addEventListener('touchmove', function(e){ if (touchY !== null && !touchSc) e.preventDefault(); }, { passive:false });
   addEventListener('touchend', function(e){
     if (touchY === null) return;
     var dy = touchY - e.changedTouches[0].clientY; touchY = null;
+    // in the sheet, a swipe only turns the slide when the sheet was already at that end
+    if (touchSc && (dy > 0 ? touchCan.down : touchCan.up)) return;
     if (Math.abs(dy) > 30) (dy > 0 ? next : prev)();
   });
   addEventListener('keydown', function(e){
@@ -1325,6 +1539,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || (k === ' ' && e.shiftKey)) { e.preventDefault(); prev(); }
     else if (k === 'Home') { e.preventDefault(); show(0, -1); }
     else if (k === 'End') { e.preventDefault(); show(slides.length - 1, 1); }
+    else if ((k === 't' || k === 'T') && !(e.target.matches && e.target.matches('input,textarea,[contenteditable]'))) { e.preventDefault(); toggleTheme(); }
   });
   // the walkthrough's chapter buttons move the page; keep the beat in step with where they land
   addEventListener('scroll', function(){
@@ -1501,11 +1716,11 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 })();
 </script>
 <script src="analogy-bg.js?v=20261104b"></script>
-<script src="question-bg.js?v=20261112b"></script>
+<script src="question-bg.js?v=20261116a"></script>
 <script src="dot-bg.js?v=20261110a"></script>
 <script>
 /* Verification: the spreadsheet pans across its columns by itself while the slide is up;
-   the moment someone wheels, drags or touches it, it stops and stays where they put it */
+   a wheel, click or touch on it stops the pan and leaves it where they put it */
 (function(){
   var sec = document.getElementById('review'), win = sec && sec.querySelector('.xl-win');
   if (!win || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1520,10 +1735,10 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     else if (dir < 0 && win.scrollLeft <= 0) { dir = 1; pause = now + 1800; }
   }
   function hold(){ held = true; }
-  ['wheel', 'pointerdown', 'touchstart', 'keydown'].forEach(function(t){ win.addEventListener(t, hold, { passive:true }); });
+  ['wheel', 'pointerdown', 'touchstart'].forEach(function(t){ win.addEventListener(t, hold, { passive:true }); });
   new MutationObserver(function(){
     var on = sec.classList.contains('on');
-    if (on && !raf) { held = false; dir = 1; last = 0; win.scrollLeft = 0; win.scrollTop = 0; pause = performance.now() + 1200; raf = requestAnimationFrame(step); }
+    if (on && !raf) { held = false; dir = 1; last = 0; win.scrollLeft = 0; pause = performance.now() + 1200; raf = requestAnimationFrame(step); }
     else if (!on && raf) { cancelAnimationFrame(raf); raf = 0; }
   }).observe(sec, { attributes:true, attributeFilter:['class'] });
 })();
