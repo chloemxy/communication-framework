@@ -4,6 +4,18 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — "How we met": bigger cabinets, follows light and dark mode
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Option A:** the slide drops the cream half of the illustration and uses the deck's own
+  background, so it switches with light and dark mode like every other slide. The title and the
+  four dated rows stay on the left.
+- **The cabinet pair** (`presentation/media/bg/blue-cabinets-pair.jpg`, cropped from
+  `blue cabinets.png`) now stands on the right half, its top below the slide top and its drawers
+  running off the bottom edge, so the frames and posts are a little bigger. Each whole post still
+  fills its frame and links to LinkedIn.
+
 ## 2026-11-16 — "How we met": the two posts hang in the blue cabinets
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -324,6 +336,25 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 - **Logo opening plays every time the slide opens**, going forward or back, not only the first time
   per showing. When the slide is left, the page and small logo are hidden again (`hold()`), so they
   never flash before the next opening; a half-finished opening is cancelled cleanly.
+
+## 2026-11-16 — Why AI?: Lego parts seated properly
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Head** comes down until its collar rests on the shoulders; the neck is hidden inside it.
+- **Hands** are centred on the arm cuffs, behind the arms, so each peg disappears into its cuff.
+- **Hips** slide up so their studs are hidden inside the torso and the bar sits right under it.
+- **Legs** sit side by side directly under the hip bar, in front of the hip pin, so no stray pin
+  or overlapping leg lines show.
+- Positions and stacking in `scripts/lego-pieces.py`; asset version `20261116d`.
+
+## 2026-11-16 — Why AI?: headline on three lines, clear of the Lego figure
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- The headline now breaks "If you understand / the problem, you can / build the tool yourself." so it
+  ends at about 65% of the slide's width at 16:9 and never touches the Lego figure on the right
+  (about 240 px of clear space at 1920 × 1080). Narrow screens still run it as one paragraph.
 
 ## 2026-11-16 — Why AI?: Lego pieces lock together as solid parts
 

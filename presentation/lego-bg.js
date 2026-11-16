@@ -8,7 +8,7 @@
   'use strict';
   var scene = document.getElementById('why'), cv = scene && scene.querySelector('.lego-bg');
   if (!cv) return;
-  var ctx = cv.getContext('2d'), DIR = 'media/bg/lego/', V = '?v=20261116c';
+  var ctx = cv.getContext('2d'), DIR = 'media/bg/lego/', V = '?v=20261116d';
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var W = 1456, H = 816;
   var CX = 1152, CY = 408, FX = .875, FIG = .86;   // figure centre in the drawing; its spot and size on the slide

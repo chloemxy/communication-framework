@@ -51,15 +51,15 @@ Image.fromarray(grid.astype(np.uint8)).save(os.path.join(OUT, 'grid.jpg'), quali
 # pieces: each part's box in the start drawing, how far it moves to lock into the built figure (the
 # exploded view only spreads the parts apart, so closing the gaps builds the figure from the same
 # lines), and its stacking order front to back (higher is in front)
-P = [('head',      (1092, 104, 1236, 248), (  0,  56), 3),
+P = [('head',      (1092, 104, 1236, 248), (  0,  77), 3),   # collar sits on the shoulders, neck hidden
      ('torso',     (1068, 250, 1232, 452), (  0,   0), 2),
      ('left arm',  ( 990, 290, 1092, 430), ( 26,   6), 4),
      ('right arm', (1212, 284, 1314, 428), (-26,   6), 4),
-     ('left hand', ( 994, 430, 1060, 524), ( 30, -34), 3),   # behind the arm: its peg goes into the cuff
-     ('right hand',(1246, 428, 1312, 524), (-30, -34), 3),
-     ('hips',      (1080, 452, 1220, 612), (  0, -40), 1),
-     ('left leg',  (1002, 536, 1094, 712), ( 70, -56), 0),
-     ('right leg', (1212, 536, 1302, 712), (-70, -56), 0)]
+     ('left hand', ( 994, 430, 1060, 524), ( 19, -40), 3),   # behind the arm: peg centred in the cuff
+     ('right hand',(1246, 428, 1312, 524), (-14, -41), 3),
+     ('hips',      (1080, 452, 1220, 612), ( -2, -87), 1),   # studs up inside the torso, bar under it
+     ('left leg',  (1002, 536, 1094, 712), ( 74, -80), 1.5), # tops under the bar, hiding the hip pin
+     ('right leg', (1212, 536, 1302, 712), (-72, -80), 1.5)]
 inkA = ink(A); inkA[:, :REGION[0]] = 0; inkA[:, REGION[1]:] = 0
 # every connected stroke goes to exactly one piece (the smallest box holding its centre), so no line
 # is drawn twice and nothing is left behind
