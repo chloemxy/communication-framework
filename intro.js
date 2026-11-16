@@ -49,7 +49,6 @@
           '<button type="button" class="btn intro-cta-main" data-go="evaluate">Check a draft</button>' +
           '<button type="button" class="btn intro-cta-alt" data-go="plan">Plan from an idea</button>' +
         '</div>' +
-        '<p class="intro-fine">Your file never leaves your computer.</p>' +
       '</div>' +
       '<figure class="intro-plate" aria-labelledby="intro-try-h">' +
         '<div class="intro-handout">' +

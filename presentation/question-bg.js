@@ -30,20 +30,21 @@
   function begin(){
     timer = 0; started = true;
     video.classList.add('push');
-    var p = video.play(); if (p) p.catch(function(){});
+    if (video.play) { var p = video.play(); if (p) p.catch(function(){}); }
   }
   function sync(){
     var on = scene.classList.contains('on');
     if (on && !was) { clearTimeout(timer); started = false; timer = setTimeout(begin, DELAY); }
     if (!on && was) {
       clearTimeout(timer); timer = 0; started = false;
-      video.pause(); try { video.currentTime = 0; } catch (e) {}
+      if (video.pause) { video.pause(); try { video.currentTime = 0; } catch (e) {} }
       video.style.transition = 'none'; video.classList.remove('push'); void video.offsetWidth; video.style.transition = '';
     }
     was = on;
   }
   new MutationObserver(sync).observe(scene, { attributes: true, attributeFilter: ['class'] });
   document.addEventListener('visibilitychange', function(){
+    if (!video.play) return;
     if (document.hidden) video.pause();
     else if (started && scene.classList.contains('on') && !video.ended) { var p = video.play(); if (p) p.catch(function(){}); }
   });

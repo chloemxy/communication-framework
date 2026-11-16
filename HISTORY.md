@@ -4,6 +4,70 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — Slide 2 and the designer slide morph into each other
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Morph both ways between slide 2 and `#waiting`:** the room stays in place while the designer
+  fades in and the room dims (going back, she fades out and the room brightens). The title morphs as
+  on other slides, and the push-in zoom eases back out. The backdrop, wash and text layers are
+  paired with `data-morph` (`clinic`, `clinic-wash`, `clinic-text`).
+- **Going back into a `data-wait` slide can now morph:** it arrives finished, so only going forward
+  into one keeps the plain fade. After a morph, a paired layer with no fade-in of its own is let go,
+  so slide 2's push-in still runs.
+
+## 2026-11-16 — New slide after slide 2: the designer waits, outlined
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New slide `#waiting` right after slide 2** (slide 2 keeps its clinic clip, quote and 10 s
+  push-in). Its background is a still of the designer waiting in her chair
+  (`presentation/media/bg/clinic designer.webp`, Midjourney). She is traced with a thin cream
+  outline and the rest of the room is dimmed (`clinic-designer-outlined.jpg`).
+- **Placeholder text** ("Placeholder title" and one placeholder line) sits on the right half, over
+  the dark room, so it never covers her. The slide keeps light text in both themes.
+- **Credit:** "Image: generated with Midjourney, outlined in code".
+
+## 2026-11-16 — Slides: shared edit mode (Chloe and Sonia retype lines, saved for everyone)
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Edit mode on the deck** (`presentation/deck-edit.js`): open `presentation/?edit`, or press E
+  once you've edited in that browser. Every title, line and caption gets a dashed outline; click and
+  type. Enter or Esc finishes a line, Shift+Enter breaks it, paste comes in as plain text. Typing never
+  turns the slide. A pill at the top shows when the last save was. No name or passcode: the toggle
+  is all it takes (anyone with the link and `?edit` can edit).
+- **Saved to GitHub** (`api/deck-edits.js`, a Vercel function): each save is one commit to
+  `presentation/deck-edits.json` on the `deck-edits` branch, so there is a full history and master
+  is untouched. Everyone who opens the deck (Vercel or GitHub Pages) sees the saved edits; while
+  editing, the other person's edits show up within 15 seconds. `vercel.json` turns off deploys
+  for the `deck-edits` branch.
+- **The deck waits up to 1.5 s for the edits before it starts**, so animations keep their text. If
+  the edits can't load, the deck starts with the text as written.
+- **On "push"**: `node scripts/bake-deck-edits.js` folds the edits into `presentation/index.html`,
+  then the edits file is cleared. Each edit keeps the line's original markup, so an edit made against
+  older text is skipped rather than misapplied.
+- **Setup needed in Vercel** (Settings → Environment Variables, all environments): `GITHUB_TOKEN`
+  (fine-grained, this repo only, Contents read and write).
+- Local testing: `node scripts/deck-edits-dev.js` (saves to a local file), then
+  open `presentation/?edit&api=local`.
+
+## 2026-11-16 — Front door: privacy line under the buttons removed
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **"Your file never leaves your computer." is gone** from under Check a draft / Plan from an idea
+  on the front door (`intro.js`). The Studio's own privacy note (the Private button and the guide)
+  is unchanged. `intro.js` is now loaded as `?v=20261116a` so browsers fetch the new copy.
+
+## 2026-11-16 — Why AI?: shoulders under the body, hands over the cuffs
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The arms now sit behind the torso**, so the body covers the shoulder joints.
+- **The hands sit higher and in front of the arms**, covering the round cuff holes
+  (`scripts/lego-pieces.py`, assets regenerated, cache key `20261116f`).
+
 ## 2026-11-16 — Title: napkin turns into the screen as "Dropped" falls
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
