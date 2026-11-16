@@ -485,6 +485,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 
 /* ── Score area: cards flow into balanced 300px+ columns ── */
 .rail-scroll{grid-column:3;grid-row:2;min-height:0;min-width:0;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;padding:2px var(--sp-1) 2px 2px}
+/* the scrollbar and its padding hang outside the column, so the cards line up with the Frameworks bar above
+   (--sbw is the browser's scrollbar width, measured on load; 0 where scrollbars overlay) */
+.rail-scroll{margin-right:calc(-1 * (var(--sbw, 0px) + var(--sp-1)))}
 .mod-rail{column-width:300px;column-gap:var(--sp-4);min-height:100%}
 .mod-rail > .mod{break-inside:avoid;margin-bottom:var(--sp-4);display:flex}
 .mod-rail > .mod.hidden, .mod-rail > .mod.na-hidden{display:none}
@@ -776,6 +779,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .cr-fix + .cr-fix{border-top:1px solid var(--rule)}
 .cr-fix .cr-dot{align-self:center}
 .cr-fix-t{min-width:0;font-weight:400;font-variant-numeric:tabular-nums}
+.cr-alt{display:block;margin:2px 0 0;padding:0;border:0;background:none;font:inherit;color:var(--ink-2);text-decoration:underline;text-underline-offset:2px;cursor:pointer;text-align:left}
+.cr-alt[aria-pressed="true"]{color:var(--ink)}
 .cr-fix-t b{font-weight:600}
 .cr-fix .btn{min-width:112px}
 .cr-verdict{padding-top:var(--sp-2);font-size:var(--fs-xs);font-weight:600;line-height:1.4}
@@ -3400,15 +3405,17 @@ function pickSwatch(hex){
   const i = vmPicked.indexOf(hex);
   if(i > -1) vmPicked.splice(i,1);
   else { vmPicked.push(hex); if(vmPicked.length > 2) vmPicked.shift(); }
-  vmPreviewFg = null;
+  vmPreviewFg = null; vmPreviewBg = null;
   renderPalette();
   renderContrastCard();
 }
 
-// ── Contrast fix: nearest shade of the text colour that reaches a target ratio ──
+// ── Contrast fix: nearest shade that reaches a target ratio ──
 // Keeps hue and saturation, moves HSL lightness only: darker on light backgrounds,
-// lighter on dark ones. Suggestions never change the artwork, only the preview.
-let vmPreviewFg = null;
+// lighter on dark ones. Both sides are tried, the text colour and the background, and the
+// one that moves least leads (white text on a pale band: darken the band, not grey the text).
+// Suggestions never change the artwork, only the preview.
+let vmPreviewFg = null, vmPreviewBg = null;
 function contrastRatio(a, b){
   const x = lum(a), y = lum(b);
   return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);
@@ -3446,8 +3453,10 @@ function nearestPassingShade(fg, bg, target){
   }
   return null;
 }
-function previewFix(hex){
-  vmPreviewFg = vmPreviewFg === hex ? null : hex;
+function previewFix(hex, side){
+  const on = side === 'bg' ? vmPreviewBg === hex : vmPreviewFg === hex;
+  vmPreviewFg = null; vmPreviewBg = null;
+  if(!on){ if(side === 'bg') vmPreviewBg = hex; else vmPreviewFg = hex; }
   renderContrastCard();
 }
 
@@ -3487,22 +3496,31 @@ function renderContrastCard(){
                 : r >= 3   ? 'Large text only (18pt+, or 14pt bold). Too weak for body copy.'
                 :            'Fails AA. Do not use this pair for any text.';
 
-  // one fix row per failing target (AA body, AAA); hex values are computed, never user text
+  // one fix row per failing target (AA body, AAA); hex values are computed, never user text.
+  // The side that needs the smaller lightness change leads; the other is offered under it.
   const fixes = [];
   const exact = contrastRatio(fg, bg);
+  const moved = (from, s) => Math.abs(hexToHsl(s.hex)[2] - hexToHsl(from)[2]);
   [[4.5,'AA body'],[7,'AAA']].forEach(([t, name]) => {
     if(exact >= t) return;
-    const s = nearestPassingShade(fg, bg, t);
-    if(!s){ fixes.push('<div class="cr-fix"><span class="cr-dot"></span><span class="cr-fix-t">No shade of this colour reaches '+name+' on this background. Pick a different text colour.</span><span></span></div>'); return; }
-    const on = vmPreviewFg === s.hex;
+    const opts = [];
+    const tx = nearestPassingShade(fg, bg, t); if(tx) opts.push({ side:'fg', what:'text', s:tx, d:moved(fg, tx) });
+    const bk = nearestPassingShade(bg, fg, t); if(bk) opts.push({ side:'bg', what:'background', s:bk, d:moved(bg, bk) });
+    if(!opts.length){ fixes.push('<div class="cr-fix"><span class="cr-dot"></span><span class="cr-fix-t">No shade of either colour reaches '+name+'. Pick a different pair.</span><span></span></div>'); return; }
+    opts.sort((a, b) => a.d - b.d);
+    const verb = o => (o.s.darker ? 'Darken' : 'Lighten')+' '+o.what+' to <b>'+o.s.hex+'</b>';
+    const isOn = o => (o.side === 'bg' ? vmPreviewBg : vmPreviewFg) === o.s.hex;
+    const [a, b] = opts;
     fixes.push(
       '<div class="cr-fix">'+
-        '<span class="cr-dot" style="background:'+s.hex+'"></span>'+
-        '<span class="cr-fix-t">'+(s.darker?'Darken':'Lighten')+' to <b>'+s.hex+'</b> ('+(Math.round(s.ratio*100)/100).toFixed(2)+':1) to pass '+name+'</span>'+
-        '<button type="button" class="btn btn-secondary" aria-pressed="'+on+'" onclick="previewFix(\''+s.hex+'\')">'+(on?'Show original':'Preview')+'</button>'+
+        '<span class="cr-dot" style="background:'+a.s.hex+'"></span>'+
+        '<span class="cr-fix-t">'+verb(a)+' ('+(Math.round(a.s.ratio*100)/100).toFixed(2)+':1) to pass '+name+
+          (b ? '<button type="button" class="cr-alt" aria-pressed="'+isOn(b)+'" onclick="previewFix(\''+b.s.hex+'\',\''+b.side+'\')">or '+verb(b).replace(/<\/?b>/g,'').toLowerCase()+(isOn(b) ? ' (showing)' : '')+'</button>' : '')+
+        '</span>'+
+        '<button type="button" class="btn btn-secondary" aria-pressed="'+isOn(a)+'" onclick="previewFix(\''+a.s.hex+'\',\''+a.side+'\')">'+(isOn(a)?'Show original':'Preview')+'</button>'+
       '</div>');
   });
-  const shown = vmPreviewFg || fg;
+  const shown = vmPreviewFg || fg, shownBg = vmPreviewBg || bg;
 
   out.innerHTML =
     '<div class="cr-card">'+
@@ -3512,7 +3530,7 @@ function renderContrastCard(){
         grade(r>=4.5,'AA body','4.5:1')+grade(r>=3,'AA large','3:1')+grade(r>=7,'AAA','7:1')+
       '</div>'+
       (fixes.length ? '<div class="cr-fixes">'+fixes.join('')+'</div>' : '')+
-      '<div class="cr-prev" style="background:'+bg+';color:'+shown+'">'+
+      '<div class="cr-prev" style="background:'+shownBg+';color:'+shown+'">'+
         '<div class="cr-prev-lg">Large heading</div>'+
         '<div class="cr-prev-sm">Body copy at reading size. Check this is comfortable, not just technically passing.</div>'+
       '</div>'+
@@ -7060,5 +7078,6 @@ document.addEventListener('dblclick', e => {
   }
 });
 </script>
+<script>(function(){var r=document.getElementById('rail-scroll');if(r)document.documentElement.style.setProperty('--sbw',(r.offsetWidth-r.clientWidth)+'px');})();</script>
 </body>
 </html>
