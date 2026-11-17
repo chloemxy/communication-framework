@@ -4,6 +4,252 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-17 — Studio: Fix and Review line up with the word Apply
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The red Fix (and amber Review) on each Plain language flag now end where the words "Apply" and
+  "Apply all" end**, 13 px in from the buttons' edge (they ended on the button edge).
+
+## 2026-11-17 — Feature slides count to 4
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The step labels now read "1 of 4" to "4 of 4"** (they said "of 8"); the demo has four feature
+  slides: Bring it in, Pick the right checks, Check a poster, Fix it your way.
+
+## 2026-11-17 — Studio: the New box ends at the Apply button
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Plain language's New box now ends on the same right edge as its Apply button** (it reached 6 px
+  past it). Its left side still hangs into the padding so its words line up with Now.
+
+## 2026-11-17 — Slide 4: the live draft, its suggestions and History; slide 3's problem line
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 4 (`#feat-edit`) is now the real Studio, live**, laid out like slide 3: the Take Action
+  draft fills the left column (edit it in place); on the right, the Plain language card (apply a
+  suggestion, Apply all, or write your own in New) and History (every change as a version; Undo,
+  Revert). Each right tile is covered by its title until you point at it, with the same slide-up
+  cover. It loads with the deck, like slides 2 and 3.
+- **Studio: new demo mode** (`/?demo=edit`): the Take Action section, Brief Patients + Handout, only
+  those three panels on a transparent page; History stays open (clicks elsewhere, Escape and its ✕
+  don't close it). Never reads or saves stored work.
+- **Slide 3's problem now reads:** "Contrast checkers, colour-blind simulators and alt text guides are
+  scattered across separate, clunky sites. No one place does it all."
+- The four slide 4 clips (`s4-*`) are no longer used; their files stay in the folder.
+- Checked at 1920×1080: slide 4 with both tiles covered, then each opened; in the Studio, applying a
+  suggestion added a version and History stayed open after a click elsewhere.
+
+## 2026-11-17 — One side margin on every slide
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Every slide now keeps 2.5u (48 px at 1920×1080) on the left and the right**, the margin the
+  feature slides use. Before, most slides had 5u on the left and 5u + 44 px on the right (96 / 140 px),
+  so wide content such as the homepage slider stopped well short of the right edge. The slide dots
+  sit in the right margin.
+- **Feature slides: the right column runs to that right margin** (it had a fixed width, so on screens
+  wider than 16:9 the yellow box stopped short).
+- "Waiting" and the hidden "What we brought" keep their own left offset; their right margin is 2.5u too.
+- Checked at 1920×1080 by measuring each slide's content: 48 px each side on every slide except the
+  intro (full-bleed front door) and "Waiting" (text set to the right on purpose).
+
+## 2026-11-17 — Homepage slider: three versions, "What got better" card instead of the build stats
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The stats are gone** (131 commits, 23 sittings, 23M tokens, 0 developers). Their place shows
+  "What got better" for each version, as the same yellow card the feature slides use for "What
+  PRISM does" (`ft-kick`, `ft-does`, `ft-list`). Every card is as tall as the tallest one, so its
+  bottom edge meets the screen's.
+  - 0 h: Frameworks up top · One upload box · Scores as cards
+  - 10 h: All on one page · Drop Word or PDF · Steps show you how · Simpler panels (1 h merged in)
+  - 18 h: New PRISM logo · Yellow brand colour · One button style · One type system
+- **1 h (Aug 17) removed.** Three versions remain (0 h, 10 h, 18 h); the hidden title reads "Three
+  homepages in 18 hours."
+- **One text edge:** as on the feature slides, the prompt, credit, label and points all start at the
+  card text's left edge, and the yellow card's padding hangs out to the left.
+- **Credit lines drop the name:** "10 h · Oct 16" instead of "Chloe · 10 h · Oct 16".
+- **Smaller gap to the screen:** the left column is 18u wide (was 17u), so the gap before the screen is
+  1.5u (24 px at 1600x900, was 40 px). The screen keeps its size.
+  The column also takes any spare width, so the gap stays 1.5u in taller windows (16:10, 5:4),
+  where the screen is limited by height. Before, the spare width became a wide gap there.
+- **The tile feature slides ("Bring it in" and "Fix it your way") get the same tight gap.** Each tile
+  is now as large as fits both ways (1040:880), and the text column starts 1.5u after the tiles
+  instead of at a fixed 68.3u. At 1600x900 the gap was 88 px; at 16:10 the tiles nearly touched
+  the text. The live-panel slides (Frameworks, Check a poster) are unchanged.
+- **Points match the screens:** each list names only what its screenshot shows. 18 h is about
+  branding and the design system; its prompt is now "I like logo 3, implement while use the yellow
+  as theme color, adjust color palette to include it. disregard the font, keep current" (Oct 18).
+
+## 2026-11-17 — Slides: previous / next arrows with a slide count
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **A small pill at the bottom centre of every slide:** ‹ previous, "4 / 17", next ›. The arrows turn
+  a whole slide each time, skipping a slide's click-through steps (the keys still step through them);
+  they grey out on the first and last slide.
+- **It fades out 2.5 s after the mouse stops**, so it isn't on the projector while presenting; moving
+  the mouse brings it back. It's hidden in edit mode.
+- **On slides whose credit line runs under it** (title, question, certification, closing), the pill
+  sits just above the credit instead of covering it.
+
+## 2026-11-17 — Slides: "Pick the right checks" says what PRISM does, in plain words
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New points on the Frameworks feature slide (`#feat-frameworks`, 2 of 8):** "Picks the frameworks
+  that fit your readers", "Shows what every framework asks for, in one place", "Tells you which items
+  need your judgement, and why", "Suggests fixes you can apply in one click", "Saves every change,
+  so you can go back" (was four points on sorting, filtering and result cards).
+- **Balanced line breaks** in every feature slide's list (`text-wrap: balance`), so no point ends
+  with one word alone on its second line.
+
+## 2026-11-17 — Slide 3: poster down the left; colour-blind picker in one row
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 3's live view is now three panels**: the poster view fills the left column (it opens at
+  52%, was 23%); on the right, Alt text (top) and one tile for Colour contrast and colour blindness
+  (bottom), each covered by its title until you point at it. The colour-blind buttons stay in the
+  colour card (`?demo=poster` no longer splits them out).
+- **Studio: the colour-blind picker is one row of five equal buttons**: Normal · Deutan · Protan ·
+  Tritan · Greyscale (was two columns with "Greyscale / mono print" alone on a third row). The full
+  names are the tooltips and what screen readers say ("Deuteranopia: green-blind, the most common",
+  "Protanopia: red-blind", "Tritanopia: blue-blind, rare", "Greyscale: mono print, or no colour
+  vision").
+- Checked at 1920×1080: slide 3 with both tiles covered, and with the colour tile open.
+
+## 2026-11-17 — Live slides load ahead: no black screen
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The live Studio frames on slides 2 and 3 load when the deck opens** (one after the other), so
+  arriving on either slide shows the panels at once instead of a dark screen for a few seconds.
+  After a slide is left, its frame reloads in the background, so it is fresh (nothing typed or
+  picked carries over) and ready for the next visit.
+- **`?demo=poster` shows its panels as soon as the poster is open** (it waited a fixed 3.5 s).
+- Checked at 1920×1080: from slide 2 to slide 3, the poster is on screen 0.3 s after arriving.
+
+## 2026-11-17 — Slide 3: the live poster, with its three cards
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 3 (`#feat-poster`) is now the real Studio, live**, in a 2×2 grid like slide 2's panels:
+  the poster view top left, always open; the Alt text, Colour contrast and Colour blindness cards in
+  the other three, each covered by its title until you point at it (one open at a time; leaving the
+  slide covers them again). You can type alt text, pick colour pairs and preview a fix, and switch
+  colour-blind views; the colour-blind view shows on the poster. The frame loads fresh each time the
+  slide opens.
+- **Studio: new demo mode** (`/?demo=poster`): opens the UHN poster with the Brief set to Patients +
+  Poster and shows only those four panels on a transparent page, always light; the colour-blind
+  buttons move into a card of their own. Like `?demo=frameworks`, it never reads or saves stored work.
+- The four slide 3 clips (`s3-*`) are no longer used; their files stay in the folder.
+- Checked at 1920×1080: the poster shows on arrival, pointing at Colour blindness opens it, and
+  clicking Deuteranopia changes the poster.
+
+## 2026-11-17 — Feature slides: list rows fill the yellow box
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The What PRISM does lists fill each row before wrapping** (`text-wrap: pretty`, was `balance`,
+  which split each item into two short, even lines). On slide 3: "Runs the Section 508 / WCAG
+  checks", "Tests alt text against WCAG 1.1.1 and your reading level", "Checks colour pairs, and
+  suggests a fix", "Shows it as colour-blind readers see it". Applies to every feature slide.
+
+## 2026-11-17 — Studio: alt text checks in the checklist format
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The Alt text card's checks are now checklist rows like CCI and PEMAT**, under a section header
+  "WCAG 1.1.1 Non-text Content · 4 items": 1 The image has alt text. 2 The alt text says what the
+  image tells the reader. 3 The alt text is 150 characters or fewer. 4 The alt text reads at the
+  Brief's grade or lower. Each has Met / Not met / N/A, which PRISM marks as you type, and a one-line
+  note (Checked by PRISM, the count, the grade, or what to fix). A person can change any mark; a
+  changed mark holds until the next image opens.
+- **The card's header has a pill** like the other cards: "1 not met", "2 to rate" or "All met".
+- **Less text:** the help line is "Say what the image tells the reader."; the separate character
+  count under the box is gone (item 3 shows it).
+- **Edges:** the typed alt text starts on the card's text edge (the box hangs into the padding), with
+  the title, help line, section header and item numbers; the N/A buttons end under "4 items", also
+  when the buttons drop under the item in a narrow card.
+- Slide 3's alt text clip (`s3-alt`) is re-recorded with the new rows.
+- Checked at 1440×900: marks on "Image of a poster" (1 not met), N/A on item 2 (All met), a good
+  rewrite (All met); no console errors.
+
+## 2026-11-17 — Studio: alt text download and copy move to Export
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The Alt text card no longer has "Download image with alt text", "Copy" or the note under them**
+  ("Adobe apps and many asset libraries read this…"). It keeps the text box and its checks.
+- **Export in the Material bar now shows for images and PDFs too**, with "Download image with alt
+  text" and "Copy alt text" (a document still gets Copy text, Download for Word and plain text).
+  Without alt text it says to write it first; a file type that can't carry alt text says why.
+
+## 2026-11-17 — Studio: one right edge for chevrons and Deselect all; CCI summary removed
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Every score card's right edge lines up**: the header chevron's arrow (it stopped 4 px short) and
+  the borderless "Deselect all" (13 px short, from its button padding) now end where the card's
+  numbers, pills' rows, "0 of 59 rated" and the N/A boxes end (1408 px at 1440 wide). No sideways
+  scroll.
+- **The CCI card no longer shows its summary** ("Can't reach 90 yet · best possible …", the met / not
+  met counts and the advice under them); the score pill in the header stays. PEMAT's summary
+  ("14 items left to rate…") is removed the same way.
+
+## 2026-11-17 — Guide credit names its designer
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The Light Collective guide's credit now ends "designed by Chloe Ma, GoInvo"** on every slide
+  that uses it (slides 1, 2 and 4, and the hidden older demo slide). It wraps to three lines in the
+  right column at 1920×1080.
+- **The guide's title links to the PDF** on lightcollective.org
+  (`…/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf`, checked: it loads).
+
+## 2026-11-17 — Demo slides 3 and 4; Studio: Section 508 card, alt text checked against WCAG 1.1.1
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New slide `#feat-poster`, "3 of 8: Check a poster"**, after slide 2, in slide 1's layout: four
+  tiles that play when pointed at or clicked (Section 508 check, Alt text checked, Colour contrast,
+  Colour blindness), and the right column: The problem ("Posters and images get their accessibility
+  check at the end, when changes cost the most.") and What PRISM does. Credit: the UHN poster, Sonia
+  Seto.
+- **New slide `#feat-edit`, "4 of 8: Fix it your way"**: Edit in the text ("access" retyped as "get
+  to"), Apply a suggestion (then Apply all), Write your own (a long sentence with no safe rewrite,
+  rewritten in New and applied), Go back in History (Undo last change, then Revert). Credit: the
+  Light Collective guide.
+- **Clips** (`presentation/media/loops/s3-*`, `s4-*`: WebM with alpha, MP4 fallback, PNG first frame),
+  one real Studio card or panel each at 520×440, recorded like slide 1's; 6–12 s.
+- **Studio: the Accessibility card is now "Section 508 / WCAG 2.2 AA"** (its tip says Section 508
+  uses the WCAG success criteria). Opening an image or PDF turns it on, even in a workspace that had
+  it off.
+- **Studio: alt text is checked against WCAG 1.1.1 Non-text Content** (the rule Section 508 points
+  to) and the Brief: under the text box, four rows: There is alt text · Says what it tells the reader
+  (not "image of…", not a file name) · Short enough (150 characters) · Easy to hear (its reading grade
+  against the Brief's goal).
+- **Studio fix:** the rule that stops a long sentence being split before "what / which / that…" held
+  a stray control character where `\b` belonged, so it never matched. It now reads `\b`.
+- Checked at 1920×1080: both slides, a tile on each plays when pointed at and stops on its last
+  frame; the Studio's inline scripts all parse.
+
+## 2026-11-16 — Studio: every score card's text ends on one right edge
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **One right edge across all score cards.** A card that scrolls (Plain language) used to lose 10 px
+  to its scrollbar, so Apply all, Fix and Apply ended 10 px short of Readability's numbers. The
+  scrollbar now sits inside the right padding on every card (`--msbw`, measured on load), so the
+  text in Plain language, Readability, CCI, PEMAT and the framework list all ends 16 px from the
+  card's edge (1003 px at 1040 wide).
+- **The New box spans the full row**: its text ends on that edge too, with the box padded outward.
+
 ## 2026-11-16 — Studio: Apply has its own hover
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
@@ -109,7 +355,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) �
 
 ## 2026-11-16 — Slides: hide the two old strip demo slides
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - The old demo slides `#features` (the four-strip slide "1 · Drop it in … 4 · Plain language") and
   `#features-2` (the poster demo, "5 · New example" onward) are now `hidden`, so the deck skips
