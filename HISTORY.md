@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-17 — Slide 3: the poster down one column, two clip tiles beside it
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #49) · GitHub Pages: updated from `master`
 
 - **Slide 3 (`#feat-poster`) is the poster in a tall column plus two tiles**: "Alt text, checked"
   (`s3-alt`) and "Colour contrast and colour blindness" (new `s3-colour`, 29 s: white on the poster
@@ -24,7 +24,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Studio: a contrast fix shows on the poster, and downloads
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #49) · GitHub Pages: updated from `master`
 
 - **Preview paints the fix onto the artwork**: every pixel close to the colour being changed (the
   picked background or text colour) moves to the suggested shade, with soft edges; Show original
@@ -38,7 +38,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slide 3: back to the four recorded clips
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #49) · GitHub Pages: updated from `master`
 
 - **Slide 3 (`#feat-poster`) plays its clips again** instead of the live Studio: four tiles like slide
   1's, "Section 508 checks", "Alt text, checked", "Colour contrast", "Colour blindness" (clips
