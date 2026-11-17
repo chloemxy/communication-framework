@@ -4,6 +4,58 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-17 — Slide 3: the poster down one column, two clip tiles beside it
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 3 (`#feat-poster`) is the poster in a tall column plus two tiles**: "Alt text, checked"
+  (`s3-alt`) and "Colour contrast and colour blindness" (new `s3-colour`, 29 s: white on the poster
+  blue passes at 5.13:1, white on the light-blue band fails at 2.03:1, Preview darkens the band to
+  #217f95, then Deutan, Protan, Tritan, Greyscale and back to Normal). The Section 508 tile and its
+  bullet are gone.
+- **The poster plays in step with the colour tile** (`s3-poster`, made from full-size snapshots of
+  the Studio's artwork at each change): it shows the darkened band during the fix and each
+  colour-blind view as the clip reaches it, and goes back to its first frame when the tile is
+  covered. Any tile can drive another video with `data-sync`.
+- The colour clip is the Colour and contrast card alone, recorded at 760×640 (×2.5), so its text
+  reads at tile size.
+- Checked at 1920×1080: the layout; hovering the colour tile plays both videos together (12.98 s /
+  12.97 s); moving to the Alt text tile resets the poster; no console errors.
+
+## 2026-11-17 — Studio: a contrast fix shows on the poster, and downloads
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Preview paints the fix onto the artwork**: every pixel close to the colour being changed (the
+  picked background or text colour) moves to the suggested shade, with soft edges; Show original
+  puts it back. Other areas in the same colour change too, as a palette swap in the design file would.
+  The swap is tight (within 30 RGB steps), so neighbouring palette colours stay put. PDFs keep their
+  own render.
+- **Download fixed copy** appears under the preview while a fix is showing: the artwork at full size
+  with the swap, as `<file>-fixed-<hex>.png`.
+- Checked on the UHN poster: the light-blue band and circles (#5ac2da, 12% of the poster) swap to
+  #217f95; #8ecddf is a paler blue on the circles (4% of the poster).
+
+## 2026-11-17 — Slide 3: back to the four recorded clips
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 3 (`#feat-poster`) plays its clips again** instead of the live Studio: four tiles like slide
+  1's, "Section 508 checks", "Alt text, checked", "Colour contrast", "Colour blindness" (clips
+  `s3-508`, `s3-alt`, `s3-contrast`, `s3-cvd`, `?v=20261117a`). The live frame (`?demo=poster`) is no
+  longer on the slide; the demo mode stays in the Studio.
+
+## 2026-11-17 — Demo slides mirrored: text panel on the left
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **All four demo slides** (`#feat-drop`, `#feat-frameworks`, `#feat-poster`, `#feat-edit`) now put
+  the text column (step, title, The problem, What PRISM does, credit) on the left and the clips or
+  the live Studio on the right. One CSS block mirrors the positions (wider than 720 px only; phones
+  keep the stacked layout). The four-tile slide keeps its tiles right-aligned, with the same gap to
+  the text as before.
+- Checked at 1920×1080: all four slides, nothing overlapping.
+
 ## 2026-11-17 — Studio: Fix and Review line up with the word Apply
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -106,7 +158,8 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
   need your judgement, and why", "Suggests fixes you can apply in one click", "Saves every change,
   so you can go back" (was four points on sorting, filtering and result cards).
 - **Balanced line breaks** in every feature slide's list (`text-wrap: balance`), so no point ends
-  with one word alone on its second line.
+  with one word alone on its second line. (Since changed to `pretty`; see "list rows fill the yellow
+  box".)
 
 ## 2026-11-17 — Slide 3: poster down the left; colour-blind picker in one row
 
