@@ -460,6 +460,53 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
    caption sits on a dark gradient over the bottom of the clip instead of under it */
 .scene.demo .stage{padding:calc(2.5 * var(--u)) calc(2.5 * var(--u)) calc(5 * var(--u))}
 .scene.demo .inner{max-width:none}
+/* Feature slides: one feature per slide. The component clip fills the left; all text sits in the right
+   column on one left edge, the yellow panel's text included */
+.scene.feat .stage{padding:0;align-items:stretch}
+.scene.feat .inner{max-width:none;width:100%;height:100dvh;position:relative}
+.ft-clip{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u))}
+.ft-clip video{width:100%;height:100%;object-fit:contain;display:block}
+/* four clips in a 2×2 grid. Each tile starts covered, showing only its title; a click uncovers it and
+   plays its clip once (a click on an open tile replays it). The clip fills the tile. */
+.ft-grid{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u));display:grid;grid-template-columns:auto auto;grid-template-rows:1fr 1fr;justify-content:start;gap:calc(1.04 * var(--u))}
+/* a live Studio in the left area (?demo=frameworks shows only its two panels, on a transparent page) */
+.ft-live{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u))}
+.ft-slot{position:absolute;top:0;bottom:0;width:calc(50% - 12px);overflow:hidden;pointer-events:none}
+/* each slot keeps one rounded outline, covered or open: a ring in the slide's own colour masks the
+   corners outside it, over both the cover and the live panel under it */
+.ft-slot::after{content:"";position:absolute;inset:0;border-radius:calc(.83 * var(--u));box-shadow:0 0 0 calc(2 * var(--u)) var(--desk);pointer-events:none;z-index:2}
+.ft-slot-l{left:0}.ft-slot-r{right:0}
+.ft-slot .ft-cover{pointer-events:auto;width:100%;cursor:pointer;margin:0;border-radius:calc(.83 * var(--u))}
+.ft-slot.open .ft-cover{transform:translateY(-101%);pointer-events:none}
+.ft-live iframe{width:100%;height:100%;border:0;display:block;background:transparent;color-scheme:light}
+.ft-tile{position:relative;height:100%;aspect-ratio:1040/880;margin:0;padding:0;border:0;border-radius:calc(.83 * var(--u));overflow:hidden;background:#1d2025;cursor:pointer;min-height:0;min-width:0;font:inherit;color:inherit;text-align:center}
+.ft-tile:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+.ft-vid{position:absolute;inset:0;display:block}
+.ft-vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.ft-cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 calc(1.6 * var(--u));background:#1d2025;border:1.5px solid #343941;border-radius:inherit;
+  font:500 calc(2.7 * var(--u))/1.1 var(--f-display);color:#fff;transition:transform .55s cubic-bezier(.65,0,.25,1)}
+.ft-tile[aria-pressed="true"] .ft-cover{transform:translateY(-101%);pointer-events:none}
+[data-theme="light"] .ft-tile,[data-theme="light"] .ft-cover{background:#e9e6df;color:var(--ink)}
+[data-theme="light"] .ft-cover{border-color:#cfcac0}
+.ft-col{position:absolute;left:calc(68.3 * var(--u));top:calc(2.5 * var(--u));width:calc(29.2 * var(--u));height:calc(100dvh - 5 * var(--u));display:flex;flex-direction:column}
+.ft-col > :not(.ft-does){padding-left:calc(1.56 * var(--u))}
+.ft-step{font:400 calc(1.25 * var(--u))/1.3 var(--f-ui);color:var(--ink-2)}
+.ft-title{font:500 calc(2.9 * var(--u))/1.08 var(--f-display);color:var(--ink);margin:calc(.6 * var(--u)) 0 0;max-width:none}
+.ft-kick{font:600 calc(1.15 * var(--u))/1 var(--f-ui);letter-spacing:.08em;text-transform:uppercase}
+.ft-prob{margin-top:calc(2.3 * var(--u))}.ft-prob .ft-kick{color:#f0997b}
+.ft-body{font:400 calc(1.56 * var(--u))/1.35 var(--f-ui);color:var(--ink);margin:calc(.6 * var(--u)) 0 0;max-width:none}
+.ft-does-kick{margin-top:calc(2.3 * var(--u));color:var(--brand)}
+.ft-does{margin-top:calc(.6 * var(--u));background:var(--brand);color:#1b1c1e;border-radius:calc(.83 * var(--u));padding:calc(1.46 * var(--u)) calc(1.56 * var(--u)) calc(1.56 * var(--u))}
+.ft-does .ft-body{color:#1b1c1e}
+.ft-list{margin:0;padding:0;list-style:none;font:400 calc(1.56 * var(--u))/1.35 var(--f-ui);color:#1b1c1e}
+.ft-list li{position:relative;margin-top:calc(.3 * var(--u))}
+.ft-list li:first-child{margin-top:0}
+/* bullets hang in the box's padding, so every line of text starts on the column's one left edge */
+.ft-list li::before{content:"";position:absolute;left:calc(-.95 * var(--u));top:.55em;width:calc(.42 * var(--u));height:calc(.42 * var(--u));border-radius:50%;background:#1b1c1e}
+.ft-col .credit{position:static;margin-top:auto;font-size:calc(.9 * var(--u));line-height:1.3;color:var(--ink-2)}
+[data-theme="light"] .ft-prob .ft-kick{color:#a8471f}
+[data-theme="light"] .ft-does-kick{color:#8a6d00}
+@media (max-width:720px){.scene.feat .inner{height:auto}.ft-clip,.ft-col,.ft-grid{position:static;width:auto;height:auto}.ft-grid{grid-template-columns:1fr}.ft-vid{aspect-ratio:580/500}.ft-clip{aspect-ratio:860/696}.ft-col{margin-top:24px}}
 .fp-row.fp-tall{--shut:calc(3 * var(--u,1vw));--open:calc(100cqw - 12.6 * var(--u,1vw));--vh:min(var(--open) / 1.765, 100dvh - 7.5 * var(--u,1vw))}
 .fp-tall .fp-in{position:relative}
 .fp-tall .fp-cap{position:absolute;left:0;right:0;bottom:0;margin:0;padding:calc(3.6 * var(--u)) calc(2 * var(--u)) calc(1.4 * var(--u));
@@ -795,7 +842,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   </section>
 
   <section class="scene question" id="question" data-chap="A confession" data-wait data-dur="500">
-    <video class="clip-bg" data-morph="clinic" src="media/bg/clinic-room.mp4?v=20261116a" poster="media/bg/clinic-room-first.jpg?v=20261116a" muted playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" data-morph="clinic-wash" aria-hidden="true"></div>
+    <video disablepictureinpicture class="clip-bg" data-morph="clinic" src="media/bg/clinic-room.mp4?v=20261116a" poster="media/bg/clinic-room-first.jpg?v=20261116a" muted playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" data-morph="clinic-wash" aria-hidden="true"></div>
     <div class="stage" data-morph="clinic-text"><div class="inner">
       <h2 class="visually-hidden">The question that started it</h2>
       <q class="pop" data-in="0 1">Did my visual actually <mark class="wipe drive" data-in="0 0">make a difference?</mark></q>
@@ -846,7 +893,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   <section class="scene pin" id="brought" data-chap="What we brought" hidden>
     <div class="stage"><div class="inner">
       <h2 class="h2" data-in="0 0.15">What we<br><mark>brought.</mark></h2>
-      <div class="adam-art"><video class="clip-bg" src="media/bg/creation-of-adam-grow.mp4?v=20261108b" poster="media/bg/creation-of-adam-grow.jpg?v=20261108b" muted playsinline preload="auto" aria-hidden="true"></video></div>
+      <div class="adam-art"><video disablepictureinpicture class="clip-bg" src="media/bg/creation-of-adam-grow.mp4?v=20261108b" poster="media/bg/creation-of-adam-grow.jpg?v=20261108b" muted playsinline preload="auto" aria-hidden="true"></video></div>
       <div class="halves">
         <div class="s" data-in="0.18 0.38"><h4>Sonia: the framework idea</h4><p>Had never used Claude or tools like it.</p></div>
         <div class="c" data-in="0.4 0.6"><h4>Chloe: AI fluency, open source</h4><p>Had never heard of these frameworks.</p></div>
@@ -883,34 +930,67 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     <iframe class="pm-door" src="../index.html?intro" title="The PRISM front door: Make your health handout easy to read" loading="eager"></iframe>
   </section>
 
+  <section class="scene feat" id="feat-drop" data-chap="Demo">
+    <div class="stage"><div class="inner">
+      <div class="ft-grid">
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Text from the Light Collective guide is pasted into the Material panel."><source src="media/loops/f1-paste.webm?v=20261116i" type="video/webm"><source src="media/loops/f1-paste.mp4?v=20261116i" type="video/mp4"></video></span><span class="ft-cover">Paste it in</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="A Word file is dragged over the Material panel and opens as an editable draft of 791 words."><source src="media/loops/f2-drop.webm?v=20261116j" type="video/webm"><source src="media/loops/f2-drop.mp4?v=20261116j" type="video/mp4"></video></span><span class="ft-cover">Drag and drop a file</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The sample poster, Know Your Numbers, is clicked and opens in the Material panel as an image."><source src="media/loops/f3-sample.webm?v=20261116l" type="video/webm"><source src="media/loops/f3-sample.mp4?v=20261116l" type="video/mp4"></video></span><span class="ft-cover">Start from an example</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The Brief, already open: Patients and Handout are picked, and the targets appear: grade 6 or lower, 150 to 700 words."><source src="media/loops/f4-brief.webm?v=20261116m" type="video/webm"><source src="media/loops/f4-brief.mp4?v=20261116m" type="video/mp4"></video></span><span class="ft-cover">Set the Brief</span></button>
+      </div>
+      <div class="ft-col">
+        <p class="ft-step">1 of 8</p>
+        <h2 class="ft-title">Bring it in, start checking</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li>Paste text from anywhere</li><li>Drop in a Word file, PDF, text or image</li><li>Start from an example to learn how it works</li><li>Set the Brief, and the checks begin</li></ul></div>
+        <p class="credit">Material: A Guide to Negotiating Patient Digital Rights, The Light Collective and Digital Public, CC BY 4.0</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-frameworks" data-chap="Demo">
+    <div class="stage"><div class="inner">
+      <div class="ft-live"><iframe data-src="../index.html?demo=frameworks" title="The PRISM Studio, live: the Frameworks list and the score cards for the Take Action section" tabindex="0"></iframe><div class="ft-slot ft-slot-l"><button type="button" class="ft-cover">Pick, sort and filter</button></div><div class="ft-slot ft-slot-r"><button type="button" class="ft-cover">Each one, its own card</button></div></div>
+      <div class="ft-col">
+        <p class="ft-step">2 of 8</p>
+        <h2 class="ft-title">Pick the right checks</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li>Picks the checklists that fit your Brief</li><li>Sort by use case, area or what’s recommended</li><li>Filter to the ones that give a score</li><li>Each one gets its own card of results</li></ul></div>
+        <p class="credit">Material: A Guide to Negotiating Patient Digital Rights, The Light Collective and Digital Public, CC BY 4.0</p>
+      </div>
+    </div></div>
+  </section>
+
   <section class="scene pin demo" id="features" data-chap="Demo" data-beats="4">
     <div class="stage"><div class="inner">
       <h2 class="h2 visually-hidden">Check a draft.</h2>
       <div class="fp-row fp-tall">
         <div class="fp drive" data-in="0 0.0625" data-out="0.2500 0.3250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d1-drop.jpg?v=20261116f" src="media/loops/d1-drop.mp4?v=20261116d" aria-label="A Word copy of the Light Collective guide to negotiating patient digital rights is dragged into the empty Material panel and opens as an editable handout. Then the Private button opens the note: nothing is uploaded, work is saved only in this browser."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d1-drop.jpg?v=20261116f" src="media/loops/d1-drop.mp4?v=20261116d" aria-label="A Word copy of the Light Collective guide to negotiating patient digital rights is dragged into the empty Material panel and opens as an editable handout. Then the Private button opens the note: nothing is uploaded, work is saved only in this browser."></video></div>
             <p class="fp-cap"><b>Drop it in</b><span>Your file stays on this computer. Nothing is uploaded.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>1 · Drop it in</span></div>
         </div>
         <div class="fp drive" data-in="0.2500 0.3250" data-out="0.5000 0.5750" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d2-brief.jpg?v=20261116f" src="media/loops/d2-brief.mp4?v=20261116d" aria-label="The Brief opens and Patients and Manual are picked. The targets appear: grade 6 or lower, sentences up to 15 words, 600 to 6,000 words."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d2-brief.jpg?v=20261116f" src="media/loops/d2-brief.mp4?v=20261116d" aria-label="The Brief opens and Patients and Manual are picked. The targets appear: grade 6 or lower, sentences up to 15 words, 600 to 6,000 words."></video></div>
             <p class="fp-cap"><b>Brief</b><span>Patients, manual: grade 6 or lower, 6,000 words at most.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>2 · Brief</span></div>
         </div>
         <div class="fp drive" data-in="0.5000 0.5750" data-out="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d3-frameworks.jpg?v=20261116f" src="media/loops/d3-frameworks.mp4?v=20261116d" aria-label="The Frameworks bar shows four picked for the Brief. Show all opens the list with them ticked; it scrolls through every use case, is sorted by area and then Recommended, and is filtered to frameworks that give a score."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d3-frameworks.jpg?v=20261116f" src="media/loops/d3-frameworks.mp4?v=20261116d" aria-label="The Frameworks bar shows four picked for the Brief. Show all opens the list with them ticked; it scrolls through every use case, is sorted by area and then Recommended, and is filtered to frameworks that give a score."></video></div>
             <p class="fp-cap"><b>Frameworks</b><span>Picked for your Brief. Browse all 14, sort them, filter to scored.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>3 · Frameworks</span></div>
         </div>
         <div class="fp drive" data-in="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d4-fixes.jpg?v=20261116f" src="media/loops/d4-fixes.mp4?v=20261116d" aria-label="Plain language shows 120 to fix and 68 suggested changes. The cards scroll by, one card jumps to its sentence in the text, a rewrite is applied, a highlighted word is retyped by hand, and Apply all fixes the rest; the grade drops from 12.3 to 11.8. History opens: Undo last change, then Revert to the file as first opened."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d4-fixes.jpg?v=20261116f" src="media/loops/d4-fixes.mp4?v=20261116d" aria-label="Plain language shows 120 to fix and 68 suggested changes. The cards scroll by, one card jumps to its sentence in the text, a rewrite is applied, a highlighted word is retyped by hand, and Apply all fixes the rest; the grade drops from 12.3 to 11.8. History opens: Undo last change, then Revert to the file as first opened."></video></div>
             <p class="fp-cap"><b>Plain language</b><span>Jump to a flag, fix one, edit by hand or apply all. Undo or revert.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>4 · Fix and undo</span></div>
@@ -926,28 +1006,28 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
       <div class="fp-row fp-tall">
         <div class="fp drive" data-in="0 0.0625" data-out="0.2500 0.3250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d5-poster.jpg?v=20261116f" src="media/loops/d5-poster.mp4?v=20261116d" aria-label="Clear all empties the Studio, then the UHN welcome poster is dropped in and opens as an image."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d5-poster.jpg?v=20261116f" src="media/loops/d5-poster.mp4?v=20261116d" aria-label="Clear all empties the Studio, then the UHN welcome poster is dropped in and opens as an image."></video></div>
             <p class="fp-cap"><b>New example</b><span>Clear all, then drop in a poster.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>5 · New example</span></div>
         </div>
         <div class="fp drive" data-in="0.2500 0.3250" data-out="0.5000 0.5750" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d6-contrast.jpg?v=20261116f" src="media/loops/d6-contrast.mp4?v=20261116d" aria-label="Alt text is typed and counted. Then two palette colours are picked: white on the poster blue passes at 5.13 to 1; white on the light-blue band fails at 1.73 to 1. The suggested fix darkens the band to #2b7f97, and Preview shows white text on it."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d6-contrast.jpg?v=20261116f" src="media/loops/d6-contrast.mp4?v=20261116d" aria-label="Alt text is typed and counted. Then two palette colours are picked: white on the poster blue passes at 5.13 to 1; white on the light-blue band fails at 1.73 to 1. The suggested fix darkens the band to #2b7f97, and Preview shows white text on it."></video></div>
             <p class="fp-cap"><b>Alt text and colour contrast</b><span>Write alt text. Check colour pairs; a fail comes with a fix to preview.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>6 · Alt text, contrast</span></div>
         </div>
         <div class="fp drive" data-in="0.5000 0.5750" data-out="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d7-views.jpg?v=20261116f" src="media/loops/d7-views.mp4?v=20261116d" aria-label="The poster switches through deuteranopia, protanopia, tritanopia and greyscale, then back to normal."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d7-views.jpg?v=20261116f" src="media/loops/d7-views.mp4?v=20261116d" aria-label="The poster switches through deuteranopia, protanopia, tritanopia and greyscale, then back to normal."></video></div>
             <p class="fp-cap"><b>Colour blindness</b><span>See it as colour-blind readers do, and in greyscale.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>7 · Colour blindness</span></div>
         </div>
         <div class="fp drive" data-in="0.7500 0.8250" role="button" tabindex="0">
           <div class="fp-in">
-            <div class="fp-v"><video muted playsinline preload="auto" poster="media/loops/d8-compass.jpg?v=20261116f" src="media/loops/d8-compass.mp4?v=20261116d" aria-label="Framework Compass opens from the Studio and scrolls through all 14 frameworks. On CCI, How it’s scored shows the formula, pass mark and items, and All references lists the sources with links to cdc.gov."></video></div>
+            <div class="fp-v"><video muted playsinline disablepictureinpicture preload="auto" poster="media/loops/d8-compass.jpg?v=20261116f" src="media/loops/d8-compass.mp4?v=20261116d" aria-label="Framework Compass opens from the Studio and scrolls through all 14 frameworks. On CCI, How it’s scored shows the formula, pass mark and items, and All references lists the sources with links to cdc.gov."></video></div>
             <p class="fp-cap"><b>Framework Compass</b><span>All 14 frameworks: how each is scored, and where it comes from.</span></p>
           </div>
           <div class="fp-strip" aria-hidden="true"><span>8 · Compass</span></div>
@@ -987,7 +1067,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   </section>
 
   <section class="scene" id="proof" data-chap="The proof" hidden>
-    <video class="clip-bg" src="media/bg/office-days.mp4?v=20261105b" poster="media/bg/office-days.jpg?v=20261105b" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="proof-wash" aria-hidden="true"></div>
+    <video disablepictureinpicture class="clip-bg" src="media/bg/office-days.mp4?v=20261105b" poster="media/bg/office-days.jpg?v=20261105b" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="proof-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <div class="proof-split">
         <div>
@@ -1056,7 +1136,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   <section class="scene" id="certify" data-chap="AI certification" data-dur="4500">
     <div class="cert-band">
       <div class="cert-art">
-        <video class="clip-bg" src="media/bg/ai-certification-loop.mp4?v=20261112a" poster="media/bg/ai-certification-loop.jpg?v=20261112a" muted loop playsinline preload="auto" role="img" aria-label="A person hands a puzzle piece to a robot hand; its work unrolls as a long paper ribbon of screens and charts to a designer, who marks it up with a pen; at the end a hand stamps it Health Certified Insight."></video>
+        <video disablepictureinpicture class="clip-bg" src="media/bg/ai-certification-loop.mp4?v=20261112a" poster="media/bg/ai-certification-loop.jpg?v=20261112a" muted loop playsinline preload="auto" role="img" aria-label="A person hands a puzzle piece to a robot hand; its work unrolls as a long paper ribbon of screens and charts to a designer, who marks it up with a pen; at the end a hand stamps it Health Certified Insight."></video>
       </div>
     </div>
     <div class="stage"><div class="inner">
@@ -1148,9 +1228,9 @@ var toggleTheme = (function(){
   var MOON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>';
   var SUN = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
   function light(){ return root.getAttribute('data-theme') === 'light'; }
-  // the Meet PRISM frame is the app itself: give it the same theme
+  // the Meet PRISM frame is the app itself: give it the same theme (live Studio panels stay light)
   function syncFrames(){
-    document.querySelectorAll('iframe').forEach(function(f){
+    document.querySelectorAll('iframe:not(.ft-live iframe)').forEach(function(f){
       try { var d = f.contentDocument; if (!d) return;
         if (light()) d.documentElement.removeAttribute('data-theme'); else d.documentElement.setAttribute('data-theme', 'dark');
       } catch (_) {}
@@ -1212,7 +1292,7 @@ window.deckStart = function(){
     for (var b = 1; b <= n; b++) beats.push(b / n);
     // data-wait: the slide arrives with nothing played, and the first click plays it
     if (el.hasAttribute('data-wait')) beats.unshift(0);
-    items.forEach(function(it){ it.vid = it.el.classList.contains('fp') ? it.el.querySelector('video') : null; });
+    items.forEach(function(it){ it.vid = (it.el.classList.contains('fp') || it.el.hasAttribute('data-play')) ? it.el.querySelector('video') : null; });
     return { el:el, items:items, beats:items.length ? beats : [], t:0, beat:-1 };
   });
   var walkAt = slides.map(function(s){ return !!s.walk; }).indexOf(true);
@@ -1717,6 +1797,72 @@ window.deckStart = function(){
       p.addEventListener('click', function(){ open(p); });
       p.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); open(p); } });
     });
+  });
+
+  // feature tiles: each starts covered with its title. Moving the pointer onto a tile slides its cover
+  // up and plays its clip once, ending on the last frame; the tile that was open slides its cover back
+  // down, so only one shows at a time. A click (or Enter / Space) does the same and, on the open tile,
+  // replays it. Leaving the slide covers them all again.
+  [].forEach.call(document.querySelectorAll('.scene.feat'), function(scene){
+    var tiles = [].slice.call(scene.querySelectorAll('.ft-tile')); if (!tiles.length) return;
+    function cover(t){ var v = t.querySelector('video'); t.setAttribute('aria-pressed', 'false'); if (v) { clearTimeout(v._retry); v.pause(); try { v.currentTime = 0; } catch (e) {} } }
+    function open(t, replay){
+      if (t.getAttribute('aria-pressed') === 'true' && !replay) return;
+      tiles.forEach(function(o){ if (o !== t) cover(o); });
+      t.setAttribute('aria-pressed', 'true');
+      var v = t.querySelector('video');
+      if (v) { if (reduce) { try { v.currentTime = Math.max(0, (v.duration || 0) - .05); } catch (err) {} } else playClip(v); }
+    }
+    tiles.forEach(function(t){
+      t.addEventListener('mouseenter', function(){ open(t, false); });
+      t.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); });
+      t.addEventListener('click', function(e){ e.stopPropagation(); open(t, true); });
+    });
+    var on = scene.classList.contains('on');
+    new MutationObserver(function(){
+      var now = scene.classList.contains('on');
+      if (!now && on) tiles.forEach(cover);
+      on = now;
+    }).observe(scene, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // covers over the live panels: hovering one slides it up to show its panel and covers the other
+  // again; leaving the slide covers both
+  [].forEach.call(document.querySelectorAll('.ft-live'), function(live){
+    var slots = [].slice.call(live.querySelectorAll('.ft-slot')), scene = live.closest('.scene'), on = false;
+    function show(sl){ slots.forEach(function(o){ o.classList.toggle('open', o === sl); }); }
+    slots.forEach(function(sl){
+      var c = sl.querySelector('.ft-cover');
+      c.addEventListener('mouseenter', function(){ show(sl); });
+      c.addEventListener('click', function(e){ e.stopPropagation(); show(sl); });
+      c.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); });
+    });
+    new MutationObserver(function(){
+      var now = scene.classList.contains('on');
+      if (!now && on) show(null);
+      on = now;
+    }).observe(scene, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // live Studio panels: the frame loads fresh each time its slide comes on (so it always opens
+  // ready), and Left / Right / Page Up / Page Down inside it still turn slides
+  [].forEach.call(document.querySelectorAll('.ft-live iframe'), function(fr){
+    var scene = fr.closest('.scene'), on = false;
+    function load(){
+      fr.src = fr.getAttribute('data-src') + '&t=' + Date.now();
+      fr.onload = function(){
+        var d; try { d = fr.contentDocument; } catch (_) { return; }
+        if (!d) return;
+        d.addEventListener('keydown', function(e){
+          if (/^(PageDown|PageUp)$/.test(e.key) || (!e.target.matches('input,textarea,select,[contenteditable]') && /^Arrow(Left|Right)$/.test(e.key))) {
+            e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key:e.key, shiftKey:e.shiftKey, cancelable:true }));
+          }
+        });
+      };
+    }
+    function check(){ var now = scene.classList.contains('on'); if (now && !on) load(); on = now; }
+    new MutationObserver(check).observe(scene, { attributes: true, attributeFilter: ['class'] });
+    check();
   });
 
   // the then-and-now images can also be dragged, to stop the wipe anywhere while talking

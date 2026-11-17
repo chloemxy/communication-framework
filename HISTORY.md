@@ -4,6 +4,342 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — Studio: one chevron everywhere; score sheets on one left edge
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **One chevron style** across the Studio and the Compass: the thin stroke chevron from the Frameworks
+  and Brief bars. It replaces the small solid triangles on every score card's fold button and in the
+  framework list, and the browser's own arrow on every dropdown (Style, Sort, workspace menus).
+  `design-system.css` draws it for any `<select>`, in the secondary text colour for each theme
+  (version bumped to `?v=20261116a`).
+- **Framework list on one left edge**: the chevron, the section heading and the item numbers now all
+  line up on the left. Item numbers are left-aligned on the CCI and PEMAT sheets too, which share the
+  column.
+- **Section headings without numbers, in sentence case**: "1 Enable Patient Learning" now reads
+  "Enable patient learning". Words in capitals (CDC, AI) keep their capitals.
+
+## 2026-11-16 — Studio: Readability card leads with what to fix
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **One "things to fix" list at the top**, with no box and no icons, on the card's left edge (e.g.
+  "2 things to fix"). Each line says the change, where it stands now, and how: "Cut it to 700 words
+  or fewer · 791 now" and "Shorten sentences to 15 words or fewer · 19.3 now". It replaces the
+  summary headline and the "Length for format" row at the bottom. When nothing needs fixing it reads
+  "Nothing to fix" with one line of advice. Posters get "Read the poster aloud".
+- **Plain score names**: "Reading ease" (Flesch score, 0 to 100) and "School grade" (Flesch–Kincaid),
+  with "Grade 13" in place of "Gr 13". The line under each says what it means and how this text
+  does, e.g. "Higher is easier. Aim for 60 or more; this text is hard to read."
+- **The formula opens from its name**: click "Flesch–Kincaid" or "Flesch score" to see the working
+  with this text's numbers, what raises or lowers it, what was counted, and the source. This replaces
+  the "How the grade is worked out" row.
+- **Stats spelled out**: "words in an average sentence", "syllables in an average word", "of
+  sentences use the passive voice".
+
+## 2026-11-16 — Studio: Readability summary in plain, full sentences
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The headline names the reader**: "Reads at grade 13 · suits a college-level reader" (was "· 7
+  grades above goal: grade 6", with the reader on a separate bulleted line).
+- **No "Next" pill** on any score card; the next step is a plain line under the summary.
+- **Readability's next steps are full sentences** that say what, why and how:
+  - Long sentences: "Your sentences are 19.3 words long on average. For this reader, aim for 15
+    words or fewer. To shorten them, split a sentence where it joins two ideas with “and”, “but” or
+    “so”." (was "Split sentences at “and”, “but” or “so”: 19.3 words on average, aim for 15 or fewer.")
+  - Long words: "Your sentences are a good length. The grade is high because of long words. Swap
+    medical terms for everyday ones, such as “high blood pressure” for “hypertension”."
+  - Meets the goal: "This is easy enough for your reader. As you edit, keep sentences this short."
+  - Posters: "Poster lines are too short for a reading-level formula to measure reliably." / "To
+    check it, read the poster aloud and listen for any line that is hard to say or understand."
+- **Every other score card's notes are now full sentences too** (CCI, PEMAT, Accessibility, Content
+  accuracy: 14 lines). Each says what's wrong, why it matters and what to do, and spells out terms:
+  for example "Rate each remaining item as Met or Not met. If the material has no steps, numbers or
+  risks, mark that part “Doesn't apply” so it isn't scored." and "These would fail the web
+  accessibility standard (WCAG 2.2 AA) and Adobe's PDF accessibility check." PEMAT names its 70%
+  working target; accuracy asks for "a named clinical reviewer".
+
+## 2026-11-16 — Studio: score card summaries on one left edge
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The summary at the top of each score card has no bullets** ("Suits a college-level reader." and
+  the like), and the yellow **Next** label now sits inline with its text, so a wrapped line returns to
+  the card's left edge instead of hanging under the label. Every line of the summary starts on one
+  edge. Applies to every score card (Readability, CCI, PEMAT…), and to slide 2's live panel.
+
+## 2026-11-16 — Slide 2: the Frameworks list stays open
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **In the Studio's demo mode the Frameworks list is always open.** It used to close when you
+  clicked anywhere outside it, such as the score cards on the right, leaving only the bar. Clicks
+  elsewhere, Escape and the toggle no longer close it, and the toggle ("Close" and its arrow) is hidden
+  there since it would do nothing. The normal Studio is unchanged.
+
+## 2026-11-16 — Slide 2: tiles keep one corner radius
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Each tile on slide 2 keeps the same rounded corners covered or open.** The corners jumped from
+  rounded (cover) to square (the live panel) as a cover slid away. Each tile now has a fixed rounded
+  outline: a ring in the slide's own colour masks the corners outside it, over both the cover and the
+  live panel. Checked at 1920×1080: the corners match in both states.
+
+## 2026-11-16 — Slide 2: hover covers; Studio: Clear sits before Show all
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Slide 2's two live panels start covered**, like slide 1's tiles: "Pick, sort and filter" over the
+  Frameworks list, "Each one, its own card" over the score cards. Hovering a cover slides it up to show
+  the live panel and covers the other again; leaving the slide covers both. While covered, the slide's
+  own background fills the corners, so the white panel underneath doesn't show past the covers'
+  rounded corners.
+- **Studio: in the Frameworks and Brief bars, Clear now sits before the toggle** ("Clear · Show all
+  11"), so "Show all" and "Close" appear in the same place (the toggle ends at the bar's right edge in
+  both states). The bars use a one-row grid on wide screens; phones keep their two-row layout.
+
+## 2026-11-16 — Slide 2: "Pick the right checks", the live Studio
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New slide `#feat-frameworks`** ("2 of 8"), after slide 1. The left area is the **real Studio,
+  live**, in two tall panels you click and scroll yourself: the Frameworks list, open (left), and
+  the score cards (right). It opens with the Take Action section loaded and the Brief set to
+  Patients + Handout; ticking or unticking a framework adds or removes its card on the right.
+  The frame loads fresh each time the slide comes on, so it always starts the same way.
+- Right column, same layout as slide 1: The problem ("There are many published checklists for
+  health writing. Knowing which fit your material, and tracking each one, is a job in itself.") and
+  What PRISM does (Picks the checklists that fit your Brief · Sort by use case, area or what's
+  recommended · Filter to the ones that give a score · Each one gets its own card of results).
+- **Studio: new demo mode** (`/?demo=frameworks`): shows only those two panels on a transparent page,
+  always light, and never reads or saves this browser's stored work or theme, so a demo can't
+  overwrite a real draft.
+- Inside the live panels, Left / Right / Page Up / Page Down still turn slides (except in a text
+  field or the sort menu). The deck's theme switch leaves the live panels light.
+- Checked at 1920×1080: arriving from slide 1 loads the panels ready; unticking PEMAT-P removed its
+  card (4 of 11 → 3 of 11); a right arrow pressed inside the panel moved to the next slide; no console
+  errors.
+
+## 2026-11-16 — Slide 1: shorter clips
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Each tile's clip holds its last frame for 0.8 s instead of about 3 s**, re-encoded from the
+  same frames (no re-recording). Paste 6.2 s, Drag and drop 6.8 s, Try a sample 6.1 s, Set the
+  Brief 7.4 s (were 10.5–12.9 s). The whole run, with its 2 s gaps, now takes about 34 s (was about
+  50 s). Clip URLs are `?v=20261116g`.
+
+## 2026-11-16 — Slide 1: tiles play in turn, then replay on hover
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **When the slide comes on, the four clips play one after another**: Paste, Drag and drop, Try a
+  sample, Set the Brief. Each starts 2 s after the one before it ends, and each stops on its last
+  frame. Leaving the slide stops the run and puts all four back on their first frame; coming back
+  starts it again. Reduced motion keeps them still.
+- **After the run, hovering a tile replays that tile** from the start; the others stay on their
+  last frame. Hovering does nothing while the run is still going.
+- This replaces the hover-only version below. It works for any slide marked `scene feat`.
+- Checked at 1920×1080: tiles played in order with the 2 s gaps, ended with all four on their
+  last frame, and hovering tile 1 then replayed only tile 1; no console errors.
+
+## 2026-11-16 — Slide 1: only the hovered tile plays
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Only the tile under the mouse plays.** Moving onto a tile plays its clip from the start and
+  stops every other tile on its first frame; moving off a tile stops it on its first frame too.
+  Focus no longer starts a clip (a click focused the tile and kept it playing); Enter or Space on a
+  focused tile still plays it.
+- Checked at 1920×1080 with real mouse moves: tile 1 plays alone, moving to tile 2 stops tile 1 and
+  plays tile 2, moving off all tiles stops everything; no console errors.
+
+## 2026-11-16 — Slide 1: each clip plays when you hover it
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The four tiles no longer play when the slide opens.** They show their first frame, and each
+  clip plays from the start when the pointer moves onto its tile (also on keyboard focus or a tap),
+  then stops on its last frame. Hovering again replays it. Reduced motion keeps them still.
+- **No picture-in-picture button on hover:** every video in the deck (16) now has
+  `disablepictureinpicture`, so the browser no longer shows its own button over a clip.
+- Checked at 1920×1080: arriving on the slide leaves all four still; hovering "Set the Brief"
+  plays only that clip; no console errors.
+
+## 2026-11-16 — Slide 1: four ways to start, four clips
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **`#feat-drop` is now "Start with your draft"** with four clips in a 2×2 grid on the left, each
+  with a plain label above it (no numbers, nothing over the screens): Paste it in, Drag and drop a
+  file, Try a sample, Set the Brief. All four play together when the slide opens and stop on their
+  last frame. The right column: The problem ("Your draft is already in Word, a PDF or an email…")
+  and What PRISM does ("Paste it, drop the file in, or try a sample. Then tell PRISM who it's for.").
+- **Each clip is one real Studio component on a transparent background** (`media/loops/f1-paste`,
+  `f2-drop`, `f3-sample`, `f4-brief`: WebM with alpha, MP4 fallback on the dark background, PNG
+  first frame), 7.5–9.5 s, with a drawn cursor. The Material panel is 520×440; the Brief clip opens
+  the Brief and picks Patients and Handout, ending on grade 6 or lower, 150–700 words.
+- The earlier single drag-and-drop clip (`f1-drop`) is no longer used; its files stay in the folder.
+- Checked at 1920×1080: all four clips play on arriving from the previous slide; tiles about
+  508×438 each.
+
+## 2026-11-16 — Slide 1: the Brief clip starts open
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **"Set the Brief" starts with the Brief already expanded**: the cursor picks Patients, then
+  Handout, and the clip ends on the targets (grade 6 or lower, 150–700 words). The click on Edit
+  brief is gone. 5.1 s (`f4-brief`, `?v=20261116m`).
+
+## 2026-11-16 — Slide 1: one text edge, label above the box
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **"What PRISM does" sits above the yellow box**, like "The problem", in the brand yellow (dark gold
+  in light theme). The box holds only the list.
+- **Every line of text in the right column starts on one left edge** (x = 1341 at 1920×1080): step,
+  title, both labels, the problem line, all four list items and the credit. The list's bullets hang
+  in the box's padding, to the left of that edge.
+
+## 2026-11-16 — Slide 1: the example tile uses the poster
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **"Start from an example" now opens the sample poster** (Know Your Numbers) instead of the sample
+  handout (`f3-sample`, `?v=20261116l`). The tile's title is unchanged.
+
+## 2026-11-16 — Slide 1: hover slides the cover up
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Moving the pointer onto a tile reveals it:** its title cover slides up out of the tile
+  (0.55 s ease) and its clip plays once, ending on the last frame. The tile that was open slides its
+  cover back down, so only one shows at a time. Hovering the open tile again doesn't restart it; a
+  click (or Enter / Space) replays it. Leaving the slide covers them all again.
+- Checked at 1920×1080 with real mouse moves: hovering tile 1 opened and played it; hovering tile 4
+  covered tile 1 and played tile 4; the cover ends fully above the tile; no console errors.
+
+## 2026-11-16 — Slide 1: yellow panel is just the list
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Removed "One workspace for every check. Bring your material in however you have it:"** from the
+  What PRISM does panel. The panel is now its label and the four-item list.
+
+## 2026-11-16 — Slide 1: two text styles in the right column
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The right column's text below the title now uses two treatments**: one label style (600,
+  uppercase, 1.15u) for both "The problem" and "What PRISM does", and one body style (400, 1.56u)
+  for the problem line, the yellow panel's sentence and its list. Before, the yellow panel had its
+  own label size and weight, a larger bold sentence and a third size for the list.
+
+## 2026-11-16 — Slide 1: "Bring it in, start checking"
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New story: scattered tools, one workspace.** Title "Bring it in, start checking". The problem:
+  "The checks live in scattered tools, and each wants your draft in a different form." What PRISM
+  does: "One workspace for every check. Bring your material in however you have it:" then a list:
+  Paste text from anywhere · Drop in a Word file, PDF, text or image · Start from an example to
+  learn how it works · Set the Brief, and the checks begin.
+- **Tile 3 is now "Start from an example"** and uses the text sample: the clip clicks the sample
+  handout (Managing Your Blood Pressure at Home), which opens with its hard words highlighted
+  (`f3-sample`, `?v=20261116k`).
+
+## 2026-11-16 — Studio: nothing peeks out around the drop area
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **While a file is dragged over the empty Material panel, only the blue drop area shows.** The
+  empty-state buttons and sample tiles behind it used to peek out in the thin margin below it.
+- Slide 1's Drag and drop clip is re-recorded with the fix (`f2-drop`, `?v=20261116j`).
+
+## 2026-11-16 — Slide 1: clips without the Material header row
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Paste, Drag and drop and Try a sample were re-recorded without the panel's header row**
+  (Material, file name, History, Export, Upload, Clear). Each clip now starts at the formatting
+  toolbar, so the panel's content gets that space. The Brief clip is unchanged. URLs are
+  `?v=20261116i`.
+
+## 2026-11-16 — Slide 1: one tile open at a time
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Only one tile shows its screen at a time.** Clicking another tile covers the open one again
+  (back to its title, its clip reset) and uncovers and plays the new one. Clicking the open tile
+  still replays it.
+- Checked: opening tile 1, then tile 3, left only tile 3 open and playing; clicking tile 3 again
+  replayed it; no console errors.
+
+## 2026-11-16 — Slide 1: tiles match the screen, nothing cropped
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **Each tile now has the clip's own shape** (1040:880), so the screen shows whole, edge to edge,
+  with nothing cropped. Before, the clips were cropped to a slightly wider tile, which cut the
+  bottom footer by different amounts, so the bottoms didn't line up. Tiles are 570×482 at
+  1920×1080 (were 596×482), left-aligned in the left area.
+
+## 2026-11-16 — Slide 1: click a tile to reveal it
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The four tiles start covered**, each a dark card showing only its title in the display serif
+  (Paste it in, Drag and drop a file, Try a sample, Set the Brief). The tiles are larger: each fills
+  its quarter of the left side (labels above them are gone).
+- **A click uncovers a tile and plays its clip once**, ending on the last frame; the screen fills the
+  whole tile, edge to edge. A click on an open tile replays it. Opened tiles stay open; leaving the
+  slide covers them all again. Enter or Space on a focused tile does the same and doesn't move the
+  deck. Reduced motion shows the clip's last frame without playing.
+- This replaces the autoplay run and hover replay.
+- **Clips re-recorded cropped to the panel** (1040×880, no margin or shadow) so they fill the tile, with
+  the centred empty panel and the 0.8 s ending: 5.3–6.6 s each. URLs are `?v=20261116h`.
+- Checked at 1920×1080: all four covered on arrival, clicking "Drag and drop a file" uncovered and
+  played only that tile, leaving the slide covered them again; no console errors.
+
+## 2026-11-16 — Studio: empty Material panel is centred
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **The empty Material panel keeps no scrollbar space** (nothing to scroll there), so the blue
+  "Drop to open it" area and the empty-state buttons sit centred, with equal margins left and right
+  (14 px each in the slide capture; before, the right margin was about 16 px wider). A panel with
+  a document still keeps its scrollbar space.
+
+## 2026-11-16 — Studio: drop area's dashed line hugs the blue fill
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **When a file is dragged over the empty Material panel**, the dashed line is now drawn on the blue
+  "Drop to open it" area itself. It used to be the panel's outline, which also spans the space
+  kept for the scrollbar, so it ran past the fill on the right.
+
+## 2026-11-16 — New feature slide: Drop in your draft (one feature per slide)
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **New slide `#feat-drop`** ("1 of 8", chapter "Demo"), placed before the current demo slides
+  (`#features`, `#features-2`, unchanged for now). It's the first of the planned one-feature-per-slide
+  layout: the clip fills the left, and all text sits in the right column on one left edge, the
+  yellow panel's text included: step, title "Drop in your draft", The problem, What PRISM does,
+  and the credit at the bottom.
+- **The clip shows only the Studio's Material panel**, recorded from the real Studio with
+  everything else hidden, on a transparent background (`media/loops/f1-drop.webm`, VP9 with
+  alpha, so it sits cleanly on the dark and the light theme). An MP4 on the dark background is the
+  fallback, and the first frame is the poster. 13 s: the empty panel, the Word file dragged in
+  ("Drop to open it"), then the Take Action section of the Light Collective guide opens (791 words),
+  held until the end. The file is `presentation/demo-files/Take_Action_LightCollective.docx`
+  (copied from `supporting document/`).
+- Slide clips can now play from any element marked `data-play` (they needed the `.fp` class before).
+- Checked at 1920×1080: arriving from the previous slide plays the clip, no console errors; light
+  theme shows the panel on the light background.
+
 ## 2026-11-16 — Why AI?: arms hide the hands' tubes
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
