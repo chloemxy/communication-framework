@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-17 — Every slide change is a morph, forward and back
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **One transition everywhere:** every slide change, forward and back, is now the morph (shared parts
   glide, the rest crossfades). Removed the exceptions: the zoom through the "3" on the take-home
@@ -18,7 +18,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Demo slides: one text column width
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **The text column is the same width on every demo slide.** On the two tile slides (Bring it in,
   Check a poster) it ran 75 px wider than on the live-panel slides; now all six end at the same
@@ -27,7 +27,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Demo slide titles go back to the whole view
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Clicking a demo slide's title returns the right side to where it started:** on a section-zoom
   slide the camera flies back out to the whole workspace; on the tile and live-Studio slides every
@@ -38,7 +38,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "Pick the right checks": click the panel to use the Studio live
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Clicking the Studio panel swaps the stills for the real Studio, in the same place**, so you can
   click, scroll, tick items and apply fixes. It opens on the same view as the stills: the TLC guide,
@@ -53,7 +53,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "Pick the right checks": History is opened from its button
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Picking "Saves every change" now opens History the way you would**: the camera moves to the
   History button on the normal workspace (×1.8, 0.65 s), a yellow click ring plays on the button,
@@ -64,7 +64,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "Pick the right checks": while zoomed in, hovering a line points to its target
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Zoomed in, pointing at another menu line tells you where the camera will go:**
   - the target is in view on the same still: it gets the yellow frame (e.g. items with notes while
@@ -79,7 +79,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "Pick the right checks": hovering "Saves every change" frames the History button
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Line 5's hover frames the History button** in the Material header on the normal workspace (the
   button you'd press), instead of the open History panel. Clicking still zooms to the panel.
@@ -88,7 +88,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "Pick the right checks": no frame while zoomed in
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **The hover frame only shows on the whole workspace.** Zooming in clears it, and pointing at other
   lines while zoomed in adds none; once the camera pulls back out, hovering frames sections again.
@@ -98,7 +98,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "Pick the right checks": hovering a menu line frames its section
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Pointing at a menu line (or tabbing to it) frames the section it zooms to**, before any click:
   the still for that stop shows, everything else dims, and a yellow ring sits on the section's own
@@ -114,7 +114,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "Pick the right checks" zoom: one wide results column
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **The stills now show the score cards in one wide column** (716 px, was two of 340), so each
   checklist item reads on one or two lines with its Met / Not met / N/A on the same row. A fourth
@@ -125,7 +125,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Live "Pick the right checks" slide hidden
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **`#feat-frameworks` (the live Studio frame) is hidden**, so the section-zoom version
   (`#feat-frameworks-zoom`) is the deck's "2 of 4". The slide stays in the file; remove `hidden`
@@ -135,7 +135,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — New slide: "Pick the right checks" as a section zoom
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **New slide after "Pick the right checks"** (`#feat-frameworks-zoom`, same title, problem, credit
   and five menu lines), built like slide 1's section zoom so it reads from the back of the room:
@@ -155,13 +155,13 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slide 2: "Sonia" byline removed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **The "Sonia" line under slide 2's quote is removed**; the quote and the handoff line stay.
 
 ## 2026-11-17 — Section zoom flies straight to the chosen section
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Picking a menu line zooms straight to its section.** Before, the camera followed the slide's
   step timeline, so picking "Set the Brief" first panned through paste or drop and the examples on
@@ -175,7 +175,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Front door: one headline, no buttons
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **The kicker and headline are one line now:** "Make health handouts, posters and web pages easy
   to read." (was "For health handouts, posters and web pages" over "Make your health handout easy to
@@ -187,7 +187,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Section-zoom slide: three menu lines, no captions on the panel
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **"Paste text from anywhere" and "Drop in a Word file, PDF, text or image" are one menu line:
   "Paste in or drop a file".** The slide's menu is now three lines, one per zoom step: Paste in or
@@ -200,7 +200,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "What PRISM does" menus are a glass panel
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **The demo menus are now one frosted glass panel** (option C, after a mockup of three glass
   styles): a translucent panel with a lit top edge, a soft shadow and a faint yellow glow. Each line
@@ -216,7 +216,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — "What PRISM does" menus are buttons
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **On the four demo slides, each line of "What PRISM does" is a raised yellow button** with an arrow
   (option B), in place of the bulleted yellow box. The button for what is showing on the right is
@@ -229,14 +229,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Four-tile "Bring it in" slide hidden
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **`#feat-drop` (the four clip tiles) is hidden**, so the section-zoom version (`#feat-drop-zoom`)
   is the deck's "1 of 4". The hidden slide stays in the file; remove `hidden` to bring it back.
 
 ## 2026-11-17 — New slide: section zoom on the workspace; "What PRISM does" is a menu
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **New slide after "Bring it in, start checking"** (`#feat-drop-zoom`, the same text on the left).
   The right side is the empty Studio workspace (a still at 2.5×, `media/zoom/ws-empty.webp`). It
@@ -256,7 +256,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Demo slides: magnifier on the live Studio, zoomed clips, no hairline
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **Magnifier lens on the live Studio panels** (Pick the right checks, Fix it your way). In any
   `?demo=` page of the Studio, a round 2× lens with a yellow ring follows the mouse so the room can
@@ -318,7 +318,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #49) �
 
 ## 2026-11-17 — Demo slides mirrored: text panel on the left
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
 
 - **All four demo slides** (`#feat-drop`, `#feat-frameworks`, `#feat-poster`, `#feat-edit`) now put
   the text column (step, title, The problem, What PRISM does, credit) on the left and the clips or
