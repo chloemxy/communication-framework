@@ -340,6 +340,12 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .canvas-actions{display:flex;align-items:center;gap:var(--sp-2);margin-left:auto;flex-shrink:0}
 .canvas.is-empty .hide-when-empty{display:none}
 .canvas.is-visual .hide-in-visual{display:none}
+/* Export lists text options for a document and image options (with alt text) for an image or PDF */
+.export-menu .exp-img{display:none}
+.canvas.is-visual .export-menu .exp-img{display:flex}
+.canvas.is-visual .export-menu .exp-text{display:none}
+/* the alt text card keeps only the text box and its checks; download and copy live in Export */
+#vm-alt-empty,.vm-alt-actions,#vm-alt-why{display:none!important}
 /* Export menu (floats under its button) */
 .export{position:relative}
 .export-menu{position:absolute;top:calc(100% + var(--sp-1));right:0;z-index:30;display:flex;flex-direction:column;align-items:stretch;min-width:240px;padding:var(--sp-1);
@@ -543,7 +549,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .mod-name{font-size:var(--fs-sm);font-weight:600;color:var(--ink);white-space:nowrap}
 .mod-fold{display:inline-flex;align-items:center;justify-content:center;color:var(--ink-2);transition:transform .15s}
 .mod.collapsed .mod-fold{transform:rotate(-90deg)}
-.mod-body{padding:var(--sp-3) var(--inset) var(--sp-4);overflow-y:auto;scrollbar-width:thin;min-height:90px;max-height:640px;resize:vertical;container-type:inline-size}
+/* the scrollbar sits inside the right padding (--msbw, measured on load), so every card's text ends
+   the same distance from its edge whether or not it scrolls */
+.mod-body{padding:var(--sp-3) max(2px, calc(var(--inset) - var(--msbw, 0px))) var(--sp-4) var(--inset);scrollbar-gutter:stable;overflow-y:auto;scrollbar-width:thin;min-height:90px;max-height:640px;resize:vertical;container-type:inline-size}
 .mod-note{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2)}
 .status-line{margin-bottom:var(--sp-2);font-size:var(--fs-xs);font-weight:600}
 .status-line:empty{display:none}
@@ -651,7 +659,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .sug-t mark{background:var(--highlighter);color:var(--ink);padding:0 1px}
 /* New, edited in place: a light frame on hover, a field on focus, a prompt when empty */
 /* New is editable: a white text box, padded outward so its words stay on the card's edge */
-.sug-new{margin:-2px -6px;padding:2px 6px;border:1px solid var(--rule);background:var(--sheet);border-radius:var(--radius-control);cursor:text;outline:none}
+.sug-new{max-width:none;margin:-2px 0 -2px -6px;padding:2px 6px;border:1px solid var(--rule);background:var(--sheet);border-radius:var(--radius-control);cursor:text;outline:none}
 .sug-new:hover{border-color:var(--rule)}
 .sug-new:focus{border-color:var(--control-border);background:var(--sheet);box-shadow:0 0 0 2px var(--focus-ring)}
 .sug-new:empty::before{content:attr(data-placeholder);color:var(--ink-2);font-style:italic}
@@ -666,7 +674,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
   border-bottom:1px solid var(--rule);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .scan-fixall[hidden]{display:none}
 .issue-lbl{font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
-.issue-sev{font-size:var(--fs-xs);font-weight:600;white-space:nowrap}
+.issue-sev{font-size:var(--fs-xs);font-weight:600;white-space:nowrap;margin-right:13px}   /* ends where the words Apply and Apply all end (button padding 12px + border 1px) */
 .issue-sev.error{color:var(--fail)}
 .issue-sev.warn{color:var(--warn)}
 .issue-msg{grid-column:1 / -1;font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink-2)}
@@ -778,7 +786,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .vm-sec-gap{margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--rule)}
 .vm-help{margin:0 0 var(--sp-2);font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2)}
 .vm-count{margin-top:var(--sp-1);text-align:right;font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);font-variant-numeric:tabular-nums}
-#vm-transcript, #vm-alt{width:100%;padding:var(--sp-2);font-size:var(--fs-sm);line-height:1.5;resize:vertical}
+#vm-transcript, #vm-alt{width:calc(100% + 2 * (var(--sp-2) + 1px));margin:0 calc(-1 * (var(--sp-2) + 1px));padding:var(--sp-2);font-size:var(--fs-sm);line-height:1.5;resize:vertical}
 #vm-transcript{min-height:160px}
 .vm-note{display:none;margin-top:var(--sp-2);padding-top:var(--sp-2);border-top:1px solid var(--rule);font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink)}
 .vm-note b{font-weight:600}
@@ -810,6 +818,10 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .vm-sw:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
 /* the colour-blind picker: a lone trailing option fills the row rather than sitting half-width */
 .seg.seg-grid button:last-child:nth-child(odd){grid-column:1 / -1}
+/* the colour-blind picker: one row of five equal segments (short names; the full name is the tooltip
+   and the accessible name) */
+.seg.seg-row5{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));width:100%}
+.seg.seg-row5 button{min-width:0;padding-left:var(--sp-1);padding-right:var(--sp-1);white-space:nowrap;text-align:center;justify-content:center}
 /* Contrast check: rows divided by hairlines; only the preview box shows the picked colours */
 .vm-pair{margin-top:var(--sp-3)}
 .cr-top{display:flex;align-items:center;flex-wrap:wrap;gap:var(--sp-2);padding:0 0 var(--sp-2);border-bottom:1px solid var(--rule)}
@@ -836,6 +848,14 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .cr-fix + .cr-fix{border-top:1px solid var(--rule)}
 .cr-fix .cr-dot{align-self:center}
 .cr-fix-t{min-width:0;font-weight:400;font-variant-numeric:tabular-nums}
+.vm-alt-checks{margin-top:var(--sp-5)}
+/* when the buttons drop under the item (narrow card), they stay on the right edge, under the item count */
+@container (max-width: 400px){ .vm-alt-checks .ck-item .rate{justify-content:flex-end} }
+/* one right edge in every score card: the header chevron's arrow and the borderless Met all / Deselect all
+   text end where the card's text ends (their boxes and padding hang past it) */
+.mod-hdr .mod-fold svg{transform:translateX(4px)}
+.ck-bulk .rate-b:last-child{padding-right:0;border-right-width:0}
+
 .cr-alt{display:block;margin:2px 0 0;padding:0;border:0;background:none;font:inherit;color:var(--ink-2);text-decoration:underline;text-underline-offset:2px;cursor:pointer;text-align:left}
 .cr-alt[aria-pressed="true"]{color:var(--ink)}
 .cr-fix-t b{font-weight:600}
@@ -979,6 +999,35 @@ html.demo-frameworks #rail-scroll{position:fixed!important;right:0!important;lef
 html.demo-frameworks .mod-rail{columns:1!important;column-width:auto!important}
 html.demo-frameworks #fw-top-toggle, html.demo-frameworks #fw-topbar .fw-top-chev{visibility:hidden!important}
 html.demo-frameworks body{transition:opacity .3s}
+/* ?demo=poster: the poster view down the left, and on the right the Alt text card (top) and the
+   Colour and contrast card with its colour-blind views (bottom), on a transparent page */
+html.demo-poster, html.demo-poster body{background:transparent!important;overflow:hidden}
+html.demo-poster body > *:not(#demo-grid){visibility:hidden!important}
+html.demo-poster #demo-grid{position:fixed;inset:0;z-index:10;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px;visibility:visible}
+html.demo-poster #demo-grid > *{min-width:0;min-height:0;height:100%!important;max-height:none!important;margin:0!important;box-sizing:border-box;display:flex!important;flex-direction:column;visibility:visible}
+html.demo-poster #demo-grid .mod-body{flex:1 1 auto;max-height:none!important;resize:none}
+html.demo-poster #demo-grid #canvas{grid-area:1 / 1 / 3 / 2!important}
+html.demo-poster #demo-grid #mod-valt{grid-area:1 / 2!important}
+html.demo-poster #demo-grid #mod-vcolour{grid-area:2 / 2!important}
+html.demo-poster #demo-grid #canvas .canvas-actions, html.demo-poster #etb-hint, html.demo-poster #vm-status, html.demo-poster [role=status]{visibility:hidden!important}
+html.demo-poster #demo-grid .mod-hide{display:none}
+html.demo-poster body{transition:opacity .3s}
+/* ?demo=edit: the draft down the left (edit it in place), and on the right the Plain language card
+   (top) and History (bottom), on a transparent page */
+html.demo-edit, html.demo-edit body{background:transparent!important;overflow:hidden}
+html.demo-edit body > *:not(#demo-grid){visibility:hidden!important}
+html.demo-edit #demo-grid{position:fixed;inset:0;z-index:10;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:24px;visibility:visible}
+html.demo-edit #demo-grid > *{min-width:0;min-height:0;height:100%!important;max-height:none!important;margin:0!important;box-sizing:border-box;visibility:visible}
+html.demo-edit #demo-grid #canvas{grid-area:1 / 1 / 3 / 2!important;display:flex!important;flex-direction:column}
+html.demo-edit #demo-grid #mod-scan{grid-area:1 / 2!important;display:flex!important;flex-direction:column}
+html.demo-edit #demo-grid #mod-scan .mod-body{flex:1 1 auto;max-height:none!important;resize:none}
+html.demo-edit #demo-grid #ver-panel{grid-area:2 / 2!important;display:block!important;position:static!important;width:auto!important;z-index:auto;animation:none;
+  overflow-y:auto;border:1px solid var(--rule);border-radius:var(--radius-sheet, 12px);box-shadow:none}
+html.demo-edit #ver-close, html.demo-edit #demo-grid .mod-hide, html.demo-edit #demo-grid #canvas .canvas-actions{visibility:hidden!important}
+html.demo-edit #etb-hint, html.demo-edit #vm-status{visibility:hidden!important}
+html.demo-edit body{transition:opacity .3s}
+html.demo-edit:not(.demo-ready) body{opacity:0}
+html.demo-poster:not(.demo-ready) body{opacity:0}
 html.demo-frameworks:not(.demo-ready) body{opacity:0}
 </style>
 </head>
@@ -1200,12 +1249,14 @@ html.demo-frameworks:not(.demo-ready) body{opacity:0}
           History <span class="ver-top-n" id="ver-top-n"></span>
         </button>
         <button type="button" class="btn btn-quiet" id="hist-btn" onclick="toggleFileHistory()" title="Files opened this session" aria-controls="file-history" aria-expanded="false" hidden>Files <span id="hist-count">0</span></button>
-        <div class="export hide-when-empty hide-in-visual" id="export">
-          <button type="button" class="btn btn-secondary" id="export-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="export-menu" title="Copy or download your edited text">Export</button>
+        <div class="export hide-when-empty" id="export">
+          <button type="button" class="btn btn-secondary" id="export-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="export-menu" title="Copy or download your edited text, or the image with its alt text">Export</button>
           <div class="export-menu" id="export-menu" role="menu" aria-label="Export" hidden>
-            <button type="button" class="btn btn-quiet" role="menuitem" data-export="copy">Copy text</button>
-            <button type="button" class="btn btn-quiet" role="menuitem" data-export="html">Download for Word (.html)</button>
-            <button type="button" class="btn btn-quiet" role="menuitem" data-export="txt">Download plain text (.txt)</button>
+            <button type="button" class="btn btn-quiet exp-text" role="menuitem" data-export="copy">Copy text</button>
+            <button type="button" class="btn btn-quiet exp-text" role="menuitem" data-export="html">Download for Word (.html)</button>
+            <button type="button" class="btn btn-quiet exp-text" role="menuitem" data-export="txt">Download plain text (.txt)</button>
+            <button type="button" class="btn btn-quiet exp-img" role="menuitem" data-export="altimg">Download image with alt text</button>
+            <button type="button" class="btn btn-quiet exp-img" role="menuitem" data-export="altcopy">Copy alt text</button>
           </div>
         </div>
         <button type="button" class="btn btn-secondary hide-when-empty" onclick="document.getElementById('file-doc').click()" title="Upload a document, image or PDF">Upload</button>
@@ -1436,12 +1487,14 @@ html.demo-frameworks:not(.demo-ready) body{opacity:0}
     <div class="mod mod-valt" id="mod-valt">
       <div class="mod-hdr">
         <h2 class="mod-title"><span class="mod-name">Alt text</span></h2>
+        <span class="pill pill-empty" id="valt-pill">—</span>
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-valt')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-valt')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
-        <p class="vm-help" id="vm-alt-help">Read aloud in place of the image. Say what it tells the reader; don’t start with “image of”.</p>
+        <p class="vm-help" id="vm-alt-help">Say what the image tells the reader.</p>
         <textarea class="brief-input" id="vm-alt" aria-label="Alt text" aria-describedby="vm-alt-help" rows="3" placeholder="e.g. Blood pressure log with three steps: sit, measure, record" oninput="onVisualInput()"></textarea>
-        <div class="vm-count" id="vm-alt-count">0 characters</div>
+        <div class="vm-count" id="vm-alt-count" hidden>0 characters</div>
+        <div class="vm-alt-checks" id="vm-alt-checks" aria-live="polite"></div>
         <p class="vm-help" id="vm-alt-empty">Write alt text to download or copy it.</p>
         <div class="vm-alt-actions">
           <button type="button" class="btn btn-secondary" id="vm-alt-dl" disabled>Download image with alt text</button>
@@ -1464,12 +1517,12 @@ html.demo-frameworks:not(.demo-ready) body{opacity:0}
         <div class="vm-pair" id="vm-pair"></div>
         <h3 class="vm-sec-lbl vm-sec-gap">Colour-blind simulation</h3>
         <p class="vm-help">If two parts turn the same colour here, add labels or patterns.</p>
-        <div class="seg seg-grid" id="seg-cvd" role="group" aria-label="Colour-blind simulation">
-          <button type="button" class="on" data-v="none" aria-pressed="true" onclick="setCvd('none',this)">Normal</button>
-          <button type="button" data-v="deuter" aria-pressed="false" onclick="setCvd('deuter',this)">Deuteranopia</button>
-          <button type="button" data-v="protan" aria-pressed="false" onclick="setCvd('protan',this)">Protanopia</button>
-          <button type="button" data-v="tritan" aria-pressed="false" onclick="setCvd('tritan',this)">Tritanopia</button>
-          <button type="button" data-v="gray" aria-pressed="false" onclick="setCvd('gray',this)">Greyscale / mono print</button>
+        <div class="seg seg-row5" id="seg-cvd" role="group" aria-label="Colour-blind simulation">
+          <button type="button" class="on" data-v="none" aria-pressed="true" onclick="setCvd('none',this)" title="As designed">Normal</button>
+          <button type="button" data-v="deuter" aria-pressed="false" onclick="setCvd('deuter',this)" title="Deuteranopia: green-blind, the most common" aria-label="Deuteranopia">Deutan</button>
+          <button type="button" data-v="protan" aria-pressed="false" onclick="setCvd('protan',this)" title="Protanopia: red-blind" aria-label="Protanopia">Protan</button>
+          <button type="button" data-v="tritan" aria-pressed="false" onclick="setCvd('tritan',this)" title="Tritanopia: blue-blind, rare" aria-label="Tritanopia">Tritan</button>
+          <button type="button" data-v="gray" aria-pressed="false" onclick="setCvd('gray',this)" title="Greyscale: mono print, or no colour vision" aria-label="Greyscale or mono print">Greyscale</button>
         </div>
       </div>
     </div>
@@ -1518,7 +1571,7 @@ html.demo-frameworks:not(.demo-ready) body{opacity:0}
       </div>
       <div class="mod-body">
         <div class="status-line mod-status" id="cci-status"></div>
-        <div class="score-why" id="cci-why"></div>
+        <div class="score-why" id="cci-why" hidden></div>
         <div id="cci-list"></div>
       </div>
     </div>
@@ -1534,7 +1587,7 @@ html.demo-frameworks:not(.demo-ready) body{opacity:0}
       </div>
       <div class="mod-body">
         <div class="status-line mod-status" id="pemat-status"></div>
-        <div class="score-why" id="pemat-why"></div>
+        <div class="score-why" id="pemat-why" hidden></div>
         <div class="meter-lbl"><span class="meter-name">Understandability</span><span class="meter-num" id="pemat-u-num">—</span></div>
         <div class="meter-track"><div class="meter-fill" id="pemat-u-fill"></div><span class="meter-target" id="pemat-u-target" aria-hidden="true"></span></div>
         <div class="meter-lbl"><span class="meter-name">Actionability</span><span class="meter-num" id="pemat-a-num">—</span></div>
@@ -1573,7 +1626,7 @@ html.demo-frameworks:not(.demo-ready) body{opacity:0}
     <!-- ── MODULE: ACCESSIBILITY ── -->
     <div class="mod mod-a11y" id="mod-a11y">
       <div class="mod-hdr">
-        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks to run before the Adobe accessibility test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fixing them here leaves less to fix in InDesign.">Accessibility</span></h2>
+        <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="Section 508, the US federal accessibility rule, uses the WCAG success criteria. These are the WCAG 2.2 AA checks to run before the Adobe accessibility test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fixing them here leaves less to fix in InDesign.">Section 508 / WCAG 2.2 AA</span></h2>
         <span class="pill pill-empty" id="a11y-pill">—</span>
         
         <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-a11y')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
@@ -1937,7 +1990,7 @@ function fixWordy(src){
 // A break that would leave a fragment: ", and" closing a list ("what works, what doesn't, and
 // what would…": another comma a few words back), or a new part that starts with a word that
 // can't open a sentence on its own ("what", "which", "who", "that", "how", "why" + clause)
-const SPLIT_NO_START = /^(what|which|who|whom|whose|that|how|why|whether|than|as)/i;
+const SPLIT_NO_START = /^(what|which|who|whom|whose|that|how|why|whether|than|as)\b/i;
 function fixSplitBad(src, m){
   const conj = (m[1] || '').toLowerCase();
   const rest = src.slice(m.index + m[0].length - 1);
@@ -3424,6 +3477,9 @@ function openVisual(entry){
   vmClearHl();
   $('vm-alt-status').textContent = '';
   visualOn = true;
+  Object.keys(altMark).forEach(k => delete altMark[k]);
+  // artwork gets the Section 508 / WCAG card even when the workspace had it off
+  const a11yCard = $('mod-a11y'); if(a11yCard && a11yCard.classList.contains('hidden')){ a11yCard.classList.remove('hidden'); syncDockKeys(); }
   $('visual-mode').style.display = 'flex';
   $('canvas').classList.add('is-visual');
   editor.style.display = 'none';
@@ -4338,6 +4394,7 @@ function onVisualInput(){
   const txt = $('vm-transcript').value.trim();
   const words = countWords(readStructure().text);   // the same count as the footer and Readability
   $('vm-alt-count').textContent = alt.length + ' characters' + (alt.length > 150 ? ' — over 150, trim it' : '');
+  vmAltChecks(alt);
   $('vm-txt-count').textContent = words + (words === 1 ? ' word' : ' words');
   const pill = $('vtext-pill');
   if(pill){ pill.textContent = words + (words === 1 ? ' word' : ' words'); pill.className = 'pill ' + (words ? 'pill-count' : 'pill-empty'); }
@@ -4670,6 +4727,50 @@ const ALT_WHY = {
   pdf:   'PDF alt text is set per image in your layout app; copy it from here.',
   other: 'Only JPEG and PNG files can carry alt text from here, so copy it instead.',
 };
+// Alt text, checked against WCAG 1.1.1 Non-text Content (the rule Section 508 points to), plus its
+// reading level against the Brief. The same rows as CCI and PEMAT: PRISM marks each item as you type,
+// and a person can change any mark (N/A for a decorative image, say). A changed mark holds until the
+// next image opens.
+const altMark = {};
+function rateAlt(id, v){ altMark[id] = altMark[id] === v ? undefined : v; vmAltChecks(); refocus('alt:'+id+':'+v); }
+function vmAltChecks(alt){
+  const box = $('vm-alt-checks'); if(!box) return;
+  alt = String(alt == null ? $('vm-alt').value : alt).trim();
+  const bad = /^(image|picture|photo|graphic|logo|icon)\b/i.test(alt) || /\.(png|jpe?g|gif|webp|svg)\b|\bIMG[_-]?\d/i.test(alt);
+  const fk = alt ? computeFK(/[.!?]$/.test(alt) ? alt : alt + '.') : null, goal = targets().grade;
+  const items = [
+    { id:'a1', text:'The image has alt text.', auto: !!alt,
+      note: alt ? 'Checked by PRISM.' : 'None yet. A screen reader user gets nothing from the image.' },
+    { id:'a2', text:'The alt text says what the image tells the reader.', auto: alt ? !bad && alt.length >= 15 : null,
+      note: !alt ? '' : bad ? 'It starts with “image” or reads like a file name. Skip to the point.'
+          : alt.length < 15 ? 'It’s very short. Say what the image is for.' : 'Checked by PRISM.' },
+    { id:'a3', text:'The alt text is 150 characters or fewer.', auto: alt ? alt.length <= 150 : null,
+      note: !alt ? '' : 'It has ' + alt.length + (alt.length === 1 ? ' character.' : ' characters.') + (alt.length > 150 ? ' Move details to a caption.' : '') },
+    { id:'a4', text:'The alt text reads at the Brief’s grade or lower.', auto: fk ? fk.grade <= goal : null,
+      note: fk ? 'It reads at grade ' + gradeText(fk.grade) + '. The goal is grade ' + goal + ' or lower.' : '' },
+  ];
+  const opts = [['met','Met'],['not','Not met'],['na','N/A']];
+  let notMet = 0, rated = 0;
+  const rows = items.map((it, i) => {
+    const autoV = it.auto === true ? 'met' : it.auto === false ? 'not' : '';
+    const v = altMark[it.id] || autoV;
+    if(v === 'not') notMet++; if(v) rated++;
+    return '<div class="ck-item'+(v === 'na' ? ' na' : '')+'">'+
+      '<span class="ck-n" id="n-'+it.id+'"><span class="sr-only">Item </span>'+(i + 1)+'</span>'+
+      '<div class="ck-text" id="lbl-'+it.id+'"><span class="fwo-q">'+it.text+'</span>'+(it.note && v !== 'na' ? '<span class="ck-note">'+it.note+'</span>' : '')+'</div>'+
+      rateCtl(opts, v, "rateAlt('"+it.id+"','%v')", { labelledby:'n-'+it.id+' lbl-'+it.id, key:'alt:'+it.id })+
+    '</div>';
+  }).join('');
+  box.innerHTML = '<div class="ck-group"><span class="ck-group-t">WCAG 1.1.1 Non-text Content</span><span class="ck-group-n">4 items</span></div>' + rows;
+  const pill = $('valt-pill');
+  if(pill){
+    if(!alt && !Object.values(altMark).some(Boolean)){ pill.textContent = '1 not met'; pill.className = 'pill pill-fail'; }
+    else if(notMet){ pill.textContent = notMet + ' not met'; pill.className = 'pill pill-fail'; }
+    else if(rated === 4){ pill.textContent = 'All met'; pill.className = 'pill pill-pass'; }
+    else { pill.textContent = (4 - rated) + ' to rate'; pill.className = 'pill pill-count'; }
+  }
+}
+
 function vmAltSync(){
   const dl = $('vm-alt-dl'), cp = $('vm-alt-copy'), why = $('vm-alt-why');
   if(!dl) return;
@@ -5253,6 +5354,14 @@ function exportBaseName(){
   return n.replace(/\.[^.]+$/, '') + '-edited';
 }
 function exportMaterial(kind){
+  if(kind === 'altimg' || kind === 'altcopy'){
+    if(!$('vm-alt').value.trim()){ flashHint('Write the alt text first, in the Alt text card.'); return; }
+    if(kind === 'altcopy'){ copyAltText(); return; }
+    const entry = fileHistory.find(f => f.id === activeFileId);
+    const sup = vmAltSupport(entry);
+    if(sup !== 'save'){ flashHint(ALT_WHY[sup] || 'This file type can’t carry alt text. Copy it instead.'); return; }
+    downloadAltImage(); return;
+  }
   if(kind === 'copy'){
     const t = editorText();
     const done = () => flashHint('Copied your text. Paste it back into your file to keep the changes.');
@@ -5272,7 +5381,7 @@ function exportMaterial(kind){
 }
 (function(){
   const btn = $('export-btn'), menu = $('export-menu');
-  const items = () => [...menu.querySelectorAll('[role=menuitem]')];
+  const items = () => [...menu.querySelectorAll('[role=menuitem]')].filter(b => b.offsetParent);
   const open = on => { menu.hidden = !on; btn.setAttribute('aria-expanded', String(on)); if(on) items()[0].focus(); };
   btn.addEventListener('click', e => { e.stopPropagation(); open(menu.hidden); });
   menu.addEventListener('click', e => { const b = e.target.closest('[data-export]'); if(!b) return; open(false); btn.focus(); exportMaterial(b.dataset.export); });
@@ -6716,7 +6825,7 @@ function applyLayout(key, silent){
 
 const MOD_NAMES = {
   'mod-fwout':'Framework checklists', 'mod-read':'Readability', 'mod-cci':'CCI',
-  'mod-pemat':'PEMAT', 'mod-scan':'Plain language', 'mod-a11y':'Accessibility',
+  'mod-pemat':'PEMAT', 'mod-scan':'Plain language', 'mod-a11y':'Section 508 / WCAG',
   'mod-acc':'Accuracy', 'mod-vtext':'Text the tool read', 'mod-valt':'Alt text', 'mod-vcolour':'Colour and contrast',
 };
 
@@ -7273,6 +7382,49 @@ document.addEventListener('dblclick', e => {
 // DEMO MODE (?demo=frameworks), used by the talk deck: opens with the Take Action section loaded and
 // the Brief set to Patients + Handout, and shows only two panels side by side, the Frameworks list
 // (open) and the score cards. Nothing is read from or saved to this browser's stored work or theme.
+// DEMO MODE (?demo=poster), slide 3: the UHN poster, Brief set to Patients + Poster, shown as three
+// panels: the poster view down the left, the Alt text card and the Colour and contrast card (with its
+// colour-blind views) on the right. The colour-blind view shows on the poster.
+if(DEMO === 'poster'){
+  (async () => {
+    try {
+      const b = await (await fetch('presentation/demo-files/uhn-welcome-poster.png')).blob();
+      await intakeFile(new File([b], 'uhn-welcome-poster.png', { type: 'image/png' }));
+    } catch(e){}
+    const pick = (k, v) => { const btn = [...document.querySelectorAll('#brief-top-panel button[data-v="' + v + '"]')].find(x => (x.getAttribute('onclick') || '').includes("setBrief('" + k + "'")); if(btn) setBrief(k, v, btn); };
+    pick('audience', 'patient'); pick('format', 'poster');
+    requestAnimationFrame(() => {
+      const grid = document.createElement('div'); grid.id = 'demo-grid';
+      ['canvas', 'mod-valt', 'mod-vcolour'].forEach(id => { const el = document.getElementById(id); el.classList.remove('hidden', 'na-hidden', 'collapsed'); grid.appendChild(el); });
+      document.body.appendChild(grid);
+      if(visualOn) vmApplyZoom();
+      document.documentElement.classList.add('demo-ready');
+    });
+  })();
+}
+// DEMO MODE (?demo=edit), slide 4: the Take Action section with the Brief set to Patients + Handout,
+// shown as three panels: the draft down the left (edit it in place), the Plain language card (apply a
+// suggestion, or write your own in New) and History, always open (revert any version).
+if(DEMO === 'edit'){
+  // History stays open here: clicks elsewhere, Escape and its close button never shut it
+  toggleVersions = function(){ $('ver-panel').style.display = 'block'; renderVersions(); };
+  (async () => {
+    try {
+      const b = await (await fetch('presentation/demo-files/Take_Action_LightCollective.docx')).blob();
+      await intakeFile(new File([b], 'Take_Action_LightCollective.docx', { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    } catch(e){}
+    const pick = (k, v) => { const btn = [...document.querySelectorAll('#brief-top-panel button[data-v="' + v + '"]')].find(x => (x.getAttribute('onclick') || '').includes("setBrief('" + k + "'")); if(btn) setBrief(k, v, btn); };
+    pick('audience', 'patient'); pick('format', 'handout');
+    setTimeout(() => {
+      const grid = document.createElement('div'); grid.id = 'demo-grid';
+      ['canvas', 'mod-scan'].forEach(id => { const el = document.getElementById(id); el.classList.remove('hidden', 'na-hidden', 'collapsed'); grid.appendChild(el); });
+      const vp = document.getElementById('ver-panel'); vp.style.display = 'block'; grid.appendChild(vp);
+      document.body.appendChild(grid);
+      renderVersions();
+      document.documentElement.classList.add('demo-ready');
+    }, 300);
+  })();
+}
 if(DEMO === 'frameworks'){
   // the Frameworks list stays open: clicks on the cards, Escape or the toggle never close it here
   { const _set = setTopPanel; setTopPanel = function(k, on){ return _set.call(this, k, k === 'fw' ? true : on); }; }
@@ -7293,6 +7445,8 @@ if(DEMO === 'frameworks'){
   })();
 }
 </script>
-<script>(function(){var r=document.getElementById('rail-scroll');if(r)document.documentElement.style.setProperty('--sbw',(r.offsetWidth-r.clientWidth)+'px');})();</script>
+<script>(function(){var r=document.getElementById('rail-scroll');if(r)document.documentElement.style.setProperty('--sbw',(r.offsetWidth-r.clientWidth)+'px');
+// a score card's thin scrollbar
+var t=document.createElement('div');t.className='mod-body';t.style.cssText='display:block;position:absolute;visibility:hidden;width:100px;height:50px;overflow-y:scroll';document.body.appendChild(t);document.documentElement.style.setProperty('--msbw',(t.offsetWidth-t.clientWidth)+'px');t.remove();})();</script>
 </body>
 </html>

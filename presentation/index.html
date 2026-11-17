@@ -119,7 +119,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 #waiting .clip-wash{background:linear-gradient(270deg,rgb(8 10 14 / .55) 0%,rgb(8 10 14 / .3) 45%,rgb(8 10 14 / 0) 60%)}
 #waiting .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
 @media (min-width:721px){
-  #waiting .stage{padding-left:calc(52vw + 2 * var(--u));padding-right:calc(3.6 * var(--u) + 44px)}
+  #waiting .stage{padding-left:calc(52vw + 2 * var(--u));padding-right:calc(2.5 * var(--u))}
   #waiting .inner{max-width:none}}
 /* The proof: days race past in the office behind the numbers */
 .proof-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgb(var(--scrim) / .66) 0%,rgb(var(--scrim) / .66) 40%,rgb(var(--scrim) / .82) 100%)}
@@ -142,7 +142,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 #brought .halves>.c{border-left-color:var(--brand)}
 #brought p{text-wrap:balance}
 @media (min-width:721px){
-  #brought .stage{padding-left:calc(55vw + 3.6 * var(--u));padding-right:calc(3.6 * var(--u) + 44px)}
+  #brought .stage{padding-left:calc(55vw + 3.6 * var(--u));padding-right:calc(2.5 * var(--u))}
   #brought .h2{margin-top:0}
   /* the art is placed from the text column back out to the screen edges */
   .adam-art{position:absolute;left:calc(-55vw - 3.6 * var(--u));top:calc(-3.5 * var(--u));bottom:calc(-3.5 * var(--u));width:55vw;margin:0;aspect-ratio:auto}
@@ -175,7 +175,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .hs-v img{display:block;height:100%;max-width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top left;border-radius:4px;box-shadow:0 10px 40px rgb(0 0 0 / .45)}
 .hs-axis{position:relative;margin:56px 0 14px;height:40px;cursor:pointer;touch-action:none;outline:none}
 .hs-axis::before{content:"";position:absolute;left:0;right:0;top:-10px;bottom:-4px}
-.hs-thumb{position:absolute;top:-8px;width:44px;height:26px;margin-left:-22px;border-radius:13px;background:var(--brand);box-shadow:0 0 0 5px rgb(245 207 74 / .22),0 2px 8px rgb(0 0 0 / .5);left:clamp(0%,calc((var(--t,0) * 4 - 1) / 3 * 100%),100%);z-index:2;display:flex;align-items:center;justify-content:center;gap:4px;cursor:grab}
+.hs-thumb{position:absolute;top:-8px;width:44px;height:26px;margin-left:-22px;border-radius:13px;background:var(--brand);box-shadow:0 0 0 5px rgb(245 207 74 / .22),0 2px 8px rgb(0 0 0 / .5);left:clamp(0%,calc((var(--t,0) * 3 - 1) / 2 * 100%),100%);z-index:2;display:flex;align-items:center;justify-content:center;gap:4px;cursor:grab}
 .hs-axis:active .hs-thumb,.hs-axis.dragging .hs-thumb{cursor:grabbing}
 .hs-thumb > i{width:2px;height:11px;border-radius:1px;background:var(--on-brand)}
 /* the hour rides on the handle; one span per version, faded in and out with its screen */
@@ -189,7 +189,7 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 @media (prefers-reduced-motion:reduce){.hs-thumb.nudge{animation:none}}
 .hs-axis:focus-visible .hs-thumb{box-shadow:0 0 0 5px rgb(245 207 74 / .5)}
 .hs-line{position:absolute;left:6px;right:6px;top:5px;height:2px;background:var(--rule)}
-.hs-fill{height:100%;background:var(--brand);width:clamp(0%,calc((var(--t,0) * 4 - 1) / 3 * 100%),100%)}
+.hs-fill{height:100%;background:var(--brand);width:clamp(0%,calc((var(--t,0) * 3 - 1) / 2 * 100%),100%)}
 .hs-dots{position:absolute;left:0;right:0;top:0;display:flex;justify-content:space-between}
 .hs-dots i{position:relative;width:12px;height:12px;border-radius:50%;background:var(--desk);border:2px solid var(--ink-2);box-sizing:border-box}
 .hs-dots b{position:absolute;inset:-2px;border-radius:50%;background:var(--brand)}
@@ -203,25 +203,28 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .hs-q blockquote{margin:0;font:400 var(--fs-body)/1.4 var(--f-ui);color:var(--ink)}
 .hs-q blockquote::before{content:"“"}.hs-q blockquote::after{content:"”"}
 .hs-who{margin-top:.6em;font:400 var(--fs-body)/1.4 var(--f-ui);color:var(--ink-2)}
-/* the build stats (moved here from the hidden 29 hours slide) */
-.hs-ledger{margin:0}
-.hs-ledger li{grid-template-columns:max-content 1fr;padding:6px 0}
-.hs-ledger b{font-size:calc(2.2 * var(--fs-body));min-width:2.9em}
-.hs-ledger span{font:400 var(--fs-body)/1.2 var(--f-ui);color:var(--ink)}
+/* what got better in each version, faded in and out with its screen. It is the yellow "What PRISM
+   does" card from the feature slides (ft-kick, ft-does, ft-list), and every card is as tall as the
+   tallest one so its bottom edge always meets the screen's */
+.hs-fx{display:grid}
+.hs-fx > div{grid-area:1 / 1;display:flex;flex-direction:column}
+.hs-fx .ft-does-kick{margin:0 0 calc(.6 * var(--u))}
+.hs-fx .ft-does{margin:0;flex:1}
+/* as on the feature slides, all text starts at the card text's left edge and the card's padding
+   hangs out to the left */
+#then .hs-q,.hs-fx .ft-does-kick{padding-left:calc(1.56 * var(--u))}
 /* the hours aren't shown on the timeline; the credit line names the hour */
 .hs-bub,.hs-lab{display:none}
 /* slides: a slim timeline of dots runs above the screen; the screen is a whole 16:10 shot, as large
    as fits inside the slide margins. Beside it, the prompt starts level with its top edge and the
-   stats end level with its bottom edge */
+   list of what got better ends level with its bottom edge */
 @media (min-width:721px){
   #then .inner{container-type:size}
-  .hs-wrap{--tl:calc(2.6 * var(--u));--sw:min(100cqw - 19.5 * var(--u),(100cqh - var(--tl)) * 1.6);height:100%;display:grid;grid-template-columns:calc(17 * var(--u)) var(--sw);grid-template-rows:var(--tl) calc(var(--sw) / 1.6);justify-content:space-between;align-content:center}
+  .hs-wrap{--tl:calc(2.6 * var(--u));--sw:min(100cqw - 19.5 * var(--u),(100cqh - var(--tl)) * 1.6);height:100%;display:grid;grid-template-columns:minmax(calc(18 * var(--u)),1fr) var(--sw);grid-template-rows:var(--tl) calc(var(--sw) / 1.6);column-gap:calc(1.5 * var(--u));align-content:center}
   .hs-side{grid-column:1;grid-row:2;min-height:0;justify-content:space-between}
-  .hs-q blockquote,.hs-who,.hs-ledger span{font-size:calc(1.5 * var(--u))}
+  .hs-q blockquote,.hs-who{font-size:calc(1.5 * var(--u))}
   /* the first line's cap height sits level with the screen's top edge */
   .hs-q{margin-top:calc(-.72 * var(--u))}
-  .hs-ledger li{grid-template-columns:calc(8.6 * var(--u)) 1fr;padding:calc(.4 * var(--u)) 0}
-  .hs-ledger b{font-size:calc(3.1 * var(--u));min-width:0}
   .hs-axis{grid-column:2;grid-row:1;align-self:start;height:20px;margin:4px 22px 0}
   .hs-axis::before{top:-12px;bottom:-10px;left:-22px;right:-22px}
   .hs-screen{grid-column:2;grid-row:2;margin:0;aspect-ratio:auto}
@@ -468,7 +471,11 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .ft-clip video{width:100%;height:100%;object-fit:contain;display:block}
 /* four clips in a 2×2 grid. Each tile starts covered, showing only its title; a click uncovers it and
    plays its clip once (a click on an open tile replays it). The clip fills the tile. */
-.ft-grid{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u));display:grid;grid-template-columns:auto auto;grid-template-rows:1fr 1fr;justify-content:start;gap:calc(1.04 * var(--u))}
+/* each tile is as large as fits both ways (1040:880); the text column starts 1.5u after the tiles,
+   so the gap stays the same at any window shape */
+.scene.feat .inner{--tw:min((63.3 * var(--u) - 1.04 * var(--u)) / 2,(100dvh - 6.04 * var(--u)) / 2 * 1040 / 880)}
+.ft-grid{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u));display:grid;grid-template-columns:repeat(2,var(--tw));grid-template-rows:repeat(2,calc(var(--tw) * 880 / 1040));justify-content:start;align-content:start;gap:calc(1.04 * var(--u))}
+.scene.feat:has(.ft-grid) .ft-col{left:calc(2.5 * var(--u) + 2 * var(--tw) + 2.54 * var(--u))}
 /* a live Studio in the left area (?demo=frameworks shows only its two panels, on a transparent page) */
 .ft-live{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u))}
 .ft-slot{position:absolute;top:0;bottom:0;width:calc(50% - 12px);overflow:hidden;pointer-events:none}
@@ -476,6 +483,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
    corners outside it, over both the cover and the live panel under it */
 .ft-slot::after{content:"";position:absolute;inset:0;border-radius:calc(.83 * var(--u));box-shadow:0 0 0 calc(2 * var(--u)) var(--desk);pointer-events:none;z-index:2}
 .ft-slot-l{left:0}.ft-slot-r{right:0}
+/* live panels on slide 3: the poster (left column) stays open; the two cards on the right are covered */
+.ft-q{width:calc(50% - 12px);height:calc(50% - 12px);bottom:auto}
+.ft-q-tr{right:0;top:0}.ft-q-bl{left:0;top:auto;bottom:0}.ft-q-br{right:0;top:auto;bottom:0}
 .ft-slot .ft-cover{pointer-events:auto;width:100%;cursor:pointer;margin:0;border-radius:calc(.83 * var(--u))}
 .ft-slot.open .ft-cover{transform:translateY(-101%);pointer-events:none}
 .ft-live iframe{width:100%;height:100%;border:0;display:block;background:transparent;color-scheme:light}
@@ -488,7 +498,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .ft-tile[aria-pressed="true"] .ft-cover{transform:translateY(-101%);pointer-events:none}
 [data-theme="light"] .ft-tile,[data-theme="light"] .ft-cover{background:#e9e6df;color:var(--ink)}
 [data-theme="light"] .ft-cover{border-color:#cfcac0}
-.ft-col{position:absolute;left:calc(68.3 * var(--u));top:calc(2.5 * var(--u));width:calc(29.2 * var(--u));height:calc(100dvh - 5 * var(--u));display:flex;flex-direction:column}
+.ft-col{position:absolute;left:calc(68.3 * var(--u));top:calc(2.5 * var(--u));right:calc(2.5 * var(--u));height:calc(100dvh - 5 * var(--u));display:flex;flex-direction:column}
 .ft-col > :not(.ft-does){padding-left:calc(1.56 * var(--u))}
 .ft-step{font:400 calc(1.25 * var(--u))/1.3 var(--f-ui);color:var(--ink-2)}
 .ft-title{font:500 calc(2.9 * var(--u))/1.08 var(--f-display);color:var(--ink);margin:calc(.6 * var(--u)) 0 0;max-width:none}
@@ -499,14 +509,14 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .ft-does{margin-top:calc(.6 * var(--u));background:var(--brand);color:#1b1c1e;border-radius:calc(.83 * var(--u));padding:calc(1.46 * var(--u)) calc(1.56 * var(--u)) calc(1.56 * var(--u))}
 .ft-does .ft-body{color:#1b1c1e}
 .ft-list{margin:0;padding:0;list-style:none;font:400 calc(1.56 * var(--u))/1.35 var(--f-ui);color:#1b1c1e}
-.ft-list li{position:relative;margin-top:calc(.3 * var(--u))}
+.ft-list li{position:relative;margin-top:calc(.3 * var(--u));text-wrap:pretty}
 .ft-list li:first-child{margin-top:0}
 /* bullets hang in the box's padding, so every line of text starts on the column's one left edge */
 .ft-list li::before{content:"";position:absolute;left:calc(-.95 * var(--u));top:.55em;width:calc(.42 * var(--u));height:calc(.42 * var(--u));border-radius:50%;background:#1b1c1e}
 .ft-col .credit{position:static;margin-top:auto;font-size:calc(.9 * var(--u));line-height:1.3;color:var(--ink-2)}
 [data-theme="light"] .ft-prob .ft-kick{color:#a8471f}
 [data-theme="light"] .ft-does-kick{color:#8a6d00}
-@media (max-width:720px){.scene.feat .inner{height:auto}.ft-clip,.ft-col,.ft-grid{position:static;width:auto;height:auto}.ft-grid{grid-template-columns:1fr}.ft-vid{aspect-ratio:580/500}.ft-clip{aspect-ratio:860/696}.ft-col{margin-top:24px}}
+@media (max-width:720px){.scene.feat .inner{height:auto}.ft-clip,.ft-col,.ft-grid{position:static;width:auto;height:auto}.ft-grid{grid-template-columns:1fr;grid-template-rows:auto}.ft-vid{aspect-ratio:580/500}.ft-clip{aspect-ratio:860/696}.ft-col{margin-top:24px}}
 .fp-row.fp-tall{--shut:calc(3 * var(--u,1vw));--open:calc(100cqw - 12.6 * var(--u,1vw));--vh:min(var(--open) / 1.765, 100dvh - 7.5 * var(--u,1vw))}
 .fp-tall .fp-in{position:relative}
 .fp-tall .fp-cap{position:absolute;left:0;right:0;bottom:0;margin:0;padding:calc(3.6 * var(--u)) calc(2 * var(--u)) calc(1.4 * var(--u));
@@ -694,7 +704,8 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 @media (min-width:721px){
   :root{--u:min(1vw,1.78vh);--fs-hero:calc(15 * var(--u));--fs-display:calc(6.6 * var(--u));--fs-title:calc(6 * var(--u));--fs-head:calc(3 * var(--u));
     --fs-body:calc(2.1 * var(--u));--fs-tag:max(12px,22 / 19.2 * var(--u));--fs-fine:max(12px,22 / 19.2 * var(--u))}
-  .stage{padding:calc(3.5 * var(--u)) calc(5 * var(--u) + 44px) calc(3.5 * var(--u)) calc(5 * var(--u))}
+  /* one side margin for every slide: 2.5u left and right, as on the feature slides */
+  .stage{padding:calc(3.5 * var(--u)) calc(2.5 * var(--u)) calc(3.5 * var(--u)) calc(2.5 * var(--u))}
   .inner{max-width:none;height:100%;display:flex;flex-direction:column;justify-content:center}
   .inner > .cmp{margin:auto}
   .h2{margin-top:var(--u)}
@@ -815,10 +826,28 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .theme-btn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .theme-btn svg{width:16px;height:16px}
 .theme-switching *,.theme-switching *::before,.theme-switching *::after{transition:none!important}
+/* previous / next pill with the slide count, bottom centre; it fades out 2.5 s after the pointer stops
+   (so it's gone while presenting) and stays out of the way in edit mode */
+.pager{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:2px;padding:3px;
+  background:rgb(var(--scrim) / .72);border:1px solid var(--rule);border-radius:999px;font:600 13px/1 var(--f-ui);color:var(--ink-2);
+  transition:opacity .4s ease,bottom .3s ease;font-variant-numeric:tabular-nums}
+.pager button{all:unset;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--ink-2)}
+.pager button:hover,.pager button:focus-visible{color:var(--ink);background:rgb(var(--scrim) / .6)}
+.pager button:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+.pager button[disabled]{opacity:.35;cursor:default;background:none}
+.pager svg{width:16px;height:16px}
+.pager span{min-width:4.2em;text-align:center}
+.ui-idle .pager:not(:hover):not(:focus-within){opacity:0;pointer-events:none}
+.de-on .pager{display:none}
 </style>
 </head>
 <body>
 <nav class="rail" aria-label="Chapters"></nav>
+<div class="pager" role="group" aria-label="Slides">
+  <button type="button" data-pg="prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+  <span data-pg="count" aria-live="off">1 / 1</span>
+  <button type="button" data-pg="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+</div>
 <button type="button" class="theme-btn" data-theme-btn title="Switch to light mode (T)" aria-label="Switch to light mode"></button>
 
 <main>
@@ -941,12 +970,12 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
         <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The Brief, already open: Patients and Handout are picked, and the targets appear: grade 6 or lower, 150 to 700 words."><source src="media/loops/f4-brief.webm?v=20261116m" type="video/webm"><source src="media/loops/f4-brief.mp4?v=20261116m" type="video/mp4"></video></span><span class="ft-cover">Set the Brief</span></button>
       </div>
       <div class="ft-col">
-        <p class="ft-step">1 of 8</p>
+        <p class="ft-step">1 of 4</p>
         <h2 class="ft-title">Bring it in, start checking</h2>
         <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
         <p class="ft-kick ft-does-kick">What PRISM does</p>
         <div class="ft-does"><ul class="ft-list"><li>Paste text from anywhere</li><li>Drop in a Word file, PDF, text or image</li><li>Start from an example to learn how it works</li><li>Set the Brief, and the checks begin</li></ul></div>
-        <p class="credit">Material: A Guide to Negotiating Patient Digital Rights, The Light Collective and Digital Public, CC BY 4.0</p>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
       </div>
     </div></div>
   </section>
@@ -955,12 +984,40 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     <div class="stage"><div class="inner">
       <div class="ft-live"><iframe data-src="../index.html?demo=frameworks" title="The PRISM Studio, live: the Frameworks list and the score cards for the Take Action section" tabindex="0"></iframe><div class="ft-slot ft-slot-l"><button type="button" class="ft-cover">Pick, sort and filter</button></div><div class="ft-slot ft-slot-r"><button type="button" class="ft-cover">Each one, its own card</button></div></div>
       <div class="ft-col">
-        <p class="ft-step">2 of 8</p>
+        <p class="ft-step">2 of 4</p>
         <h2 class="ft-title">Pick the right checks</h2>
         <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
         <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li>Picks the checklists that fit your Brief</li><li>Sort by use case, area or what’s recommended</li><li>Filter to the ones that give a score</li><li>Each one gets its own card of results</li></ul></div>
-        <p class="credit">Material: A Guide to Negotiating Patient Digital Rights, The Light Collective and Digital Public, CC BY 4.0</p>
+        <div class="ft-does"><ul class="ft-list"><li>Picks the frameworks that fit your readers</li><li>Shows what every framework asks for, in one place</li><li>Tells you which items need your judgement, and why</li><li>Suggests fixes you can apply in one click</li><li>Saves every change, so you can go back</li></ul></div>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-poster" data-chap="Demo">
+    <div class="stage"><div class="inner">
+      <div class="ft-live ft-live-4"><iframe data-src="../index.html?demo=poster" title="The PRISM Studio, live: the UHN poster with its Alt text card and its Colour and contrast card" tabindex="0"></iframe><div class="ft-slot ft-q ft-q-tr"><button type="button" class="ft-cover">Alt text, checked</button></div><div class="ft-slot ft-q ft-q-br"><button type="button" class="ft-cover">Colour contrast and colour blindness</button></div></div>
+      <div class="ft-col">
+        <p class="ft-step">3 of 4</p>
+        <h2 class="ft-title">Check a poster</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Contrast checkers, colour-blind simulators and alt text guides are scattered across separate, clunky sites. No one place does it all.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li>Runs the Section 508 / WCAG checks</li><li>Tests alt text against WCAG 1.1.1 and your reading level</li><li>Checks colour pairs, and suggests a fix</li><li>Shows it as colour-blind readers see it</li></ul></div>
+        <p class="credit">Poster: COVID welcome poster for UHN (June 2022), designed by Sonia Seto</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-edit" data-chap="Demo">
+    <div class="stage"><div class="inner">
+      <div class="ft-live ft-live-4"><iframe data-src="../index.html?demo=edit" title="The PRISM Studio, live: the Take Action draft, its Plain language card and History" tabindex="0"></iframe><div class="ft-slot ft-q ft-q-tr"><button type="button" class="ft-cover">Apply a suggestion, or write your own</button></div><div class="ft-slot ft-q ft-q-br"><button type="button" class="ft-cover">Go back in History</button></div></div>
+      <div class="ft-col">
+        <p class="ft-step">4 of 4</p>
+        <h2 class="ft-title">Fix it your way</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Checkers list the problems, then leave the rewriting, and keeping track of it, to you.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li>Edit right in the text</li><li>Apply a suggested rewrite, or all of them</li><li>Write your own in New, then apply it</li><li>Every change is a version you can go back to</li></ul></div>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
       </div>
     </div></div>
   </section>
@@ -998,7 +1055,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
           <div class="fp-strip" aria-hidden="true"><span>4 · Fix and undo</span></div>
         </div>
       </div>
-      <p class="credit">Material: A Guide to Negotiating Patient Digital Rights, The Light Collective and Digital Public, CC BY 4.0</p>
+      <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
     </div></div>
   </section>
 
@@ -1039,30 +1096,27 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     </div></div>
   </section>
 
-  <section class="scene pin" id="then" data-chap="The updates" data-beats="4" data-dur="450">
+  <section class="scene pin" id="then" data-chap="The updates" data-beats="3" data-dur="450">
     <div class="stage"><div class="inner">
       <div class="hs-wrap">
       <div class="hs-side">
-        <h2 class="h2 visually-hidden">Four homepages in 18 hours.</h2>
+        <h2 class="h2 visually-hidden">Three homepages in 18 hours.</h2>
         <div class="hs-q">
-          <div class="fade" data-in="0.0000 0.2500" data-out="0.3750 0.5000"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">Chloe · 0 h · Jul 31</p></div>
-          <div class="fade" data-in="0.3750 0.5000" data-out="0.6250 0.7500"><blockquote>merge studio into the main page, make it feel like a [workspace], brief on one side, material in the middle, checklists on the other</blockquote><p class="hs-who">Chloe · 1 h · Aug 17</p></div>
-          <div class="fade" data-in="0.6250 0.7500" data-out="0.8750 1.0000"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">Chloe · 10 h · Oct 16</p></div>
-          <div class="fade" data-in="0.8750 1.0000"><blockquote>make button center, make where to type and paste more obvious … nothing's uploaded to anywhere, others can't access your data</blockquote><p class="hs-who">Chloe · 18 h · Oct 19</p></div>
+          <div class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">0 h · Jul 31</p></div>
+          <div class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">10 h · Oct 16</p></div>
+          <div class="fade" data-in="0.8333 1.0000"><blockquote>I like logo 3, implement while use the yellow as theme color, adjust color palette to include it. disregard the font, keep current</blockquote><p class="hs-who">18 h · Oct 19</p></div>
         </div>
-        <ul class="ledger hs-ledger">
-          <li><b>131</b><span>commits</span></li>
-          <li><b>23</b><span>sittings</span></li>
-          <li><b>23M</b><span>tokens</span></li>
-          <li><b>0</b><span>developers</span></li>
-        </ul>
+        <div class="hs-fx">
+          <div class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>Frameworks up top</li><li>One upload box</li><li>Scores as cards</li></ul></div></div>
+          <div class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>All on one page</li><li>Drop Word or PDF</li><li>Steps show you how</li><li>Simpler panels</li></ul></div></div>
+          <div class="fade" data-in="0.8333 1.0000"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>New PRISM logo</li><li>Yellow brand colour</li><li>One button style</li><li>One type system</li></ul></div></div>
+        </div>
       </div>
-      <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="4" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.2500" data-out="0.3750 0.5000">0 h</span><span class="fade" data-in="0.3750 0.5000" data-out="0.6250 0.7500">1 h</span><span class="fade" data-in="0.6250 0.7500" data-out="0.8750 1.0000">10 h</span><span class="fade" data-in="0.8750 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.2500"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.3750 0.5000"></b><span class="hs-lab">1 h</span></i><i><b class="fade" data-in="0.6250 0.7500"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.8750 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
+      <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667">0 h</span><span class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000">10 h</span><span class="fade" data-in="0.8333 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.3333"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.5000 0.6667"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.8333 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
       <div class="hs-screen">
-          <figure class="hs-v fade" data-in="0.0000 0.2500" data-out="0.3750 0.5000"><img src="img/home/00.jpg" alt="The homepage at the first commit (Jul 31)."></figure>
-          <figure class="hs-v fade" data-in="0.3750 0.5000" data-out="0.6250 0.7500"><img src="img/home/01.jpg" alt="The homepage after 1 hour of building (Aug 17)."></figure>
-          <figure class="hs-v fade" data-in="0.6250 0.7500" data-out="0.8750 1.0000"><img src="img/home/11.jpg" alt="The homepage after 10 hours of building (Oct 16)."></figure>
-          <figure class="hs-v fade" data-in="0.8750 1.0000"><img src="img/home/19.jpg" alt="The homepage after 18 hours of building (Oct 19)."></figure>
+          <figure class="hs-v fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><img src="img/home/00.jpg" alt="The homepage at the first commit (Jul 31)."></figure>
+          <figure class="hs-v fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><img src="img/home/11.jpg" alt="The homepage after 10 hours of building (Oct 16)."></figure>
+          <figure class="hs-v fade" data-in="0.8333 1.0000"><img src="img/home/19.jpg" alt="The homepage after 18 hours of building (Oct 19)."></figure>
       </div>
       </div>
     </div></div>
@@ -1617,6 +1671,58 @@ window.deckStart = function(){
   });
   function markRail(){
     dots.forEach(function(b, i){ b.classList.toggle('on', i === cur); });
+    markPager();
+  }
+
+  // pager: previous / next with the slide count; the arrows step like the arrow keys (beats first)
+  var pager = document.querySelector('.pager'), pgCount = pager && pager.querySelector('[data-pg="count"]');
+  function markPager(){
+    if (!pager) return;
+    pgCount.textContent = (cur + 1) + ' / ' + slides.length;
+    pager.querySelector('[data-pg="prev"]').disabled = cur === 0;
+    pager.querySelector('[data-pg="next"]').disabled = cur === slides.length - 1;
+    // measured once the slide has settled (its credit may still be gliding in)
+    clearTimeout(pgLiftT); pgLiftT = setTimeout(liftPager, 1200);
+  }
+  // where a slide's credit line runs under the pill, the pill sits just above that line instead
+  var pgLiftT = 0;
+  function liftPager(){
+    var s = slides[cur], lift = 0;
+    pager.style.bottom = '';
+    if (s && !s.walk) {
+      var pr = pager.getBoundingClientRect();
+      [].forEach.call(s.el.querySelectorAll('.credit, .note, .fine'), function(e){
+        // the line boxes of the text itself (the paragraph's own box spans the whole slide)
+        // if any line runs under the pill, the pill clears the whole block (a credit can wrap to two lines)
+        var rg = document.createRange(); rg.selectNodeContents(e);
+        var rs = [].filter.call(rg.getClientRects(), function(r){ return r.width; });
+        if (rs.some(function(r){ return r.right > pr.left - 12 && r.left < pr.right + 12 && r.bottom > pr.top - 6 && r.top < pr.bottom; }))
+          lift = Math.max(lift, innerHeight - Math.min.apply(null, rs.map(function(r){ return r.top; })) + 8);
+      });
+    }
+    if (lift) pager.style.bottom = lift + 'px';
+  }
+  addEventListener('resize', function(){ if (pager) { clearTimeout(pgLiftT); pgLiftT = setTimeout(liftPager, 300); } });
+  if (pager) {
+    [].forEach.call(pager.querySelectorAll('button'), function(b){
+      // a mouse click doesn't leave focus on the button, so Space keeps turning slides instead of re-clicking it
+      b.addEventListener('pointerdown', function(e){ e.preventDefault(); });
+      // the arrows turn whole slides (a slide's click-through steps are skipped; the keys still step them)
+      b.addEventListener('click', function(){
+        var to = cur + (b.dataset.pg === 'next' ? 1 : -1);
+        if (to >= 0 && to < slides.length) show(to, to > cur ? 1 : -1);
+        markPager();
+      });
+    });
+    // fade the pill out once the pointer has been still for 2.5 s
+    var idleT = 0, html = document.documentElement;
+    var wake = function(){
+      html.classList.remove('ui-idle');
+      clearTimeout(idleT); idleT = setTimeout(function(){ html.classList.add('ui-idle'); }, 2500);
+    };
+    addEventListener('pointermove', wake, { passive:true });
+    addEventListener('pointerdown', wake, { passive:true });
+    wake();
   }
 
   // input: a wheel gesture counts once (trackpad momentum keeps firing, so wait for a quiet gap)
@@ -1860,11 +1966,13 @@ window.deckStart = function(){
     }).observe(scene, { attributes: true, attributeFilter: ['class'] });
   });
 
-  // live Studio panels: the frame loads fresh each time its slide comes on (so it always opens
-  // ready), and Left / Right / Page Up / Page Down inside it still turn slides
-  [].forEach.call(document.querySelectorAll('.ft-live iframe'), function(fr){
-    var scene = fr.closest('.scene'), on = false;
+  // live Studio panels load when the deck opens (one after another), so a slide never arrives on an
+  // empty frame; once its slide is left, the frame reloads in the background, so it is fresh and
+  // ready the next time. Left / Right / Page Up / Page Down inside it still turn slides.
+  [].forEach.call(document.querySelectorAll('.ft-live iframe'), function(fr, i){
+    var scene = fr.closest('.scene'), on = false, loaded = false;
     function load(){
+      loaded = true;
       fr.src = fr.getAttribute('data-src') + '&t=' + Date.now();
       fr.onload = function(){
         var d; try { d = fr.contentDocument; } catch (_) { return; }
@@ -1876,8 +1984,14 @@ window.deckStart = function(){
         });
       };
     }
-    function check(){ var now = scene.classList.contains('on'); if (now && !on) load(); on = now; }
+    function check(){
+      var now = scene.classList.contains('on');
+      if (now && !on && !loaded) load();                       // not preloaded yet: load now
+      if (!now && on) setTimeout(function(){ if (!scene.classList.contains('on')) load(); }, 900);   // left: reset for next time
+      on = now;
+    }
     new MutationObserver(check).observe(scene, { attributes: true, attributeFilter: ['class'] });
+    setTimeout(function(){ if (!loaded) load(); }, 400 + i * 1500);
     check();
   });
 
