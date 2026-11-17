@@ -42,13 +42,8 @@
     '</div>' +
     '<div class="intro-hero">' +
       '<div class="intro-copy">' +
-        '<p class="intro-kicker">For health handouts, posters and web pages</p>' +
-        '<h1 class="intro-display" id="intro-title">Make your health handout easy to read.</h1>' +
+        '<h1 class="intro-display" id="intro-title">Make health handouts, posters and web pages easy to read.</h1>' +
         '<p class="intro-lede">PRISM finds the hard parts and shows a simpler way to say them, based on trusted health guides.</p>' +
-        '<div class="intro-ctas">' +
-          '<button type="button" class="btn intro-cta-main" data-go="evaluate">Check a draft</button>' +
-          '<button type="button" class="btn intro-cta-alt" data-go="plan">Plan from an idea</button>' +
-        '</div>' +
       '</div>' +
       '<figure class="intro-plate" aria-labelledby="intro-try-h">' +
         '<div class="intro-handout">' +

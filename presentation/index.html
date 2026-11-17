@@ -492,6 +492,12 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .ft-q-tr{right:0;top:0}.ft-q-bl{left:0;top:auto;bottom:0}.ft-q-br{right:0;top:auto;bottom:0}
 .ft-slot .ft-cover{pointer-events:auto;width:100%;cursor:pointer;margin:0;border-radius:calc(.83 * var(--u))}
 .ft-slot.open .ft-cover{transform:translateY(-101%);pointer-events:none}
+/* a closed slot is filled with the slide's colour behind its cover, so the white Studio panel under it
+   can't show through as a hairline at the cover's soft (sub-pixel) edge */
+.ft-slot:not(.open){background:var(--desk)}
+/* two side-by-side slots: the Studio's panel edge lands half a pixel into the gap between them, so
+   the gap itself is masked in the slide's colour */
+.ft-live:has(.ft-slot-l)::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 12px);width:24px;background:var(--desk);z-index:1;pointer-events:none}
 .ft-live iframe{width:100%;height:100%;border:0;display:block;background:transparent;color-scheme:light}
 .ft-tile{position:relative;height:100%;aspect-ratio:1040/880;margin:0;padding:0;border:0;border-radius:calc(.83 * var(--u));overflow:hidden;background:#1d2025;cursor:pointer;min-height:0;min-width:0;font:inherit;color:inherit;text-align:center}
 .ft-tile:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
@@ -506,6 +512,10 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .ft-col > :not(.ft-does){padding-left:calc(1.56 * var(--u))}
 .ft-step{font:400 calc(1.25 * var(--u))/1.3 var(--f-ui);color:var(--ink-2)}
 .ft-title{font:500 calc(2.9 * var(--u))/1.08 var(--f-display);color:var(--ink);margin:calc(.6 * var(--u)) 0 0;max-width:none}
+/* the title is a button back to the whole view */
+.feat .ft-title{cursor:pointer;width:fit-content;border-radius:calc(.4 * var(--u));text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.14em;text-decoration-thickness:2px;transition:text-decoration-color .2s}
+.feat .ft-title:hover{text-decoration-color:var(--brand)}
+.feat .ft-title:focus-visible{outline:3px solid var(--brand);outline-offset:4px}
 .ft-kick{font:600 calc(1.15 * var(--u))/1 var(--f-ui);letter-spacing:.08em;text-transform:uppercase}
 .ft-prob{margin-top:calc(2.3 * var(--u))}.ft-prob .ft-kick{color:#f0997b}
 .ft-body{font:400 calc(1.56 * var(--u))/1.35 var(--f-ui);color:var(--ink);margin:calc(.6 * var(--u)) 0 0;max-width:none}
@@ -520,12 +530,74 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .ft-col .credit{position:static;margin-top:auto;font-size:calc(.9 * var(--u));line-height:1.3;color:var(--ink-2)}
 [data-theme="light"] .ft-prob .ft-kick{color:#a8471f}
 [data-theme="light"] .ft-does-kick{color:#8a6d00}
+/* Section zoom (slide 1, second version): the empty Studio on the right; each click glides the camera
+   into one section and shows a big caption over the bottom; the last click pulls back out. The camera
+   follows the slide's own --t, so it glides with the step and runs backwards on Back. */
+.fz{position:absolute;right:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u));border-radius:calc(.83 * var(--u));overflow:hidden;background:#dfe3e8}
+.fz-cam{position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:0 0;will-change:transform}
+.fz-cam img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:fill}
+.fz-cam .fz-brief{opacity:0;transition:opacity .45s}
+.feat[data-fz="3"] .fz-cam .fz-brief{opacity:1}
+.fz-cam img[data-on]{opacity:0;transition:opacity .45s}
+.fz-cam img[data-on].on{opacity:1}
+/* hovering a menu line frames its section on the still: an inset yellow ring on the section's own
+   edges (positions in Studio pixels, as % of the 1215x984 still) and the rest dimmed */
+.fz-hl{position:absolute;pointer-events:none;opacity:0;transition:opacity .25s;box-shadow:inset 0 0 0 3px #f5c84b,0 0 0 300vmax rgb(18 20 23 / .45)}
+.fz-hl.on{opacity:1}
+.fz-dir{position:absolute;z-index:3;display:flex;align-items:center;gap:calc(.6 * var(--u));padding:calc(.55 * var(--u)) calc(1.1 * var(--u));border-radius:999px;
+  background:rgb(18 20 23 / .86);border:2px solid #f5c84b;box-shadow:0 0 calc(2.4 * var(--u)) rgb(245 200 75 / .55);color:#fff;
+  font:500 calc(1.25 * var(--u))/1.2 var(--f-ui);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s}
+.fz-dir.on{opacity:1}
+/* click the panel to swap the stills for the live Studio (same file and Brief); a menu line, an arrow key or
+   the title goes back to the stills */
+.fz[data-live]{cursor:pointer}
+.fz-live{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:transparent;opacity:0;pointer-events:none;transition:opacity .3s;color-scheme:light}
+.fz.live{cursor:auto}
+.fz.live .fz-live{opacity:1;pointer-events:auto}
+.fz.live .fz-cam{visibility:hidden}
+.fz-try{position:absolute;right:calc(1.2 * var(--u));bottom:calc(1.2 * var(--u));z-index:3;padding:calc(.45 * var(--u)) calc(1 * var(--u));border-radius:999px;background:rgb(18 20 23 / .86);color:#fff;
+  font:500 calc(1.05 * var(--u))/1.2 var(--f-ui);pointer-events:none;opacity:0;transition:opacity .2s}
+.feat[data-fz="0"] .fz[data-live]:not(.live):hover .fz-try{opacity:1}
+/* the click on a button before its panel opens (History): a yellow ring that grows and fades */
+.fz-press{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid #f5c400;background:rgb(245 196 0 / .25);opacity:0;pointer-events:none;transform:scale(.4)}
+.fz-press.on{animation:fzPress .5s ease-out forwards}
+@keyframes fzPress{0%{opacity:.95;transform:scale(.4)}100%{opacity:0;transform:scale(1.6)}}
+.fz-dir-a{display:inline-block;color:#f5c84b;font-size:1.25em;line-height:1}
+/* "What PRISM does" is a menu: each line opens its tile, panel or zoom step on the right */
+/* "What PRISM does" as a glass menu (demo slides, option C): one frosted panel, like an iOS menu,
+   with a faint yellow glow; each line is a button with a yellow arrow, and the line for what is
+   showing on the right is a yellow glass pill. Text starts on the column's left edge. */
+.ft-does:has(li[data-show]){position:relative;border-radius:calc(1.46 * var(--u));padding:calc(.73 * var(--u));
+  background:radial-gradient(120% 90% at 20% 0%,rgb(245 196 0 / .14),transparent 60%),linear-gradient(180deg,rgb(255 255 255 / .13),rgb(255 255 255 / .04));
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .4),inset 0 0 0 1px rgb(255 255 255 / .12),0 calc(1 * var(--u)) calc(2.6 * var(--u)) rgb(0 0 0 / .5),0 0 calc(4 * var(--u)) rgb(245 196 0 / .12)}
+.ft-list:has(li[data-show]){display:grid;gap:calc(.3 * var(--u))}
+.ft-list li[data-show]{margin:0;display:flex;align-items:center;gap:calc(1 * var(--u));cursor:pointer;color:var(--ink);
+  border-radius:calc(.94 * var(--u));padding:calc(.73 * var(--u)) calc(1.15 * var(--u)) calc(.73 * var(--u)) calc(.83 * var(--u));
+  transition:background .2s,color .2s,box-shadow .2s}
+.ft-list li[data-show]::before{content:none}
+.ft-list li[data-show]::after{content:"→";margin-left:auto;flex:none;font-size:1.05em;line-height:1;color:var(--brand)}
+.ft-list li[data-show]:hover{background:rgb(255 255 255 / .08)}
+.ft-list li[data-show]:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.ft-list li[data-show].on{color:#1b1c1e;background:linear-gradient(180deg,#ffe066,#f2c200);
+  box-shadow:inset 0 1.5px 0 rgb(255 255 255 / .85),inset 0 -2px 4px rgb(140 100 0 / .35),0 calc(.3 * var(--u)) calc(.83 * var(--u)) rgb(245 196 0 / .35)}
+.ft-list li[data-show].on::after{color:#1b1c1e}
+[data-theme="light"] .ft-does:has(li[data-show]){background:radial-gradient(120% 90% at 20% 0%,rgb(245 196 0 / .18),transparent 60%),linear-gradient(180deg,rgb(255 255 255 / .75),rgb(255 255 255 / .45));
+  box-shadow:inset 0 1px 0 #fff,inset 0 0 0 1px rgb(27 28 30 / .1),0 calc(1 * var(--u)) calc(2.6 * var(--u)) rgb(0 0 0 / .12)}
+[data-theme="light"] .ft-list li[data-show]::after{color:#8a6d00}
+[data-theme="light"] .ft-list li[data-show]:hover{background:rgb(27 28 30 / .06)}
+/* five lines (Pick the right checks): a little tighter and 26 px, so the credit still fits */
+.ft-list:has(li[data-show]:nth-child(5)){gap:calc(.15 * var(--u))}
+.ft-list:has(li[data-show]:nth-child(5)) li[data-show]{font-size:calc(1.36 * var(--u));line-height:1.3;padding-top:calc(.42 * var(--u));padding-bottom:calc(.42 * var(--u))}
+@media (max-width:720px){.fz{position:relative;right:auto;top:auto;width:auto;height:auto;aspect-ratio:1215/984}}
+
 /* Demo slides are mirrored: the text column on the left, the clips or the live Studio on the right */
 @media (min-width:721px){
   .ft-clip,.ft-grid,.ft-live{left:auto;right:calc(2.5 * var(--u))}
-  .ft-grid{justify-content:end}
+  .ft-grid{justify-content:start}
   .ft-col{left:calc(2.5 * var(--u));right:calc(68.3 * var(--u))}
-  .scene.feat:has(.ft-grid) .ft-col{left:calc(2.5 * var(--u));right:calc(2.5 * var(--u) + 2 * var(--tw) + 2.54 * var(--u))}
+  /* one column width on every demo slide: it ends where the live panels begin, tiles or not */
+  .scene.feat:has(.ft-grid) .ft-col{left:calc(2.5 * var(--u));right:calc(68.3 * var(--u))}
 }
 @media (max-width:720px){.scene.feat .inner{height:auto}.ft-clip,.ft-col,.ft-grid{position:static;width:auto;height:auto}.ft-grid{grid-template-columns:1fr;grid-template-rows:auto}.ft-vid{aspect-ratio:580/500}.ft-clip{aspect-ratio:860/696}.ft-col{margin-top:24px}}
 .fp-row.fp-tall{--shut:calc(3 * var(--u,1vw));--open:calc(100cqw - 12.6 * var(--u,1vw));--vh:min(var(--open) / 1.765, 100dvh - 7.5 * var(--u,1vw))}
@@ -889,7 +961,6 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
       <h2 class="visually-hidden">The question that started it</h2>
       <q class="pop" data-in="0 1">Did my visual actually <mark class="wipe drive" data-in="0 0">make a difference?</mark></q>
       <p data-in="0 1">My work left at handoff. I never learned if it helped.</p>
-      <cite data-in="0 1">Sonia</cite>
       <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a>, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a> and in code</p>
     </div></div>
   </section>
@@ -969,29 +1040,45 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 
   <section class="scene" id="intro" data-chap="Meet PRISM">
-    <iframe class="pm-door" src="../index.html?intro" title="The PRISM front door: Make your health handout easy to read" loading="eager"></iframe>
+    <iframe class="pm-door" src="../index.html?intro" title="The PRISM front door: Make health handouts, posters and web pages easy to read" loading="eager"></iframe>
   </section>
 
-  <section class="scene feat" id="feat-drop" data-chap="Demo">
+  <section class="scene feat" id="feat-drop" data-chap="Demo" hidden>
     <div class="stage"><div class="inner">
       <div class="ft-grid">
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Text from the Light Collective guide is pasted into the Material panel."><source src="media/loops/f1-paste.webm?v=20261116i" type="video/webm"><source src="media/loops/f1-paste.mp4?v=20261116i" type="video/mp4"></video></span><span class="ft-cover">Paste it in</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="A Word file is dragged over the Material panel and opens as an editable draft of 791 words."><source src="media/loops/f2-drop.webm?v=20261116j" type="video/webm"><source src="media/loops/f2-drop.mp4?v=20261116j" type="video/mp4"></video></span><span class="ft-cover">Drag and drop a file</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The sample poster, Know Your Numbers, is clicked and opens in the Material panel as an image."><source src="media/loops/f3-sample.webm?v=20261116l" type="video/webm"><source src="media/loops/f3-sample.mp4?v=20261116l" type="video/mp4"></video></span><span class="ft-cover">Start from an example</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The Brief, already open: Patients and Handout are picked, and the targets appear: grade 6 or lower, 150 to 700 words."><source src="media/loops/f4-brief.webm?v=20261116m" type="video/webm"><source src="media/loops/f4-brief.mp4?v=20261116m" type="video/mp4"></video></span><span class="ft-cover">Set the Brief</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Text from the Light Collective guide is pasted into the Material panel."><source src="media/loops/f1-paste.webm?v=20261117z" type="video/webm"><source src="media/loops/f1-paste.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Paste it in</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="A Word file is dragged over the Material panel and opens as an editable draft of 791 words."><source src="media/loops/f2-drop.webm?v=20261117z" type="video/webm"><source src="media/loops/f2-drop.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Drag and drop a file</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The sample poster, Know Your Numbers, is clicked and opens in the Material panel as an image."><source src="media/loops/f3-sample.webm?v=20261117z" type="video/webm"><source src="media/loops/f3-sample.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Start from an example</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The Brief, already open: Patients and Handout are picked, and the targets appear: grade 6 or lower, 150 to 700 words."><source src="media/loops/f4-brief.webm?v=20261117z" type="video/webm"><source src="media/loops/f4-brief.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Set the Brief</span></button>
       </div>
       <div class="ft-col">
         <p class="ft-step">1 of 4</p>
         <h2 class="ft-title">Bring it in, start checking</h2>
         <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
         <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li>Paste text from anywhere</li><li>Drop in a Word file, PDF, text or image</li><li>Start from an example to learn how it works</li><li>Set the Brief, and the checks begin</li></ul></div>
+        <div class="ft-does"><ul class="ft-list"><li data-show="tile:0">Paste text from anywhere</li><li data-show="tile:1">Drop in a Word file, PDF, text or image</li><li data-show="tile:2">Start from an example to learn how it works</li><li data-show="tile:3">Set the Brief, and the checks begin</li></ul></div>
         <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
       </div>
     </div></div>
   </section>
 
-  <section class="scene feat" id="feat-frameworks" data-chap="Demo">
+  <section class="scene feat" id="feat-drop-zoom" data-chap="Demo" data-wait data-beats="4" data-dur="700" data-fz="0">
+    <div class="stage"><div class="inner">
+      <span hidden data-in="0 0.0001"></span><!-- gives the slide its click steps -->
+      <div class="fz" aria-hidden="true">
+        <div class="fz-cam"><img src="media/zoom/ws-empty.webp?v=20261117a" alt=""><img class="fz-brief" src="media/zoom/ws-brief.webp?v=20261117a" alt=""></div>
+      </div>
+      <div class="ft-col">
+        <p class="ft-step">1 of 4</p>
+        <h2 class="ft-title">Bring it in, start checking</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="step:1">Paste in or drop a file</li><li data-show="step:2">Start from an example to learn how it works</li><li data-show="step:3">Set the Brief, and the checks begin</li></ul></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-frameworks" data-chap="Demo" hidden>
     <div class="stage"><div class="inner">
       <div class="ft-live"><iframe data-src="../index.html?demo=frameworks" title="The PRISM Studio, live: the Frameworks list and the score cards for the Take Action section" tabindex="0"></iframe><div class="ft-slot ft-slot-l"><button type="button" class="ft-cover">Pick, sort and filter</button></div><div class="ft-slot ft-slot-r"><button type="button" class="ft-cover">Each one, its own card</button></div></div>
       <div class="ft-col">
@@ -999,7 +1086,25 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
         <h2 class="ft-title">Pick the right checks</h2>
         <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
         <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li>Picks the frameworks that fit your readers</li><li>Shows what every framework asks for, in one place</li><li>Tells you which items need your judgement, and why</li><li>Suggests fixes you can apply in one click</li><li>Saves every change, so you can go back</li></ul></div>
+        <div class="ft-does"><ul class="ft-list"><li data-show="slot:0">Picks the frameworks that fit your readers</li><li data-show="slot:1">Shows what every framework asks for, in one place</li><li data-show="slot:1">Tells you which items need your judgement, and why</li><li data-show="slot:1">Suggests fixes you can apply in one click</li><li data-show="slot:1">Saves every change, so you can go back</li></ul></div>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-frameworks-zoom" data-chap="Demo" data-wait data-beats="6" data-dur="700" data-fz="0">
+    <div class="stage"><div class="inner">
+      <span hidden data-in="0 0.0001"></span><!-- gives the slide its click steps -->
+      <div class="fz" data-live data-press='{"5":{"still":0,"cam":[1.8,330,330],"at":[132.8,149,116.8,32]}}' data-hl-names='{"1":"Frameworks list","2":"CCI checklist","3":"Items with notes","4":"Plain language fix","5":"History button"}' data-hl='{"1":[498,72,697,700,6],"2":[500,141.6,695,691,6],"3":[509,341.2,677,245.3,4],"4":[509,261.6,677,216.3,4],"5":[132.8,149,116.8,32,4,0]}' data-stops="[[1,607.5,492],[1.45,846,380],[1.64,847,420],[1.75,847,640],[1.75,847,400],[2.1,1015,290],[1,607.5,492]]">
+        <div class="fz-cam"><img src="media/zoom/ws2-cards.webp?v=20261117c" alt=""><img data-on="1" src="media/zoom/ws2-list.webp?v=20261117c" alt=""><img data-on="2,3" src="media/zoom/ws2-sheets.webp?v=20261117c" alt=""><img data-on="5" src="media/zoom/ws2-history.webp?v=20261117c" alt=""></div>
+        <iframe class="fz-live" data-src="../index.html?studio&demo=checks" title="The PRISM Studio, live: the TLC guide with the Brief set to Patients and Manual" tabindex="-1"></iframe><span class="fz-try">Click to use it live</span>
+      </div>
+      <div class="ft-col">
+        <p class="ft-step">2 of 4</p>
+        <h2 class="ft-title">Pick the right checks</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="step:1">Picks the frameworks that fit your readers</li><li data-show="step:2">Shows what every framework asks for, in one place</li><li data-show="step:3">Tells you which items need your judgement, and why</li><li data-show="step:4">Suggests fixes you can apply in one click</li><li data-show="step:5">Saves every change, so you can go back</li></ul></div>
         <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
       </div>
     </div></div>
@@ -1008,16 +1113,16 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   <section class="scene feat" id="feat-poster" data-chap="Demo">
     <div class="stage"><div class="inner">
       <div class="ft-grid ft-grid-poster">
-        <div class="ft-poster"><video id="ft-poster-vid" muted playsinline disablepictureinpicture preload="auto" poster="media/loops/s3-poster.png?v=20261117b" aria-label="The UHN poster. While the colour tile plays, it shows the band darkened by the suggested fix, then each colour-blind view."><source src="media/loops/s3-poster.mp4?v=20261117b" type="video/mp4"></video></div>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Alt text is typed for the UHN poster and checked against WCAG 1.1.1 and the reading level."><source src="media/loops/s3-alt.webm?v=20261117a" type="video/webm"><source src="media/loops/s3-alt.mp4?v=20261117a" type="video/mp4"></video></span><span class="ft-cover">Alt text, checked</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false" data-sync="#ft-poster-vid"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="White on the poster blue passes at 5.13 to 1. White on the light-blue band fails at 2.03 to 1; Preview darkens the band to #217f95 on the poster. Then the poster shows deuteranopia, protanopia, tritanopia and greyscale."><source src="media/loops/s3-colour.mp4?v=20261117b" type="video/mp4"></video></span><span class="ft-cover">Colour contrast and colour blindness</span></button>
+        <div class="ft-poster"><video id="ft-poster-vid" muted playsinline disablepictureinpicture preload="auto" poster="media/loops/s3-poster.png?v=20261117z" aria-label="The UHN poster. While the colour tile plays, it shows the band darkened by the suggested fix, then each colour-blind view."><source src="media/loops/s3-poster.mp4?v=20261117z" type="video/mp4"></video></div>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Alt text is typed for the UHN poster and checked against WCAG 1.1.1 and the reading level."><source src="media/loops/s3-alt.webm?v=20261117z" type="video/webm"><source src="media/loops/s3-alt.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Alt text, checked</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false" data-sync="#ft-poster-vid"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="White on the poster blue passes at 5.13 to 1. White on the light-blue band fails at 2.03 to 1; Preview darkens the band to #217f95 on the poster. Then the poster shows deuteranopia, protanopia, tritanopia and greyscale."><source src="media/loops/s3-colour.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Colour contrast and colour blindness</span></button>
       </div>
       <div class="ft-col">
         <p class="ft-step">3 of 4</p>
         <h2 class="ft-title">Check a poster</h2>
         <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Contrast checkers, colour-blind simulators and alt text guides are scattered across separate, clunky sites. No one place does it all.</p></div>
         <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li>Tests alt text against WCAG 1.1.1 and your reading level</li><li>Checks colour pairs, and suggests a fix</li><li>Shows it as colour-blind readers see it</li></ul></div>
+        <div class="ft-does"><ul class="ft-list"><li data-show="tile:0">Tests alt text against WCAG 1.1.1 and your reading level</li><li data-show="tile:1">Checks colour pairs, and suggests a fix</li><li data-show="tile:1">Shows it as colour-blind readers see it</li></ul></div>
         <p class="credit">Poster: COVID welcome poster for UHN (June 2022), designed by Sonia Seto</p>
       </div>
     </div></div>
@@ -1031,7 +1136,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
         <h2 class="ft-title">Fix it your way</h2>
         <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Checkers list the problems, then leave the rewriting, and keeping track of it, to you.</p></div>
         <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li>Edit right in the text</li><li>Apply a suggested rewrite, or all of them</li><li>Write your own in New, then apply it</li><li>Every change is a version you can go back to</li></ul></div>
+        <div class="ft-does"><ul class="ft-list"><li data-show="slot:0">Edit right in the text</li><li data-show="slot:0">Apply a suggested rewrite, or all of them</li><li data-show="slot:0">Write your own in New, then apply it</li><li data-show="slot:1">Every change is a version you can go back to</li></ul></div>
         <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
       </div>
     </div></div>
@@ -1299,9 +1404,9 @@ var toggleTheme = (function(){
   var MOON = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.25 9.6A5.5 5.5 0 0 1 6.4 2.75a5.5 5.5 0 1 0 6.85 6.85z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>';
   var SUN = '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M3.4 12.6l1.1-1.1M11.5 4.5l1.1-1.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
   function light(){ return root.getAttribute('data-theme') === 'light'; }
-  // the Meet PRISM frame is the app itself: give it the same theme (live Studio panels stay light)
+  // the Meet PRISM frame is the app itself: give it the same theme (live Studio panels, and the zoom slide's live Studio, stay light)
   function syncFrames(){
-    document.querySelectorAll('iframe:not(.ft-live iframe)').forEach(function(f){
+    document.querySelectorAll('iframe:not(.ft-live iframe):not(.fz-live)').forEach(function(f){
       try { var d = f.contentDocument; if (!d) return;
         if (light()) d.documentElement.removeAttribute('data-theme'); else d.documentElement.setAttribute('data-theme', 'dark');
       } catch (_) {}
@@ -1425,10 +1530,18 @@ window.deckStart = function(){
       else tween(go, from, to, Math.min(11000, d / 150 * 1000), delay, steady);
     } else {
       var t = s.beats[s.beat];
+      s.el.setAttribute('data-beat', s.beat);   // the step it is going to, for slides that animate on their own
       // forward is a 1.6 s cascade at an even pace (data-dur sets a slide's own length); back snaps over 0.4 s
       tween(function(v){ paintSlide(s, v); }, s.t, t, back ? 400 : +s.el.dataset.dur || 1600, delay, back ? inOut : function(k){ return k; });
     }
   }
+
+  // a slide's own controls (the demo menus) can move it to one of its beats
+  window.deckBeat = function(i){
+    var s = slides[cur]; if (!s || s.walk || !s.beats.length) return;
+    i = Math.max(0, Math.min(s.beats.length - 1, i));
+    var back = i < s.beat; s.beat = i; playBeat(s, back);
+  };
 
   // each slide's title (the rail names its dot after it)
   var TITLE = '.title h1, .h2, .big-line, .question q';
@@ -1447,14 +1560,10 @@ window.deckStart = function(){
     // a click during the zoom only hurries it to its end
     if (zooming) return;
     var a = slides[cur], b = slides[i];
-    if (dir > 0 && i === cur + 1 && a.el.hasAttribute('data-zoom') && b.el.classList.contains('peek') && !reduce &&
-        window.innerWidth > 720 && a.el._zoom) return zoomThrough(a, b, i);
-    // morph is the default: browsers with View Transitions glide shared parts (the title, anything marked
-    // data-morph) to their new place. Slides that share data-title, the walkthrough, and reduced motion
-    // keep the plain fade, as does a slide marked data-wait when it is entered going forward, since its
-    // title waits for its click (going back, it arrives finished, so it can morph).
-    if (a === b || !document.startViewTransition || reduce || a.walk || b.walk || (dir > 0 && b.el.hasAttribute('data-wait')) ||
-        (a.el.dataset.title && a.el.dataset.title === b.el.dataset.title)) return swap(a, b, i, dir);
+    // every slide change, forward and back, is a morph: browsers with View Transitions glide shared parts
+    // (the title, anything marked data-morph) to their new place while the rest crossfades. Only reduced
+    // motion, browsers without View Transitions and the walkthrough keep the plain fade.
+    if (a === b || !document.startViewTransition || reduce || a.walk || b.walk) return swap(a, b, i, dir);
     morph(a, b, i, dir);
   }
   // zoom divider: lay the cut-out numeral out for this screen, and find the thickest spot in its stroke
@@ -1641,7 +1750,7 @@ window.deckStart = function(){
       b.beat = n ? 0 : -1;
       if (n) playBeat(b, false, 160);
     } else {
-      b.beat = n - 1;
+      b.beat = n - 1; b.el.setAttribute('data-beat', b.beat);
       if (b.walk) window.scrollTo(0, walkStops()[n - 1]); else paintSlide(b, n ? b.beats[n - 1] : 1);
       [].forEach.call(b.el.querySelectorAll('[data-scroll]'), function(el){ el.scrollTop = el.scrollHeight; });
     }
@@ -1936,6 +2045,193 @@ window.deckStart = function(){
     });
   });
 
+  // section zoom: each step names a camera stop (0 the whole workspace, 1 paste or drop, 2 examples,
+  // 3 the Brief, 4 the whole workspace again). The camera flies straight from wherever it is to the
+  // step's stop, so picking the Brief first goes directly to the Brief, never through the others.
+  [].forEach.call(document.querySelectorAll('.scene .fz'), function(fz){
+    var scene = fz.closest('.scene'), cam = fz.querySelector('.fz-cam'), W0 = 1215;
+    // a slide can set its own stops ([zoom, x, y] in Studio pixels) with data-stops
+    var stops = fz.getAttribute('data-stops') ? JSON.parse(fz.getAttribute('data-stops')) : [[1, 607.5, 492], [2.6, 310, 466], [2.7, 310, 640], [2.05, 312, 243], [1, 607.5, 492]];
+    // stills marked data-on="1,5" show only at those stops (over the first still)
+    var layers = [].slice.call(cam.querySelectorAll('img[data-on]'));
+    function showLayers(i){ layers.forEach(function(im){ im.classList.toggle('on', im.getAttribute('data-on').split(',').indexOf(String(i)) >= 0); }); }
+    // hover frames: data-hl maps a stop to [x, y, w, h, radius] in Studio pixels
+    var hlMap = fz.getAttribute('data-hl') ? JSON.parse(fz.getAttribute('data-hl')) : null, hl = null, cur = 0;
+    if (hlMap) {
+      hl = document.createElement('div'); hl.className = 'fz-hl'; cam.appendChild(hl);
+      var H0 = 984;
+      // while zoomed in, a target that's off-screen gets a pill on the edge facing it, with an arrow
+      // toward where the camera will pan and the target's name; one in view gets the frame; one at
+      // the same spot on another still says the view switches
+      var dir = document.createElement('div'); dir.className = 'fz-dir'; dir.innerHTML = '<span class="fz-dir-a">&rarr;</span><span class="fz-dir-t"></span>'; fz.appendChild(dir);
+      var names = fz.getAttribute('data-hl-names') ? JSON.parse(fz.getAttribute('data-hl-names')) : {};
+      var stillOf = function(i){ var im = layers.find(function(x){ return x.getAttribute('data-on').split(',').indexOf(String(i)) >= 0; }); return im ? layers.indexOf(im) : -1; };
+      function frame(r){ hl.style.left = (r[0] / W0 * 100) + '%'; hl.style.top = (r[1] / H0 * 100) + '%';
+        hl.style.width = (r[2] / W0 * 100) + '%'; hl.style.height = (r[3] / H0 * 100) + '%'; hl.style.borderRadius = r[4] + 'px'; hl.classList.add('on'); }
+      [].slice.call(scene.querySelectorAll('.ft-list li[data-show^="step:"]')).forEach(function(li){
+        var n = li.getAttribute('data-show').split(':')[1], r = hlMap[n]; if (!r) return;
+        var still = r.length > 5 ? r[5] : +n;   // the stop whose still the target sits on
+        function on(){
+          var zoomed = cur > 0 && cur < stops.length - 1;
+          if (!zoomed) { frame(r); showLayers(still); return; }
+          if (+n === cur) return;   // already there
+          var v = view(), cx = r[0] + r[2] / 2, cy = r[1] + r[3] / 2;
+          var inView = cx > v.x && cx < v.x + v.w && cy > v.y && cy < v.y + v.h;
+          if (inView && stillOf(still) === stillOf(cur)) { frame(r); return; }
+          var W = fz.clientWidth, H = fz.clientHeight, label = names[n] || '';
+          if (inView) { dir.querySelector('.fz-dir-a').style.transform = 'none'; dir.querySelector('.fz-dir-a').innerHTML = '&#8644;';
+            dir.querySelector('.fz-dir-t').textContent = 'Switches to ' + label; dir.style.left = '50%'; dir.style.top = 'auto'; dir.style.bottom = '28px'; dir.style.transform = 'translateX(-50%)'; }
+          else {
+            var dx = cx - (v.x + v.w / 2), dy = cy - (v.y + v.h / 2), ang = Math.atan2(dy, dx);
+            // where the ray from the centre leaves the panel, kept 28px inside the edge
+            var pad = 28, hw = W / 2 - pad, hh = H / 2 - pad, k = Math.min(Math.abs(hw / (Math.cos(ang) || 1e-6)), Math.abs(hh / (Math.sin(ang) || 1e-6)));
+            var px = W / 2 + Math.cos(ang) * k, py = H / 2 + Math.sin(ang) * k;
+            dir.querySelector('.fz-dir-a').innerHTML = '&rarr;'; dir.querySelector('.fz-dir-a').style.transform = 'rotate(' + (ang * 180 / Math.PI).toFixed(1) + 'deg)';
+            dir.querySelector('.fz-dir-t').textContent = label;
+            dir.style.bottom = 'auto'; dir.style.left = px + 'px'; dir.style.top = py + 'px';
+            // keep the pill inside the panel: anchor it by the side it sits on
+            dir.style.transform = 'translate(' + (px > W - 220 ? '-100%' : px < 220 ? '0' : '-50%') + ',' + (py > H - 60 ? '-100%' : py < 60 ? '0' : '-50%') + ')';
+          }
+          dir.classList.add('on');
+        }
+        function off(){ hl.classList.remove('on'); dir.classList.remove('on'); showLayers(cur); }
+        li.addEventListener('mouseenter', on); li.addEventListener('focus', on);
+        li.addEventListener('mouseleave', off); li.addEventListener('blur', off);
+      });
+    }
+    var ease = function(k){ return k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
+    var now = stops[0].slice(), raf = 0;
+    var last = { tx:0, ty:0, z:1 };
+    function view(){ var W = fz.clientWidth, H = fz.clientHeight, sx = W / W0, sy = H / 984;
+      return { x: -last.tx / (sx * last.z), y: -last.ty / (sy * last.z), w: W0 / last.z, h: 984 / last.z }; }
+    function put(c){
+      var W = fz.clientWidth, H = fz.clientHeight, sx = W / W0, z = c[0];
+      var tx = W / 2 - c[1] * sx * z, ty = H / 2 - c[2] * sx * z;
+      tx = Math.min(0, Math.max(W - W * z, tx)); ty = Math.min(0, Math.max(H - H * z, ty));
+      last = { tx:tx, ty:ty, z:z };
+      cam.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + z.toFixed(4) + ')';
+    }
+    // a stop can first press a button (data-press: {stop: {still, cam:[zoom, x, y], at:[x, y, w, h]}}): the camera
+    // goes to the button on that still, a click ring plays on it, then the stop's still shows and the camera moves on
+    var press = fz.getAttribute('data-press') ? JSON.parse(fz.getAttribute('data-press')) : {}, seq = 0;
+    var ring = document.createElement('div'); ring.className = 'fz-press'; cam.appendChild(ring);
+    function glide(to, dur, done){
+      var from = now.slice(), t0 = performance.now();
+      cancelAnimationFrame(raf);
+      (function step(t){
+        var k = dur ? Math.min(1, (t - t0) / dur) : 1, e = ease(k);
+        now = [from[0] + (to[0] - from[0]) * e, from[1] + (to[1] - from[1]) * e, from[2] + (to[2] - from[2]) * e];
+        put(now);
+        if (k < 1) raf = requestAnimationFrame(step); else if (done) done();
+      })(t0);
+    }
+    function fly(i, instant){
+      var to = stops[Math.max(0, Math.min(stops.length - 1, i))], quick = instant || reduce, my = ++seq;
+      scene.setAttribute('data-fz', i >= 1 && i <= stops.length - 2 ? i : 0);
+      cur = i;
+      if (hl && i > 0 && i < stops.length - 1) { hl.classList.remove('on'); var d = fz.querySelector('.fz-dir'); if (d) d.classList.remove('on'); }   // zooming in clears the frame and hint
+      ring.classList.remove('on');
+      var pr = press[i];
+      if (pr && !quick) {
+        showLayers(pr.still);
+        glide(pr.cam, 650, function(){
+          if (my !== seq) return;
+          var a = pr.at; ring.style.left = ((a[0] + a[2] / 2) / W0 * 100) + '%'; ring.style.top = ((a[1] + a[3] / 2) / 984 * 100) + '%';
+          ring.classList.remove('on'); void ring.offsetWidth; ring.classList.add('on');
+          setTimeout(function(){ if (my !== seq) return; showLayers(i); glide(to, 750); }, 520);
+        });
+        return;
+      }
+      if (!hl || !hl.classList.contains('on')) showLayers(i);
+      glide(to, quick ? 0 : 750);
+    }
+    var on = false;
+    new MutationObserver(function(){
+      var isOn = scene.classList.contains('on'), b = +(scene.getAttribute('data-beat') || 0);
+      fly(b, !on && isOn && b === 0);   // arriving: start on the whole workspace without a move
+      on = isOn;
+    }).observe(scene, { attributes:true, attributeFilter:['data-beat', 'class'] });
+    addEventListener('resize', function(){ put(now); });
+    put(now);
+    // the live Studio: loads once the slide is shown, swaps in on a click, swaps out on any step
+    var live = fz.querySelector('.fz-live');
+    if (live) {
+      var loaded = false;
+      function load(){ if (loaded) return; loaded = true; live.src = live.getAttribute('data-src') + '&t=' + Date.now();
+        live.onload = function(){ var d; try { d = live.contentDocument; } catch (_) { return; } if (!d) return;
+          d.addEventListener('keydown', function(e){
+            if (/^(PageDown|PageUp)$/.test(e.key) || (!e.target.matches('input,textarea,select,[contenteditable]') && /^Arrow(Left|Right)$/.test(e.key))) {
+              e.preventDefault(); window.dispatchEvent(new KeyboardEvent('keydown', { key:e.key, shiftKey:e.shiftKey, cancelable:true })); } }); }; }
+      function goLive(){ load(); fz.classList.add('live'); live.setAttribute('tabindex', '0'); hl && hl.classList.remove('on'); }
+      function leave(){ if (!fz.classList.contains('live')) return; fz.classList.remove('live'); live.setAttribute('tabindex', '-1'); }
+      fz.addEventListener('click', function(e){
+        if (fz.classList.contains('live')) return;
+        e.stopPropagation();
+        if (cur !== 0 && window.deckBeat) window.deckBeat(0);
+        setTimeout(goLive, 30);
+      });
+      new MutationObserver(function(){
+        if (!scene.classList.contains('on')) { leave(); return; }
+        load();
+        var b = +(scene.getAttribute('data-beat') || 0);
+        if (fz.classList.contains('live') && b !== 0) leave();
+      }).observe(scene, { attributes:true, attributeFilter:['data-beat', 'class'] });
+      scene.addEventListener('ft-reset', leave);
+    }
+  });
+
+  // a demo slide's title returns the right side to where it started: the whole workspace on the zoom
+  // slide, every cover closed on the others
+  [].forEach.call(document.querySelectorAll('.scene.feat .ft-title'), function(h){
+    var scene = h.closest('.scene');
+    h.setAttribute('role', 'button'); h.setAttribute('tabindex', '0'); h.setAttribute('title', 'Back to the whole view');
+    function go(e){
+      e.stopPropagation();
+      if (scene.querySelector('.fz')) { if (window.deckBeat) window.deckBeat(0); }
+      scene.dispatchEvent(new Event('ft-reset'));
+    }
+    h.addEventListener('click', go);
+    h.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(e); } });
+  });
+
+  // "What PRISM does" as a menu: a line opens its tile (tile:n), its live panel (slot:n) or its zoom
+  // step (step:n) on the right; the line for what is showing is marked, the others dim
+  [].forEach.call(document.querySelectorAll('.scene.feat'), function(scene){
+    var items = [].slice.call(scene.querySelectorAll('.ft-list li[data-show]')); if (!items.length) return;
+    var tiles = [].slice.call(scene.querySelectorAll('.ft-tile')), slots = [].slice.call(scene.querySelectorAll('.ft-slot')), picked = null;
+    function target(li){ var m = li.getAttribute('data-show').split(':'); return { kind:m[0], n:+m[1] }; }
+    function current(){
+      var t = tiles.findIndex(function(x){ return x.getAttribute('aria-pressed') === 'true'; });
+      if (t >= 0) return 'tile:' + t;
+      var o = slots.findIndex(function(x){ return x.classList.contains('open'); });
+      if (o >= 0) return 'slot:' + o;
+      var z = +scene.getAttribute('data-fz'); if (z) return 'step:' + z;
+      return '';
+    }
+    function mark(){
+      var now = current();
+      var hit = picked && picked.getAttribute('data-show') === now ? picked : items.find(function(li){ return li.getAttribute('data-show') === now; });
+      items.forEach(function(li){ li.classList.toggle('on', li === hit); });
+    }
+    items.forEach(function(li){
+      li.setAttribute('role', 'button'); li.setAttribute('tabindex', '0');
+      function go(e){
+        e.stopPropagation(); picked = li;
+        var t = target(li);
+        if (t.kind === 'tile' && tiles[t.n]) tiles[t.n].click();
+        else if (t.kind === 'slot' && slots[t.n]) slots[t.n].querySelector('.ft-cover').click();
+        else if (t.kind === 'step' && window.deckBeat) window.deckBeat(t.n);
+        setTimeout(mark, 30);
+      }
+      li.addEventListener('click', go);
+      li.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(e); } });
+    });
+    var mo = new MutationObserver(function(){ mark(); if (!scene.classList.contains('on')) picked = null; });
+    tiles.forEach(function(t){ mo.observe(t, { attributes:true, attributeFilter:['aria-pressed'] }); });
+    slots.forEach(function(t){ mo.observe(t, { attributes:true, attributeFilter:['class'] }); });
+    mo.observe(scene, { attributes:true, attributeFilter:['data-fz', 'class'] });
+  });
+
   // feature tiles: each starts covered with its title. Moving the pointer onto a tile slides its cover
   // up and plays its clip once, ending on the last frame; the tile that was open slides its cover back
   // down, so only one shows at a time. A click (or Enter / Space) does the same and, on the open tile,
@@ -1965,6 +2261,7 @@ window.deckStart = function(){
       t.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); });
       t.addEventListener('click', function(e){ e.stopPropagation(); open(t, true); });
     });
+    scene.addEventListener('ft-reset', function(){ tiles.forEach(cover); });
     var on = scene.classList.contains('on');
     new MutationObserver(function(){
       var now = scene.classList.contains('on');
@@ -1978,6 +2275,7 @@ window.deckStart = function(){
   [].forEach.call(document.querySelectorAll('.ft-live'), function(live){
     var slots = [].slice.call(live.querySelectorAll('.ft-slot')), scene = live.closest('.scene'), on = false;
     function show(sl){ slots.forEach(function(o){ o.classList.toggle('open', o === sl); }); }
+    scene.addEventListener('ft-reset', function(){ show(null); });
     slots.forEach(function(sl){
       var c = sl.querySelector('.ft-cover');
       c.addEventListener('mouseenter', function(){ show(sl); });
@@ -1994,7 +2292,7 @@ window.deckStart = function(){
   // live Studio panels load when the deck opens (one after another), so a slide never arrives on an
   // empty frame; once its slide is left, the frame reloads in the background, so it is fresh and
   // ready the next time. Left / Right / Page Up / Page Down inside it still turn slides.
-  [].forEach.call(document.querySelectorAll('.ft-live iframe'), function(fr, i){
+  [].forEach.call(document.querySelectorAll('.scene:not([hidden]) .ft-live iframe'), function(fr, i){
     var scene = fr.closest('.scene'), on = false, loaded = false;
     function load(){
       loaded = true;
