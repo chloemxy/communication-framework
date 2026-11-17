@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<script>(function(){var t;try{t=localStorage.getItem('pea.theme')}catch(e){}if(t!=='light')document.documentElement.setAttribute('data-theme','dark')})()</script>
+<script>(function(){var m=location.search.match(/[?&]demo=([a-z]+)/);if(m){document.documentElement.classList.add('demo-'+m[1]);return}var t;try{t=localStorage.getItem('pea.theme')}catch(e){}if(t!=='light')document.documentElement.setAttribute('data-theme','dark')})()</script>
 <title>PRISM — Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="design-system.css?v=20261027a">
+<link rel="stylesheet" href="design-system.css?v=20261116a">
 <script src="theme-switch.js?v=20261019e" defer></script>
 <script src="motion.js?v=20261019f" defer></script>
 <link rel="stylesheet" href="intro.css?v=20261021a">
@@ -206,6 +206,18 @@ body.resizing{cursor:col-resize;user-select:none}
 /* while the panel is open it has its own "Clear selection", and Tab goes from the toggle straight into the panel */
 .fw-topbar.open > #fw-top-clear, .fw-topbar.open > #brief-top-clear{display:none !important}
 #brief-top-summary{flex:1;min-width:0}
+/* one row on a grid: title, count, chips, Clear, then the Show all / Close toggle last, so the toggle
+   keeps one place whether the panel is open or closed. The toggle button spans the row as a subgrid,
+   so the title and Clear sit on top of it in their own columns. */
+.fw-topbar{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto auto;grid-template-rows:auto;align-items:center;column-gap:var(--sp-3)}
+.fw-topbar > .bar-title{grid-column:1;grid-row:1;position:relative;z-index:1}
+.fw-top-btn{grid-column:1 / -1;grid-row:1;display:grid;grid-template-columns:subgrid;align-items:center;padding:0 var(--sp-4) 0 0}
+.fw-top-count{grid-column:2}
+.fw-top-btn .fw-top-chips{grid-column:3}
+#brief-top-btn #brief-top-summary{grid-column:2 / 5}
+.fw-top-toggle{grid-column:5;grid-row:1;margin-left:0;padding-right:calc(16px + var(--sp-2))}
+.fw-top-chev{grid-column:5;grid-row:1;justify-self:end}
+.fw-topbar > #fw-top-clear, .fw-topbar > #brief-top-clear{grid-column:4;grid-row:1;position:relative;z-index:1;margin:0}
 
 /* A closed panel is inert (out of the Tab order and the accessibility tree); visibility follows the fade */
 .fw-top-panel{position:absolute;top:calc(100% + var(--sp-2));left:0;right:0;z-index:79;max-height:0;overflow:hidden;opacity:0;visibility:hidden;
@@ -451,6 +463,16 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .ce-overlay{display:none;position:absolute;inset:8px;z-index:2;align-items:center;justify-content:center;padding:0 calc(var(--inset) - 8px);
   border-radius:var(--radius-sheet);background:var(--selected);color:var(--form-blue);font-size:var(--fs-lg);font-weight:600;pointer-events:none}
 .canvas.is-empty .canvas-body.drag-over .ce-overlay{display:flex}
+/* on an empty panel the dashed line is drawn on the blue area itself, so it hugs the fill (the panel's
+   outline also spans the scrollbar gutter, which the fill doesn't) */
+.canvas.is-empty .canvas-body.drag-over{outline:none}
+/* an empty panel has nothing to scroll, so it keeps no scrollbar space: the drop area and the
+   empty-state buttons sit centred, with equal margins left and right */
+.canvas.is-empty .canvas-body{scrollbar-gutter:auto}
+.canvas.is-empty .canvas-body.drag-over .ce-overlay{outline:2px dashed var(--form-blue);outline-offset:0}
+/* while a file is over the empty panel, only the drop area shows: the buttons and sample tiles behind
+   it would otherwise peek out in the margin around it */
+.canvas.is-empty .canvas-body.drag-over > :not(.ce-overlay){visibility:hidden}
 
 /* Footer: counts in Caption, figures in Caption strong */
 .canvas-foot{position:relative;flex:0 0 auto;margin-top:auto;order:99;display:flex;align-items:center;flex-wrap:wrap;gap:0 var(--sp-3);min-width:0;padding:var(--sp-1) var(--sp-3);
@@ -506,7 +528,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 /* card titles are h2s for screen-reader navigation but keep Body strong, so no new treatment appears */
 .mod-title{display:flex;align-items:center;flex-shrink:0;margin:0 auto 0 0;font:inherit;line-height:inherit;color:inherit}
 .mod-name{font-size:var(--fs-sm);font-weight:600;color:var(--ink);white-space:nowrap}
-.mod-fold{transition:transform .15s}
+.mod-fold{display:inline-flex;align-items:center;justify-content:center;color:var(--ink-2);transition:transform .15s}
 .mod.collapsed .mod-fold{transform:rotate(-90deg)}
 .mod-body{padding:var(--sp-3) var(--inset) var(--sp-4);overflow-y:auto;scrollbar-width:thin;min-height:90px;max-height:640px;resize:vertical;container-type:inline-size}
 .mod-note{font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink-2)}
@@ -531,6 +553,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
   font-family:var(--sans);font-size:var(--fs-xs);font-weight:400;line-height:1.5;color:var(--ink);
   background:var(--tooltip-bg, var(--sheet));border:1px solid var(--rule);border-radius:var(--radius-control);box-shadow:var(--shadow-float)}
 #tip.on{display:block}
+#tip p{margin:var(--sp-1) 0 0}
+#tip .tip-f{padding:var(--sp-1) var(--sp-2);border-radius:4px;background:var(--meter-track);font-variant-numeric:tabular-nums}
+#tip .tip-note{color:var(--ink-2)}
 
 /* What the score means: a plain paragraph above a hairline (the pill carries the verdict word) */
 .score-why{margin-bottom:var(--sp-3);padding-bottom:var(--sp-3);border-bottom:1px solid var(--rule);font-size:var(--fs-sm);font-weight:400;line-height:1.5;color:var(--ink)}
@@ -539,12 +564,11 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .score-why p{margin:0}
 .why-head{font-size:var(--fs-md);line-height:1.4;font-variant-numeric:tabular-nums}
 .why-aside{font-size:var(--fs-xs);color:var(--ink-2)}
-.why-pts{margin:var(--sp-1) 0 0;padding-left:1.1em;font-size:var(--fs-xs);color:var(--ink-2)}
+.why-pts{margin:var(--sp-1) 0 0;padding:0;list-style:none;font-size:var(--fs-xs);color:var(--ink-2)}
 .why-pts li{margin-top:2px}
 .why-pts b{color:var(--ink)}
-/* Next step: a small theme-yellow tag (fill under ink text), then the action */
-.score-why .why-do{display:flex;align-items:baseline;gap:var(--sp-2);margin-top:var(--sp-2)}
-.why-do-lbl{flex:none;padding:0 6px;border-radius:var(--radius-control);background:var(--brand);color:var(--on-brand);font-size:var(--fs-xs);font-weight:600;line-height:20px}
+/* the next step: one plain line under the summary, on the card's one left edge */
+.score-why .why-do{display:block;margin-top:var(--sp-2)}
 
 /* Meters: ink fill on a quiet track, a tick at the target; the number and the words carry the verdict */
 .meter-lbl{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-3);margin-bottom:var(--sp-1)}
@@ -627,10 +651,17 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .issue-msg{grid-column:1 / -1;font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink-2)}
 .issue-snip{grid-column:1 / -1;display:block;max-width:100%;white-space:normal;overflow-wrap:anywhere;font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}   /* the whole sentence, wrapped */
 /* "Can't find these words on the artwork." */
-.read-how{margin-top:var(--sp-2)}
-.read-how-body{margin-top:var(--sp-1);font-size:var(--fs-xs);line-height:1.5;color:var(--ink);font-variant-numeric:tabular-nums}
-.read-how-body p + p{margin-top:var(--sp-1)}
-.read-how-note{color:var(--ink-2)}
+/* Readability: what to fix, one list with no box on the card's left edge; each line says the change and where it stands now */
+.read-fix{margin-bottom:var(--sp-3);padding-bottom:var(--sp-2);border-bottom:1px solid var(--rule);font-size:var(--fs-sm);line-height:1.45;color:var(--ink)}
+.read-fix[hidden]{display:none}
+.rf-head{font-weight:600;padding-bottom:var(--sp-1)}
+.rf-item{padding:var(--sp-2) 0 var(--sp-1);border-top:1px solid var(--rule)}
+.rf-row{display:flex;align-items:baseline;justify-content:space-between;gap:var(--sp-3)}
+.rf-t{font-weight:500}
+.rf-now{flex-shrink:0;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.rf-d{margin:2px 0 0;font-size:var(--fs-xs);color:var(--ink-2)}
+.mod-read .meter-name{color:var(--ink)}
+.meter-src{font-weight:400;color:var(--ink-2);margin-left:var(--sp-1)}
 .hl-miss{font-size:var(--fs-xs);font-weight:400;line-height:1.45;color:var(--ink-2)}
 .hl-miss:empty{display:none}
 .issue + .hl-miss{padding:0 0 var(--sp-1)}
@@ -647,7 +678,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .ck-item, .fwo-row{display:grid;grid-template-columns:4ch minmax(0,1fr) auto;grid-template-areas:"n t r";column-gap:var(--sp-3);row-gap:var(--sp-1);
   align-items:start;padding:var(--sp-2) 0;border-bottom:1px solid var(--rule)}
 .ck-item:last-child, .fwo-row:last-child{border-bottom:none}
-.ck-n{grid-area:n;text-align:right;font-size:var(--fs-xs);font-weight:400;line-height:calc(var(--fs-sm) * 1.45);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.ck-n{grid-area:n;text-align:left;font-size:var(--fs-xs);font-weight:400;line-height:calc(var(--fs-sm) * 1.45);color:var(--ink-2);font-variant-numeric:tabular-nums}
 .ck-text, .fwo-row .t{grid-area:t;min-width:0;font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink)}
 .ck-item .rate, .fwo-row .rate{grid-area:r;align-self:start;justify-content:flex-end}
 .ck-item.auto .ck-text{color:var(--ink-2)}
@@ -670,7 +701,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .fwo-hdr{display:grid;grid-template-columns:4ch minmax(0,1fr) auto;column-gap:var(--sp-3);align-items:baseline;max-width:none;margin:0 calc(-1 * var(--sp-2));padding:var(--sp-2);cursor:pointer;user-select:none;border-radius:var(--radius-control)}
 .fwo-hdr:hover{background:var(--hover)}
 .fwo-hdr:focus-visible{outline:2px solid var(--focus-ring);outline-offset:-2px}
-.fwo-chev{justify-self:start;font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);transition:transform .12s}
+/* the chevron's stroke starts on the column's left edge, like the section heading and the item numbers */
+.fwo-chev{justify-self:start;align-self:center;display:flex;margin-left:-4px;line-height:0;color:var(--ink-2);transition:transform .12s}
+.fwo-chev .chev{flex:none;max-width:none}
 .fwo-item.open .fwo-chev{transform:rotate(90deg)}
 .fwo-name{min-width:0;font-size:var(--fs-sm);font-weight:600;color:var(--ink)}
 .fwo-stat{font-size:var(--fs-xs);font-weight:400;color:var(--ink-2);white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -906,6 +939,23 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
   *, *::before, *::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
   .fw-top-panel, .fw-top-panel.open{transition:none !important}
 }
+</style>
+<style id="demo-css">
+/* ?demo=frameworks: the Frameworks list (left) and the score cards (right) as two tall panels,
+   each half the page less a gap, on a transparent page */
+html.demo-frameworks, html.demo-frameworks body{background:transparent!important;overflow:hidden}
+html.demo-frameworks body *{visibility:hidden}
+html.demo-frameworks #fw-topbar, html.demo-frameworks #fw-topbar *,
+html.demo-frameworks #fw-top-panel, html.demo-frameworks #fw-top-panel *,
+html.demo-frameworks #rail-scroll, html.demo-frameworks #rail-scroll *{visibility:visible}
+html.demo-frameworks #etb-hint, html.demo-frameworks #vm-status, html.demo-frameworks [role=status]{visibility:hidden!important}
+html.demo-frameworks #fw-topbar{position:fixed!important;left:0!important;top:0!important;width:calc(50% - 12px)!important;margin:0!important;z-index:6;box-sizing:border-box}
+html.demo-frameworks #fw-top-panel{position:fixed!important;left:0!important;top:var(--demo-bar,64px)!important;width:calc(50% - 12px)!important;max-height:none!important;height:calc(100% - var(--demo-bar,64px))!important;margin:0!important;z-index:5;overflow-y:auto!important;box-sizing:border-box}
+html.demo-frameworks #rail-scroll{position:fixed!important;right:0!important;left:auto!important;top:0!important;width:calc(50% - 12px)!important;height:100%!important;margin:0!important;padding:0!important;z-index:5}
+html.demo-frameworks .mod-rail{columns:1!important;column-width:auto!important}
+html.demo-frameworks #fw-top-toggle, html.demo-frameworks #fw-topbar .fw-top-chev{visibility:hidden!important}
+html.demo-frameworks body{transition:opacity .3s}
+html.demo-frameworks:not(.demo-ready) body{opacity:0}
 </style>
 </head>
 <body>
@@ -1333,7 +1383,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
       <div class="mod-hdr">
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="The words the computer read from the artwork. This is the text the tool scores, so correct anything it got wrong and add anything it missed. Click a line to find it on the artwork.">Text the tool read</span></h2>
         <span class="pill pill-empty" id="vtext-pill">—</span>
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vtext')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vtext')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vtext')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vtext')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="vm-ocr" id="vm-ocr" role="status">
@@ -1362,7 +1412,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
     <div class="mod mod-valt" id="mod-valt">
       <div class="mod-hdr">
         <h2 class="mod-title"><span class="mod-name">Alt text</span></h2>
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-valt')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-valt')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-valt')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-valt')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <p class="vm-help" id="vm-alt-help">Read aloud in place of the image. Say what it tells the reader; don’t start with “image of”.</p>
@@ -1381,7 +1431,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
     <div class="mod mod-vcolour" id="mod-vcolour">
       <div class="mod-hdr">
         <h2 class="mod-title"><span class="mod-name">Colour and contrast</span></h2>
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vcolour')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vcolour')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-vcolour')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-vcolour')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <h3 class="vm-sec-lbl">Palette from the artwork</h3>
@@ -1405,7 +1455,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
       <div class="mod-hdr">
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="Frameworks you pick that the tool can’t score show up here as lists. You rate each item yourself. CCI, PEMAT, Readability and Plain language have their own cards.">Framework checklists</span></h2>
         <span class="pill pill-empty" id="fwout-pill">—</span>
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-fwout')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-fwout')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-fwout')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body"><div id="fwout-body"></div></div>
     </div>
@@ -1416,25 +1466,20 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" id="read-audience-note" data-tip="How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid). Your audience sets the goal.">Readability</span></h2>
         
         
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-read')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-read')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-read')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body" id="read-body">
-        <div class="score-why" id="read-why"></div>
-        <div class="meter-lbl"><span class="meter-name">Flesch ease</span><span class="meter-num" id="ease-num">—</span></div>
+        <div class="read-fix" id="read-fix" hidden></div>
+        <div class="meter-lbl"><span class="meter-name">Reading ease <span class="meter-src"><span class="lbl-info" role="button" tabindex="0" id="ease-how" data-tip="The working appears once there is text to measure.">Flesch score</span>, 0 to 100</span></span><span class="meter-num" id="ease-num">—</span></div>
         <div class="meter-track"><div class="meter-fill" id="ease-fill"></div><span class="meter-target" id="ease-target" aria-hidden="true"></span></div>
-        <div class="meter-bench" id="ease-bench">Target: 60 or higher. Higher is easier.</div>
-        <div class="meter-lbl"><span class="meter-name">FK grade level</span><span class="meter-num" id="grade-num">—</span></div>
+        <div class="meter-bench" id="ease-bench">Higher is easier. Aim for 60 or more.</div>
+        <div class="meter-lbl"><span class="meter-name">School grade <span class="meter-src"><span class="lbl-info" role="button" tabindex="0" id="grade-how" data-tip="The working appears once there is text to measure.">Flesch–Kincaid</span></span></span><span class="meter-num" id="grade-num">—</span></div>
         <div class="meter-track"><div class="meter-fill" id="grade-fill"></div><span class="meter-target" id="grade-target" aria-hidden="true"></span></div>
-        <div class="meter-bench" id="grade-bench">Target: grade 6 or lower.</div>
+        <div class="meter-bench" id="grade-bench">The US school year a reader needs to follow it easily. Aim for grade 6 or lower.</div>
         <div class="stat-row">
-          <div class="stat-cell"><div class="stat-v" id="s-avglen">—</div><div class="stat-k">words per sentence</div></div>
-          <div class="stat-cell"><div class="stat-v" id="s-syll">—</div><div class="stat-k">syllables per word</div></div>
-          <div class="stat-cell"><div class="stat-v" id="s-passive">—</div><div class="stat-k">passive</div></div>
-        </div>
-        <details class="disclose read-how" id="read-how" hidden><summary>How the grade is worked out</summary><div class="read-how-body" id="read-how-body"></div></details>
-        <div class="find find-wb" id="wordbudget-row" style="display:none">
-          <div class="find-ico" id="wb-ico"></div>
-          <div class="find-body"><span class="find-lbl">Length for format</span><div class="find-msg" id="wb-msg"></div></div>
+          <div class="stat-cell"><div class="stat-v" id="s-avglen">—</div><div class="stat-k">words in an average sentence</div></div>
+          <div class="stat-cell"><div class="stat-v" id="s-syll">—</div><div class="stat-k">syllables in an average word</div></div>
+          <div class="stat-cell"><div class="stat-v" id="s-passive">—</div><div class="stat-k">of sentences use the passive voice</div></div>
         </div>
       </div>
     </div>
@@ -1445,7 +1490,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="CDC Clear Communication Index. It has 20 items in 4 parts. Parts B to D only count if the material has that kind of content. A score of 90 or more passes.<br><br>Auto-scored items come from your text. Rate the rest yourself.">CCI</span></h2>
         <span class="pill pill-empty" id="cci-pill">—</span>
         
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-cci')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-cci')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="status-line mod-status" id="cci-status"></div>
@@ -1461,7 +1506,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="PEMAT, from AHRQ, gives two scores: understandability (17 items) and actionability (7 items). Items that don’t apply are left out.<br><br>AHRQ sets no pass mark; higher is better. This card uses 70% or more on both as a working target.<br><br>For video or animation, set Format to Video / animation to score with PEMAT-A/V instead.">PEMAT</span></h2>
         <span class="pill pill-empty" id="pemat-pill">—</span>
         
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-pemat')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-pemat')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-pemat')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="status-line mod-status" id="pemat-status"></div>
@@ -1482,7 +1527,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="Checks each sentence for long sentences, medical words, passive voice, vague words, bare percents and short forms.<br><br>Click an issue to jump to it.">Plain language</span></h2>
         
         
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-scan')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-scan')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-scan')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="scan-summary">
@@ -1507,7 +1552,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="WCAG 2.2 AA checks to run before the Adobe accessibility test: alt text, heading order, link text, all caps and colour-only cues.<br><br>Fixing them here leaves less to fix in InDesign.">Accessibility</span></h2>
         <span class="pill pill-empty" id="a11y-pill">—</span>
         
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-a11y')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-a11y')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-a11y')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="score-why" id="a11y-why"></div>
@@ -1522,7 +1567,7 @@ body:has(.stage.is-plan) .steps{display:none}   /* Plan has its own stages */
         <h2 class="mod-title"><span class="mod-name" role="button" tabindex="0" data-tip="Can a reviewer find a source for each health claim? This flags numbers with no source, old dates, no review date, and words like “always” or “100% safe”.">Accuracy</span></h2>
         <span class="pill pill-empty" id="acc-pill">—</span>
         
-        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-acc')" title="Collapse or expand" aria-label="Collapse or expand">▾</button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
+        <button type="button" class="btn btn-quiet btn-icon mod-min mod-fold" onclick="toggleCollapse('mod-acc')" title="Collapse or expand" aria-label="Collapse or expand"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button type="button" class="btn btn-quiet btn-icon mod-min mod-hide" aria-label="Remove from this workspace" onclick="hideModule('mod-acc')" title="Remove from this workspace">✕</button>
       </div>
       <div class="mod-body">
         <div class="score-why" id="acc-why"></div>
@@ -2727,7 +2772,7 @@ function why(id, tone, text, action){
   el.className = 'score-why' + (tone ? ' ' + tone : '');
   el.innerHTML = '<p class="why-head">' + head + '</p>'
     + (pts.length ? '<ul class="why-pts">' + pts.map(p => '<li>' + p + '</li>').join('') + '</ul>' : '')
-    + (action ? '<p class="why-do"><span class="why-do-lbl">Next</span><span>' + action + '</span></p>' : '');
+    + (action ? '<p class="why-do">' + action + '</p>' : '');
 }
 
 const GRADE_AUDIENCE = g =>
@@ -2737,9 +2782,40 @@ const GRADE_AUDIENCE = g =>
 : g <= 12 ? 'someone who reads the news with ease'
 :           'a college-level reader';
 
+// Readability's "things to fix": the length for the chosen format, then the grade. Each item says the change,
+// the number it stands at now, and how to make it. When nothing needs fixing it says so in one line.
+function renderReadFix(stats, t){
+  const el = $('read-fix'); if(!el) return;
+  const items = [];
+  const fspec = FORMAT_SPEC[brief.format];
+  if(fspec){
+    const [lo, hi] = fspec.words, n = countWords(readStructure().text), f = fspec.label.toLowerCase();
+    if(n > hi) items.push(['Cut it to ' + hi + ' words or fewer', n.toLocaleString() + ' now',
+      'A ' + f + ' works best at ' + lo + ' to ' + hi + ' words. Cut it, or split it into two.']);
+    else if(n < lo) items.push(['Add a little more, to ' + lo + ' words or so', n.toLocaleString() + ' now',
+      'A ' + f + ' works best at ' + lo + ' to ' + hi + ' words. Readers may need more to act on it.']);
+  }
+  if(visualOn && !readStructure().prose){
+    items.push(['Read the poster aloud', 'grade ' + gradeText(stats.grade) + ', rough',
+      'Poster lines are too short for a reading-level formula to measure reliably. Listen for any line that is hard to say or understand.']);
+  } else if(stats.grade > t.grade){
+    items.push(stats.avgSentLen > t.sentLen
+      ? ['Shorten sentences to ' + t.sentLen + ' words or fewer', stats.avgSentLen + ' now',
+         'Split a sentence where it joins two ideas with “and”, “but” or “so”.']
+      : ['Use everyday words', 'grade ' + gradeText(stats.grade) + ' now',
+         'Your sentences are a good length; long words raise the grade. Swap medical terms for everyday ones, such as “high blood pressure” for “hypertension”.']);
+  }
+  el.hidden = false;
+  el.innerHTML = items.length
+    ? '<div class="rf-head">' + (items.length === 1 ? '1 thing to fix' : items.length + ' things to fix') + '</div>' +
+      items.map(i => '<div class="rf-item"><div class="rf-row"><span class="rf-t">' + i[0] + '</span><span class="rf-now">' + i[1] + '</span></div><p class="rf-d">' + i[2] + '</p></div>').join('')
+    : '<div class="rf-head">Nothing to fix</div><p class="rf-d">This is easy enough for your reader. As you edit, keep sentences this short.</p>';
+}
+
 function explainScores(stats, empty){
   if(empty){
-    ['read-why','cci-why','pemat-why','a11y-why','acc-why'].forEach(id => {
+    const rf = $('read-fix'); if(rf){ rf.hidden = true; rf.innerHTML = ''; }
+    ['cci-why','pemat-why','a11y-why','acc-why'].forEach(id => {
       const el = $(id); if(el){ el.className = 'score-why'; el.innerHTML = ''; }
     });
     return;
@@ -2747,28 +2823,8 @@ function explainScores(stats, empty){
   const t = targets();
   const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
 
-  // ── Readability ──
-  if(stats){
-    const over = Math.round((stats.grade - t.grade) * 10) / 10;
-    // until an audience is picked the goal is a default, not something the user set
-    const goal = brief.audience ? 'goal: grade ' + t.grade : 'default goal: grade ' + t.grade;
-    const gradeHead = stats.grade < 1 ? 'Reads <b>below grade 1</b>' : 'Reads at <b>grade ' + gradeText(stats.grade) + '</b>';
-    if(visualOn && !readStructure().prose){
-      // grade formulas need running sentences; poster lines are too short to trust them either way
-      why('read-why', '', [gradeHead + ' <span class="why-aside">(rough)</span>', 'Poster lines are too short for reading-level formulas.'],
-        'Read it aloud instead.');
-    } else if(stats.grade <= t.grade){
-      why('read-why', 'good', [gradeHead + ' <span class="why-aside">· meets ' + goal + '</span>', 'Suits ' + GRADE_AUDIENCE(stats.grade) + '.'],
-        'Keep sentences this short as you edit.');
-    } else {
-      const yrs = over >= 1 ? plural(Math.round(over), 'grade') : 'under a grade';
-      why('read-why', over > 2 ? 'bad' : 'mid',
-        [gradeHead + ' <span class="why-aside">· ' + yrs + ' above ' + goal + '</span>', 'Suits ' + GRADE_AUDIENCE(stats.grade) + '.'],
-        stats.avgSentLen > t.sentLen
-          ? 'Split sentences at “and”, “but” or “so”: <b>' + stats.avgSentLen + '</b> words on average, aim for ' + t.sentLen + ' or fewer.'
-          : 'Swap long medical words for everyday ones. Sentence length is fine.');
-    }
-  }
+  // ── Readability: one list of what to fix ──
+  if(stats) renderReadFix(stats, t);
 
   // ── CCI ──
   const cci = scoreItems(CCI_ITEMS);
@@ -2778,13 +2834,13 @@ function explainScores(stats, empty){
     if(cci.done)
       why('cci-why', cci.pct >= CCI_PASS ? 'good' : cci.pct >= 70 ? 'mid' : 'bad',
         ['Score <b>' + cci.pct + '</b> <span class="why-aside">· CDC passes at 90</span>', cci.met + ' of ' + cci.applicable + ' items met.'],
-        cci.pct >= CCI_PASS ? 'Check again after you edit.' : 'Fix the items marked not met.');
+        cci.pct >= CCI_PASS ? 'This meets the CDC’s pass mark of 90. Edits can change the score, so check it again before you publish.' : 'To reach the CDC’s pass mark of 90, fix the items marked “Not met” below. Each one you fix raises the score.');
     else if(cci.best < CCI_PASS)
       why('cci-why', 'bad', ['<b>Can’t reach 90 yet</b> <span class="why-aside">· best possible ' + cci.best + '</span>', counts],
-        'Fix the items marked not met first.');
+        'Even if every item left to rate were met, the score couldn’t reach 90. Fix the items marked “Not met” first, then rate the rest.');
     else
-      why('cci-why', '', [counts, 'Items you haven’t rated don’t count against you.'],
-        'Rate the rest. No steps, numbers or risks? Mark that part “Doesn’t apply”.');
+      why('cci-why', '', [counts, 'Items you haven’t rated yet don’t lower the score.'],
+        'Rate each remaining item as Met or Not met. If the material has no steps, numbers or risks, mark that part “Doesn’t apply” so it isn’t scored.');
   }
 
   // ── PEMAT ──
@@ -2793,42 +2849,42 @@ function explainScores(stats, empty){
   const a = PA.pct || 0;
   const pemHead = 'Understand <b>' + u + '%</b> · Act <b>' + a + '%</b> <span class="why-aside">· target 70%</span>';
   if(!PU.done || !PA.done)
-    why('pemat-why', '', ['<b>' + plural(PU.open + PA.open, 'item') + '</b> left to rate', 'Scores show once all are rated. Unrated items never count as fails.'], '');
+    why('pemat-why', '', ['<b>' + plural(PU.open + PA.open, 'item') + '</b> left to rate', 'The scores appear once every item is rated. Items you haven’t rated never count as fails.'], '');
   else if(u >= PEMAT_PASS && a >= PEMAT_PASS)
-    why('pemat-why', 'good', [pemHead, 'Both meet the target.'], '');
+    why('pemat-why', 'good', [pemHead, 'Readers can understand it and know what to do. Both scores meet the 70% target.'], '');
   else if(u >= PEMAT_PASS)
-    why('pemat-why', 'mid', [pemHead, 'Readers <b>understand</b> it but may not know what to <b>do</b>.'],
-      'Name one clear step, and talk to the reader as “you”.');
+    why('pemat-why', 'mid', [pemHead, 'Readers <b>understand</b> it, but may not know what to <b>do</b> next.'],
+      'Tell the reader one clear step to take, and speak to them directly as “you”, for example “Check your blood pressure twice a day”.');
   else if(a >= PEMAT_PASS)
     why('pemat-why', 'mid', [pemHead, 'The steps are clear, but the text is <b>hard to follow</b>.'],
-      'Use plain words, explain medical words, and add headings.');
+      'Use everyday words, explain any medical term the first time it appears, and add headings so readers can find each part.');
   else
-    why('pemat-why', 'bad', [pemHead, 'Both are under the target.'],
-      'Start with the one thing to do, in plain words.');
+    why('pemat-why', 'bad', [pemHead, 'Readers may find it hard to understand and may not know what to do. Both scores are under the 70% target.'],
+      'Open with the one thing you want the reader to do, in plain words, then explain why.');
 
   // ── Accessibility ──
   const a11yPill = ($('a11y-pill').textContent || '');
   const a11yN = parseInt(a11yPill, 10);
   if(a11yPill.includes('to fix'))
-    why('a11y-why', 'bad', ['<b>' + plural(a11yN, 'problem') + '</b> to fix', 'Would fail WCAG 2.2 AA and the Adobe check.'],
-      'Fix the red items first. They block screen-reader users.');
+    why('a11y-why', 'bad', ['<b>' + plural(a11yN, 'problem') + '</b> to fix', 'These would fail the web accessibility standard (WCAG 2.2 AA) and Adobe’s PDF accessibility check.'],
+      'Fix the red items first. They stop people who use screen readers from reading the material.');
   else if(a11yPill.includes('to check'))
-    why('a11y-why', 'mid', ['Nothing fails · <b>' + plural(a11yN, 'item') + '</b> to check', 'Colours can’t be checked from text.'],
-      'Check the amber items, then run the Adobe check on the final file.');
+    why('a11y-why', 'mid', ['Nothing fails · <b>' + plural(a11yN, 'item') + '</b> to check', 'PRISM can’t see colours in plain text, so some checks need a person.'],
+      'Check each amber item yourself, then run Adobe’s accessibility check on the final PDF.');
   else
     why('a11y-why', 'good', ['<b>All checks pass</b> <span class="why-aside">· WCAG 2.2 AA</span>'],
-      'Still check the colours in the design file.');
+      'Colour contrast can’t be checked from text, so check it in the final design file before you publish.');
 
   // ── Content accuracy ──
   const accFails = [...document.querySelectorAll('#acc-list .find-ico.fail')].length;
   const signed = ACC_SIGNOFF.filter(s => manual[s.id]).length;
   if(accFails)
-    why('acc-why', 'bad', ['<b>' + plural(accFails, 'item') + '</b> a reviewer would send back'], 'Fix these before sign-off.');
+    why('acc-why', 'bad', ['<b>' + plural(accFails, 'item') + '</b> a reviewer would send back'], 'Fix each one before anyone signs off the material, so it doesn’t come back from review.');
   else if(signed < ACC_SIGNOFF.length)
-    why('acc-why', 'mid', ['Nothing fails · <b>' + signed + ' of ' + ACC_SIGNOFF.length + '</b> signed off', 'Software can’t tell if the facts are right.'],
-      'Ask a named reviewer to check the rest.');
+    why('acc-why', 'mid', ['Nothing fails · <b>' + signed + ' of ' + ACC_SIGNOFF.length + '</b> signed off', 'PRISM can’t tell whether the medical facts are correct.'],
+      'Ask a named clinical reviewer to check the items that aren’t signed off yet.');
   else
-    why('acc-why', 'good', ['<b>All pass</b> · ' + ACC_SIGNOFF.length + ' of ' + ACC_SIGNOFF.length + ' signed off'], 'Note who checked it and when.');
+    why('acc-why', 'good', ['<b>All pass</b> · ' + ACC_SIGNOFF.length + ' of ' + ACC_SIGNOFF.length + ' signed off'], 'Record who checked the facts and the date, so the sign-off can be traced later.');
 }
 
 // ── Main analysis loop ──
@@ -2862,8 +2918,9 @@ function analyze(){
   $('read-audience-note').dataset.tip =
     'How easy the text is to read, from how long the words and sentences are (Flesch-Kincaid).<br><br>'+
     (t.label ? t.label+'. ' : '')+t.note;
-  $('ease-bench').textContent = 'Target: '+t.ease+' or higher. Higher is easier.';
-  $('grade-bench').textContent = 'Target: grade '+t.grade+' or lower'+(t.label ? ', for '+t.label.replace(/ \(default\)$/, '')+'.' : '.');
+  const who = t.label ? 'For ' + t.label.replace(/ \(default\)$/, '').toLowerCase() + ', aim' : 'Aim';
+  $('grade-bench').textContent = 'The US school year a reader needs to follow it easily. ' + who + ' for grade ' + t.grade + ' or lower.';
+  $('ease-bench').textContent = 'Higher is easier. Aim for ' + t.ease + ' or more.';
   $('ease-target').style.left = Math.max(0, Math.min(100, t.ease))+'%';
   $('grade-target').style.left = Math.max(0, Math.min(100, t.grade/16*100))+'%';
   if(stats){
@@ -2874,7 +2931,9 @@ function analyze(){
     $('ease-num').textContent = e;
     $('ease-fill').style.width = e+'%';
     $('ease-fill').classList.toggle('is-pending', shortLines);
-    $('grade-num').textContent = stats.grade < 1 ? 'Gr <1' : 'Gr '+stats.grade;
+    $('grade-num').textContent = stats.grade < 1 ? 'Below grade 1' : 'Grade '+stats.grade;
+    if(!shortLines) $('ease-bench').textContent = 'Higher is easier. Aim for ' + t.ease + ' or more; this text is ' +
+      (e >= t.ease ? 'easy' : e >= t.ease - 10 ? 'fairly hard' : 'hard') + ' to read.';
     $('grade-fill').style.width = Math.max(4, Math.min(100, stats.grade/16*100))+'%';
     $('grade-fill').classList.toggle('is-pending', shortLines);
     // Colour against the audience's target: meets it (pass), close (within 2 grades / 10 points: warn),
@@ -2885,46 +2944,23 @@ function analyze(){
     $('s-avglen').textContent = stats.avgSentLen;
     $('s-syll').textContent = stats.avgSyll;
     $('s-passive').textContent = Math.round(struct.passiveRate*100)+'%';
-    // The working, so the number can be checked by hand
-    const f1 = n => (Math.round(n*100)/100).toFixed(2);
-    $('read-how').hidden = false;
-    $('read-how-body').innerHTML =
-      '<p><b>Grade</b> = 0.39 × ' + f1(stats.words/stats.sentences) + ' words per sentence + 11.8 × ' + f1(stats.syllables/stats.words) +
-        ' syllables per word − 15.59 = <b>' + stats.grade + '</b></p>' +
-      '<p><b>Ease</b> = 206.835 − 1.015 × ' + f1(stats.words/stats.sentences) + ' − 84.6 × ' + f1(stats.syllables/stats.words) + ' = <b>' + stats.ease + '</b></p>' +
-      '<p>Counted: ' + stats.words.toLocaleString() + ' words, ' + stats.sentences + ' sentences, ' + stats.syllables.toLocaleString() + ' syllables.</p>' +
-      '<p class="read-how-note">Left out: numbers' + (readSkipped ? ', and ' + readSkipped + ' heading' + (readSkipped === 1 ? '' : 's') + ' and table cell' + (readSkipped === 1 ? '' : 's') : '') +
-        '. These formulas were made for running sentences, and short labels would each count as a sentence. ' +
-        'Each list item and line counts as a sentence. Syllables are estimated from vowel groups, so a word or two may be off. ' +
-        'Flesch-Kincaid often reads a grade or two lower than other formulas.</p>' +
-      // where each formula comes from
-      '<p class="read-how-note">Sources: grade from Kincaid, Fishburne, Rogers &amp; Chissom (1975), ' +
-        '<a href="https://doi.org/10.21236/ADA006655" target="_blank" rel="noopener"><i>Derivation of New Readability Formulas for Navy Enlisted Personnel</i>, Research Branch Report 8-75<span class="sr-only"> (opens in a new tab)</span></a>. ' +
-        'Ease from Flesch (1948), ' +
-        '<a href="https://doi.org/10.1037/h0057532" target="_blank" rel="noopener">“A new readability yardstick”, <i>Journal of Applied Psychology</i> 32(3)<span class="sr-only"> (opens in a new tab)</span></a>.</p>';
+    // Click a formula's name to see the working with this text's numbers
+    const f1 = n => (Math.round(n*100)/100).toFixed(2), wps = f1(stats.words/stats.sentences), spw = f1(stats.syllables/stats.words);
+    const counted = '<p class="tip-note">Counted: ' + stats.words.toLocaleString() + ' words, ' + stats.sentences + ' sentences, ' + stats.syllables.toLocaleString() + ' syllables. Headings, table cells and numbers are left out.</p>';
+    $('grade-how').dataset.tip = '<b>How the school grade is worked out</b><p>The Flesch–Kincaid formula turns two counts from your text into a US school grade:</p>' +
+      '<p class="tip-f">0.39 × <b>' + wps + '</b> words per sentence<br>+ 11.8 × <b>' + spw + '</b> syllables per word<br>− 15.59 = <b>grade ' + stats.grade + '</b></p>' +
+      '<p>Long sentences and long words both raise the grade. Shortening either one brings it down.</p>' + counted +
+      '<p class="tip-note">Kincaid, Fishburne, Rogers and Chissom (1975), US Navy research report 8-75.</p>';
+    $('ease-how').dataset.tip = '<b>How reading ease is worked out</b><p>The Flesch formula gives a score from 0 to 100. Higher is easier:</p>' +
+      '<p class="tip-f">206.835<br>− 1.015 × <b>' + wps + '</b> words per sentence<br>− 84.6 × <b>' + spw + '</b> syllables per word<br>= <b>' + stats.ease + '</b></p>' +
+      '<p>Long sentences and long words both lower the score.</p>' + counted +
+      '<p class="tip-note">Flesch (1948), “A new readability yardstick”, Journal of Applied Psychology.</p>';
   } else {
-    $('read-how').hidden = true;
+    $('grade-how').dataset.tip = $('ease-how').dataset.tip = 'The working appears once there is text to measure.';
     $('ease-num').textContent = '—'; $('grade-num').textContent = '—';
     $('ease-fill').style.width = '0%'; $('grade-fill').style.width = '0%';
     ['ease-fill','grade-fill'].forEach(id => $(id).classList.remove('is-pass','is-warn','is-fail'));
     $('s-avglen').textContent = '—'; $('s-syll').textContent = '—'; $('s-passive').textContent = '—';
-  }
-
-  // Word budget for the chosen format
-  const wbRow = $('wordbudget-row');
-  const fspec = FORMAT_SPEC[brief.format];
-  if(fspec && stats){
-    const [lo, hi] = fspec.words;
-    const n = countWords(text);   // the whole material, numbers and headings included
-    const sev = n < lo ? 'warn' : n > hi ? 'fail' : 'pass';
-    $('wb-ico').className = 'find-ico ' + sev;
-    $('wb-ico').textContent = sev === 'pass' ? '✓' : sev === 'warn' ? '~' : '!';
-    $('wb-msg').textContent = n.toLocaleString() + ' words. A ' + fspec.label.toLowerCase() +
-      ' works best at ' + lo + '–' + hi + '. ' +
-      (sev === 'pass' ? 'On target.' : sev === 'warn' ? 'A bit short. Readers may need more.' : 'Too long. Cut it or split it.');
-    wbRow.style.display = 'flex';
-  } else {
-    wbRow.style.display = 'none';
   }
 
   // SCAN module
@@ -5899,6 +5935,12 @@ function fwSourcesHtml(key){
     + '<div class="fwo-src-link"><a href="' + fwSourceUrl(key) + '" target="_blank" rel="noopener">Open original source ↗</a></div>'
     + '</details>';
 }
+// A section heading without its number, in sentence case: "1 Enable Patient Learning" -> "Enable patient learning".
+// Words written all in capitals (CDC, AI) keep their capitals.
+function domTitle(t){
+  const w = String(t).replace(/^\s*\d+[.):]?\s+/, '').split(' ');
+  return w.map((x, i) => i === 0 || (x.length > 1 && x === x.toUpperCase()) ? x : x.toLowerCase()).join(' ');
+}
 function renderFwItem(key){
   const r = FW_REG[key], level = FW_LEVEL[key];
   const open = !!fwOpen[key];
@@ -5917,7 +5959,7 @@ function renderFwItem(key){
     const rt = fwRatings[key] || {};
     let lastDom = null;
     r.cr.forEach((c,i) => {
-      if(c[0] !== lastDom){ body += '<div class="fwo-dom">' + escapeHtml(c[0]) + '</div>'; lastDom = c[0]; }
+      if(c[0] !== lastDom){ body += '<div class="fwo-dom">' + escapeHtml(domTitle(c[0])) + '</div>'; lastDom = c[0]; }
       // item number: the position in the framework (the same fallback the Compass uses)
       const tid = 'fwt-' + key + '-' + i, nid = 'fwn-' + key + '-' + i;
       const num = fwItemNo(nid, c, i);
@@ -5935,7 +5977,7 @@ function renderFwItem(key){
 
   return '<div class="fwo-item' + (open ? ' open' : '') + '" id="fwo-item-' + key + '">'
     + '<div class="fwo-hdr" role="button" tabindex="0" aria-expanded="' + open + '" onclick="toggleFwOpen(\'' + key + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleFwOpen(\'' + key + '\')}">'
-    + '<span class="fwo-chev" aria-hidden="true">▸</span>'
+    + '<span class="fwo-chev" aria-hidden="true"><svg class="chev" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>'
     + '<span class="fwo-name">' + escapeHtml(FW_LABEL[key]) + '</span>'
     + '<span class="fwo-stat" id="fwo-stat-' + key + '">' + escapeHtml(fwStat(key)) + '</span></div>'
     + '<div class="fwo-body">' + body + '</div></div>';
@@ -6644,7 +6686,7 @@ document.addEventListener('pointerdown', e => {
     body.style.maxHeight = 'none';
   }
 });
-// Clicking anywhere on a card's header bar folds or unfolds it, like its ▾ button. Its own
+// Clicking anywhere on a card's header bar folds or unfolds it, like its chevron button. Its own
 // controls (name tip, pills, buttons, links) keep their job, and a drag to move the card is not a click.
 let hdrDown = null;
 document.addEventListener('pointerdown', e => {
@@ -6994,7 +7036,8 @@ navReady = true;
 // saved a moment after each change and put back when the page opens. Clearing site data,
 // another browser or another computer starts empty. Clear (Material header) removes it too.
 // ════════════════════════════════════════
-const workStore = (() => {
+const DEMO = (location.search.match(/[?&]demo=([a-z]+)/) || [])[1] || '';
+const workStore = DEMO ? { save(){}, wipe(){ return Promise.resolve(); }, restore(){} } : (() => {
   const DB = 'prism-studio', STORE = 'work', KEY = 'current';
   let dbP = null, saveT = null, restoring = false;
   const db = () => dbP || (dbP = new Promise((res, rej) => {
@@ -7077,6 +7120,30 @@ document.addEventListener('dblclick', e => {
     return;
   }
 });
+</script>
+<script>
+// DEMO MODE (?demo=frameworks), used by the talk deck: opens with the Take Action section loaded and
+// the Brief set to Patients + Handout, and shows only two panels side by side, the Frameworks list
+// (open) and the score cards. Nothing is read from or saved to this browser's stored work or theme.
+if(DEMO === 'frameworks'){
+  // the Frameworks list stays open: clicks on the cards, Escape or the toggle never close it here
+  { const _set = setTopPanel; setTopPanel = function(k, on){ return _set.call(this, k, k === 'fw' ? true : on); }; }
+  (async () => {
+    try {
+      const b = await (await fetch('presentation/demo-files/Take_Action_LightCollective.docx')).blob();
+      await intakeFile(new File([b], 'Take_Action_LightCollective.docx', { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    } catch(e){}
+    const pick = (k, v) => { const btn = [...document.querySelectorAll('#brief-top-panel button[data-v="' + v + '"]')].find(x => (x.getAttribute('onclick') || '').includes("setBrief('" + k + "'")); if(btn) setBrief(k, v, btn); };
+    pick('audience', 'patient'); pick('format', 'handout');
+    setTimeout(() => {
+      if(!document.getElementById('fw-top-panel').classList.contains('open')) toggleFwTop();
+      const bar = document.getElementById('fw-topbar').getBoundingClientRect().height;
+      document.documentElement.style.setProperty('--demo-bar', Math.round(bar + 12) + 'px');
+      document.getElementById('rail-scroll').scrollTop = 0;
+      document.documentElement.classList.add('demo-ready');
+    }, 700);
+  })();
+}
 </script>
 <script>(function(){var r=document.getElementById('rail-scroll');if(r)document.documentElement.style.setProperty('--sbw',(r.offsetWidth-r.clientWidth)+'px');})();</script>
 </body>

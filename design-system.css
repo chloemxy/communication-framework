@@ -22,6 +22,7 @@
   --sheet-2:#EEF1F4;       /* quiet fills, headers inside a sheet, neutral tags, disabled fill */
   --rule:#C9CFD6;          /* hairlines, score-sheet rules (decorative: never the only cue for a control) */
   --ink:#16181D;           /* text; primary button fill */
+  --select-chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%234A5059' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");   /* dropdown chevron, drawn in --ink-2 */
   --ink-2:#4A5059;         /* secondary text, item numbers, quiet-button text */
   --form-blue:#1D4F91;     /* links, focus ring, selected state */
   --highlighter:#FFE066;   /* flagged words in the document (::highlight, .flash-sel) */
@@ -101,6 +102,7 @@
   color-scheme: dark;
   --desk:#121417; --sheet:#1B1E22; --sheet-2:#22262B; --rule:#343A41;
   --ink:#E9EBEE; --ink-2:#B4BAC2; --form-blue:#8DB4EC;
+  --select-chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath d='M4 6l4 4 4-4' fill='none' stroke='%23B4BAC2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   --highlighter:rgba(255,214,0,.28);
   --brand:#F5CF4A; --on-brand:#16181D;
   --pass:#7FD19B; --warn:#F0B357; --fail:#F28B82;
@@ -125,6 +127,8 @@ small{font-size:inherit}
 a{color:var(--form-blue);text-decoration:underline;text-underline-offset:2px}
 a:hover{color:var(--form-blue-hover)}
 button, input, select, textarea{font:inherit;color:inherit}
+/* Dropdowns: the same stroke chevron as every disclosure, in place of the browser's arrow */
+select:not([multiple]):not([size]){appearance:none;-webkit-appearance:none;padding-right:24px !important;background-image:var(--select-chev) !important;background-repeat:no-repeat !important;background-position:right 4px center !important;background-size:16px 16px !important}
 :focus-visible{outline:2px solid var(--focus-ring);outline-offset:2px}
 ::selection{background:var(--selected);color:var(--ink)}
 ::-webkit-scrollbar{width:8px;height:8px}
