@@ -4,6 +4,118 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-16 — Studio: Apply has its own hover
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Apply no longer looks like the row it sits on.** On a lit flag it keeps a white face; hovering
+  Apply itself gives it the selected tint with a blue outline and blue text.
+
+## 2026-11-16 — Studio: whole flag lights on hover; New is a white text box
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Hovering anywhere on a Plain language flag** (its title, Now, New or Based on) now lights the
+  whole flag; before, only the title row did.
+- **New reads as a text box**: white, with a thin outline, since it's the line you can edit. It's
+  padded outward, so its words stay on the same edge as Now.
+
+## 2026-11-16 — Studio: more automatic checks on CCI and PEMAT; suggestion box without fill
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New signals read from the words** (`textSignals`): actions (sentences that start with a verb,
+  or "you should / make sure…"), numbered steps, a summary ("Summary", "Key points", "In short"…),
+  named sources ("according to", CDC, WHO, studies, citations), calculations ("calculate",
+  "multiply", 3 + 4; not "/", so 120/80 isn't a sum), probabilities (%, "1 in 10", odds) and risk
+  words (risk, harm, side effects…), plus grade on target with no jargon.
+- **Hints, not verdicts**: CCI 5, 10, 11, 12, 17 and PEMAT 3, 7, 11, 20, 22 now get a note such as
+  "PRISM found 14 actions. Your call." or "No summary found. Your call.", and the matching answer
+  is pre-marked (dashed) until a person confirms it. Nothing is locked by a hint.
+- **Decided automatically**: CCI 6 (active voice, the same check as PEMAT 5) is "Checked by PRISM";
+  CCI 20 is N/A without probabilities; PEMAT 24 is N/A when there's nothing to calculate; CCI
+  Part D (18–20) starts N/A when there are no risk words (a Met or Not met overrides it, as Part C).
+- **The Now / New suggestion has no white fill** (and no outline); its text stays on the card's
+  left edge and Apply on its right edge.
+- Checked on the TLC guide (14 actions, numbered steps, named sources, no summary, no maths) and
+  the sample handout (19 actions, no risk words so Part D is N/A, 120/80 not counted as maths).
+
+## 2026-11-16 — Studio: no note on N/A items
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **N/A items no longer carry a reason line** ("No numbers in the material", "You marked this N/A");
+  the greyed, selected N/A button is enough. They still fold into the "don't apply" row.
+
+## 2026-11-16 — Studio: Plain language card on one left and right edge; counts row removed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Right edges line up**: Apply all, each card's Fix and each suggestion's Apply now end on the same
+  right edge (Fix and Apply were 16 and 24 px short). The cards were capped by a blanket
+  `max-width:100%` on everything in a score card; the issue rows and suggestion boxes now opt out.
+  Left edges stay lined up (Long sentence, Now, New, Based on).
+- **The "to fix / to review / sentences fine" counts are hidden** on the Plain language card; the
+  card opens on "N suggested changes · Apply all".
+
+## 2026-11-16 — Studio: N/A on every row; sticky framework header; no box around suggestions
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Every CCI and PEMAT item has the same three answers, Met / Not met / N/A.** The part-level
+  "Doesn't apply" button on CCI Parts B–D is gone; a part that doesn't apply is marked item by item,
+  and N/A items fold into the "don't apply" row. Part C still starts N/A when there are no numbers,
+  but those items are no longer locked: a Met or Not met overrides it.
+- **An open framework's header row sticks** to the top of its card while its items scroll (the
+  chevron, the name and "0 of 59 rated" stay in view).
+- **The Now / New suggestion box has no outline** (it was a dashed box); its text still starts on
+  the card's left edge.
+
+## 2026-11-16 — Studio: suggestion text on the card's edge; quiet Met all / Deselect all
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Now / New line up with the rest of the Plain language card.** The dashed suggestion box hangs out
+  by its padding and border, so "Now", "New" and "Based on" start on the same edge as "Long
+  sentence", the counts and "suggested changes" (they were 13 px further in).
+- **Met all / Deselect all have no outline**: plain text buttons, with a light fill on hover.
+
+## 2026-11-16 — Studio: plain notes, N/A items folded, Met all / Deselect all; drag to scroll
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **No more status pills on checklist items** (CCI, PEMAT and the text-checked frameworks). The pressed
+  Met / Not met / N/A button already shows the value; a plain grey note under the sentence says why:
+  "Checked by PRISM" (was "Auto ✓/✗"), "No bold text found, so not met", and "PRISM found headings.
+  Your call." (was "Detected, confirm it": PRISM spotted a sign of the item, but it needs a person).
+  Score-sheet items read "Set by the score sheet" and "This needs the layout".
+- **Items that don't apply fold away**: in each section they move to a closed "3 items don't apply"
+  row at the end, each with its reason under the sentence ("No numbers in the material", "You marked
+  this N/A") and a selected, locked N/A button (no separate N/A pill). Marking N/A moves an item in;
+  clicking N/A again moves it back. The row stays open across redraws once opened. Only the sentence
+  is struck through, not the note.
+- **Met all / Deselect all** on every section: PEMAT Understandability and Actionability, CCI Parts
+  A–D (hidden while a part is marked "Doesn't apply"), and each section of a self-rated framework such
+  as UPL (Met all picks the scale's best answer). Items PRISM scores itself are left alone.
+- **Click and drag to scroll** (`drag-scroll.js`, in the Studio and the Compass): with a mouse, press
+  anywhere on a panel, including cards and buttons, and drag to scroll it. It doesn't start in the
+  document text or form fields (dragging there still selects), on links or on resize grips. A drag of
+  5 px or more doesn't count as a click.
+- **Deck demo slides**: drag left across the clip row for the next clip, right for the one before
+  (60 px or more, mostly sideways).
+- Checked: notes and folded rows on the TLC guide (Patients + Manual), Met all / Deselect all on
+  PEMAT Understandability (8 → 18 → 8 pressed), a mouse drag scrolling the Plain language card, a
+  drag on the poster demo slide moving clip 5 → 6, every inline script parses, no console errors.
+
+## 2026-11-16 — Slides: hide the two old strip demo slides
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- The old demo slides `#features` (the four-strip slide "1 · Drop it in … 4 · Plain language") and
+  `#features-2` (the poster demo, "5 · New example" onward) are now `hidden`, so the deck skips
+  them. The new one-feature slides take their place. Both are still in the file and come back by
+  removing `hidden`.
+
 ## 2026-11-16 — Studio: one chevron everywhere; score sheets on one left edge
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
@@ -404,6 +516,15 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
   (fine-grained, this repo only, Contents read and write).
 - Local testing: `node scripts/deck-edits-dev.js` (saves to a local file), then
   open `presentation/?edit&api=local`.
+
+## 2026-11-16 — Studio: score modules reordered
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The score column now runs Plain language, Readability, Framework checklists (UPL), CCI,
+  PEMAT-P** (was Framework checklists, Readability, CCI, PEMAT-P, Plain language), in the
+  Everything and Auditing layouts. Drafting runs Plain language, Readability, Framework checklists.
+  The demo clips still show the old order until they're re-recorded.
 
 ## 2026-11-16 — Front door: privacy line under the buttons removed
 
