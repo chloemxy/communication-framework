@@ -846,6 +846,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .cr-fixes{border-bottom:1px solid var(--rule)}
 .cr-fix{display:grid;grid-template-columns:20px minmax(0,1fr) auto;align-items:center;column-gap:var(--sp-2);padding:var(--sp-2) 0;font-size:var(--fs-xs);line-height:1.4;color:var(--ink)}
 .cr-fix + .cr-fix{border-top:1px solid var(--rule)}
+.cr-dl{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-2);margin-top:var(--sp-2);font-size:var(--fs-xs);color:var(--ink-2)}
 .cr-fix .cr-dot{align-self:center}
 .cr-fix-t{min-width:0;font-weight:400;font-variant-numeric:tabular-nums}
 .vm-alt-checks{margin-top:var(--sp-5)}
@@ -3548,8 +3549,47 @@ function drawArtwork(opts){
   const ctx = c.getContext('2d');
   ctx.drawImage(vmImage, 0, 0, c.width, c.height);
   if(opts && opts.sample) samplePalette();
+  const fix = vmFixSwap();
+  if(fix) recolour(ctx, c.width, c.height, fix.from, fix.to);   // a contrast fix shows on the artwork itself
   if(cvdMode !== 'none') applyCvd(ctx, c);
   vmApplyZoom();
+}
+
+// ── A previewed contrast fix, painted onto the artwork ──
+// Which colour is being swapped for which: the picked text or background colour → its suggested shade
+function vmFixSwap(){
+  if(vmPreviewBg && vmPicked[1]) return { from: vmPicked[1], to: vmPreviewBg };
+  if(vmPreviewFg && vmPicked[0]) return { from: vmPicked[0], to: vmPreviewFg };
+  return null;
+}
+// Moves every pixel close to `from` by the same step that takes `from` to `to`. Pixels right on the
+// colour move fully; ones further away (anti-aliased edges, near shades) move less, so edges stay smooth.
+// Other areas in that same colour change too; that's what a palette swap in the design file would do.
+function recolour(ctx, w, h, from, to){
+  const hx = x => [1,3,5].map(i => parseInt(x.substr(i,2),16));
+  const [fr,fg,fb] = hx(from), [tr,tg,tb] = hx(to), dr = tr-fr, dg = tg-fg, db = tb-fb;
+  const T = 30, T2 = T*T, full = (T*0.45)*(T*0.45);   // tight, so neighbouring palette colours stay put
+  const d = ctx.getImageData(0,0,w,h), p = d.data;
+  for(let i=0;i<p.length;i+=4){
+    const a = p[i]-fr, b = p[i+1]-fg, e = p[i+2]-fb, dist = a*a + b*b + e*e;
+    if(dist >= T2) continue;
+    const k = dist <= full ? 1 : 1 - (Math.sqrt(dist) - T*0.45) / (T*0.55);
+    p[i]   = Math.max(0, Math.min(255, p[i]   + dr*k));
+    p[i+1] = Math.max(0, Math.min(255, p[i+1] + dg*k));
+    p[i+2] = Math.max(0, Math.min(255, p[i+2] + db*k));
+  }
+  ctx.putImageData(d,0,0);
+}
+// Download the artwork with the previewed fix, at full size (no colour-blind view)
+function downloadFixed(){
+  const fix = vmFixSwap(); if(!vmImage || !fix) return;
+  const c = document.createElement('canvas'); c.width = vmImage.width; c.height = vmImage.height;
+  const ctx = c.getContext('2d'); ctx.drawImage(vmImage, 0, 0);
+  recolour(ctx, c.width, c.height, fix.from, fix.to);
+  const base = (($('canvas-file-name') && $('canvas-file-name').textContent) || 'artwork').trim().replace(/\.[a-z0-9]+$/i, '') || 'artwork';
+  c.toBlob(b => { if(!b) return; const a = document.createElement('a'); a.href = URL.createObjectURL(b);
+    a.download = base + '-fixed-' + fix.to.slice(1) + '.png'; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }, 'image/png');
 }
 
 // ── Colour vision deficiency simulation (Brettel/Viénot-style matrices) ──
@@ -3626,7 +3666,9 @@ function pickSwatch(hex){
   const i = vmPicked.indexOf(hex);
   if(i > -1) vmPicked.splice(i,1);
   else { vmPicked.push(hex); if(vmPicked.length > 2) vmPicked.shift(); }
+  const hadFix = !!(vmPreviewFg || vmPreviewBg);
   vmPreviewFg = null; vmPreviewBg = null;
+  if(hadFix && !pdfDoc) drawArtwork();
   renderPalette();
   renderContrastCard();
 }
@@ -3679,6 +3721,7 @@ function previewFix(hex, side){
   vmPreviewFg = null; vmPreviewBg = null;
   if(!on){ if(side === 'bg') vmPreviewBg = hex; else vmPreviewFg = hex; }
   renderContrastCard();
+  if(!pdfDoc) drawArtwork();   // show it on the poster (a PDF page keeps its own render)
 }
 
 function renderContrastCard(){
@@ -3756,6 +3799,7 @@ function renderContrastCard(){
         '<div class="cr-prev-sm">Body copy at reading size. Check this is comfortable, not just technically passing.</div>'+
       '</div>'+
       '<div class="cr-verdict '+tone+'">'+verdict+'</div>'+
+      (vmFixSwap() && !pdfDoc ? '<div class="cr-dl"><span>The fix is showing on the artwork.</span><button type="button" class="btn btn-secondary" onclick="downloadFixed()">Download fixed copy</button></div>' : '')+
     '</div>';
 }
 
