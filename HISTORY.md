@@ -4,6 +4,277 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-17 — Every slide change is a morph, forward and back
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **One transition everywhere:** every slide change, forward and back, is now the morph (shared parts
+  glide, the rest crossfades). Removed the exceptions: the zoom through the "3" on the take-home
+  divider (forward), a click-to-start slide entered going forward (plain fade before), and two slides
+  that share a title (plain fade before). The divider still shows Intent first through its cut-out at
+  rest. Reduced motion and browsers without View Transitions keep the plain fade.
+- Checked in headless Chrome at 1920×1080: all 17 slides, 16 changes forward and 16 back, every one a
+  morph, no errors.
+
+## 2026-11-17 — Demo slides: one text column width
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The text column is the same width on every demo slide.** On the two tile slides (Bring it in,
+  Check a poster) it ran 75 px wider than on the live-panel slides; now all six end at the same
+  edge (48–609 px at 1920×1080, the same share at 1440×900), and the tiles start 48 px after it,
+  like the live panels (they were right-aligned, 104 px away).
+
+## 2026-11-17 — Demo slide titles go back to the whole view
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Clicking a demo slide's title returns the right side to where it started:** on a section-zoom
+  slide the camera flies back out to the whole workspace; on the tile and live-Studio slides every
+  cover closes. The menu's yellow pill clears. Hovering the title underlines it in yellow; it also
+  works from the keyboard (Tab to it, Enter or Space).
+- Checked at 1920×1080: zoom slide (Brief → whole workspace), Check a poster (colour tile closed),
+  Fix it your way (History panel closed).
+
+## 2026-11-17 — "Pick the right checks": click the panel to use the Studio live
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Clicking the Studio panel swaps the stills for the real Studio, in the same place**, so you can
+  click, scroll, tick items and apply fixes. It opens on the same view as the stills: the TLC guide,
+  Brief set to Patients + Manual, the document at 40% and the score cards in one wide column, light
+  mode. Clicking while zoomed in pulls back to the whole view first. Picking a menu line, an arrow
+  key (also from inside the Studio) or clicking the title goes back to the stills and zooms as
+  before. "Click to use it live" shows in the corner while pointing at the panel on the whole view.
+- **Studio: new demo mode** `/?studio&demo=checks` for this, which never reads or saves stored work.
+  It loads in the background once the slide is shown, and is kept light when the deck turns dark.
+- Checked at 1920×1080: the still and the live Studio side by side match; a click goes live; picking
+  "Suggests fixes" leaves it and zooms to stop 4.
+
+## 2026-11-17 — "Pick the right checks": History is opened from its button
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Picking "Saves every change" now opens History the way you would**: the camera moves to the
+  History button on the normal workspace (×1.8, 0.65 s), a yellow click ring plays on the button,
+  then the open History panel fades in and the camera moves onto it (0.75 s). A stop can do this
+  with `data-press` (the still, a camera stop for the button, and the button's box).
+- Checked at 1920×1080 by capturing frames at 0.3, 0.7, 0.9, 1.3 and 2.1 s after picking it from
+  the CCI stop.
+
+## 2026-11-17 — "Pick the right checks": while zoomed in, hovering a line points to its target
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Zoomed in, pointing at another menu line tells you where the camera will go:**
+  - the target is in view on the same still: it gets the yellow frame (e.g. items with notes while
+    on the CCI checklist);
+  - the target is off-screen: a dark pill with a yellow ring and glow sits on the panel edge facing
+    it, with an arrow pointing that way and the target's name (e.g. "↖ History button");
+  - the target is at the same spot on another still: the pill sits at the bottom and says
+    "⇄ Switches to Plain language fix" (or "Frameworks list").
+  Moving away clears it; clicking flies there as before and clears it.
+- Target names are set on the slide (`data-hl-names`).
+- Checked at 1920×1080, zoomed on the CCI checklist: hovering lines 1, 3, 4 and 5.
+
+## 2026-11-17 — "Pick the right checks": hovering "Saves every change" frames the History button
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Line 5's hover frames the History button** in the Material header on the normal workspace (the
+  button you'd press), instead of the open History panel. Clicking still zooms to the panel.
+  A frame can name the still it sits on (a sixth value in `data-hl`).
+- Checked at 1920×1080: the ring sits on the button's own edges.
+
+## 2026-11-17 — "Pick the right checks": no frame while zoomed in
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The hover frame only shows on the whole workspace.** Zooming in clears it, and pointing at other
+  lines while zoomed in adds none; once the camera pulls back out, hovering frames sections again.
+- Checked: hover on the whole view shows the frame; after a click it's gone (zoomed to stop 3);
+  hovering another line while zoomed shows none; after pulling back, hover frames again; no console
+  errors.
+
+## 2026-11-17 — "Pick the right checks": hovering a menu line frames its section
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Pointing at a menu line (or tabbing to it) frames the section it zooms to**, before any click:
+  the still for that stop shows, everything else dims, and a yellow ring sits on the section's own
+  edges: 1 the Frameworks bar and its open list; 2 the CCI card; 3 CCI items 3–5 with their notes;
+  4 the Plain language flag with its rewrite and Apply; 5 the History panel. Moving away clears it.
+  Clicking zooms in as before, and the frame stays on the section while it's pointed at.
+- **Framed exactly:** each box is measured from the Studio's layout while the stills are taken
+  (position and corner radius), set in Studio pixels on the slide (`data-hl`), and drawn inside the
+  section's edges, so it stays flush at any zoom. Items 3–5 have no card of their own, so their
+  frame has 8 px of room and lines up with the Plain language flag's edge.
+- The four stills were retaken with the boxes (`?v=20261117c`).
+- Checked at 1920×1080: each of the five lines hovered, and the corners of each frame at 3×.
+
+## 2026-11-17 — "Pick the right checks" zoom: one wide results column
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The stills now show the score cards in one wide column** (716 px, was two of 340), so each
+  checklist item reads on one or two lines with its Met / Not met / N/A on the same row. A fourth
+  still, `ws2-sheets.webp`, has the column scrolled to CCI for stops 2 and 3.
+- **Stops:** 1 the Frameworks list (×1.45); 2 CCI's header and first items (×1.64); 3 the items
+  with notes (×1.75, lower down); 4 the Plain language flag with its rewrite and Apply (×1.75);
+  5 History (×2.1).
+
+## 2026-11-17 — Live "Pick the right checks" slide hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#feat-frameworks` (the live Studio frame) is hidden**, so the section-zoom version
+  (`#feat-frameworks-zoom`) is the deck's "2 of 4". The slide stays in the file; remove `hidden`
+  to bring it back. Live frames on hidden slides no longer load in the background.
+- The demo run is now: Bring it in (zoom) → Pick the right checks (zoom) → Check a poster → Fix it
+  your way. Checked: no console errors.
+
+## 2026-11-17 — New slide: "Pick the right checks" as a section zoom
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide after "Pick the right checks"** (`#feat-frameworks-zoom`, same title, problem, credit
+  and five menu lines), built like slide 1's section zoom so it reads from the back of the room:
+  sharp stills of the Studio (1215×984 at 2.5×, the TLC guide with Patients + Manual) instead of
+  the live frame. Each menu line, or each click, glides the camera to its part of the Studio:
+  1 the Frameworks list open with the four picks ticked; 2 the score cards (CCI's items); 3 the items
+  with notes ("No bold text found, so not met", "PRISM found 14 actions. Your call."); 4 a Plain
+  language flag with its rewrite and Apply; 5 History with Undo and the versions. The last click
+  pulls back to the whole workspace.
+- **Stills:** `media/zoom/ws2-cards.webp`, `ws2-list.webp` (shown at stop 1) and `ws2-history.webp`
+  (stop 5), crossfading as the camera moves.
+- **The section zoom takes its stops and stills per slide** (`data-stops` on `.fz`, `data-on` on an
+  image); slide 1 keeps its own stops.
+- The live slide (`#feat-frameworks`) is unchanged and still in the deck, before this one.
+- Checked at 1920×1080: the whole workspace and all five stops, each with its menu line lit, and
+  slide 1's Brief stop.
+
+## 2026-11-17 — Slide 2: "Sonia" byline removed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The "Sonia" line under slide 2's quote is removed**; the quote and the handoff line stay.
+
+## 2026-11-17 — Section zoom flies straight to the chosen section
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Picking a menu line zooms straight to its section.** Before, the camera followed the slide's
+  step timeline, so picking "Set the Brief" first panned through paste or drop and the examples on
+  the way. Now each step names a camera stop and the camera flies from wherever it is directly to
+  that stop (0.75 s, eased), for menu clicks and for the arrow keys alike. Arriving on the slide
+  starts on the whole workspace without a move.
+- The deck now marks each slide with the step it is going to (`data-beat`), so a slide can animate
+  on its own instead of following the timeline.
+- Checked at 1920×1080 by sampling the camera every 80 ms: whole workspace → Brief, Brief → paste or
+  drop, and paste or drop → examples each go directly.
+
+## 2026-11-17 — Front door: one headline, no buttons
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The kicker and headline are one line now:** "Make health handouts, posters and web pages easy
+  to read." (was "For health handouts, posters and web pages" over "Make your health handout easy to
+  read."). The lede under it is unchanged.
+- **Check a draft and Plan from an idea are gone.** The page still moves on to the Studio by itself,
+  and Skip to the Studio stays in the top bar. The deck's "Meet PRISM" slide shows the same page; its
+  frame title says the new headline. `intro.js` is loaded as `?v=20261117a`.
+- Checked at 1920×1080: the headline wraps to five lines at 60 px, no buttons, no console errors.
+
+## 2026-11-17 — Section-zoom slide: three menu lines, no captions on the panel
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"Paste text from anywhere" and "Drop in a Word file, PDF, text or image" are one menu line:
+  "Paste in or drop a file".** The slide's menu is now three lines, one per zoom step: Paste in or
+  drop a file, Start from an example to learn how it works, Set the Brief, and the checks begin.
+- **No captions on the zoomed panel:** the menu line on the left (the yellow pill) says what is
+  shown, so the dark caption bar at the bottom is gone and the zoom uses the whole panel.
+- **Camera recentred on each section:** Open a file, Type or paste text and the drop line at 2.6×;
+  the sample handout and poster at 2.7×; the open Brief with its targets at 2.05×.
+- Checked at 1920×1080: each step, and a menu click on the second line.
+
+## 2026-11-17 — "What PRISM does" menus are a glass panel
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The demo menus are now one frosted glass panel** (option C, after a mockup of three glass
+  styles): a translucent panel with a lit top edge, a soft shadow and a faint yellow glow. Each line
+  is a button with a yellow arrow, and hover tints it. The line for what is showing on the right is
+  a yellow glass pill. This replaces the separate yellow buttons from earlier today.
+- **Light mode:** the panel turns milky white with dark text and dark-gold arrows.
+- **Text alignment:** the text still starts on the column's left edge, with the panel reaching into
+  the margin.
+- **Five-line menu (Pick the right checks):** set at 26 px with tighter spacing, so its credit fits
+  (the lines end at 914 px, the credit runs 965–1032 at 1920×1080).
+- Checked at 1920×1080: slide 1 and Pick the right checks in dark mode, Fix it your way in light
+  mode, each with a line open.
+
+## 2026-11-17 — "What PRISM does" menus are buttons
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **On the four demo slides, each line of "What PRISM does" is a raised yellow button** with an arrow
+  (option B), in place of the bulleted yellow box. The button for what is showing on the right is
+  pressed in (pale yellow with a dark ring); hover lightens a button. The text starts on the column's
+  left edge, the buttons reach into the margin as the box did. Other `.ft-list` boxes ("What got
+  better") are unchanged.
+- Pick the right checks has five buttons, so a five-item menu is spaced a little tighter; its credit
+  still fits above the bottom edge (buttons end at 949 px, credit 965–1032 at 1920×1080).
+- Checked at 1920×1080: all four demo slides with a button pressed.
+
+## 2026-11-17 — Four-tile "Bring it in" slide hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#feat-drop` (the four clip tiles) is hidden**, so the section-zoom version (`#feat-drop-zoom`)
+  is the deck's "1 of 4". The hidden slide stays in the file; remove `hidden` to bring it back.
+
+## 2026-11-17 — New slide: section zoom on the workspace; "What PRISM does" is a menu
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide after "Bring it in, start checking"** (`#feat-drop-zoom`, the same text on the left).
+  The right side is the empty Studio workspace (a still at 2.5×, `media/zoom/ws-empty.webp`). It
+  arrives on the whole workspace; each click glides the camera (0.7 s) into one section with a big
+  caption over the bottom: 1 Paste it in, or drop a file; 2 Start from an example; 3 Set the Brief
+  (a second still with the Brief open on Patients + Handout, so its targets show,
+  `media/zoom/ws-brief.webp`). The next click pulls back out to the workspace. Back runs it in
+  reverse. Captions are 2.5u / 1.67u (48 / 32 px at 1920×1080), readable from the back rows.
+- **"What PRISM does" is a clickable menu on all five demo slides.** Each line opens what it
+  describes on the right: a clip tile (slides 1 and 3), a live Studio panel (slides 2 and 4) or a
+  zoom step (the new slide). The line for what's showing is marked and the others dim, including
+  when a tile or panel is opened by hovering it. Keyboard: Tab to a line, Enter or Space.
+- The deck has a small hook for this, `window.deckBeat(i)`, which moves the current slide to one
+  of its own click steps.
+- Checked at 1920×1080: arrival, each zoom step and the pull-back; menu clicks on the new slide,
+  slide 3 (colour tile) and slide 4 (History). All inline scripts parse.
+
+## 2026-11-17 — Demo slides: magnifier on the live Studio, zoomed clips, no hairline
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Magnifier lens on the live Studio panels** (Pick the right checks, Fix it your way). In any
+  `?demo=` page of the Studio, a round 2× lens with a yellow ring follows the mouse so the room can
+  read what the presenter points at. It shows a copy of the live panels rebuilt from them several
+  times a second (scroll positions, typed text, the poster canvas and the yellow word marks
+  included), so it always matches the page under it, and it never takes clicks. Built in
+  `index.html` (demo mode only); the normal Studio is unchanged.
+- **Pre-recorded clips zoom in on the action:** `f1-paste`, `f2-drop`, `f3-sample`, `f4-brief`,
+  `s3-alt` and `s3-colour` were re-recorded with a zoom camera: the full view while the cursor is
+  parked, then an ease in to 1.5× that follows the cursor (sideways pan damped, since text runs
+  across the panel), settling to 1.3× for the final hold. Same actions and lengths as before;
+  `s3-poster` still runs in step with the colour clip. Versions `?v=20261117z`.
+- **No white hairline between the two live panels** on Pick the right checks: closed slots are
+  filled with the slide's colour behind their covers, and the 24 px gap between the two slots is
+  masked (the Studio's panel edge landed half a pixel into it).
+- Checked at 1920×1080: the lens on both live slides and on the poster demo page, a zoomed tile on
+  slides 1 and 3, the gap on slide 2.
+
 ## 2026-11-17 — Slide 3: the poster down one column, two clip tiles beside it
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #49) · GitHub Pages: updated from `master`

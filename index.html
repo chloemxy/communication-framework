@@ -13,7 +13,7 @@
 <script src="theme-switch.js?v=20261019e" defer></script>
 <script src="motion.js?v=20261019f" defer></script>
 <link rel="stylesheet" href="intro.css?v=20261021a">
-<script src="intro.js?v=20261116a" defer></script>
+<script src="intro.js?v=20261117a" defer></script>
 <script src="drag-scroll.js?v=20261116b" defer></script>
 <script src="plan.js?v=20261027a" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -1030,6 +1030,11 @@ html.demo-edit body{transition:opacity .3s}
 html.demo-edit:not(.demo-ready) body{opacity:0}
 html.demo-poster:not(.demo-ready) body{opacity:0}
 html.demo-frameworks:not(.demo-ready) body{opacity:0}
+/* ?demo=checks (deck slide "Pick the right checks"): the whole Studio, live, matching the slide's stills:
+   the TLC guide, Patients + Manual, the score cards in one wide column */
+html.demo-checks .mod-rail{columns:1!important;column-width:auto!important}
+html.demo-checks body{transition:opacity .3s}
+html.demo-checks:not(.demo-ready) body{opacity:0}
 </style>
 </head>
 <body>
@@ -7469,6 +7474,18 @@ if(DEMO === 'edit'){
     }, 300);
   })();
 }
+if(DEMO === 'checks'){
+  (async () => {
+    try {
+      const b = await (await fetch('presentation/demo-files/TLC_guide_v6_final.docx')).blob();
+      await intakeFile(new File([b], 'TLC_guide_v6_final.docx', { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+    } catch(e){}
+    const pick = (k, v) => { const btn = [...document.querySelectorAll('#brief-top-panel button[data-v="' + v + '"]')].find(x => (x.getAttribute('onclick') || '').includes("setBrief('" + k + "'")); if(btn) setBrief(k, v, btn); };
+    pick('audience', 'patient'); pick('format', 'manual');
+    document.getElementById('stage').style.setProperty('--doc-w', '40%');   // as in the slide's stills
+    setTimeout(() => { document.getElementById('rail-scroll').scrollTop = 0; document.documentElement.classList.add('demo-ready'); }, 700);
+  })();
+}
 if(DEMO === 'frameworks'){
   // the Frameworks list stays open: clicks on the cards, Escape or the toggle never close it here
   { const _set = setTopPanel; setTopPanel = function(k, on){ return _set.call(this, k, k === 'fw' ? true : on); }; }
@@ -7487,6 +7504,67 @@ if(DEMO === 'frameworks'){
       document.documentElement.classList.add('demo-ready');
     }, 700);
   })();
+}
+// DEMO LENS (every ?demo= page): a round 2x magnifier follows the mouse so the room can read what the
+// presenter points at. It shows a copy of the live panels, rebuilt from them several times a second
+// (scroll positions, typed values, the poster canvas and the yellow word marks included), so it always
+// matches the page under it. It never takes clicks: the real page underneath does.
+if(DEMO && DEMO !== 'checks'){
+  const K = 2, ROOTS = DEMO === 'frameworks' ? ['fw-topbar', 'fw-top-panel', 'rail-scroll'] : ['demo-grid'];
+  const R = () => Math.round(Math.min(innerWidth, innerHeight) * 0.22);
+  const lens = document.createElement('div'), stage = document.createElement('div');
+  lens.setAttribute('aria-hidden', 'true');
+  lens.style.cssText = 'position:fixed;left:0;top:0;border-radius:50%;overflow:hidden;pointer-events:none;z-index:2147483000;' +
+    'background:rgb(18 20 23);box-shadow:0 0 0 5px #f5c400,0 16px 44px rgb(0 0 0 / .45);display:none';
+  stage.style.cssText = 'position:absolute;left:0;top:0;transform-origin:0 0;pointer-events:none';
+  [lens, stage].forEach(el => el.style.setProperty('visibility', 'visible', 'important'));
+  lens.appendChild(stage); document.body.appendChild(lens);
+  const path = (root, n) => { const p = []; while(n && n !== root){ p.unshift([...n.parentNode.childNodes].indexOf(n)); n = n.parentNode; } return n === root ? p : null; };
+  const walk = (root, p) => p.reduce((n, i) => n && n.childNodes[i], root);
+  let mx = -1, my = -1, last = 0, tick = null;
+  function rebuild(){
+    last = Date.now();
+    stage.textContent = '';
+    const pairs = [];
+    ROOTS.forEach(id => { const o = document.getElementById(id); if(!o) return; const c = o.cloneNode(true); stage.appendChild(c); pairs.push([o, c]); });
+    pairs.forEach(([o, c]) => {
+      const A = [o, ...o.querySelectorAll('*')], B = [c, ...c.querySelectorAll('*')];
+      for(let i = 0; i < A.length && i < B.length; i++){
+        const a = A[i], b = B[i];
+        if(a.scrollTop || a.scrollLeft){ b.scrollTop = a.scrollTop; b.scrollLeft = a.scrollLeft; }
+        if(a.tagName === 'TEXTAREA' || a.tagName === 'INPUT'){ b.value = a.value; if('checked' in a) b.checked = a.checked; }
+        else if(a.tagName === 'CANVAS' && a.width){ b.width = a.width; b.height = a.height; try { b.getContext('2d').drawImage(a, 0, 0); } catch(e){} }
+      }
+    });
+    // the word marks are CSS Highlight ranges on the real text: copy them onto the copy's text
+    if(window.CSS && CSS.highlights) ['pea-flag', 'pea-flag-focus'].forEach(name => {
+      const h = CSS.highlights.get(name); if(!h) return;
+      const keep = [...h].filter(r => r.startContainer.isConnected && !stage.contains(r.startContainer));
+      const add = [];
+      keep.forEach(r => pairs.forEach(([o, c]) => {
+        const ps = path(o, r.startContainer), pe = path(o, r.endContainer); if(!ps || !pe) return;
+        const s = walk(c, ps), e = walk(c, pe); if(!s || !e) return;
+        try { const nr = document.createRange(); nr.setStart(s, r.startOffset); nr.setEnd(e, r.endOffset); add.push(nr); } catch(err){}
+      }));
+      CSS.highlights.set(name, new Highlight(...keep, ...add));
+    });
+  }
+  function place(){
+    const r = R();
+    lens.style.width = lens.style.height = 2 * r + 'px';
+    lens.style.transform = 'translate(' + (mx - r) + 'px,' + (my - r) + 'px)';
+    stage.style.width = innerWidth + 'px'; stage.style.height = innerHeight + 'px';
+    stage.style.transform = 'translate(' + (r - K * mx) + 'px,' + (r - K * my) + 'px) scale(' + K + ')';
+  }
+  document.addEventListener('mousemove', e => {
+    if(!document.documentElement.classList.contains('demo-ready')) return;
+    mx = e.clientX; my = e.clientY;
+    if(lens.style.display === 'none'){ lens.style.display = 'block'; rebuild(); }
+    else if(Date.now() - last > 120) rebuild();
+    place();
+    clearInterval(tick); tick = setInterval(rebuild, 250);
+  }, { passive: true });
+  document.documentElement.addEventListener('mouseleave', () => { lens.style.display = 'none'; clearInterval(tick); stage.textContent = ''; });
 }
 </script>
 <script>(function(){var r=document.getElementById('rail-scroll');if(r)document.documentElement.style.setProperty('--sbw',(r.offsetWidth-r.clientWidth)+'px');
