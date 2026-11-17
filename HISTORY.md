@@ -6,14 +6,14 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-16 — Studio: Apply has its own hover
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **Apply no longer looks like the row it sits on.** On a lit flag it keeps a white face; hovering
   Apply itself gives it the selected tint with a blue outline and blue text.
 
 ## 2026-11-16 — Studio: whole flag lights on hover; New is a white text box
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **Hovering anywhere on a Plain language flag** (its title, Now, New or Based on) now lights the
   whole flag; before, only the title row did.
@@ -22,7 +22,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-16 — Studio: more automatic checks on CCI and PEMAT; suggestion box without fill
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **New signals read from the words** (`textSignals`): actions (sentences that start with a verb,
   or "you should / make sure…"), numbered steps, a summary ("Summary", "Key points", "In short"…),
@@ -42,14 +42,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-16 — Studio: no note on N/A items
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **N/A items no longer carry a reason line** ("No numbers in the material", "You marked this N/A");
   the greyed, selected N/A button is enough. They still fold into the "don't apply" row.
 
 ## 2026-11-16 — Studio: Plain language card on one left and right edge; counts row removed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **Right edges line up**: Apply all, each card's Fix and each suggestion's Apply now end on the same
   right edge (Fix and Apply were 16 and 24 px short). The cards were capped by a blanket
@@ -60,7 +60,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-16 — Studio: N/A on every row; sticky framework header; no box around suggestions
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **Every CCI and PEMAT item has the same three answers, Met / Not met / N/A.** The part-level
   "Doesn't apply" button on CCI Parts B–D is gone; a part that doesn't apply is marked item by item,
@@ -73,7 +73,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-16 — Studio: suggestion text on the card's edge; quiet Met all / Deselect all
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **Now / New line up with the rest of the Plain language card.** The dashed suggestion box hangs out
   by its padding and border, so "Now", "New" and "Based on" start on the same edge as "Long
@@ -82,7 +82,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-16 — Studio: plain notes, N/A items folded, Met all / Deselect all; drag to scroll
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **No more status pills on checklist items** (CCI, PEMAT and the text-checked frameworks). The pressed
   Met / Not met / N/A button already shows the value; a plain grey note under the sentence says why:
@@ -519,7 +519,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-16 — Studio: score modules reordered
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #46) · GitHub Pages: updated from `master`
 
 - **The score column now runs Plain language, Readability, Framework checklists (UPL), CCI,
   PEMAT-P** (was Framework checklists, Readability, CCI, PEMAT-P, Plain language), in the
