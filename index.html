@@ -14,6 +14,7 @@
 <script src="motion.js?v=20261019f" defer></script>
 <link rel="stylesheet" href="intro.css?v=20261021a">
 <script src="intro.js?v=20261116a" defer></script>
+<script src="drag-scroll.js?v=20261116b" defer></script>
 <script src="plan.js?v=20261027a" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -309,6 +310,18 @@ body.resizing{cursor:col-resize;user-select:none}
 .ck-tag{margin-left:var(--sp-1);padding:0 var(--sp-2);background:var(--selected);color:var(--form-blue)}
 .ck-tag.ck-pass{background:var(--pass-bg);color:var(--pass)}
 .ck-tag.ck-fail{background:var(--fail-bg);color:var(--fail)}
+/* a plain grey note under a checklist item: what PRISM checked or found, or why it doesn't apply */
+.ck-note{display:block;margin-top:2px;font-size:var(--fs-xs);line-height:1.4;color:var(--ink-2)}
+/* items that don't apply fold into one row at the end of their section */
+.ck-na-group{border-top:1px solid var(--rule)}
+.ck-na-group > summary{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) 0;cursor:pointer;list-style:none;font-size:var(--fs-sm);color:var(--ink-2)}
+.ck-na-group > summary::-webkit-details-marker{display:none}
+.ck-na-group > summary::before{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);margin:0 4px 0 2px;transition:transform .15s}
+.ck-na-group[open] > summary::before{transform:rotate(45deg)}
+/* Met all / Deselect all in a section header */
+.ck-bulk{display:inline-flex;gap:var(--sp-1)}
+.ck-bulk .rate-b{border-color:transparent;box-shadow:none;background:none}
+.ck-bulk .rate-b:hover{background:var(--hover, var(--selected))}
 /* checklist row: the question, then its tags on one line, then the reasons */
 .fwo-q{display:block}
 .fwo-tags{display:flex;flex-wrap:wrap;gap:var(--sp-1);margin:var(--sp-1) 0 0 calc(-1 * var(--sp-2))}   /* tag text lines up with the question (8px pill padding) */
@@ -583,7 +596,9 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .meter-bench{margin-bottom:var(--sp-3);font-size:var(--fs-xs);font-weight:400;color:var(--ink-2)}
 
 /* Figures rows (readability stats, plain-language counts): columns divided by hairlines, no boxes */
-.stat-row, .scan-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding-bottom:var(--sp-3);border-bottom:1px solid var(--rule)}
+.stat-row, /* the to fix / to review / fine counts are hidden: the suggested-changes line and the cards say it */
+#mod-scan .scan-summary{display:none}
+.scan-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding-bottom:var(--sp-3);border-bottom:1px solid var(--rule)}
 .stat-row{margin-top:var(--sp-1)}
 .scan-summary{margin-bottom:var(--sp-1)}
 .stat-cell, .scan-count{min-width:0;padding:0 var(--sp-3);border-left:1px solid var(--rule);text-align:left}
@@ -607,8 +622,12 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 /* Plain-language issues: buttons that find the words in the document or on the artwork */
 /* One row = the finding plus its suggested rewrite. Hovering the finding tints the whole row as one
    rounded block (the rewrite box sits inside it, white with a rule, so the two never clash). */
-.issue{margin:0 calc(-1 * var(--sp-2));border-bottom:1px solid var(--rule);border-radius:var(--radius-control)}
-.issue:has(> .issue-main:hover){background:var(--hover);border-bottom-color:transparent}
+.issue{margin:0 calc(-1 * var(--sp-2));width:calc(100% + 2 * var(--sp-2));max-width:none;border-bottom:1px solid var(--rule);border-radius:var(--radius-control)}  /* full width plus the hang on both sides, so Fix and Apply end on the card's right edge */
+/* hovering anywhere on a flag (title, Now, New, Based on) lights the whole row */
+.issue:hover{background:var(--hover);border-bottom-color:transparent}
+/* Apply keeps a white face on the lit row, and its own hover is the selected tint, so it never matches the row */
+.issue .sug-btns .btn{background:var(--sheet)}
+.issue .sug-btns .btn:hover{background:var(--selected);border-color:var(--form-blue);color:var(--form-blue)}
 .issue:last-child{border-bottom:none}
 .issue-main{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--sp-3);width:100%;padding:var(--sp-2);
   border:0;border-radius:var(--radius-control);background:none;font:inherit;text-align:left;color:inherit;cursor:pointer}
@@ -621,7 +640,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .issue-fix-txt ins{font-weight:600;text-decoration:underline 2px var(--pass);text-underline-offset:3px}
 .issue-fix-head{display:flex;align-items:baseline;gap:var(--sp-2)}
 /* Now / New: two rows with a fixed label column; old words struck, new words underlined in pass green */
-.sug{display:grid;gap:var(--sp-1);margin:0 var(--sp-2) var(--sp-3);padding:var(--sp-2) var(--sp-3);border:1px solid var(--rule);border-radius:var(--radius-control);background:var(--sheet)}
+/* no outline or fill: Now / New sit on the card's own edges */
+.sug{display:grid;gap:var(--sp-1);max-width:none;margin:0 var(--sp-2) var(--sp-3);padding:var(--sp-2) 0;border:0 !important;background:none !important;border-radius:var(--radius-control);background:var(--sheet)}
 .sug-row{display:grid;grid-template-columns:36px minmax(0,1fr);gap:var(--sp-2);align-items:baseline}
 .sug-k{font-size:var(--fs-xs);font-weight:600;color:var(--ink-2)}
 .sug-t{margin:0;font-size:var(--fs-sm);line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
@@ -630,7 +650,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .sug-t ins{font-weight:600;color:var(--ink);text-decoration:underline 2px var(--pass);text-underline-offset:3px}
 .sug-t mark{background:var(--highlighter);color:var(--ink);padding:0 1px}
 /* New, edited in place: a light frame on hover, a field on focus, a prompt when empty */
-.sug-new{margin:-2px -6px;padding:2px 6px;border:1px solid transparent;border-radius:var(--radius-control);cursor:text;outline:none}
+/* New is editable: a white text box, padded outward so its words stay on the card's edge */
+.sug-new{margin:-2px -6px;padding:2px 6px;border:1px solid var(--rule);background:var(--sheet);border-radius:var(--radius-control);cursor:text;outline:none}
 .sug-new:hover{border-color:var(--rule)}
 .sug-new:focus{border-color:var(--control-border);background:var(--sheet);box-shadow:0 0 0 2px var(--focus-ring)}
 .sug-new:empty::before{content:attr(data-placeholder);color:var(--ink-2);font-style:italic}
@@ -682,7 +703,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .ck-text, .fwo-row .t{grid-area:t;min-width:0;font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink)}
 .ck-item .rate, .fwo-row .rate{grid-area:r;align-self:start;justify-content:flex-end}
 .ck-item.auto .ck-text{color:var(--ink-2)}
-.ck-item.na .ck-text{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--ink-2)}
+.ck-item.na .ck-text{color:var(--ink-2)}
+.ck-item.na .fwo-q{text-decoration:line-through;text-decoration-color:var(--ink-2)}
 /* tick-box rows (sign-off): the box sits in the margin column */
 .ck-item > input[type=checkbox]{grid-column:1;justify-self:end;width:16px;height:16px;margin-top:2px}
 .ck-item > label{grid-column:2 / -1;font-size:var(--fs-sm);font-weight:400;line-height:1.45;color:var(--ink);cursor:pointer}
@@ -696,6 +718,8 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 .fwo-group:first-child, .fwo-need + .fwo-group{margin-top:0}
 .fwo-group-n{margin-left:auto;font-weight:400;font-variant-numeric:tabular-nums}
 .fwo-item{border-top:1px solid var(--rule)}
+/* an open framework's header row (chevron, name, "0 of 59 rated") sticks to the top while its items scroll */
+.fwo-item.open > .fwo-hdr{position:sticky;top:0;z-index:2;background:var(--sheet);border-radius:0;box-shadow:0 1px 0 var(--rule)}
 /* the hover tint bleeds the same distance past the text on both sides, so the chevron lines up
    with the group label above and the count with "1 framework" (same pattern as the issue rows) */
 .fwo-hdr{display:grid;grid-template-columns:4ch minmax(0,1fr) auto;column-gap:var(--sp-3);align-items:baseline;max-width:none;margin:0 calc(-1 * var(--sp-2));padding:var(--sp-2);cursor:pointer;user-select:none;border-radius:var(--radius-control)}
@@ -2242,6 +2266,8 @@ function readStructure(){
   return {
     text,
     hasList:    !!editor.querySelector('ul,ol'),
+    hasOl:      !!editor.querySelector('ol'),
+    headings:   [...editor.querySelectorAll('h1,h2,h3,h4,h5,h6')].map(h => h.textContent.trim()),
     hasHeaders: !!editor.querySelector('h1,h2,h3,h4,h5,h6'),
     hasImages:  !!editor.querySelector('img'),
     hasBold:    !!editor.querySelector('strong,b'),
@@ -2281,6 +2307,32 @@ function autoFlags(stats, struct){
     noVisuals:  struct ? not(struct.hasImages) : null,
     noTables:   struct ? not(struct.hasTable) : null,
     noVisualsOrTables: struct ? allOf(not(struct.hasImages), not(struct.hasTable)) : null,
+    ...textSignals(struct, fk),
+  };
+}
+// Signals read from the words alone. They guess at meaning, so most only add a hint under an item
+// ("PRISM found 6 actions. Your call."); the plain matches (no maths, no probabilities, no risk words)
+// also mark items N/A. Null when there's no text to read.
+const ACTION_VERBS = 'ask|avoid|bring|book|call|check|choose|contact|decide|define|do|download|drink|eat|email|fill|find|follow|get|give|go|identify|join|keep|learn|list|make|map|measure|note|plan|read|record|remember|review|schedule|see|set|share|sign|start|stop|store|take|talk|tell|track|try|use|visit|wash|wear|write';
+const RE_ACTION = new RegExp(String.raw`^(?:(?:please|first|then|next|now|also|always|never|don.t|do not)\s+)?(?:` + ACTION_VERBS + String.raw`)\b`, 'i');
+const RE_ACTION_YOU = /\b(you should|you can|you need to|you will need to|be sure to|make sure)\b/i;
+function textSignals(struct, fk){
+  if(!struct || !struct.text || !struct.text.trim()) return {};
+  const text = struct.text;
+  const sents = splitSentences(text);
+  const actions = sents.filter(x => RE_ACTION.test(x.trim()) || RE_ACTION_YOU.test(x)).length;
+  const steps = struct.hasOl === true || (text.match(/^\s*(step\s+\d+|\d+[.)])\s/gim) || []).length >= 2;
+  const RE_SUM = /\b(summary|key points?|key messages?|in short|at a glance|the basics|what you need to know|bottom line|takeaways?|to sum up|in summary)\b/i;
+  const summary = (struct.headings || []).some(h => RE_SUM.test(h)) || /\b(in summary|in short|to sum up)\b/i.test(text);
+  const source = /\b(according to|research (shows|suggests|found)|studies (show|suggest|found)|experts?|guidelines?|CDC|FDA|NIH|WHO|AHRQ|NHS|Health Canada|Mayo Clinic)\b|\[\d+\]|https?:\/\//i.test(text);
+  const calc = /\b(calculat\w*|multiply|divide|add up|subtract|work out how much|total of)\b|\d\s*[×*÷+]\s*\d/i.test(text);   // not '/': 120/80 is a reading, not a sum
+  const prob = /\d+(\.\d+)?\s*%|\b\d+\s+(in|out of)\s+\d+\b|\bpercent\b|\bodds\b|\bprobabilit\w*|\bchance of\b/i.test(text);
+  const risk = /\b(risks?|risky|dangers?|dangerous|harms?|harmful|side effects?|threats?|unsafe|hazards?)\b/i.test(text);
+  return {
+    hasActions: actions > 0, actionCount: actions,
+    hasSteps: steps, hasSummary: summary, hasSource: source,
+    noCalc: !calc, noProb: !prob, noRisk: !risk,
+    plainWords: struct.visual ? null : allOf(fk ? fk.grade <= targets().grade : null, struct.text ? !JARGON_KEYS.some(j => text.toLowerCase().includes(j)) || brief.audience === 'hcp' : null),
   };
 }
 
@@ -2481,14 +2533,15 @@ const cciPartNA = { B:null, C:null, D:null };
 function cciPartIsNA(part){
   if(part === 'A') return false;
   if(cciPartNA[part] !== null) return cciPartNA[part];
-  return part === 'C' ? lastFlags.noNumbers === true : false;
+  return part === 'C' ? lastFlags.noNumbers === true : part === 'D' ? lastFlags.noRisk === true : false;   // no numbers / no risk words
 }
 function setCciPart(part, na){ cciPartNA[part] = na; renderCci(); refreshScores(); explainScores(computeFK(readabilityText()), !hasContent()); }
 
 // true = met · false = not met · 'na' = excluded from the denominator · 'open' = not reviewed yet.
 // An item nobody has rated is open, never a fail.
 function itemState(it){
-  if(it.part && cciPartIsNA(it.part)) return 'na';
+  // a CCI part that starts N/A (Part C with no numbers) gives way to a person's Met / Not met
+  if(it.part && cciPartIsNA(it.part) && manual[it.id] !== true && manual[it.id] !== false) return 'na';
   if(it.naIf && lastFlags[it.naIf] === true) return 'na';
   if(manual[it.id] === 'na') return 'na';
   if(it.auto){
@@ -2548,34 +2601,103 @@ function rateItem(id, v){
   refocus('ck:'+id+':'+v);
 }
 
-function buildChecklist(items){
-  return items.map(it => {
-    const st = itemState(it);
-    const autoVal = it.auto ? lastFlags[it.auto] : undefined;
-    const autoScored = it.auto && (autoVal === true || autoVal === false);
-    const gateFail = it.gate && lastFlags[it.gate] === false;
-    const autoNA = (it.part && cciPartIsNA(it.part)) || (it.naIf && lastFlags[it.naIf] === true);
-    let tag = '';
-    if(autoNA)              tag = '<span class="ck-tag" title="Excluded from the score — this content isn\'t in the material">N/A</span>';
-    else if(st === 'na')    tag = '<span class="ck-tag" title="You marked this not applicable — excluded from the score">N/A</span>';
-    else if(autoScored)     tag = autoVal ? '<span class="ck-tag ck-pass" title="Detected — standard met">Auto ✓</span>'
-                                          : '<span class="ck-tag ck-fail" title="Not detected — standard not met">Auto ✗</span>';
-    else if(gateFail)       tag = '<span class="ck-tag ck-fail" title="A prerequisite for this item was not detected in the text">Auto ✗</span>';
+// What PRISM found (or didn't) for the signals an item depends on, as a plain note under the item
+const CK_FOUND   = { hasBold:'PRISM found bold text', hasHeaders:'PRISM found headings', hasImages:'PRISM found images',
+                     hasStructure:'PRISM found sections', hasYou:'PRISM found “you” in the text', noJargon:'PRISM found no jargon' };
+const CK_MISSING = { hasBold:'No bold text found', hasHeaders:'No headings found', hasImages:'No images found',
+                     hasStructure:'No sections found', hasYou:'No “you” in the text', noJargon:'Jargon found' };
+const CK_NA_WHY  = { noNumbers:'No numbers in the material', noTables:'No tables in the material',
+                     noVisuals:'No visuals in the material', noVisualsOrTables:'No visuals or tables in the material' };
+// More automatic checks from the words alone. A hint adds a note and pre-marks Met (dashed, to confirm);
+// it never locks the item. naIf marks it N/A when the plain match is absent; auto locks it.
+(() => {
+  const set = (arr, id, o) => { const it = arr.find(i => i.id === id); if(it) Object.assign(it, o); };
+  set(CCI_ITEMS, 'c5',  { hint:'hasActions' });   // calls to action
+  set(CCI_ITEMS, 'c6',  { auto:'activeVoice' });  // active voice, as PEMAT 5
+  set(CCI_ITEMS, 'c10', { hint:'hasSummary' });
+  set(CCI_ITEMS, 'c11', { hint:'hasSource' });    // names authoritative sources
+  set(CCI_ITEMS, 'c12', { hint:'hasActions' });   // behavioral recommendations
+  set(CCI_ITEMS, 'c17', { hint:'noCalc' });       // no maths to do
+  set(CCI_ITEMS, 'c20', { naIf:'noProb' });       // probability explained: N/A without probabilities
+  set(PEMAT_U,   'pu3', { hint:'plainWords' });   // everyday language
+  set(PEMAT_U,   'pu7', { hint:'noCalc' });
+  set(PEMAT_U,   'pu11',{ hint:'hasSummary' });
+  set(PEMAT_A,   'pa20',{ hint:'hasActions' });
+  set(PEMAT_A,   'pa22',{ hint:'hasSteps' });
+  set(PEMAT_A,   'pa24',{ naIf:'noCalc' });       // how to do calculations: N/A when there are none
+})();
+const CK_HINT = {
+  hasActions: [f => 'PRISM found ' + f.actionCount + ' action' + (f.actionCount === 1 ? '' : 's'), 'No actions found'],
+  hasSummary: [() => 'PRISM found a summary', 'No summary found'],
+  hasSource:  [() => 'PRISM found named sources', 'No named sources found'],
+  hasSteps:   [() => 'PRISM found numbered steps', 'No numbered steps found'],
+  noCalc:     [() => 'PRISM found no maths to do', 'PRISM found a calculation'],
+  plainWords: [() => 'Grade on target and no jargon', 'Grade above target or jargon found'],
+};
+// Sections whose "don't apply" group is open (it stays open across redraws)
+const ckNaOpen = new Set();
+function ckItemState(it){
+  const st = itemState(it);
+  const autoVal = it.auto ? lastFlags[it.auto] : undefined;
+  const autoScored = it.auto && (autoVal === true || autoVal === false);
+  const gateFail = it.gate && lastFlags[it.gate] === false;
+  const partNA = it.part && cciPartIsNA(it.part) && st === 'na';
+  const autoNA = partNA || (it.naIf && lastFlags[it.naIf] === true);
+  // a part-level N/A can be answered over; a missing visual or table can't
+  return { st, autoScored, gateFail, autoNA, locked: autoScored || gateFail || (autoNA && !partNA) };
+}
+function buildChecklist(items, key){
+  const row = it => {
+    const { st, autoScored, gateFail, autoNA, locked } = ckItemState(it);
+    let note = '';
+    // N/A items carry no note: the greyed, selected N/A button says it
+    if(autoNA || st === 'na') note = '';
+    else if(autoScored)     note = 'Checked by PRISM';
+    else if(gateFail)       note = (CK_MISSING[it.gate] || 'Not found') + ', so not met';
     else if(it.gate && lastFlags[it.gate] === true)
-                            tag = '<span class="ck-tag" title="A prerequisite was detected. Confirm the item yourself.">Detected, confirm it</span>';
+                            note = (CK_FOUND[it.gate] || 'PRISM found a sign of this') + '. Your call.';
+    else if(it.hint && (lastFlags[it.hint] === true || lastFlags[it.hint] === false))
+                            note = (lastFlags[it.hint] ? CK_HINT[it.hint][0](lastFlags) : CK_HINT[it.hint][1]) + '. Your call.';
     else if(visualOn && DESIGN_ONLY.has(it.gate || it.auto) && lastFlags[it.gate || it.auto] == null)
-                            tag = '<span class="ck-tag" title="A transcript can\'t show this — look at the design and rate it yourself">check design</span>';
+                            note = 'Check this on the design';
     // Same control as every other checklist: Met / Not met (/ N/A where the instrument allows it).
-    // Auto-scored, prerequisite-failed and auto-N/A items show their value, locked.
+    // Auto-scored, prerequisite-failed and auto-N/A items show their value, locked; the pressed
+    // button carries the value, so there is no separate tag repeating it.
     const v = st === true ? 'met' : st === false ? 'not' : st === 'na' ? 'na' : '';
-    const opts = [['met','Met'],['not','Not met']].concat(it.na || autoNA ? [['na','N/A']] : []);
-    const lockedNow = autoScored || gateFail || autoNA;
-    return '<div class="ck-item'+(lockedNow?' auto':'')+(st==='na'?' na':'')+'">'+
+    // every row has the same three answers; N/A folds the item into the "don't apply" row
+    const opts = [['met','Met'],['not','Not met'],['na','N/A']];
+    return '<div class="ck-item'+(locked?' auto':'')+(st==='na'?' na':'')+'">'+
       '<span class="ck-n" id="n-'+it.id+'"><span class="sr-only">Item </span>'+it.n+'</span>'+
-      '<div class="ck-text" id="lbl-'+it.id+'"><span class="fwo-q">'+it.text+'</span>'+(tag ? '<span class="fwo-tags">'+tag+'</span>' : '')+'</div>'+
-      rateCtl(opts, v, "rateItem('"+it.id+"','%v')", { locked: lockedNow, labelledby: 'n-'+it.id+' lbl-'+it.id, key: 'ck:'+it.id })+
+      '<div class="ck-text" id="lbl-'+it.id+'"><span class="fwo-q">'+it.text+'</span>'+(note ? '<span class="ck-note">'+note+'</span>' : '')+'</div>'+
+      rateCtl(opts, v, "rateItem('"+it.id+"','%v')", { locked, labelledby: 'n-'+it.id+' lbl-'+it.id, key: 'ck:'+it.id,
+        // a hint pre-marks its answer, dashed, until a person confirms it
+        suggested: !v && it.hint && lastFlags[it.hint] != null ? (lastFlags[it.hint] ? 'met' : 'not') : undefined })+
     '</div>';
-  }).join('');
+  };
+  const live = items.filter(it => itemState(it) !== 'na'), out = items.filter(it => itemState(it) === 'na');
+  let h = live.map(row).join('');
+  if(out.length){
+    const open = ckNaOpen.has(key);
+    h += '<details class="ck-na-group"'+(open ? ' open' : '')+' ontoggle="ckNaToggle(\''+key+'\',this.open)">'+
+           '<summary>'+(out.length === 1 ? '1 item doesn’t apply' : out.length+' items don’t apply')+'</summary>'+
+           out.map(row).join('')+
+         '</details>';
+  }
+  return h;
+}
+function ckNaToggle(key, open){ if(open) ckNaOpen.add(key); else ckNaOpen.delete(key); }
+// Met all / Deselect all for one section: only the items a person rates (not locked, not N/A)
+const CK_SECTIONS = {};
+function ckSection(key, mode){
+  const items = CK_SECTIONS[key] || [];
+  items.forEach(it => {
+    const s = ckItemState(it);
+    if(mode === 'met'){ if(!s.locked && s.st !== 'na') manual[it.id] = true; }
+    else if(!s.autoNA) delete manual[it.id];
+  });
+  renderCci(); renderPemat(); refreshScores();
+  explainScores(computeFK(readabilityText()), !hasContent());
+  refocus('sec:'+key+':'+mode);
 }
 
 function renderCci(){
@@ -2583,19 +2705,26 @@ function renderCci(){
     const def = CCI_PARTS[p];
     const items = CCI_ITEMS.filter(i => i.part === p);
     const na = cciPartIsNA(p);
-    const toggle = def.optional
-      ? '<button type="button" class="rate-b ck-part-na'+(na?' on neu':'')+'" aria-pressed="'+na+'" title="'+def.hint+'"'+
-        ' data-k="part:'+p+'" onclick="setCciPart(\''+p+'\','+!na+');refocus(\'part:'+p+'\')">Doesn\'t apply</button>'
-      : '';
-    return ckGroup(def.label, items.length, toggle)+buildChecklist(items);
+    const key = 'cci-'+p; CK_SECTIONS[key] = items;
+    // a part that doesn't apply is marked item by item with N/A (Part C still starts N/A with no numbers)
+    return ckGroup(def.label, items.length, ckBulk(key))+buildChecklist(items, key);
   }).join('');
 }
 function renderPemat(){
+  CK_SECTIONS['pemat-u'] = PEMAT_U; CK_SECTIONS['pemat-a'] = PEMAT_A;
   $('pemat-list').innerHTML =
-    ckGroup('Understandability', PEMAT_U.length) + buildChecklist(PEMAT_U) +
-    ckGroup('Actionability', PEMAT_A.length) + buildChecklist(PEMAT_A);
+    ckGroup('Understandability', PEMAT_U.length, ckBulk('pemat-u')) + buildChecklist(PEMAT_U, 'pemat-u') +
+    ckGroup('Actionability', PEMAT_A.length, ckBulk('pemat-a')) + buildChecklist(PEMAT_A, 'pemat-a');
 }
-// A score-sheet section label: title left, item count right (and the CCI "Doesn't apply" toggle)
+// Met all / Deselect all buttons for a section
+function ckBulk(key){
+  return '<span class="ck-bulk">'+
+    '<button type="button" class="rate-b" data-k="sec:'+key+':met" onclick="ckSection(\''+key+'\',\'met\')">Met all</button>'+
+    '<button type="button" class="rate-b" data-k="sec:'+key+':clear" onclick="ckSection(\''+key+'\',\'clear\')">Deselect all</button>'+
+  '</span>';
+}
+// A score-sheet section label: title left, item count right, then Met all / Deselect all
+// (and the CCI "Doesn't apply" toggle)
 function ckGroup(title, n, extra){
   return '<div class="ck-group"><span class="ck-group-t">'+title+'</span>'+
     '<span class="ck-group-n">'+n+' item'+(n===1?'':'s')+'</span>'+(extra||'')+'</div>';
@@ -5959,7 +6088,14 @@ function renderFwItem(key){
     const rt = fwRatings[key] || {};
     let lastDom = null;
     r.cr.forEach((c,i) => {
-      if(c[0] !== lastDom){ body += '<div class="fwo-dom">' + escapeHtml(domTitle(c[0])) + '</div>'; lastDom = c[0]; }
+      if(c[0] !== lastDom){
+        const dk = key + ':' + encodeURIComponent(c[0]);
+        body += '<div class="fwo-dom ck-group"><span class="ck-group-t">' + escapeHtml(domTitle(c[0])) + '</span><span class="ck-bulk">'
+              + '<button type="button" class="rate-b" data-k="fsec:' + dk + ':met" onclick="fwSection(\'' + key + '\',\'' + encodeURIComponent(c[0]) + '\',\'met\')">Met all</button>'
+              + '<button type="button" class="rate-b" data-k="fsec:' + dk + ':clear" onclick="fwSection(\'' + key + '\',\'' + encodeURIComponent(c[0]) + '\',\'clear\')">Deselect all</button>'
+              + '</span></div>';
+        lastDom = c[0];
+      }
       // item number: the position in the framework (the same fallback the Compass uses)
       const tid = 'fwt-' + key + '-' + i, nid = 'fwn-' + key + '-' + i;
       const num = fwItemNo(nid, c, i);
@@ -6031,10 +6167,11 @@ function fwSuggestedBody(key){
     if(c[0] !== lastDom){ h += '<div class="fwo-dom">' + escapeHtml(c[0]) + '</div>'; lastDom = c[0]; }
     const nid = 'fwn-' + key + '-' + i, num = fwItemNo(nid, c, i);
     // the question on its own; its tags on a line underneath
-    const tags = (FW_CHECK_LABEL[m.ck] ? '<span class="ck-tag" title="Can\'t be judged from the text alone">' + FW_CHECK_LABEL[m.ck] + '</span>' : '')
-      + (e.src === 'auto' ? '<span class="ck-tag ' + (e.v === 'n' || e.v === '0' || e.v === 'flag' ? 'ck-fail' : 'ck-pass') + '">Auto ' + FW_VAL_LABEL[e.v] + '</span>' : '')
-      + (e.src === 'rule' ? '<span class="ck-tag">set by score sheet</span>' : '');
-    const label = '<span class="fwo-q">' + escapeHtml(c[1]) + '</span>' + (tags ? '<span class="fwo-tags">' + tags + '</span>' : '');
+    // plain notes under the question; the pressed button already shows the value, so no pill repeats it
+    const notes = [FW_CHECK_LABEL[m.ck] ? 'This ' + FW_CHECK_LABEL[m.ck] : '',
+                   e.src === 'auto' ? 'Checked by PRISM' : '',
+                   e.src === 'rule' ? 'Set by the score sheet' : ''].filter(Boolean);
+    const label = '<span class="fwo-q">' + escapeHtml(c[1]) + '</span>' + (notes.length ? '<span class="ck-note">' + notes.join(' · ') + '</span>' : '');
     let sub = '';
     if(e.why) sub += '<div class="fwo-sub why">' + escapeHtml(e.why) + '</div>';
     else if(e.autoWhy) sub += '<div class="fwo-sub">Tool suggestion: ' + escapeHtml(e.autoWhy) + '</div>';
@@ -6094,6 +6231,17 @@ function toggleFwOpen(key){
     el.classList.toggle('open', fwOpen[key]);
     const h = el.querySelector('.fwo-hdr'); if(h) h.setAttribute('aria-expanded', String(!!fwOpen[key]));
   }
+}
+// Met all / Deselect all for one section of a self-rated framework: Met all picks the scale's
+// best answer (the first positive one) for every item a person can rate
+function fwSection(key, domEnc, mode){
+  const dom = decodeURIComponent(domEnc), r = FW_REG[key];
+  const opts = fwScaleOptions(key).filter(o => o[0] !== '');
+  const best = (opts.find(o => RATE_TONE[o[0]] === 'pos') || opts[0] || [''])[0];
+  r.cr.forEach((c, i) => { if(c[0] === dom && !c[2]) setFwRating(key, i, mode === 'met' ? best : ''); });
+  const it = $('fwo-item-' + key); if(it) it.outerHTML = renderFwItem(key);
+  const el = $('fwo-stat-' + key); if(el) el.textContent = fwStat(key);
+  refocus('fsec:' + key + ':' + domEnc + ':' + mode);
 }
 // Pressing the current rating again clears it; the checklist redraws so scores and rules update
 function pickFw(key, i, v){
@@ -6466,13 +6614,13 @@ renderFwTopBar();
 // ════════════════════════════════════════
 const LAYOUTS = {
   'everything': { name:'Everything', note:'Every module except Accessibility and Accuracy, which are off by default.',
-    right:['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan'] },
+    right:['mod-scan','mod-read','mod-fwout','mod-cci','mod-pemat'] },
 
   'drafting': { name:'Drafting a new piece', note:'Readability and the plain-language scan — what you need while writing.',
-    right:['mod-fwout','mod-read','mod-scan'] },
+    right:['mod-scan','mod-read','mod-fwout'] },
 
   'audit': { name:'Auditing existing material', note:'The scored audit stack: CCI, PEMAT and readability, with the plain-language scan.',
-    right:['mod-fwout','mod-read','mod-cci','mod-pemat','mod-scan'] },
+    right:['mod-scan','mod-read','mod-fwout','mod-cci','mod-pemat'] },
 
   'accessibility': { name:'Accessibility pass', note:'WCAG checks, contrast and read-aloud clarity, with readability alongside.',
     right:['mod-fwout','mod-read','mod-a11y','mod-scan'] },
