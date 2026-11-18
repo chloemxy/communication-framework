@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-18 — Standards exist: Sonia's simpler pile
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Applied Sonia's patch `standards-slide-simpler-pile`.** The first beat drops the wooden frames:
   Nati's post lies flat and large at the back, with the CDC Clear Communication Index screenshot
@@ -19,7 +19,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Scattered tools: a smooth merge into the PRISM button, and its reverse
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Merge (step two, about 2.2 s):** the pills flow into the centre farthest first, each on one soft
   ease-in-out curve of 1.2 s, starting 0.09 s apart so many move at once. Each swings out a little on its
@@ -34,7 +34,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Scattered tools: the pile builds itself, overlaps, and lights with a PRISM sheen
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **The pile builds when the slide arrives:** pills ease in one at a time, in random order, at random moments
   (quick bursts and short pauses) and at their own speeds, out of a soft blur with a gentle overshoot. The
@@ -50,7 +50,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Scattered tools: a settled pile with gentle physics, and a "…" pill on top
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **`#tools` pills now sit in one pile** in the middle of the slide: rows touching end to end, each row
   shifted a little and each pill tilted a hair, with a small **"…" pill on top** for every tool not named
@@ -65,7 +65,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Why AI? → reveal: no flash of the finished handout at the cut
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Fix:** after the reveal had been left going forward (to the Brief slide), its Studio clip stayed on
   its last frame. On the next pass the slices' exit clip cut to the slab showing the finished handout
@@ -77,7 +77,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 1: breeze clip upscaled to 1080p, in the deck blue
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Sharper:** the 1280×720 `media/bg/welcome-wind-v2.mp4` is scaled to 1920×1080 with a
   high-quality (Lanczos) scaler and a light sharpen, and encoded at much higher quality (about 10 MB,
@@ -90,7 +90,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 1: new breeze clip (flowers sway), in the slide blue
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **New clip on the title slide:** the updated `media/bg/welcome-wind-v2.mp4` (10 s; the bouquet
   sways) replaces the steam clip. As before, only its table blue is recoloured, to the deck blue
@@ -102,21 +102,21 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Frameworks slide ("14 frameworks, one dropdown.") removed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **`#fw-pick` is removed** from the deck with its styles and hover script; "Who it's for" leads straight
   into the scattered-tools slide again.
 
 ## 2026-11-18 — "Checking a handout today" hidden
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **`#pain` is hidden** (one `hidden` attribute); the scattered-tools pill slide now opens the problem
   set on its own. The six-tile slide stays in the file to bring back.
 
 ## 2026-11-18 — New slide before "Checking a handout today": the scattered tools as glass pills
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **`#tools`**, black, no title: eleven glass pills bunched in the middle, touching end to end, each
   drifting a few pixels: Grade school reading level, Universal Patient Language, Contrast checker,
@@ -132,7 +132,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — New slide after "Who it's for": Frameworks, the Studio list with a deck of cards behind
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **`#fw-pick`**, right after the Brief slide, on the same black: "14 frameworks, *one dropdown.*" at the
   top, and the Studio's Frameworks dropdown rebuilt at the Brief panel's size below it (header
@@ -150,14 +150,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — "Health writing anyone can read." slide removed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - The Promise slide (`#promise`) is hidden with `hidden`, so the deck goes from Who it's for straight to
   Checking a handout today. Removing the attribute brings it back.
 
 ## 2026-11-18 — Studio: the steps stay until there's material
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **"How to check your material" shows until material is in**, even with a Brief and frameworks set.
   Before, picking frameworks swapped the steps for cards that had nothing to score yet (Framework
@@ -171,7 +171,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Reveal re-recorded: the Studio opens on "How to check your material"
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - Asked for by the Intro session: the Studio now keeps its "How to check your material" steps until
   material is in, so the reveal no longer opens on the Framework checklists card ("0 of 59 rated").
@@ -185,7 +185,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — New slide after the reveal: "Who it's for" (the Brief)
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **New slide `#brief`** right after the PRISM reveal. On the click, the Studio, its yellow frame and the
   blue fall away to black while the Brief bar grows out of the Studio into the Brief panel, already open
@@ -212,7 +212,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — One blue on every blue slide: rgb(15 108 157)
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **The most used blue, rgb(15 108 157), is now the only slide blue.** It was already on the welcome
   video, slide 2's desk, Standards exist (background and its card wash) and Why AI?'s CSS.
@@ -227,7 +227,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Studio: long sentences underlined, more medical words; reveal at 2×
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Long sentences are marked in the text:** a sentence over 25 words gets a blue dotted underline under
   the whole sentence (`::highlight(pea-long)` in `design-system.css`); the yellow word marks stay on top.
@@ -246,7 +246,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Studio: Readability heads the second column, above CCI
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **The reading grade is in view as soon as material is in.** The default layouts ("Everything" and
   "Auditing existing material") now order the panels Plain language, PEMAT, Readability, CCI, Framework
@@ -257,7 +257,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Reveal: centred on any screen; light Studio that drops in the water pill
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Pinned to the centre:** Why AI?'s slices video and its exit clip now cover the screen from the
   centre (were bottom-right), and the reveal slide places the slab with the clip's own cover scaling
@@ -274,7 +274,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Reveal: the screen no longer shifts at the cut
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Two causes, both fixed.** (1) The reveal slide's slow push-in started growing the slab right after
   the cut; it's gone, so the slab holds where the clip leaves it. (2) After a slide's exit clip, the
@@ -285,7 +285,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Reveal: water-pill Studio, sharp, on the Why AI? blue
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **The Studio in the slab now shows the water-pill handout** (`presentation/demo-files/water-pill.html`,
   the long "as written" version plus a "When to call us" paragraph), Brief Patients + Handout: flags on
@@ -300,7 +300,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Reveal: the Studio stays inside the slab, square at 80%
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **The slab no longer grows to fill the screen.** `ai-to-reveal.mp4` now ends with the slab square to the
   room at 80% of the screen (192–1728 × 108–972), rounded, keeping its yellow rim, with the Studio inside
@@ -312,14 +312,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — "14 frameworks, one list" slide hidden
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **`#one-list` is hidden** (a single `hidden` attribute), so the deck goes from Meet PRISM straight to
   the Demo slides again. The slide, its flow-tree clip and the source stay in place to bring back.
 
 ## 2026-11-18 — PRISM intro storyboard: reveal, promise, problems, real guide, one more thing
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Why AI? now exits into the Studio itself.** New clip `media/bg/ai-to-reveal.mp4` (Remotion
   composition `AiToReveal`, `npm run render:reveal`; the same slab turn as `AiToPrism`, which now takes a
@@ -343,7 +343,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Why AI? → Meet PRISM: the slices become PRISM
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **New clip** `presentation/media/bg/ai-to-prism.mp4` (3 s, Remotion: `video/src/AiToPrism.tsx`,
   `npm run render:prism`). It starts on the slices' last frame: the labels fade, 1 designer and 1 month
@@ -359,7 +359,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Meet PRISM: Upload, Measure, Improve in clear glass
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **All three steps are clear glass** now, not a solid blue fill: a thin white wash, frosted behind,
   with a bright top edge and a hairline rim. Unlit steps are dimmed; a lit step is brighter glass with
@@ -377,7 +377,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
 
 ## 2026-11-18 — Why AI?: setup line ends at "months of work."
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Slide `#why`:** "I had none of those." is gone; the line now reads "Normally: developers, a
   budget, months of work." The video's screen-reader description now matches the current
@@ -386,7 +386,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — New slide: "Same handout, before and after." (after Meet PRISM)
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **New slide `#ba`** right after Meet PRISM (option A, split card with a fix key). The water-pill
   handout as written (grade 15.9, 10 flags, yellow flags) sits beside the version after PRISM (grade
@@ -403,7 +403,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Meet PRISM follows the script: Upload → Measure → Improve
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **The six problem tiles are replaced** by what the script says: the headline "An all-in-one
   readability check for science and medicine", then a row of three glass pills, Upload ("your
@@ -417,7 +417,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — 14 frameworks, one list: flow-tree video replaces the dropdown
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **New clip on `#one-list`** (10 s, plays once, then holds), in the style of a flow tree: the 14
   frameworks are listed down the left, each with a circle in its zone colour. One by one each draws a
@@ -431,7 +431,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — 14 frameworks, one list: the dropdown video
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **The placeholder slide after Meet PRISM (`#one-list`) now plays its video** once each time it comes
   up (11 s, then it holds): PRISM's 14 frameworks fan out as glass slices in the Why AI? clip's style,
@@ -447,7 +447,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Placeholder slide after Meet PRISM: "14 frameworks, one list"
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **New slide `#one-list`** right after Meet PRISM, with its own rail dot ("One list"). It holds the
   title "14 frameworks, one list" and a placeholder line until the video is made: a dropdown takes in
@@ -456,7 +456,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Morph: same title glide forward and back
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
 
 - **Forward now glides the title too.** Going forward, the next slide arrives on its first beat, before
   its title has faded in, so its title was left out of the morph and only the crossfade ran; coming back
