@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-18 — Meet PRISM: tiles turn blue; tile text lines up with the headline
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Turned tiles are the deck's blue**, rgb(15 108 157), the background of the question, Why AI? and
   Standards slides, as a glass pill with bold white text (about 5.2 : 1). The panel's glow is blue too.
@@ -16,7 +16,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: titles in the middle
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Slide 2's titles ("50+ posters…" and "Loved it…") sit in the vertical middle of the slide**
   instead of at the top (`presentation/index.html`). The cricket after the click is a little smaller
@@ -25,7 +25,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Every blue slide uses the Why AI? blue
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Welcome slide and slide 2 now use rgb(15 108 157)**, like "Standards exist" and "Why AI?".
   Only the blue was recoloured, so the ink lines, the tablet and the rest of each picture are
@@ -37,7 +37,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards exist: same blue as the Why AI? video
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **"Standards exist" now uses rgb(15 108 157)**, the blue the "Why AI?" explanation video shows
   on screen (the video file is coded rgb(34 115 150), but Chrome plays it brighter because it is
@@ -46,7 +46,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Meet PRISM: no slider hint in the deck
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **"Drag the slider to see each fix." is gone from the deck's Meet PRISM slide** (`intro.js`, `?deck`
   only); the speaker drags it. The live site's intro keeps the hint.
@@ -55,7 +55,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Titles: pure white with a crisp shadow
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Every slide title is pure white** (the welcome title, slide headings, big lines and quotes), with a
   thin dark edge and a soft glow (`0 1px 2px rgb(0 0 0 / .45), 0 2px 14px rgb(0 0 0 / .3)`), so it
@@ -65,14 +65,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Why AI?: no head counts on the row
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - Slices show cost, not people, so the row labels drop their counts: "Developers", "Budget",
   "Designers". Time keeps its count ("6 months"), and the end still reads 1 designer, AI, 1 month.
 
 ## 2026-11-18 — Why AI?: AI lands between the two designers
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **New row:** 3 developers, 3 budget slices, 2 designers, 6 months. AI drops in between the two
   designers, which is also the middle of the row (7 slices in front, 7 behind), so both sides
@@ -81,7 +81,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Why AI?: even absorb, deck colours
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Even absorb:** AI now lands dead centre, 7 slices in front and 7 behind, so both sides slide
   into it together. The last three end evenly spaced with no overlap (1 month, AI, 1 designer);
@@ -92,7 +92,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Why AI?: slices animation behind the slide
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Slide 4 (`#why`)** gets the explanation video, playing once each time the slide comes up
   (10 s, then it holds): a usual project fans out as glass slices in the lower right, labelled
@@ -106,7 +106,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Why AI?: framework background off, waiting for the explanation video
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Slide 4 (`#why`)** loses its scrolling framework cards and their wash; the slide is the plain
   blue until the explanation video is ready. Its credit line ("Background: PRISM's 14 frameworks")
@@ -114,7 +114,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards exist: gradient wash, right side vivid
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Second beat:** the rows come in at full strength under a left-to-right wash in the slide's blue,
   deep behind the title and clear from about two-thirds across, so the cards on the right are
@@ -124,7 +124,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards exist: title in the middle of the slide
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - "Standards / already exist." and "What if they were all in one place?" now sit centred top to
   bottom on the left, on both beats (the framed pile, and the faded rows), instead of at the top.
@@ -132,7 +132,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards exist: the title stays over faded rows
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Second beat:** "Standards / already exist." and "What if they were all in one place?" stay on
   screen, and the framework rows come in faded to a quarter behind them, as in the faded mockup.
@@ -142,14 +142,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards exist: no cards behind the title
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - Undoes the faded rows on the first beat: the title, its line and the framed pile sit on plain
   blue again, and the framework rows come in on the click as the screenshots fly into them.
 
 ## 2026-11-18 — Standards exist: faded rows behind the title from the start
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The framework rows now appear with the title** on the first beat, faded to a quarter so
   "Standards / already exist." and its line read over them on the blue (no gradient). The rows hold
@@ -159,7 +159,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards exist: framed pile, one line under the title, clean rows
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Frames:** in the pile, Nati's post and the CDC screenshot each hang in the hand-drawn wooden
   picture frame from the blue cabinets drawing (`presentation/media/bg/cabinet-frame.png`, cut from
@@ -178,7 +178,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards exist: the two screenshots drop onto a pile
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Slide 3 (`#standards`), first beat, laid out like slide 2:** the title "Standards / already exist."
   on the left (now on two lines, so it stays clear of the pile) and the screenshots on the right as a
@@ -194,7 +194,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — One title treatment; slide 2's footer trimmed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Every slide title now shares one treatment**: the same face, size and weight (as before), 1.08
   line spacing everywhere (some were 1.04), and no glow or shadow behind it (slide 2, the welcome
@@ -206,7 +206,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Footers: pure white at 80%
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Every footer line** (media credits, notes, the feedback and licence line, and their links) is now
   pure white at 80% opacity, `rgb(255 255 255 / .8)`, on every slide. Before, they used the secondary
@@ -215,7 +215,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Standards and Why AI? in the deeper blue
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The Standards slide and Why AI? now use the same deeper blue as the welcome slide and slide 2**
   (rgb 34,115,150) in both themes, with light text, the olive highlight, and the wash over the
@@ -223,7 +223,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — One slide change: morph, forward and back
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Every slide change is the morph**, going forward and going back: the page crossfades while the
   title (and anything marked `data-morph`) glides to its new place. The crossfade and the glide now
@@ -235,14 +235,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: no wind
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The three wind strokes are removed** from the click; the leaves still tumble down before the
   cricket hops in.
 
 ## 2026-11-18 — Slide 2: sharper cricket
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Chloe's higher-resolution cricket** (`presentation/media/bg/cricket.png`, 2912 x 1632) is cut out
   again by `scripts/cricket-cutout.py`: `cricket-cut.png` is now 354 x 262 (was 181 x 136), so at its
@@ -250,7 +250,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: fix the poster drawn small in the top-left after the click
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Fix**: on Chloe's screen the lifted poster was drawn at about half size, tucked top-left behind the
   title, after the click: the sheets canvas had lost its scaling. `desk-pile.js` now re-applies the
@@ -260,7 +260,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: on the click, the poster alone on the blue with the cricket beside it
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Replaces the zoom.** On the "Loved it" click the reactions fade, and the desk, chair and pile fade
   into the blue while the teach-back poster glides to the right half, larger (74% of the slide's
@@ -274,7 +274,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: updated desk drawing
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The new `empty desk.png` is on slide 2** (re-exported to `presentation/media/bg/empty-desk.jpg`,
   cache key `20261118b`): the chair no longer has an armrest. The desk itself is unchanged, so the
@@ -282,7 +282,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: the scene zooms in to the desktop on the click
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **On the click, the whole scene eases in about 2× over 1.6 s** to just the desktop: the lifted
   teach-back poster big beside the text, the pile, cup and cricket along the bottom. The drawing,
@@ -296,7 +296,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: on the click, wind, leaves and a cricket
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **On the click** (as the title changes to "Loved it…"), the reactions fade, a gust of wind
   (three cream strokes) sweeps across to the right of the title, and five ink-outlined leaves
@@ -310,7 +310,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slides 1 and 2: one deeper blue, text passes AA; breeze loops forward only
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **No more dimming on slide 1 (`#top`).** Instead of darkening the whole picture to 82% (white text
   was 4.46 : 1, just under AA), only the table's blue is recoloured to rgb(34 115 150); the tablet,
@@ -328,7 +328,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
   title clear of the art.
 ## 2026-11-17 — Titles at least 5u from the edge
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Every slide title now starts at least 5u (96 px at 1920×1080) from the slide edge**, as far in as
   the Take-home title. The slide's left margin goes back from 2.5u to 5u, so the titles and the text
@@ -343,14 +343,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: reactions around the poster, not on it
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The reactions sit just outside the lifted poster's edges** (left, right and above), overlapping
   it by a few pixels at most, so the poster stays readable. They still burst out from its centre.
 
 ## 2026-11-18 — Slide 2: the leaflets fall a few at a time
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Still the 12 UHN materials, but several fall at once**: each sets off 0.05 to 0.35 s after the
   one before (was 0.3 to 1.15 s), in a shuffled order, so the whole fall finishes in about 8 s
@@ -360,7 +360,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: fall, lift and reactions play on their own; the click changes the title
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **On arrival everything plays without a click**: the leaflets fall, and half a second after the
   last one lands the teach-back poster lifts off the pile and the reactions pop around it, while
@@ -401,7 +401,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #53) �
 
 ## 2026-11-17 — Title slide fine print on one row
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The title slide's fine print is one row**, in the shared footer spot: "Feedback: prism@goinvo.com ·
   Code licensed Apache 2.0, designs CC BY 4.0 · Background: generated with Midjourney, recoloured"
@@ -409,7 +409,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — One footer spot for every slide
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Every credit line sits in the same place on one row**: lined up with the slide's text edge
   (2.5 units in) and 1.5 units above the bottom, never wrapping. Slide 2's credit (was indented and
@@ -419,7 +419,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Meet PRISM: back to the water pill, longer and harder
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The card is the water-pill handout again**, replacing The Light Collective passages, but a
   longer, harder version so the before and after are far apart. As written (65 words): eight medical
@@ -436,7 +436,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Standards exist: no stacked headlines; screenshots darken as they land
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Stacked headlines (`#standards`):** coming back from "Why AI?" landed on the slide's last beat,
   and the slide-change morph held its title ("Standards already exist.") at full strength, so it sat
@@ -448,14 +448,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Solid olive highlight on the blue slides
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The title slide ("Dropped") and slide 2 ("understood it.") highlight in a solid olive
   (#6B5F14)**, in both themes, instead of the see-through yellow that turns green over the blue.
 
 ## 2026-11-17 — Slide 2: varied fall, poster higher, title fix, title-slide highlight
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Leaflets fall from across the desk's whole width, at random intervals.** About a third fall
   nearly flat, rocking, barely curled; the rest fall more upright and curl. Each faces its own way
@@ -469,7 +469,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slide 2: lifted poster centred, slower and more varied fall
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The lifted teach-back poster sits straight above the middle of the desk**, with the reactions
   moved along with it.
@@ -488,7 +488,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #53) �
 
 ## 2026-11-17 — Slide 2: leaflets slow down as they land
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **No more rush at the end**: each leaflet picks up a gentle speed over the first 15% of its fall,
   drifts down at that pace, then slows over the last 35% (to about 15% of its speed at touch-down).
@@ -496,14 +496,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slide 2: leaflets fall straight down over the desk
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Each leaflet now drops from straight above the desk**, a little either side of where it lands,
   instead of coming in from the top right (`presentation/desk-pile.js`). The title stays clear.
 
 ## 2026-11-17 — Slide 2: animated reactions above the poster
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The reactions are now Google's animated Noto emoji** (`presentation/media/bg/emoji/`, CC BY 4.0,
   credited on the slide): heart, star-struck, clap, smiling with hearts, 100, party popper,
@@ -526,7 +526,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #53) �
 
 ## 2026-11-17 — Slide 2: the pile has volume
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Each landed sheet now has thickness**: the edges facing the room show as a pale paper band with
   a dark line under it, each sheet sits a little higher (2.2 px), and a thin ink outline matches
@@ -536,7 +536,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slide 3 (the outlined designer) hidden
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **`#waiting` is hidden** (it had already been moved to the Appendix): its "Loved it" lines now
   play on slide 2's click. The markup and the outlined designer image stay, so it can come back by
@@ -544,7 +544,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slide 2: posters drift down on arrival; the click brings "Loved it" with the lifted poster
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Slide 2 plays on arrival** (no wait for a click): "50+ posters, infographics and
   illustrations." and the 12 UHN posters drift down onto the desk one after another (option B,
@@ -559,7 +559,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Clinic question and "Loved it" moved to the Appendix
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **"'Loved it' isn't the same as 'understood it.'"** (`#waiting`, the designer outlined in the waiting
   room) left the main deck and is now the last appendix slide.
@@ -573,7 +573,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slides 2 and 3 rebuilt from the script
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Slide 2 (`#question`) is now the empty desk** (`presentation/media/bg/empty-desk.jpg`,
   Midjourney) in place of the clinic clip and the "Did my visual actually make a difference?"
@@ -593,7 +593,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — One dot for the whole Appendix
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The slide dots on the right show the Appendix as a single dot** (named "Appendix"), instead of one
   per appendix slide. It lights on the divider and on every slide after it; clicking it goes to the
@@ -602,7 +602,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Studio: a multi-word fix no longer eats the next space
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Bug fixed:** applying a fix whose new words contain a space ("ensuring" → "making sure") lost
   the space after it: "directly ensuring that" became "directly making surethat". Chrome's
@@ -613,7 +613,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Meet PRISM: real before and after from our own work
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The card on the right is now The Light Collective's guide**, "A Guide to Negotiating Patient
   Digital Rights", instead of the made-up water-pill handout. Two short passages, as written (flags
@@ -630,7 +630,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Meet PRISM: a Jeopardy board of six problems on glass tiles
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Six problems now, on glass tiles** in one frosted panel (the same iOS-glass look as the demo
   slides' menu, no arrows). Added two to the four from the appendix: "Patient material can’t go to
@@ -648,7 +648,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — New slide 4: Standards exist (post and CDC site shrink into the framework rows)
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **New slide `#standards` after the designer slide**, three steps. Arrives: "Standards already
   exist." over Nati Chen's post and the CDC Clear Communication Index side by side
@@ -663,7 +663,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Meet PRISM: four problems that turn into what PRISM does
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The slide now tells problem → answer → before and after**, using the problems from the appendix
   demos. Click 1: "Checking a handout today" over four problems (scattered tools, each wanting a
@@ -679,7 +679,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Why AI?: the 14 frameworks scroll behind the line
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **Slide 4 (`#why`) background** is now PRISM's 14 frameworks as browser cards, after Chloe's
   `prism-frameworks-background.png`: the URL bar, the yellow category tag, the serif name, the
@@ -694,7 +694,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — All demo slides moved to the Appendix; empty scroll under the score cards fixed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The four demo slides left the main deck** ("Bring it in, start checking", "Pick the right checks",
   "Check a poster", "Fix it your way", the versions with zoom and live panels) and now follow the
@@ -714,7 +714,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Meet PRISM slide: wider headline, even gaps, slider waits
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The headline fills three lines** ("Make health handouts, / posters and web / pages easy to
   read.") instead of five: in the deck version (`?deck`, class `intro-deck`) its 13-character limit
@@ -730,7 +730,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Deck's front door: no countdown
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **On the "Meet PRISM" slide (`?deck`) the progress bar no longer fills**, and the page no longer
   moves on to the Studio by itself. The countdown text and Pause are hidden there too, since there's
@@ -741,7 +741,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Demo clips: zoom-in removed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The pre-recorded demo clips no longer zoom in on the cursor.** f1-paste, f2-drop, f3-sample,
   f4-brief, s3-alt and s3-colour were re-encoded from their original full-view frames (same
@@ -750,7 +750,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Front-door changes apply to the deck only; the PRISM site is back as it was
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The PRISM site's front door is unchanged again:** "For health handouts, posters and web pages"
   over "Make your health handout easy to read.", Check a draft and Plan from an idea, "Your file
@@ -764,14 +764,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Live demo slides: magnifier removed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The round 2× magnifier that followed the mouse on the live Studio panels (every `?demo=` page,
   so slides 2–4) is gone.** The panels show at their normal size; pointing and clicking work as before.
 
 ## 2026-11-17 — Front door: the slider no longer moves by itself
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **The water-pill card's slider stays at "As written"** until someone drags it. Before, the three
   fixes applied on their own at 2, 4 and 6 seconds into the countdown. The countdown to the Studio,
@@ -780,7 +780,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Slides reordered: timeline and review now sit inside the three points
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **New order after the demo:** take-home divider → Intent first → Build fast → **timeline** (`#then`,
   "The updates") → Iterate → **Excel review** (`#review`, "AI drafted it. We reviewed it.") →
@@ -792,7 +792,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-17 — Appendix for Q&A: the two tile demo slides, behind a divider
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)
 
 - **New divider at the end, after "What's your view on our approach?"** (`#appendix`, chapter
   "Appendix"): just the title "Appendix", so it can hold more than the demo slides later.
