@@ -28,7 +28,8 @@
   /* type: five sizes (see the type system at the end of this sheet) */
   --fs-hero:clamp(72px,15vw,190px); --fs-display:clamp(34px,6vw,80px); --fs-title:var(--fs-display); --fs-head:clamp(19px,2.4vw,30px);
   --fs-body:clamp(15px,1.7vw,20px); --fs-tag:12px; --fs-fine:12px;
-  --scrim:18 20 23;   /* the washes over footage, as "r g b" so each wash can set its own alpha */
+  --scrim:15 108 157; /* every wash over footage and art is the deck blue, as "r g b" so each wash sets its own alpha */
+  --chrome:18 20 23;  /* the slide counter pill */
   color-scheme:dark;
 }
 
@@ -66,24 +67,22 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* slide changes: the old slide drifts away and fades, the new one fades in from the other side */
 .scene{position:fixed;inset:0;z-index:5}
 /* welcome background: a table seen from above (forget-me-nots, a glass on a napkin with the prototype
-   sketched on it, coffee) with a tablet whose screen shows PRISM's Studio, redrawn in the picture's own
-   ink style. It moves: steam curls off the coffee and light glides across the tablet, forward only; the
-   last 1.5 s crossfade into the start, so the 8.5 s loop never jumps (media/bg/welcome-wind-loop.mp4,
-   silent). Only the table's blue is recoloured to rgb(15 108 157), the blue the "Why AI?" video shows, so white
-   text passes AA (5.2 : 1) without dimming the picture. It plays only while the slide is up; with reduced
-   motion it rests on its first frame (welcome-wind-poster.jpg). It covers the slide, anchored right so
-   the table stays clear of the text */
+   sketched on it, coffee) with a tablet whose screen shows PRISM's Studio (media/bg/welcome-sync.jpg,
+   2912 px wide, a still). Only the table's blue is recoloured to rgb(15 108 157), the deck blue, so white
+   text passes AA (5.8 : 1) without dimming the picture. It covers the slide, anchored right so the table
+   stays clear of the text */
 .welcome-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;display:block}
-/* only a soft fade along the foot, behind the intros and fine print; the blue itself is dark enough
-   for the title, so the rest of the picture shows in full */
-.napkin-wash{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,rgb(var(--scrim) / 0) 62%,rgb(var(--scrim) / .65) 100%)}
+/* no wash on the welcome slide: the deck blue already passes AA, and a wash would tint the coffee */
 /* the grey small lines (label, job titles, fine print) brighten on the bare blue in dark mode */
 :root:not([data-theme="light"]) #top{--ink-2:#EEF1F4}
+/* the same near-white for the small lines on the blue wash (the three points, certification): the
+   default grey reads dim on the blue */
+:root:not([data-theme="light"]) .scene.point,:root:not([data-theme="light"]) #certify{--ink:#F6F4EC;--ink-2:#EEF1F4}
 #top .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .5)}
-/* slides on a blue background (the title and slide 2) highlight in a solid olive: the see-through
+/* slides on a blue background or the blue wash (the title, slide 2, the three points, certification)
+   highlight in a solid olive: the see-through
    yellow turns green over the blue */
-#top,#question{--hl:#6B5F14}
+#top,#question,#certify,.scene.point{--hl:#6B5F14}
 /* slide 3 background: a muted phone commercial (analogy-bg.js), cropped to cover the slide and faded
    in once it plays; a dark wash keeps the lines readable */
 .yt-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1s ease}
@@ -272,10 +271,15 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 #certify .inner{padding-top:calc(100vw * .558)}
 .cert-std{margin-top:14px}
 @media (min-width:721px){#review .stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
-@media (min-width:721px){.cert-band{inset:0;height:100%;background:var(--desk)}
+/* AI certification: the art sits in the top half with a hard edge; all text sits on solid deck blue
+   below it (no wash). Text is >= 24px, so 5.2:1+ on the deck blue passes AAA for large text. */
+#certify{background:rgb(15 108 157);--ink:#F6F4EC;--ink-2:#EEF1F4}
+#certify .stage,[data-theme="light"] #certify .stage{text-shadow:none}
+#certify{--fine:#FFFFFF}
+[data-theme="light"] #certify .h2,[data-theme="light"] #certify .h2 mark{color:#fff}
+@media (min-width:721px){.cert-band{inset:0 0 auto;height:52dvh;background:#F5F2DE}
   .cert-art{height:100%;aspect-ratio:auto}
-  .cert-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(var(--scrim) / 0) 38%,rgb(var(--scrim) / .62) 60%,rgb(var(--scrim) / .86) 100%)}
-  #certify .inner{justify-content:flex-end;padding:58dvh 0 calc(5 * var(--u))}
+  #certify .inner{justify-content:flex-start;padding:calc(52dvh - 56px + 4 * var(--u)) 0 calc(5 * var(--u))}
   #certify .h2{margin:0}
   #certify .lead{max-width:none;margin-top:calc(.8 * var(--u))}
   #certify .cert-std{margin-top:calc(.8 * var(--u))}
@@ -376,6 +380,29 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   #review .rv-swap{flex:1;min-height:0;display:flex;flex-direction:column}}
 /* Verification: on its last step the decision list takes the sheet's place under the same title */
 #review .rv-swap{position:relative}
+/* with the decision list, the framework cards of Standards exist drift in behind it (fw-rows.js, data-cut
+   mixes in the 9 cut ones) on the deck's black, under a gradient that is solid behind the list and lifts
+   toward the foot so the cards show there */
+#review{--cu:min(1vw,1.78vh);overflow:hidden}
+#review .rv-blue{position:absolute;inset:0;background:var(--desk);opacity:var(--k,0)}
+#review .fw-bg{opacity:var(--k,0)}
+#review:not(.on) .fw-row{animation-play-state:paused}
+#review .rv-wash{opacity:var(--k,0);background:linear-gradient(180deg,rgb(18 20 23 / .93) 0%,rgb(18 20 23 / .86) 58%,rgb(18 20 23 / .35) 100%),linear-gradient(90deg,rgb(18 20 23 / .25) 0%,rgb(18 20 23 / 0) 60%)}
+#review .stage{z-index:1}
+/* a cut framework, once its turn comes: the card goes hollow (a thin light outline, faint text, its name
+   struck, labelled Cut) and a little smaller, a gap among the white cards that still shows on the black */
+.fw-cut{transition:background-color .8s,color .8s,transform .8s,box-shadow .8s}
+.fw-cut .fw-title{position:relative;width:max-content}
+.fw-cut .fw-title::after{content:"";position:absolute;left:0;top:55%;height:.12em;width:0;background:#E9EBEE;transition:width .6s .2s}
+.fw-cut.off{background:transparent;color:rgb(233 235 238 / .75);transform:scale(.92);box-shadow:inset 0 0 0 calc(.18 * var(--cu)) rgb(233 235 238 / .7)}
+.fw-cut.off .fw-bar{border-color:rgb(233 235 238 / .25)}.fw-cut.off .fw-bar span{border-color:rgb(233 235 238 / .3);color:rgb(233 235 238 / .5)}.fw-cut.off .fw-bar i{background:rgb(233 235 238 / .35)}
+.fw-cut.off .fw-zone{color:transparent;position:relative}.fw-cut.off .fw-zone::before{background:rgb(233 235 238 / .7)}
+.fw-cut.off .fw-zone::after{content:"Cut";position:absolute;left:calc(1.3 * var(--cu));color:#E9EBEE;font-weight:600}
+.fw-cut.off .fw-title{color:rgb(233 235 238 / .8)}.fw-cut.off .fw-title::after{width:100%}
+.fw-cut.off .fw-sub,.fw-cut.off .fw-src{color:rgb(233 235 238 / .5);border-color:rgb(233 235 238 / .25)}
+/* the Cut column strikes each name in step with its card */
+#review .wall .cut ul li{color:var(--ink-2);text-decoration:none;transition:color .6s}
+#review .wall .cut ul li.off{color:rgb(233 235 238 / .35);text-decoration:line-through;text-decoration-thickness:.12em;text-decoration-color:rgb(233 235 238 / .7)}
 #review .wall{position:absolute;left:0;right:0;top:0;pointer-events:none}
 @media (min-width:721px){#review .wall{margin-top:calc(2 * var(--u))}}
 /* Verification summary: every framework, one column per decision; the cut ones struck through */
@@ -477,7 +504,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 .intros b{display:block;}
 .intros span{display:block;color:var(--ink-2);margin-top:2px}
 .fine{color:var(--ink-2);margin-top:14px}
-@media (max-width:720px){.intros{grid-template-columns:1fr;gap:12px}.welcome-bg,.napkin-wash{display:none}}
+@media (max-width:720px){.intros{grid-template-columns:1fr;gap:12px}.welcome-bg{display:none}}
 
 /* 3 question */
 .question q{display:block;quotes:"“" "”";margin-top:22px;max-width:15ch}
@@ -822,15 +849,16 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 /* Intent first, Build fast, Iterate: one point per slide. The art fills the slide on its own paper colour,
    pushed right and down so the title sits on bare paper at the top left; the text turns dark ink here. */
 .scene.point{background:#F5F2DF}
-/* a smooth dark fade over the left of the slide, like slide 2's, so the light text sits on the deck's dark;
+/* a smooth black fade over the left of the slide, so the light text sits on dark;
    it eases out before the art, so the pots and gardeners stay bright */
-.pt-wash{position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,
-  rgb(var(--scrim) / .9) 0%,rgb(var(--scrim) / .88) 8%,rgb(var(--scrim) / .83) 16%,rgb(var(--scrim) / .74) 24%,rgb(var(--scrim) / .62) 31%,
-  rgb(var(--scrim) / .48) 38%,rgb(var(--scrim) / .34) 45%,rgb(var(--scrim) / .21) 52%,rgb(var(--scrim) / .11) 59%,rgb(var(--scrim) / .04) 66%,rgb(var(--scrim) / 0) 74%)}
+.pt-wash{--scrim:0 0 0;position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,
+  rgb(var(--scrim) / .95) 0%,rgb(var(--scrim) / .93) 8%,rgb(var(--scrim) / .91) 16%,rgb(var(--scrim) / .88) 24%,rgb(var(--scrim) / .76) 31%,
+  rgb(var(--scrim) / .6) 38%,rgb(var(--scrim) / .44) 45%,rgb(var(--scrim) / .28) 52%,rgb(var(--scrim) / .15) 59%,rgb(var(--scrim) / .06) 66%,rgb(var(--scrim) / 0) 74%)}
 #intent{background:#F9F5E3}
 #iterate{background:#F5F3DE}
 .scene.point .stage{z-index:1}
-.pt-art{position:absolute;z-index:0;right:0;bottom:0;width:min(72vw,calc(72dvh * 16 / 9));aspect-ratio:16/9;max-height:100%;overflow:hidden}
+.pt-art{position:absolute;z-index:0;right:0;bottom:0;width:min(72vw,calc(72dvh * 16 / 9));aspect-ratio:16/9;max-height:100%;overflow:hidden;transform:translateX(14%)} /* pushed right so the fade clears the gardeners */
+.scene.point{overflow:hidden}
 .pt-art::before{content:"";position:absolute;inset:0 auto 0 0;width:12%;z-index:1;background:linear-gradient(90deg,#F5F2DF,rgb(245 242 223 / 0))}
 #intent .pt-art::before{background:linear-gradient(90deg,#F9F5E3,rgb(249 245 227 / 0))}
 #iterate .pt-art::before{background:linear-gradient(90deg,#F5F3DE,rgb(245 243 222 / 0))}
@@ -850,7 +878,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 #iterate .pt-img{transform-origin:48.42% 84.31%;transform:translate(-.34%,2.45%) scale(1.1361)}
 .pt-n{font:400 var(--fs-hero)/.78 var(--f-display);color:rgb(233 235 238 / .16);letter-spacing:-.03em;margin:0 0 -.3em -.05em;font-variant-numeric:lining-nums} /* ghost numeral behind the title */
 .scene.point .lead{margin-top:var(--u)}
-@media (max-width:720px){.pt-art{width:100%}}
+@media (max-width:720px){.pt-art{width:100%;transform:none}}
 /* Your turn: question top left, the GoInvo card under it, What’s next down the right half;
    the label sits on the question’s last line; the card and the list end on the list’s last line */
 @media (min-width:861px){
@@ -992,12 +1020,12 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   --ink:#16181D; --ink-2:#454B54; --blue:#2F5FA8; --hl:rgba(245,207,74,.6); --brand:#F5CF4A; --on-brand:#16181D;
   --sonia:#2F5FA8; --sonia-bg:#E3ECF8;
   --shadow:0 12px 40px rgba(22,24,29,.18);
-  --scrim:246 244 239;
+  --scrim:246 244 239; --chrome:246 244 239;
   color-scheme:light}
 [data-theme="light"] body{background:var(--desk)}
 [data-theme="light"] .welcome-bg{filter:none}
 [data-theme="light"] #top .stage,[data-theme="light"] #analogy .stage,[data-theme="light"] #question .stage,
-[data-theme="light"] #proof .stage,[data-theme="light"] #certify .stage{text-shadow:0 0 18px rgb(var(--scrim) / .9),0 0 4px rgb(var(--scrim) / .8)}
+[data-theme="light"] #proof .stage{text-shadow:0 0 18px rgb(var(--scrim) / .9),0 0 4px rgb(var(--scrim) / .8)}
 [data-theme="light"] .ledger li{border-top-color:rgb(22 24 29 / .25)}
 [data-theme="light"] .ledger li:last-child{border-bottom-color:rgb(22 24 29 / .25)}
 [data-theme="light"] .fp-tall .fp-cap b{color:var(--ink)}
@@ -1016,10 +1044,10 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 /* previous / next pill with the slide count, bottom centre; it fades out 2.5 s after the pointer stops
    (so it's gone while presenting) and stays out of the way in edit mode */
 .pager{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:2px;padding:3px;
-  background:rgb(var(--scrim) / .72);border:1px solid var(--rule);border-radius:999px;font:600 13px/1 var(--f-ui);color:var(--ink-2);
+  background:rgb(var(--chrome) / .72);border:1px solid var(--rule);border-radius:999px;font:600 13px/1 var(--f-ui);color:var(--ink-2);
   transition:opacity .4s ease,bottom .3s ease;font-variant-numeric:tabular-nums}
 .pager button{all:unset;cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:var(--ink-2)}
-.pager button:hover,.pager button:focus-visible{color:var(--ink);background:rgb(var(--scrim) / .6)}
+.pager button:hover,.pager button:focus-visible{color:var(--ink);background:rgb(var(--chrome) / .6)}
 .pager button:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
 .pager button[disabled]{opacity:.35;cursor:default;background:none}
 .pager svg{width:16px;height:16px}
@@ -1041,33 +1069,68 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 :root:not([data-theme="light"]) .scene :is(.title h1,.question q,.big-line,.h2,.thanks h2){color:#fff!important;
   text-shadow:0 1px 2px rgb(0 0 0 / .45),0 2px 14px rgb(0 0 0 / .3)!important}
 :root:not([data-theme="light"]) .scene :is(.title h1,.question q,.big-line,.h2,.thanks h2) mark{color:#fff!important}
-/* Before and after: the water-pill handout as written and after PRISM's three fixes, side by side, with
-   a key under them naming each fix, the standard behind it and how far it moved the reading grade.
-   One serif title, the handout in the reading serif, everything else sans at one size (white / grey). */
-#ba .inner{justify-content:flex-start}
-.ba-pair{display:grid;grid-template-columns:1fr 1fr;gap:calc(2.4 * var(--u));margin-top:calc(2.2 * var(--u))}
-.ba-lab,.ba-key{font:400 calc(1.75 * var(--u))/1.35 var(--f-ui);color:var(--ink);margin:0 0 calc(.8 * var(--u))}
-.ba-lab span,.ba-key span{color:var(--ink-2)}
-.ba-card{background:#fff;color:#16181D;border-radius:calc(.6 * var(--u));padding:calc(1.4 * var(--u)) calc(1.8 * var(--u));
-  font:400 calc(1.4 * var(--u))/1.55 var(--f-display);margin:0}
-.ba-card mark{background:#FFE066;color:inherit;text-decoration:underline 2px #4A5059;text-underline-offset:2px;padding:0 1px}
-.ba-card ins{text-decoration:underline 2px #1E6B3A;text-underline-offset:3px}
-.ba-n{display:inline-block;width:1.45em;height:1.45em;border-radius:50%;background:#1E6B3A;color:#fff;font:600 .72em/1.45em var(--f-ui);
-  text-align:center;vertical-align:.12em;margin-left:.2em;text-decoration:none}
-.ba-keys{display:grid;grid-template-columns:repeat(3,1fr);gap:calc(2.4 * var(--u));margin-top:calc(2.2 * var(--u));padding:0;list-style:none}
-.ba-keys li{display:grid;grid-template-columns:auto 1fr;gap:calc(.8 * var(--u));align-items:start}
-.ba-keys .ba-n{font-size:calc(1.3 * var(--u));margin:calc(.25 * var(--u)) 0 0}
-.ba-key{margin:0}
-.ba-nw{white-space:nowrap}
-@media (max-width:720px){.ba-pair,.ba-keys{grid-template-columns:1fr}}
-/* Pictures get checked too: Sonia's COVID poster as made and after PRISM's contrast fixes (AAA), with
-   what was found down the left, in the same sans pairs (white / grey) as the water-pill key */
-#ba-poster .inner{justify-content:flex-start}
-.bp-row{display:grid;grid-template-columns:1fr auto auto;gap:calc(2.4 * var(--u));margin-top:calc(2.2 * var(--u));align-items:start}
-.bp-row figure{margin:0}
-.bp-row img{display:block;height:calc(34 * var(--u));width:auto;border-radius:calc(.5 * var(--u))}
-.bp-keys{list-style:none;padding:0;margin:calc(2.9 * var(--u)) 0 0;display:grid;gap:calc(2.2 * var(--u))}
-@media (max-width:720px){.bp-row{grid-template-columns:1fr}.bp-row img{width:100%;height:auto}}
+/* Before and after (#ba words, #ba-poster pictures): the material in the middle, before and after, with a glass
+   card per measure at the sides. Each card says what changed in plain words: the old value in a grey glass pill
+   (crossed out), the new one in the yellow glass pill, and one short straight lead to the edge of the material,
+   level with what it measured. Text marks match the Studio: yellow fill for flagged words, a blue dotted line
+   under a long sentence, a green tint and underline for applied fixes. Laid out on a 100 x 56.25 unit frame. */
+#ba,#ba-poster{background:#121417;--ink:#E9EBEE;--ink-2:#B4BAC2}
+.bx{position:absolute;left:50%;top:50%;width:calc(100 * var(--u));height:calc(56.25 * var(--u));transform:translate(-50%,-50%)}
+.bx > *{position:absolute;margin:0}
+.bx > .credit{left:calc(5 * var(--u));bottom:calc(1.5 * var(--u));top:auto;white-space:nowrap;font:400 var(--fs-fine)/1.4 var(--f-ui)}
+.bx-lab{font:400 calc(1.67 * var(--u))/1.2 var(--f-ui);color:var(--ink);margin:0 0 calc(.73 * var(--u))}
+.bx-lab span{color:var(--ink-2)}
+.bx-doc{background:#fff;color:#16181D;border-radius:calc(.63 * var(--u));padding:calc(1.04 * var(--u)) calc(1.46 * var(--u));
+  font:400 calc(1.25 * var(--u))/1.6 var(--f-display);margin:0}
+.bx-doc .flag{background:#FFE066}
+.bx-doc .long{text-decoration:underline dotted 2px #2f6fa8;text-underline-offset:4px}
+.bx-doc .app{background:color-mix(in srgb,#1E6B3A 22%,transparent);text-decoration:underline 2px #1E6B3A;text-underline-offset:3px}
+.bx-card{width:calc(20.83 * var(--u));padding:calc(.94 * var(--u)) calc(1.15 * var(--u));border-radius:calc(1.35 * var(--u));
+  background:linear-gradient(180deg,rgb(255 255 255 / .10),rgb(255 255 255 / .03));-webkit-backdrop-filter:blur(20px) saturate(1.4);backdrop-filter:blur(20px) saturate(1.4);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .35),inset 0 0 0 1px rgb(255 255 255 / .10),0 calc(.9 * var(--u)) calc(2.3 * var(--u)) rgb(0 0 0 / .45)}
+.bx-card h3{margin:0;font:600 calc(1.25 * var(--u))/1.2 var(--f-ui);color:var(--ink)}
+.bx-pp{display:flex;align-items:center;gap:calc(.73 * var(--u));margin:calc(.63 * var(--u)) 0 calc(.52 * var(--u))}
+.bx-pill{display:inline-flex;align-items:center;justify-content:center;font-variant-numeric:lining-nums;text-box:trim-both cap alphabetic;padding-block:calc(.62 * var(--u))!important;border-radius:999px;padding:calc(.42 * var(--u)) calc(1.04 * var(--u));font:500 calc(2.08 * var(--u))/1 var(--f-display);white-space:nowrap}
+.bx-pill.old{font-size:calc(1.46 * var(--u));color:#C9CED5;
+  background:linear-gradient(180deg,rgb(40 43 48 / .96),rgb(22 24 28 / .96));box-shadow:inset 0 1px 0 rgb(255 255 255 / .22),inset 0 0 0 1px rgb(255 255 255 / .10)}
+.bx-pill.new{color:#1b1c1e;background:linear-gradient(180deg,#ffe066,#f2c200);box-shadow:inset 0 1.5px 0 rgb(255 255 255 / .85),inset 0 -2px 4px rgb(140 100 0 / .35),0 6px 16px rgb(245 196 0 / .25)}
+.bx-ln{flex:1;height:2px;background:rgb(255 255 255 / .22);position:relative}
+.bx-ln::after{content:"";position:absolute;right:-1px;top:-5px;border:6px solid transparent;border-left:9px solid rgb(255 255 255 / .35);border-right:0}
+.bx-card p{margin:0;text-wrap:pretty;font:400 calc(1.05 * var(--u))/1.4 var(--f-ui);color:var(--ink)}
+.bx-card p span{color:var(--ink-2)}
+.bx-card p.bx-src{margin-top:calc(.52 * var(--u));font-size:calc(.94 * var(--u));color:var(--ink-2);text-decoration:underline;text-underline-offset:2px;text-decoration-color:rgb(255 255 255 / .3)}
+.bx-lead{height:2px;background:rgb(245 207 74 / .85)}
+.bx-lead::after{content:"";position:absolute;top:-4px;width:10px;height:10px;border-radius:50%;background:#F5CF4A}
+.bx-lead.l::after{left:-5px}.bx-lead.r::after{right:-5px}
+.bx-poster{display:flex;gap:calc(2.08 * var(--u))}
+.bx-poster img{display:block;height:calc(35.42 * var(--u));width:auto;border-radius:calc(.52 * var(--u))}
+/* the cards sit in two equal rows on each side, so each row's cards share one top and one height and can never
+   overlap; each card carries its own short lead, from its middle to the edge of the material */
+.bx-side{display:grid;grid-template-rows:repeat(2,minmax(0,1fr));width:calc(20.83 * var(--u))}
+.bx-side .bx-card{position:relative;width:auto;height:100%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-start}
+.bx-side .bx-card p.bx-src{margin-top:auto;padding-top:calc(.52 * var(--u))}
+.bx-side .bx-card::after{content:"";position:absolute;top:50%;width:var(--lead);height:2px;background:rgb(245 207 74 / .85)}
+.bx-side.l .bx-card::after{left:100%}
+.bx-side.r .bx-card::after{right:100%}
+.bx-side .bx-card::before{content:"";position:absolute;top:calc(50% - 4px);width:10px;height:10px;border-radius:50%;background:#F5CF4A}
+.bx-side.l .bx-card::before{left:calc(100% - 5px)}
+.bx-side.r .bx-card::before{right:calc(100% - 5px)}
+#ba .bx-side{--lead:calc(2.6 * var(--u));top:calc(13.65 * var(--u));height:calc(31.25 * var(--u));row-gap:calc(1.04 * var(--u));width:calc(17.92 * var(--u))}
+/* words slide: before and after side by side in the posters' frame, each text centred in its card */
+.bx-pair > div{width:calc(23.49 * var(--u))}
+.bx-pair .bx-doc{box-sizing:border-box;height:calc(31.25 * var(--u));display:grid;align-content:center;font-size:calc(1.3 * var(--u));line-height:1.65;padding:calc(1.46 * var(--u)) calc(1.67 * var(--u))}
+#ba-poster .bx-side{--lead:calc(2.6 * var(--u));top:calc(13.65 * var(--u));height:calc(31.25 * var(--u));row-gap:calc(1.04 * var(--u));width:calc(17.92 * var(--u))}
+#ba-poster .bx-poster img{height:calc(31.25 * var(--u))}
+.bx-card h3:has(.bx-tick){display:flex;align-items:center;justify-content:space-between}
+.bx-tick{display:inline-grid;place-items:center;flex:none;width:calc(2.6 * var(--u));height:calc(2.3 * var(--u));border-radius:999px;font-size:calc(1.35 * var(--u));color:#1b1c1e;background:linear-gradient(180deg,#ffe066,#f2c200);box-shadow:inset 0 1.5px 0 rgb(255 255 255 / .85),0 3px 10px rgb(245 196 0 / .25)}
+.bx-cb{display:grid;grid-template-columns:1fr 1fr;gap:calc(.52 * var(--u)) calc(.63 * var(--u));margin:calc(.63 * var(--u)) 0 calc(.52 * var(--u))}
+.bx-cb figure{margin:0;position:relative}
+.bx-cb img{display:block;width:100%;height:auto;border-radius:calc(.31 * var(--u))}
+.bx-cb figcaption{position:absolute;left:calc(.31 * var(--u));bottom:calc(.26 * var(--u));padding:1px calc(.36 * var(--u));border-radius:999px;background:rgb(18 20 23 / .78);color:#fff!important;font:400 calc(.83 * var(--u))/1.2 var(--f-ui);color:var(--ink-2)}
+#ba-poster .bx-pill{font-size:calc(1.67 * var(--u));padding:calc(.31 * var(--u)) calc(.83 * var(--u))}
+#ba-poster .bx-pill.old{font-size:calc(1.15 * var(--u))}
+@media (max-width:720px){.bx{position:relative;left:auto;top:auto;transform:none;width:auto;height:auto;padding:20px}
+  .bx > *{position:static;margin-bottom:16px}.bx-lead{display:none}.bx-card,#ba-poster .bx-card{width:auto}.bx-poster img{height:auto;width:46%}}
 /* Why AI? -> Meet PRISM (dark mode, going forward): the slices merge into one yellow slab that turns to face
    the room and grows into the Meet PRISM slide (media/bg/ai-to-prism.mp4, video/src/AiToPrism.tsx). The text
    fades first; the clip's last frame is the Meet PRISM slide, so the deck cuts to it unseen. */
@@ -1197,7 +1260,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 
 <main>
   <section class="scene title" id="top" data-chap="The Barrier Just Dropped" data-tone="warm">
-    <video class="welcome-bg" src="media/bg/welcome-wind-loop.mp4?v=20261118f" poster="media/bg/welcome-wind-poster.jpg?v=20261118f" muted loop playsinline preload="auto" aria-hidden="true"></video><script>(function(){var s=document.getElementById('top'),v=s&&s.querySelector('.welcome-bg');if(!v||matchMedia('(prefers-reduced-motion:reduce)').matches)return;v.muted=true;function u(){if(s.classList.contains('on'))v.play().catch(function(){});else v.pause();}new MutationObserver(u).observe(s,{attributes:true,attributeFilter:['class']});u();})();</script><div class="napkin-wash" aria-hidden="true"></div>
+    <img class="welcome-bg" src="media/bg/welcome-sync.jpg?v=20261118g" alt="" aria-hidden="true">
     <div class="stage"><div class="inner">
       <div class="t-head">
         <svg class="goinvo" viewBox="0 0 59 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GoInvo"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.20963 13.2915C4.90652 13.2915 3.79058 13.7184 2.8618 14.5721C1.93252 15.4263 1.46713 16.442 1.46713 17.6202C1.46713 19.3353 2.28572 20.4807 3.92039 21.0582V21.1055C2.35163 21.3832 1.56725 21.9294 1.56725 22.7425C1.56725 23.5411 2.35163 24.0904 3.92039 24.3913V24.4401C1.30663 25.0562 0 26.003 0 27.2851C0 28.0668 0.401497 28.7164 1.20701 29.2291C2.01101 29.7434 3.14355 30 4.60464 30C6.2217 30 7.47651 29.695 8.36906 29.0877C9.2606 28.4777 9.70688 27.7382 9.70688 26.8696C9.70688 26.1974 9.42311 25.626 8.85458 25.1555C8.28554 24.6865 7.24959 24.2755 5.74322 23.9258C4.23836 23.5771 3.3443 23.3411 3.06154 23.2187C2.77929 23.0968 2.63841 22.9014 2.63841 22.634C2.63841 22.3814 2.78533 22.1624 3.08066 21.9782C3.3755 21.7916 4.04516 21.6296 5.08765 21.4912C6.13114 21.3534 6.9613 21.1626 7.58116 20.9224C8.1995 20.6812 8.75798 20.2081 9.25658 19.5051C9.75518 18.8015 10.0052 18.0039 10.0052 17.11C10.0052 15.7745 9.44475 14.785 8.32529 14.1452V14.0979H11.5363L11.6731 13.2915H6.20963ZM8.00138 14.9756C8.59155 15.4981 8.88538 16.158 8.88538 16.9556C8.88538 17.8021 8.57847 18.6111 7.96364 19.3866C7.35083 20.1606 6.47891 20.5489 5.35039 20.5489C4.50513 20.5489 3.8244 20.264 3.3107 19.6952C2.7955 19.1264 2.5389 18.4491 2.5389 17.6663C2.5389 16.7268 2.88053 15.9116 3.56478 15.2245C4.24904 14.5375 5.04751 14.1924 5.96018 14.1924C6.73198 14.1924 7.41272 14.4536 8.00138 14.9756ZM7.55992 28.5723C6.84146 28.9868 5.80652 29.1946 4.45461 29.1946C3.40911 29.1946 2.58347 29.0362 1.97871 28.7204C1.37294 28.4041 1.06955 27.9808 1.06955 27.4522C1.06955 26.6689 1.58627 26.0405 2.61869 25.5663C3.65161 25.0921 4.46618 24.8555 5.0634 24.8555C5.27169 24.8555 5.91922 25.0273 7.00447 25.3734C8.09073 25.717 8.63562 26.241 8.63562 26.9441C8.63562 27.6147 8.27638 28.1578 7.55992 28.5723ZM13.559 15.1774C12.5502 16.4343 12.0466 18.0548 12.0466 20.0389C12.0466 21.4614 12.4179 22.583 13.1595 23.4007C13.9032 24.2195 14.8465 24.6289 15.9911 24.6289C17.4678 24.6289 18.7458 24.0055 19.8245 22.7594C20.9027 21.5149 21.4415 19.8805 21.4415 17.8568C21.4415 16.4579 21.0788 15.3476 20.3528 14.5247C19.6273 13.7034 18.6502 13.2915 17.423 13.2915C15.8543 13.2915 14.5668 13.92 13.559 15.1774ZM13.9687 22.6777C13.4837 22.0415 13.2406 21.1688 13.2406 20.0636C13.2406 18.4343 13.6185 17.0643 14.3727 15.9539C15.1284 14.8426 16.1286 14.2887 17.3728 14.2887C18.2428 14.2887 18.9401 14.6096 19.4623 15.2545C19.9861 15.8979 20.2467 16.7665 20.2467 17.8568C20.2467 19.4685 19.8251 20.8355 18.9839 21.9546C18.1416 23.0721 17.1268 23.6322 15.9409 23.6322C15.1113 23.6322 14.4537 23.3133 13.9687 22.6777ZM25.3426 10.9268C25.5877 11.1593 25.8805 11.275 26.2206 11.275C26.5607 11.275 26.853 11.1593 27.0976 10.9268C27.3426 10.6928 27.4648 10.4141 27.4648 10.0901C27.4648 9.75783 27.3426 9.47549 27.0976 9.24252C26.853 9.00853 26.5607 8.89178 26.2206 8.89178C25.8805 8.89178 25.5877 9.00853 25.3426 9.24252C25.0986 9.47549 24.9764 9.75783 24.9764 10.0901C24.9764 10.4141 25.0986 10.6928 25.3426 10.9268ZM24.7394 13.5043L23.1344 24.4148H25.2958L26.9013 13.5043H24.7394ZM29.7046 13.5043L28.1006 24.4148H30.2369L31.2839 17.4659C31.301 17.3455 31.5375 17.0688 31.9903 16.6348C32.4446 16.2002 32.8245 15.8767 33.1324 15.6638C33.4403 15.4499 33.7291 15.2915 33.9993 15.1896C34.27 15.0863 34.5135 15.0354 34.7298 15.0354C35.1037 15.0354 35.4156 15.186 35.6652 15.4843C35.9137 15.7857 36.04 16.2203 36.04 16.7901C36.04 16.9958 36.0184 17.2205 35.9781 17.4659L34.9321 24.4148H37.0694L38.1677 17.5368C38.2175 17.236 38.2417 16.9485 38.2417 16.6718C38.2417 15.6911 37.9972 14.8908 37.5086 14.2711C37.0181 13.6499 36.3298 13.3387 35.4413 13.3387C34.1311 13.3387 32.8658 14.0495 31.6472 15.4735L31.5883 15.435L31.8796 13.5043H29.7046ZM47.072 13.5043L43.4132 20.4306L41.853 13.5043H39.7112L42.3184 24.6287H43.3926L49.2687 13.5043H47.072ZM50.8477 15.094C49.7947 16.3745 49.2684 17.9678 49.2684 19.8732C49.2684 21.4068 49.6498 22.604 50.413 23.4665C51.1753 24.3279 52.2298 24.7584 53.5742 24.7584C55.0997 24.7584 56.3872 24.1186 57.4317 22.838C58.4777 21.5575 59 19.9205 59 17.9277C59 16.4887 58.6131 15.3377 57.8363 14.4712C57.0594 13.6062 56.03 13.1731 54.743 13.1731C53.2019 13.1731 51.9013 13.8129 50.8477 15.094ZM56.224 15.6167C56.5993 16.1618 56.7845 16.8926 56.7845 17.8096C56.7845 19.2958 56.463 20.5291 55.821 21.5103C55.177 22.4895 54.4052 22.9802 53.4991 22.9802C52.927 22.9802 52.448 22.7112 52.0621 22.1738C51.6762 21.6358 51.4825 20.94 51.4825 20.0863C51.4825 18.6561 51.804 17.4167 52.448 16.3685C53.0925 15.3215 53.8558 14.7979 54.7433 14.7979C55.3586 14.7979 55.8517 15.0715 56.224 15.6167Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.0326 11.1681C22.0693 10.9145 22.1548 10.6769 22.2635 10.4495L13.8156 9.59985C13.7644 9.82819 13.7108 10.0557 13.6784 10.2888C13.6364 10.5787 13.6161 10.866 13.6055 11.1502L22.0524 11.9998C22.0099 11.7322 21.9916 11.4589 22.0326 11.1681Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.6444 7.73795C22.9135 7.5668 23.2014 7.43411 23.5013 7.3293L17.6968 1.20001C17.4174 1.36155 17.1381 1.52357 16.8631 1.70626C16.5864 1.88895 16.3335 2.07981 16.0801 2.26924L21.884 8.39997C22.0987 8.16391 22.3408 7.93699 22.6444 7.73795Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.2567 7.00936C27.6495 7.04148 28.0166 7.11001 28.3673 7.19996L29.6852 0.18546C29.244 0.129351 28.799 0.0788098 28.3402 0.0454013C27.9889 0.0184175 27.6414 0.0102795 27.2938 0L25.9746 7.02777C26.3856 6.9918 26.8092 6.97509 27.2567 7.00936Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30.4688 11.1808C30.6717 11.4363 30.8286 11.715 30.9521 11.9999L38.3436 6.3408C38.1395 6.0543 37.9318 5.77058 37.6997 5.49183C37.4983 5.24681 37.2853 5.02503 37.0723 4.79993L29.6855 10.4551C29.9675 10.6614 30.2335 10.8904 30.4688 11.1808Z" fill="currentColor"/></svg>
@@ -1378,41 +1441,37 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 
 
 
-  <section class="scene" id="intro" data-chap="Meet PRISM" data-beats="4">
+  <section class="scene" id="intro" data-chap="Meet PRISM" data-beats="4" hidden>
     <i class="pm-beat" data-in="0 1" hidden></i><!-- gives the slide its seven clicks; the frame reads --t -->
     <iframe class="pm-door" src="../index.html?intro&deck" title="The PRISM front door: Make health handouts, posters and web pages easy to read" loading="eager"></iframe>
   </section>
 
-  <section class="scene pin" id="ba" data-chap="Before and after">
-    <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.15">Same handout, <mark>before and after.</mark></h2>
-      <div class="ba-pair">
-        <div data-in="0.1 0.35"><p class="ba-lab">As written <span>· grade 15.9 · 10 flags</span></p><p class="ba-card">Your <mark>physician</mark> has prescribed furosemide, a <mark>diuretic</mark>, to reduce <mark>edema</mark> by increasing your <mark>urinary output</mark>. <mark>Administer one tablet orally each morning with food, monitor your weight daily, and contact the clinic immediately if you experience a weight gain exceeding 2 pounds within a 24-hour period, as this may indicate fluid retention.</mark> Approximately <mark>25%</mark> of patients experience <mark>orthostatic hypotension</mark> during the initial weeks of treatment.</p></div>
-        <div data-in="0.2 0.45"><p class="ba-lab">After PRISM <span>· grade 2.7 · 0 flags</span></p><p class="ba-card">Your <ins>doctor gave you</ins> furosemide, a <ins>water pill</ins>. It <ins>brings down swelling</ins> by <ins>making you pee more</ins>.<span class="ba-n" aria-label="fix 1">1</span> Take one pill <ins>by mouth</ins> each morning with food. <ins>Check</ins> your weight every day. Call the clinic <ins>right away</ins> if you gain more than 2 pounds in one day. This may mean your body is holding fluid.<span class="ba-n" aria-label="fix 2">2</span> <ins>About 1 in 4 people</ins> <ins>feel dizzy when they stand up</ins> in the first weeks. <ins>Stand up slowly.</ins><span class="ba-n" aria-label="fix 3">3</span></p></div>
-      </div>
-      <ol class="ba-keys">
-        <li data-in="0.45 0.65"><span class="ba-n" aria-hidden="true">1</span><p class="ba-key">8 medical words made everyday<br><span>PEMAT-P, CDC Everyday Words · <span class="ba-nw">15.9 → 8.9</span></span></p></li>
-        <li data-in="0.6 0.8"><span class="ba-n" aria-hidden="true">2</span><p class="ba-key">A 42-word sentence split in five<br><span>Federal Plain Language · <span class="ba-nw">8.9 → 3.8</span></span></p></li>
-        <li data-in="0.75 0.95"><span class="ba-n" aria-hidden="true">3</span><p class="ba-key">“25%” to “1 in 4”, plus what to do<br><span>Gigerenzer &amp; Hoffrage · <span class="ba-nw">3.8 → 2.7</span></span></p></li>
-      </ol>
-    </div></div>
+  <section class="scene" id="ba" data-chap="Before and after">
+    <h2 class="h2 visually-hidden">The water-pill handout, before and after PRISM</h2>
+    <div class="bx">
+      <div class="bx-poster bx-pair" style="left:calc(25.52 * var(--u));top:calc(11.35 * var(--u))"><div><p class="bx-lab">Before</p><p class="bx-doc"><span>Your <span class="flag">physician</span> has prescribed furosemide, a <span class="flag">diuretic</span>, to reduce <span class="flag">edema</span> by increasing your <span class="flag">urinary output</span>. <span class="long">Administer one tablet orally each morning with food, monitor your weight daily, and contact the clinic immediately if you experience a weight gain exceeding 2 pounds within a 24-hour period, as this may indicate fluid retention.</span> Approximately <span class="flag">25%</span> of patients experience <span class="flag">orthostatic hypotension</span> during the initial weeks of treatment.</span></p></div><div><p class="bx-lab">After PRISM</p><p class="bx-doc"><span>Your <span class="app">doctor gave you</span> furosemide, a <span class="app">water pill</span>. It <span class="app">brings down swelling</span> by <span class="app">making you pee more</span>. Take one pill <span class="app">by mouth</span> each morning with food. <span class="app">Check</span> your weight every day. Call the clinic <span class="app">right away</span> if you gain more than 2 pounds in one day. This may mean your body is holding fluid. <span class="app">About 1 in 4 people</span> <span class="app">feel dizzy when they stand up</span> in the first weeks. <span class="app">Stand up slowly.</span></span></p></div></div>
+      <div class="bx-side l" style="left:calc(5 * var(--u))"><div class="bx-card"><h3>Medical words</h3><div class="bx-pp"><span class="bx-pill old">8</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>diuretic → water pill<br>edema → swelling<br><span>…and 6 more.</span></p><p class="bx-src">Based on: PEMAT-P · CDC Everyday Words</p></div><div class="bx-card"><h3>Risk numbers</h3><div class="bx-pp"><span class="bx-pill old">25%</span><span class="bx-ln"></span><span class="bx-pill new">1 in 4</span></div><p>A bare percentage became a count people can picture.</p><p class="bx-src">Based on: Gigerenzer &amp; Hoffrage, natural frequencies</p></div></div>
+      <div class="bx-side r" style="right:calc(5 * var(--u))"><div class="bx-card"><h3>Longest sentence</h3><div class="bx-pp"><span class="bx-pill old">36</span><span class="bx-ln"></span><span class="bx-pill new">15</span></div><p>3 sentences became 8.<br><span>Plain language: under 20.</span></p><p class="bx-src">Based on: Federal Plain Language Guidelines</p></div><div class="bx-card"><h3>Reading grade</h3><div class="bx-pp"><span class="bx-pill old">15.9</span><span class="bx-ln"></span><span class="bx-pill new">2.7</span></div><p>University level → grade 3.<br><span>Handouts aim for grade 6 or lower.</span></p><p class="bx-src">Based on: Flesch-Kincaid grade level</p></div></div>
+    </div>
   </section>
 
-  <section class="scene pin" id="ba-poster" data-chap="Before and after">
-    <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.15">Pictures get <mark>checked too.</mark></h2>
-      <div class="bp-row">
-        <ol class="bp-keys">
-          <li data-in="0.15 0.35"><p class="ba-key">“Ask us if you need help”<br><span>White on light blue · 2.0 : 1, fails AA</span></p></li>
-          <li data-in="0.25 0.45"><p class="ba-key">The small lines<br><span>White on mid blue · 5.0 : 1, AA but not AAA</span></p></li>
-          <li data-in="0.6 0.8"><p class="ba-key">After: a deeper blue, navy band text<br><span>Every line 7.5 : 1 or more · passes AAA</span></p></li>
-          <li data-in="0.7 0.9"><p class="ba-key">Colour-blind check<br><span>Yellow and red stay distinct · no change needed</span></p></li>
-        </ol>
-        <figure data-in="0.2 0.45"><p class="ba-lab">Before</p><img src="img/ba-poster-before.jpg?v=20261118a" alt="Sonia's COVID welcome poster for UHN as made: white text on a mid blue, and a light blue band at the foot with white text, Ask us if you need help."></figure>
-        <figure data-in="0.5 0.75"><p class="ba-lab">After PRISM <span>· AAA</span></p><img src="img/ba-poster-after.jpg?v=20261118a" alt="The same poster after PRISM's fixes: a deeper blue behind the white text, and the light band's text turned navy. Layout, art and wording unchanged."></figure>
+  <section class="scene" id="ba-poster" data-chap="Before and after">
+    <h2 class="h2 visually-hidden">Sonia's COVID poster, before and after PRISM</h2>
+    <div class="bx">
+      <div class="bx-poster" style="left:calc(25.52 * var(--u));top:calc(11.35 * var(--u))">
+        <div><p class="bx-lab">Before</p><img src="img/ba-poster-before.jpg?v=20261118a" alt="Sonia's COVID welcome poster for UHN as made: white text on a mid blue, small captions, and a light blue band at the foot with white text, Ask us if you need help."></div>
+        <div><p class="bx-lab">After PRISM <span>· AAA</span></p><img src="img/ba-poster-after.jpg?v=20261118b" alt="The same poster after PRISM: a deeper blue behind the white text, navy text in the light band, and the caption on the poster at the door in place of on the self-screening poster. Layout and art unchanged."></div>
+      </div>
+      <div class="bx-side l" style="left:calc(5 * var(--u))">
+        <div class="bx-card"><h3>Lines too faint to read easily</h3><div class="bx-pp"><span class="bx-pill old">5</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>The help band, 2 captions and “metres” now pass AAA.</p><p class="bx-src">Based on: WCAG 1.4.6</p></div>
+        <div class="bx-card"><h3>Faintest text</h3><div class="bx-pp"><span class="bx-pill old">2.0 : 1</span><span class="bx-ln"></span><span class="bx-pill new">7.5 : 1</span></div><p>“Ask us if you need help” is 3.7 times as easy to see.</p><p class="bx-src">Based on: WCAG 1.4.3</p></div>
+      </div>
+      <div class="bx-side r" style="right:calc(5 * var(--u))">
+        <div class="bx-card"><h3>Jargon</h3><div class="bx-pp"><span class="bx-pill old">1</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>“self-screening poster” → “poster at the door”.</p><p class="bx-src">Based on: CDC Everyday Words</p></div>
+        <div class="bx-card"><h3>Colour-blind check <span class="bx-tick" aria-label="passed">✓</span></h3><div class="bx-cb"><figure><img src="img/ba-cb-typ.jpg?v=20261118a" alt=""><figcaption>Typical</figcaption></figure><figure><img src="img/ba-cb-deu.jpg?v=20261118a" alt=""><figcaption>Red-green</figcaption></figure><figure><img src="img/ba-cb-pro.jpg?v=20261118a" alt=""><figcaption>Red-weak</figcaption></figure><figure><img src="img/ba-cb-tri.jpg?v=20261118a" alt=""><figcaption>Blue-yellow</figcaption></figure></div><p class="bx-src">Based on: WCAG 1.4.1</p></div>
       </div>
       <p class="credit">Poster: COVID welcome poster for UHN (June 2022), designed by Sonia Seto</p>
-    </div></div>
+    </div>
   </section>
 
   <section class="scene pin" id="one-list" data-chap="One list" hidden>
@@ -1423,7 +1482,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
     </div></div>
   </section>
 
-  <section class="scene pin" id="real-file" data-chap="A real guide">
+  <section class="scene pin" id="real-file" data-chap="A real guide" hidden>
     <div class="stage"><div class="inner">
       <h2 class="h2">A real guide, <mark>67 fixes in one click.</mark></h2>
       <div class="rf-clip" data-in="0 0.15" data-play><video disablepictureinpicture src="media/loops/d4-fixes.mp4?v=20261116d" poster="media/loops/d4-fixes.jpg?v=20261116d" muted playsinline preload="auto" aria-label="In PRISM, The Light Collective's guide shows 120 issues to fix and 68 suggested changes. One rewrite is applied, a word is retyped by hand, then Apply all makes the rest: reading grade 12.3 to 11.8. History then undoes the last change and reverts."></video></div>
@@ -1431,7 +1490,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
     </div></div>
   </section>
 
-  <section class="scene" id="trust" data-chap="One more thing" data-beats="2">
+  <section class="scene" id="trust" data-chap="One more thing" data-beats="2" hidden>
     <img class="rv-shot tr-shot" src="media/bg/prism-reveal-light-last.jpg?v=20261118e" alt="" aria-hidden="true">
     <div class="stage"><div class="inner">
       <p class="setup" data-in="0 0.3">One more thing</p>
@@ -1574,32 +1633,6 @@ mark.hang{margin-left:calc(-.4em - .08em)}
     </div></div>
   </section>
 
-  <section class="scene pin" id="then" data-chap="The updates" data-beats="3" data-dur="450">
-    <div class="stage"><div class="inner">
-      <div class="hs-wrap">
-      <div class="hs-side">
-        <h2 class="h2 visually-hidden">Three homepages in 18 hours.</h2>
-        <div class="hs-q">
-          <div class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">0 h · Jul 31</p></div>
-          <div class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">10 h · Oct 16</p></div>
-          <div class="fade" data-in="0.8333 1.0000"><blockquote>I like logo 3, implement while use the yellow as theme color, adjust color palette to include it. disregard the font, keep current</blockquote><p class="hs-who">18 h · Oct 19</p></div>
-        </div>
-        <div class="hs-fx">
-          <div class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>Frameworks up top</li><li>One upload box</li><li>Scores as cards</li></ul></div></div>
-          <div class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>All on one page</li><li>Drop Word or PDF</li><li>Steps show you how</li><li>Simpler panels</li></ul></div></div>
-          <div class="fade" data-in="0.8333 1.0000"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>New PRISM logo</li><li>Yellow brand colour</li><li>One button style</li><li>One type system</li></ul></div></div>
-        </div>
-      </div>
-      <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667">0 h</span><span class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000">10 h</span><span class="fade" data-in="0.8333 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.3333"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.5000 0.6667"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.8333 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
-      <div class="hs-screen">
-          <figure class="hs-v fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><img src="img/home/00.jpg" alt="The homepage at the first commit (Jul 31)."></figure>
-          <figure class="hs-v fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><img src="img/home/11.jpg" alt="The homepage after 10 hours of building (Oct 16)."></figure>
-          <figure class="hs-v fade" data-in="0.8333 1.0000"><img src="img/home/19.jpg" alt="The homepage after 18 hours of building (Oct 19)."></figure>
-      </div>
-      </div>
-    </div></div>
-  </section>
-
   <section class="scene pin point" id="iterate" data-chap="Iterate">
     <div class="pt-art"><img class="pt-img" src="media/bg/point-3-neat.jpg?v=20261112e" alt="" aria-hidden="true"></div><div class="pt-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
@@ -1611,6 +1644,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   </section>
 
   <section class="scene pin" id="review" data-chap="Verification" data-beats="2">
+    <div class="rv-blue drive" data-in="0.58 0.88" aria-hidden="true"></div><div class="fw-bg drive" data-in="0.58 0.88" data-cut aria-hidden="true"></div><div class="fw-wash rv-wash drive" data-in="0.58 0.88" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <h2 class="h2" data-in="0 0.15">AI drafted it. <mark>We reviewed it.</mark></h2>
       <div class="rv-swap">
@@ -1651,6 +1685,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
         <li class="cut"><h3><b>Cut <span>· 9</span></b></h3><ul><li>EQIP</li><li>Plain Language</li><li>PCORI</li><li>OPTION</li><li>CAHPS</li><li>NPS</li><li>Beryl PX</li><li>Planetree</li><li>SEIPS</li></ul></li>
       </ol>
       </div>
+      <p class="credit fade" data-in="0.58 0.88">Background: PRISM’s 14 frameworks, and the 9 the review cut</p>
     </div></div>
   </section>
 
@@ -1665,7 +1700,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
       <h2 class="h2" data-in="0.08 0.24">Certify the work, <mark>not the AI.</mark></h2>
       <p class="lead" data-in="0.08 0.24">A person signs off each screen as <mark>safe for patients</mark>, against:</p>
       <p class="cert-std" data-in="0.08 0.24">Safety · Data integrity · Regulatory fit · Usability · Language · Bias · Flow</p>
-      <p class="real-q" data-in="0.86 1">The barrier dropped. <b>The responsibility didn’t.</b></p>
+      <p class="real-q" data-in="0.08 0.24">The barrier dropped. <b>The responsibility didn’t.</b></p>
       <p class="credit">Illustration by Chloe Ma, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a>, from <a href="https://www.goinvo.com/vision/ai-design-certification">Human-Assisted AI Design Certification for Healthcare</a></p>
     </div></div>
   </section>
@@ -1824,6 +1859,32 @@ mark.hang{margin-left:calc(-.4em - .08em)}
       <p class="setup" data-in="0 0.25">Normally: developers, a budget, months of work. I had none of those.</p>
       <p class="big-line" data-in="0.2 0.5">If you understand<br> the problem, you can<br> <mark>build the tool yourself.</mark></p>
       <p class="credit">Drawings: generated with <a href="https://www.midjourney.com">Midjourney</a>, assembled in code</p>
+    </div></div>
+  </section>
+
+  <section class="scene pin" id="then" data-chap="Appendix" data-beats="3" data-dur="450">
+    <div class="stage"><div class="inner">
+      <div class="hs-wrap">
+      <div class="hs-side">
+        <h2 class="h2 visually-hidden">Three homepages in 18 hours.</h2>
+        <div class="hs-q">
+          <div class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><blockquote>use the framework list we already have, build a tool that checks patient handouts against it, make a [stepped guidance] so people know where to start, show scores as cards</blockquote><p class="hs-who">0 h · Jul 31</p></div>
+          <div class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><blockquote>In empty space, give big simple bullet point steps to guide user through, upload/paste text, select framework etc. Vet entire site for font treatments … we should only use max of 8 treatments throughout</blockquote><p class="hs-who">10 h · Oct 16</p></div>
+          <div class="fade" data-in="0.8333 1.0000"><blockquote>I like logo 3, implement while use the yellow as theme color, adjust color palette to include it. disregard the font, keep current</blockquote><p class="hs-who">18 h · Oct 19</p></div>
+        </div>
+        <div class="hs-fx">
+          <div class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>Frameworks up top</li><li>One upload box</li><li>Scores as cards</li></ul></div></div>
+          <div class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>All on one page</li><li>Drop Word or PDF</li><li>Steps show you how</li><li>Simpler panels</li></ul></div></div>
+          <div class="fade" data-in="0.8333 1.0000"><p class="ft-kick ft-does-kick">What got better</p><div class="ft-does"><ul class="ft-list"><li>New PRISM logo</li><li>Yellow brand colour</li><li>One button style</li><li>One type system</li></ul></div></div>
+        </div>
+      </div>
+      <div class="hs-axis" role="slider" tabindex="0" aria-label="Homepage version, by hours of building" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1"><div class="hs-line"><div class="hs-fill"></div><div class="hs-thumb"><i></i><i></i><i></i><span class="hs-bub"><span class="fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667">0 h</span><span class="fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000">10 h</span><span class="fade" data-in="0.8333 1.0000">18 h</span></span></div></div><div class="hs-dots"><i><b class="fade" data-in="0.0000 0.3333"></b><span class="hs-lab">0 h</span></i><i><b class="fade" data-in="0.5000 0.6667"></b><span class="hs-lab">10 h</span></i><i><b class="fade" data-in="0.8333 1.0000"></b><span class="hs-lab">18 h</span></i></div></div>
+      <div class="hs-screen">
+          <figure class="hs-v fade" data-in="0.0000 0.3333" data-out="0.5000 0.6667"><img src="img/home/00.jpg" alt="The homepage at the first commit (Jul 31)."></figure>
+          <figure class="hs-v fade" data-in="0.5000 0.6667" data-out="0.8333 1.0000"><img src="img/home/11.jpg" alt="The homepage after 10 hours of building (Oct 16)."></figure>
+          <figure class="hs-v fade" data-in="0.8333 1.0000"><img src="img/home/19.jpg" alt="The homepage after 18 hours of building (Oct 19)."></figure>
+      </div>
+      </div>
     </div></div>
   </section>
 
@@ -2801,8 +2862,35 @@ window.deckStart = function(){
 <script src="analogy-bg.js?v=20261104b"></script>
 <script src="lego-bg.js?v=20261118a"></script>
 <script src="question-bg.js?v=20261116h"></script>
-<script src="desk-pile.js?v=20261118l"></script>
-<script src="fw-rows.js?v=20261118s"></script>
+<script src="desk-pile.js?v=20261118o"></script>
+<script src="fw-rows.js?v=20261118t"></script>
+<script>
+/* Verification: once the decision list is up, the 9 cut frameworks grey out one at a time, each card in the
+   wall with its name in the Cut column. Arriving back from the next slide shows them all cut at once. */
+(function(){
+  var sec = document.getElementById('review');
+  if (!sec) return;
+  var lis = [].slice.call(sec.querySelectorAll('.wall .cut li'));
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var timer = 0, next = 0, shown = false, lastT = 0, wasOn = false;
+  function set(j, on){
+    lis[j].classList.toggle('off', on);
+    [].forEach.call(sec.querySelectorAll('.fw-cut[data-n="' + lis[j].textContent + '"]'), function(c){ c.classList.toggle('off', on); });
+  }
+  function all(on){ clearTimeout(timer); next = 0; lis.forEach(function(_, j){ set(j, on); }); }
+  function run(){ if (next < lis.length) { set(next++, true); timer = setTimeout(run, 900); } }
+  function check(){
+    var on = sec.classList.contains('on'), t = parseFloat(sec.style.getPropertyValue('--t')) || 0, up = on && t >= .88;
+    if (up && !shown) {
+      shown = true;
+      if (reduce || !wasOn || lastT < .5) all(true);   // jumped straight to the list (coming back): no replay
+      else { all(false); timer = setTimeout(run, 500); }
+    } else if (!up && shown) { shown = false; if (on) all(false); }   // leaving the slide keeps them cut while it fades
+    lastT = t; wasOn = on;
+  }
+  new MutationObserver(check).observe(sec, { attributes:true, attributeFilter:['style', 'class'] });
+})();
+</script>
 <script src="standards.js?v=20261118s"></script>
 <script src="dot-bg.js?v=20261110a"></script>
 <script>

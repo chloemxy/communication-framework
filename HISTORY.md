@@ -4,6 +4,133 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-18 — Take-home slides: black fade, art moved right
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Intent first, Build fast, Iterate:** the dark fade on the left is now black instead of the deck
+  blue, and each illustration sits 14% further right (`.pt-art` `translateX(14%)`), so the gardeners
+  and pots clear the fade. The pots stay aligned across all three; a sliver of empty paper on the far
+  right is cropped. Phones keep the old position. Checked at 16:9.
+
+## 2026-11-18 — Slide 2: the cricket hops in right on the click
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The cricket sets off a third of a second after the click** (was about 4 s, after the leaves), and
+  is settled beside the poster by about 2.6 s (`presentation/desk-pile.js`). Not checked in a browser.
+
+## 2026-11-18 — Slide 2: the cricket hops in gently
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **One big hop, then one small one** (was two quick ones): the big hop covers most of the way in
+  1.05 s with a higher arc, a short pause, then a small 0.55 s hop to its spot; each has
+  a small crouch before take-off, a soft ease in the air (slow at the top), little tip and a gentle
+  settle on landing; it starts breathing once settled (`presentation/desk-pile.js`).
+  Not checked in a browser.
+
+## 2026-11-18 — AI certification: art on top, text on solid deck blue (no gradient)
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The fade from the art into blue is gone.** The illustration now fills the top half of the slide
+  with a hard edge, and all the text sits below it on solid deck blue, rgb(15 108 157), the same
+  blue as the other blue slides. The title starts clear of the art (`presentation/index.html`).
+- **Contrast passes AAA:** every line of text is 24 px or larger at 16:9 projector sizes, so it counts
+  as large text (AAA needs 4.5:1). Text on blue is 5.1 to 5.8:1, and the highlights are 5.7 to 6.4:1.
+  The credit line is small text in solid white, at 5.75:1, which is AA.
+- Text shadows on this slide's body text are off, since the background is now flat. In light mode
+  the title stays white so it holds on the blue.
+
+## 2026-11-18 — Slide 1: the still in the deck blue replaces the breeze video
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Title slide background (`#top`) is a still again:** `media/bg/welcome-sync.jpg` (2912 px wide, the
+  table from above with the PRISM Studio on the tablet; only its table blue recoloured to the deck blue
+  rgb(15 108 157)). Much sharper than the 1280×720 breeze clip. The `<video>` and its play/pause script
+  are removed; `welcome-wind-loop.mp4` and `welcome-wind-poster.jpg` stay in `media/bg/` unused.
+  Cache key `?v=20261118g`.
+- **No bottom fade on slide 1:** the wash along the foot (`.napkin-wash`) is removed. Since the wash
+  colour became the deck blue it tinted the coffee teal; the blue already passes AA without it.
+- Checked in headless Edge at 1920×1080: the table samples (14, 108, 158); white text 5.8 : 1, small
+  lines 5.1 : 1, both pass AA; the coffee is near-black again (3, 35, 2); the title stays clear of the
+  tablet.
+
+## 2026-11-18 — AI certification: all text appears together
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"The barrier dropped. The responsibility didn't." now fades in with the title, the sign-off
+  line and the standards row** when the slide opens, instead of arriving on its own near the end
+  of the slide. No words changed (`presentation/index.html`).
+
+## 2026-11-18 — Timeline moved to the appendix
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The timeline slide (`#then`, the quotes with "What got better") is now the last slide of the
+  appendix**, after the Lego "Why AI?". Its chapter is now "Appendix" (was "The updates"). The main
+  talk now goes Build fast → Iterate with nothing in between. The slide itself is unchanged and still
+  steps through its three versions.
+
+## 2026-11-18 — Every wash is the deck blue
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **One wash colour for the whole deck.** The shared wash colour (`--scrim`) is now the deck blue
+  (15 108 157), the blue of the opening slides, and is no longer the dark grey. So every fade or overlay over
+  art or footage is blue: the title's foot fade, the three point slides, the certification band, and
+  the appendix clip captions and dimmed strips. Light theme is unchanged.
+- **Point slides (Intent first, Build fast, Iterate):** option A. It's the same left-hand fade, now in blue
+  and a touch firmer at the start (0.95 down to 0 by 74%). Grey over the cream paper went brown in the
+  middle; blue fades through light teal.
+- **Highlights on the blue wash are solid olive** (#6B5F14) on the point slides and certification, as on
+  the title and slide 2. See-through yellow turns green over blue.
+- **Contrast fix on the blue wash:** the small lines on the point slides and certification ("Keep what
+  works. Cut the rest.", the step number, the image credit, the standards list) were the default grey
+  (#B4BAC2) and read dim on the blue. They're now near-white (#EEF1F4), and titles are #F6F4EC, as on
+  the other blue slides (dark theme only).
+- The slide counter pill keeps its dark colour (its own `--chrome`). Slide backgrounds are unchanged (the dark
+  slides stay dark), as asked.
+
+## 2026-11-18 — Before and after: words and poster slides with measured cards; three slides hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Two before/after slides, no titles** (`#ba`, `#ba-poster`), the material centred with a glass card
+  per measure at the sides: the old value in a grey glass pill (crossed out), the new one in the yellow
+  glass pill, a plain-words line on what it means, and one short straight yellow lead to the edge of the
+  material, level with what it measured.
+- **Words:** the full water-pill handout as written and after PRISM, marked like the Studio (yellow fill
+  for flagged words, blue dotted line under the long sentence, green tint and underline for applied
+  fixes). Cards: Medical words 8 → 0, Reading grade 15.9 → 2.7, Longest sentence 36 → 15 words
+  (3 sentences became 8), Risk numbers 25% → 1 in 4. The old 1-2-3 key (with "42-word sentence") is gone;
+  the sentence on the slide is 36 words.
+- **Poster:** Sonia's COVID welcome poster for UHN before and after PRISM, AAA version
+  (`img/ba-poster-after.jpg`): main blue deepened to rgb(50 78 145), band text navy on the light band,
+  "metres" darker, and "on the self-screening poster" reworded "on the poster at the door". Cards: Lines
+  too faint to read easily 5 → 0, Faintest text 2.0 : 1 → 7.5 : 1, Jargon 1 → 0, Colour-blind check
+  (red-green, red-weak and blue-yellow simulated; text stays AAA, figures stay distinct). Credit to Sonia.
+- **Hidden** (kept in the file with `hidden`): Meet PRISM, A real guide, One more thing.
+- Mockups and the colour-blind sheet are in `design/brainstorm/before-after/`.
+- **Follow-ups the same day:** Reading grade and Risk numbers swapped sides; old values are no longer
+  crossed out (plain light grey, easier to read); every card ends with "Based on:" and its standard
+  (PEMAT-P and CDC Everyday Words, Federal Plain Language Guidelines, Gigerenzer & Hoffrage natural
+  frequencies, Flesch-Kincaid, WCAG 1.4.6 / 1.4.3 / 1.4.1, CDC Everyday Words); "Longest sentence" title
+  shortened; no orphan words (word swaps on their own lines, `text-wrap:pretty`). On both slides the cards
+  sit in two equal rows per side (`.bx-side`), each with its own lead, so rows line up and never overlap.
+  The poster slide's colour-blind card shows the after poster's figures in typical, red-green, red-weak
+  and blue-yellow vision (`img/ba-cb-*.jpg`) instead of a sentence.
+- **Words slide side by side:** "Before" and "After PRISM" now sit next to each other in the same frame
+  and size as the posters (`.bx-pair`), each text centred in its card, with the cards in the same two
+  rows as the poster slide, so the two slides read as a pair.
+- **Card details:** a yellow glass tick after "Colour-blind check"; every card's "Based on:" citation
+  now sits at the bottom of its card, the card's content starting from the top. The tick is a yellow
+  pill the size of the new-value pills, right-aligned under them; numbers sit optically centred in every
+  pill (trimmed to cap height).
+
 ## 2026-11-18 — Standards exist: Sonia's simpler pile
 
 Branch: `refresh-and-fixes` · Vercel: Production (PR #58, merged 2026-11-18)
@@ -2990,6 +3117,22 @@ Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
   small "▦ framework-compass-library-review-v2.xlsx · 23 rows" tag. The header row has a gold
   underline, the frozen #, Framework and Full name columns end at a thin gold line, and each decision
   is a tag: solid gold for "Keep", gold outline for the rest. All 13 columns and 23 rows still scroll.
+- **The decision list sits on the Standards exist card wall.** When the list comes up, the slide turns
+  the same blue and the same drifting framework cards fade in behind it (no Nati post or CDC
+  screenshot), under a wash that keeps the list readable and lifts toward the bottom so the rows show
+  to the edge. `fw-rows.js` gains the 9 cut frameworks as cards (EQIP, Plain Language, PCORI, OPTION,
+  CAHPS, NPS, Beryl PX, Planetree, SEIPS) for walls marked `data-cut`; their sources come from the old
+  library in `analysis-engine.js` and are worth checking against the review sheet.
+- **The cut frameworks grey out one by one,** about a second apart: each card turns charcoal, shrinks a
+  little, its name is struck and its label reads "Cut", while the same name in the Cut column dims and
+  is struck. Coming back from the next slide shows them all cut at once; stepping back to the sheet
+  resets them. New credit: "Background: PRISM's 14 frameworks, and the 9 the review cut".
+- **The card wall now sits on the deck's black, not blue.** A gradient is solid black behind the title
+  and list and lifts toward the foot, where the white cards show; the title keeps the deck's usual
+  yellow highlight.
+- **Cut cards go hollow instead of charcoal.** Each cut card loses its white fill and keeps a thin light
+  outline, faint text, a struck name and the "Cut" label, a little smaller; it shows on the black near
+  the top and as a gap among the white cards near the foot.
 
 ## 2026-11-09 — Verification: the two "We reviewed it" slides flip cleanly
 
