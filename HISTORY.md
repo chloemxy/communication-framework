@@ -4,6 +4,20 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-17 — Slide 1: the breeze plays forward, then back, on repeat
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The title slide background moves (`#top`):** `media/bg/welcome-wind.mp4` (10 s: a breeze blows
+  forget-me-not petals across the table, steam rises off the coffee, the glass ripples) is played
+  forward and then reversed, as one 20 s silent file, `media/bg/welcome-wind-loop.mp4`, looped. It
+  always comes back to its first frame, so the loop never jumps. Option D of the mockups in
+  `design/brainstorm/welcome-wind/`.
+- **Plays only while slide 1 is up** (paused on every other slide), muted; with reduced motion it
+  rests on its first frame, `media/bg/welcome-wind-poster.jpg`, also the frame shown while it loads.
+- The video is 1280×720, so it is softer than the 2912-wide still it replaces on a big projector.
+- Checked at 1280×720: plays on arrival, pauses on slide 2, resumes on return; title clear of the art.
+
 ## 2026-11-17 — Slide 1: the PRISM Studio on the tablet, drawn in the picture's ink style
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #53) · GitHub Pages: updated from `master`
