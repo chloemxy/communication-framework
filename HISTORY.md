@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-18 — Take-home slides: black fade, art moved right
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **Intent first, Build fast, Iterate:** the dark fade on the left is now black instead of the deck
   blue, and each illustration sits 14% further right (`.pt-art` `translateX(14%)`), so the gardeners
@@ -15,14 +15,14 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Slide 2: the cricket hops in right on the click
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **The cricket sets off a third of a second after the click** (was about 4 s, after the leaves), and
   is settled beside the poster by about 2.6 s (`presentation/desk-pile.js`). Not checked in a browser.
 
 ## 2026-11-18 — Slide 2: the cricket hops in gently
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **One big hop, then one small one** (was two quick ones): the big hop covers most of the way in
   1.05 s with a higher arc, a short pause, then a small 0.55 s hop to its spot; each has
@@ -30,22 +30,22 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
   settle on landing; it starts breathing once settled (`presentation/desk-pile.js`).
   Not checked in a browser.
 
-## 2026-11-18 — AI certification: art on top, text on solid deck blue (no gradient)
+## 2026-11-18 — AI certification: black gradient set low; "The barrier dropped" line removed
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
-- **The fade from the art into blue is gone.** The illustration now fills the top half of the slide
-  with a hard edge, and all the text sits below it on solid deck blue, rgb(15 108 157), the same
-  blue as the other blue slides. The title starts clear of the art (`presentation/index.html`).
-- **Contrast passes AAA:** every line of text is 24 px or larger at 16:9 projector sizes, so it counts
-  as large text (AAA needs 4.5:1). Text on blue is 5.1 to 5.8:1, and the highlights are 5.7 to 6.4:1.
-  The credit line is small text in solid white, at 5.75:1, which is AA.
-- Text shadows on this slide's body text are off, since the background is now flat. In light mode
-  the title stays white so it holds on the blue.
+- **The blue fade is now a black one, set lower.** The art still fills the slide, and the black starts at
+  44% of the height (it was the blue wash from 38%). The stamp hand and most of the designer are
+  clear of it (`presentation/index.html`).
+- **The text sits lower**, ending just above the credit line.
+- **"The barrier dropped. The responsibility didn't." is gone from this slide.**
+- **Contrast passes AAA** against the brightest art behind each line: the title is 5.5:1 at its top edge
+  (large text), the sign-off line and standards row are 7.6:1, and the credit is 12:1.
+- (Tried along the way and dropped: art on top with the text on a solid deck-blue band.)
 
 ## 2026-11-18 — Slide 1: the still in the deck blue replaces the breeze video
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **Title slide background (`#top`) is a still again:** `media/bg/welcome-sync.jpg` (2912 px wide, the
   table from above with the PRISM Studio on the tablet; only its table blue recoloured to the deck blue
@@ -60,7 +60,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — AI certification: all text appears together
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **"The barrier dropped. The responsibility didn't." now fades in with the title, the sign-off
   line and the standards row** when the slide opens, instead of arriving on its own near the end
@@ -68,7 +68,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Timeline moved to the appendix
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **The timeline slide (`#then`, the quotes with "What got better") is now the last slide of the
   appendix**, after the Lego "Why AI?". Its chapter is now "Appendix" (was "The updates"). The main
@@ -77,7 +77,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Every wash is the deck blue
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **One wash colour for the whole deck.** The shared wash colour (`--scrim`) is now the deck blue
   (15 108 157), the blue of the opening slides, and is no longer the dark grey. So every fade or overlay over
@@ -97,7 +97,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Before and after: words and poster slides with measured cards; three slides hidden
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
 
 - **Two before/after slides, no titles** (`#ba`, `#ba-poster`), the material centred with a glass card
   per measure at the sides: the old value in a grey glass pill (crossed out), the new one in the yellow
@@ -3102,7 +3102,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-16 — Verification: the spreadsheet and the decision list are one slide
 
-Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #59) · GitHub Pages: updated from `master`
 
 - **"AI drafted it. We reviewed it." is now a single slide** (`presentation/index.html`). Scrolling
   inside the spreadsheet scrolls it; a fresh scroll past its last row (WHO ERC, row 24) fades the

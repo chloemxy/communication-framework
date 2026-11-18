@@ -271,19 +271,19 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 #certify .inner{padding-top:calc(100vw * .558)}
 .cert-std{margin-top:14px}
 @media (min-width:721px){#review .stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
-/* AI certification: the art sits in the top half with a hard edge; all text sits on solid deck blue
-   below it (no wash). Text is >= 24px, so 5.2:1+ on the deck blue passes AAA for large text. */
-#certify{background:rgb(15 108 157);--ink:#F6F4EC;--ink-2:#EEF1F4}
-#certify .stage,[data-theme="light"] #certify .stage{text-shadow:none}
-#certify{--fine:#FFFFFF}
+/* AI certification: full-bleed art with a black gradient low on the slide; the text sits under it.
+   Black reaches .64 where the title starts and .7+ behind the body text, so every line passes AAA
+   against the brightest art (title 5.5:1 as large text, body 7.6:1, credit 12:1). */
+#certify{background:var(--desk);--ink:#F6F4EC;--ink-2:#EEF1F4;--fine:#FFFFFF}
 [data-theme="light"] #certify .h2,[data-theme="light"] #certify .h2 mark{color:#fff}
-@media (min-width:721px){.cert-band{inset:0 0 auto;height:52dvh;background:#F5F2DE}
+@media (min-width:721px){.cert-band{inset:0;height:100%;background:var(--desk)}
   .cert-art{height:100%;aspect-ratio:auto}
-  #certify .inner{justify-content:flex-start;padding:calc(52dvh - 56px + 4 * var(--u)) 0 calc(5 * var(--u))}
+  .cert-band::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(0 0 0 / 0) 44%,rgb(0 0 0 / .7) 66%,rgb(0 0 0 / .82) 100%)}
+  #certify .inner{justify-content:flex-end;padding:0 0 calc(2.5 * var(--u))}
   #certify .h2{margin:0}
   #certify .lead{max-width:none;margin-top:calc(.8 * var(--u))}
   #certify .cert-std{margin-top:calc(.8 * var(--u))}
-  #certify .real-q{margin-top:calc(1.2 * var(--u))}}
+  #certify .credit{margin-top:calc(3 * var(--u))}}
 /* The updates: a slider above the screen steps through every homepage version; scroll, drag or click */
 #then .inner{justify-content:flex-start}
 /* phones: title, a horizontal slider, then the screen */
@@ -1700,7 +1700,6 @@ mark.hang{margin-left:calc(-.4em - .08em)}
       <h2 class="h2" data-in="0.08 0.24">Certify the work, <mark>not the AI.</mark></h2>
       <p class="lead" data-in="0.08 0.24">A person signs off each screen as <mark>safe for patients</mark>, against:</p>
       <p class="cert-std" data-in="0.08 0.24">Safety · Data integrity · Regulatory fit · Usability · Language · Bias · Flow</p>
-      <p class="real-q" data-in="0.08 0.24">The barrier dropped. <b>The responsibility didn’t.</b></p>
       <p class="credit">Illustration by Chloe Ma, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a>, from <a href="https://www.goinvo.com/vision/ai-design-certification">Human-Assisted AI Design Certification for Healthcare</a></p>
     </div></div>
   </section>
