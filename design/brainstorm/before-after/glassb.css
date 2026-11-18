@@ -1,0 +1,11 @@
+.gb{position:relative;border-radius:26px;padding:22px 26px;background:linear-gradient(180deg,rgb(255 255 255/.10),rgb(255 255 255/.03));backdrop-filter:blur(20px) saturate(1.4);
+ box-shadow:inset 0 1px 0 rgb(255 255 255/.35),inset 0 0 0 1px rgb(255 255 255/.10),0 18px 44px rgb(0 0 0/.45)}
+.gb h4{margin:0;font:600 24px/1.2 "Public Sans";color:#E9EBEE}
+.pp{display:flex;align-items:center;gap:14px;margin:18px 0 16px}
+.pill{border-radius:999px;padding:10px 24px;font:500 46px/1 Newsreader,serif;white-space:nowrap}
+.pill.old{font-size:32px;color:#8a9099;text-decoration:line-through;text-decoration-thickness:2px;background:linear-gradient(180deg,rgb(40 43 48/.96),rgb(22 24 28/.96));box-shadow:inset 0 1px 0 rgb(255 255 255/.22),inset 0 0 0 1px rgb(255 255 255/.10)}
+.pill.new{color:#1b1c1e;background:linear-gradient(180deg,#ffe066,#f2c200);box-shadow:inset 0 1.5px 0 rgb(255 255 255/.85),inset 0 -2px 4px rgb(140 100 0/.35),0 6px 16px rgb(245 196 0/.25)}
+.ln{flex:1;height:2px;background:rgb(255 255 255/.22);position:relative}.ln::after{content:"";position:absolute;right:-1px;top:-5px;border:6px solid transparent;border-left:9px solid rgb(255 255 255/.35);border-right:0}
+.gb .means{margin:0;font-size:21px;line-height:1.4;color:#E9EBEE}
+.gb .means span{color:#B4BAC2}
+.chk{display:flex;flex-wrap:wrap;gap:8px 26px;font-size:21px;color:#B4BAC2}.chk i{font-style:normal;color:#E9EBEE;margin-right:8px}
