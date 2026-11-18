@@ -267,16 +267,21 @@
   // it hops in from the left edge in two hops, nose up as it rises and down as it lands, then stays,
   // breathing; the drawing leans 3.6deg nose-down so its hind, middle and front feet all stand on the floor
   var LEAN = 3.6;
+  // one big hop, then one small one: [start, end, share of the way, arc height]. Before each it crouches
+  // a little, in the air it eases out and in (slow at the top), and after landing it settles
+  var HOPS = [[.35, 1.4, .78, 1.1], [1.75, 2.3, .22, .35]], SETTLED = 2.6;   // it sets off right after the click
   function cricketAt(tt, L){
-    var mid = L.x0 + (L.cx - L.x0) * .55, hops = [[3.9, 4.4, L.x0, mid], [4.6, 5.1, mid, L.cx]];
-    var x = L.x0, y = L.fy, tilt = 0, sq = 0, i, h, r;
-    for (i = 0; i < hops.length; i++) {
-      h = hops[i];
-      if (tt >= h[1]) { x = h[3]; if (tt < h[1] + .15) sq = Math.sin(Math.PI * (tt - h[1]) / .15); continue; }
+    var x = L.x0, y = L.fy, tilt = 0, sq = 0, i, h, r, a = L.x0, b;
+    for (i = 0; i < HOPS.length; i++) {
+      h = HOPS[i]; b = a + (L.cx - L.x0) * h[2];
+      if (tt >= h[1]) { x = b; a = b; if (tt < h[1] + .3) sq = .6 * Math.sin(Math.PI * (tt - h[1]) / .3); continue; }
+      x = a;
+      if (tt > h[0] - .2 && tt <= h[0]) sq = .5 * Math.sin(Math.PI * (tt - h[0] + .2) / .2 / 2);   // the crouch
       if (tt > h[0]) {
         r = (tt - h[0]) / (h[1] - h[0]);
-        x = h[2] + (h[3] - h[2]) * smooth(r); y = L.fy - Math.sin(Math.PI * r) * L.hop;
-        tilt = -Math.cos(Math.PI * r) * 18;
+        x = a + (b - a) * smooth(r);
+        y = L.fy - Math.sin(Math.PI * smooth(r)) * L.hop * h[3];
+        tilt = -Math.cos(Math.PI * r) * 9 * Math.min(1, h[3]);
       }
       break;
     }
@@ -299,10 +304,10 @@
     });
     var L = layout(), c = cricketAt(tt, L), cw = L.cw, ch = cw * (cricket.naturalHeight || 262) / (cricket.naturalWidth || 354);
     // a slow breath once it has landed: the body swells a touch, from the feet up
-    var breathe = tt > 5.3 ? .018 * Math.sin((tt - 5.3) * 2 * Math.PI / 2.6) : 0;
-    var sx = 1 + .1 * c[3], sy = 1 - .15 * c[3] + breathe;
+    var breathe = tt > SETTLED ? .018 * Math.sin((tt - SETTLED) * 2 * Math.PI / 2.6) : 0;
+    var sx = 1 + .06 * c[3], sy = 1 - .1 * c[3] + breathe;
     cricket.style.width = cw + 'px';
-    cricket.style.opacity = tt > 3.85 ? 1 : 0;
+    cricket.style.opacity = tt > .3 ? 1 : 0;
     cricket.style.transform = 'translate(' + (c[0] - cw / 2) + 'px,' + (c[1] - ch) + 'px) rotate(' + (LEAN + c[2]) + 'deg) scale(' + sx + ',' + sy + ')';
   }
 

@@ -7,7 +7,7 @@
   var boxes = document.querySelectorAll('.fw-bg');
   if (!boxes.length) return;
   var SECS_PER_CARD = 9, ROWS = 7;
-  var Z = { c:'Clarity & content', d:'Decisions & conversations', b:'Behaviour change' };
+  var Z = { c:'Clarity & content', d:'Decisions & conversations', b:'Behaviour change', e:'Experience & partnership' };
   var F = [
     ['cdc.gov/ccindex', 'c', 'CCI', 'CDC Clear Communication Index', 'Centers for Disease Control and Prevention'],
     ['ahrq.gov/health-literacy/patient-education/pemat-p.html', 'c', 'PEMAT-P', 'Patient Education Materials Assessment Tool, printable', 'AHRQ'],
@@ -24,9 +24,22 @@
     ['doi.org/10.1080/03637759209376276', 'b', 'EPPM', 'Extended Parallel Process Model', 'Witte (1992)'],
     ['who.int/publications/i/item/9789241550208', 'b', 'WHO ERC', 'Emergency Risk Communication guideline', 'World Health Organization (2017)']
   ];
+  // the 9 frameworks the library review cut; a wall marked data-cut (Verification) mixes them in,
+  // and index.html greys them out one by one
+  var CUT = [
+    ['eqip-tool.org', 'c', 'EQIP', 'Ensuring Quality Information for Patients', 'Moult, Franck & Brady (2004)'],
+    ['digital.gov/guides/plain-language', 'c', 'Plain Language', 'U.S. Federal Plain Language Guidelines', 'PLAIN (2011)'],
+    ['pcori.org/engagement', 'e', 'PCORI', 'Foundational Expectations for Partnerships in Research', 'PCORI'],
+    ['glynelwyn.com/option', 'd', 'OPTION', 'OPTION Scale: observing patient involvement', 'Elwyn et al. (2003)'],
+    ['ahrq.gov/cahps', 'e', 'CAHPS', 'Consumer Assessment of Healthcare Providers and Systems', 'AHRQ'],
+    ['netpromoter.com', 'e', 'NPS', 'Net Promoter Score', 'Reichheld (2003)'],
+    ['theberylinstitute.org', 'e', 'Beryl PX', 'The Beryl Institute Patient Experience Framework', 'The Beryl Institute (2023)'],
+    ['planetree.org/planetree-model', 'e', 'Planetree', 'Planetree Model of Person-Centered Care', 'Planetree International'],
+    ['doi.org/10.1080/00140139.2013.838643', 'b', 'SEIPS', 'Systems Engineering Initiative for Patient Safety 2.0', 'Holden et al. (2013)']
+  ];
   function esc(t){ return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
-  function card(f){
-    return '<div class="fw-card"><div class="fw-bar"><i></i><i></i><i></i><span>' + esc(f[0]) + '</span></div>' +
+  function card(f, cut){
+    return '<div class="fw-card' + (cut ? ' fw-cut" data-n="' + esc(f[2]) : '') + '"><div class="fw-bar"><i></i><i></i><i></i><span>' + esc(f[0]) + '</span></div>' +
       '<div class="fw-body"><div class="fw-zone">' + esc(Z[f[1]]) + '</div><div class="fw-title">' + esc(f[2]) + '</div>' +
       '<div class="fw-sub">' + esc(f[3]) + '</div><div class="fw-src">' + esc(f[4]) + '</div></div></div>';
   }
@@ -38,11 +51,15 @@
       '<img src="' + s[2] + '" alt=""></div>';
   }
   [].forEach.call(boxes, function(box){
-    var shots = box.hasAttribute('data-shots'), html = '';
+    var shots = box.hasAttribute('data-shots'), cuts = box.hasAttribute('data-cut'), html = '';
+    // with data-cut, a cut card follows every second framework card
+    var all = [];
+    F.forEach(function(f, i){ all.push(card(f)); if (cuts && i % 2 && CUT[(i - 1) / 2]) all.push(card(CUT[(i - 1) / 2], true)); });
+    if (cuts) CUT.slice(7).forEach(function(f){ all.push(card(f, true)); });
     for (var r = 0; r < ROWS; r++) {
       var set = '';
-      for (var k = 0; k < F.length; k++) set += shots && r === 3 && SHOTS[k] ? shot(SHOTS[k]) : card(F[(r * 5 + k) % F.length]);
-      html += '<div class="fw-row' + (r % 2 ? ' rev' : '') + '" style="--dur:' + (F.length * SECS_PER_CARD) + 's;--off:calc(' + (-(r % 3) * 7) + ' * var(--cu))">' + set + set + '</div>';
+      for (var k = 0; k < all.length; k++) set += shots && r === 3 && SHOTS[k] ? shot(SHOTS[k]) : all[(r * 5 + k) % all.length];
+      html += '<div class="fw-row' + (r % 2 ? ' rev' : '') + '" style="--dur:' + (all.length * SECS_PER_CARD) + 's;--off:calc(' + (-(r % 3) * 7) + ' * var(--cu))">' + set + set + '</div>';
     }
     box.innerHTML = html;
   });
