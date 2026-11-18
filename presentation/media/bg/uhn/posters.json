@@ -1,0 +1,82 @@
+{
+ "posters": [
+  {
+   "file": "p01.jpg",
+   "w": 390,
+   "h": 520,
+   "from": "Book COVID Vaccine_mutlilanguage_online.pdf"
+  },
+  {
+   "file": "p02.jpg",
+   "w": 391,
+   "h": 520,
+   "from": "COVID - Welcome Poster - June 2022 (11 x 17 in).png"
+  },
+  {
+   "file": "p03.jpg",
+   "w": 336,
+   "h": 520,
+   "from": "Deterioration Handout_tempFINAL.png"
+  },
+  {
+   "file": "p04.jpg",
+   "w": 520,
+   "h": 336,
+   "from": "Early Mobilization Poster_Sit or Stand Exercises.pdf"
+  },
+  {
+   "file": "p05.jpg",
+   "w": 336,
+   "h": 520,
+   "from": "Entrance Screening Questions Feb172021 English.png"
+  },
+  {
+   "file": "p06.jpg",
+   "w": 520,
+   "h": 336,
+   "from": "Escalation of Care_AEI.png"
+  },
+  {
+   "file": "p07.jpg",
+   "w": 339,
+   "h": 520,
+   "from": "Invitation Poster_FINAL.png"
+  },
+  {
+   "file": "p08.jpg",
+   "w": 319,
+   "h": 520,
+   "from": "Medication_teachback_flowchart.png"
+  },
+  {
+   "file": "p09.jpg",
+   "w": 520,
+   "h": 348,
+   "from": "PiperInfographicPosters_FINAL_Page_1.png"
+  },
+  {
+   "file": "p10.jpg",
+   "w": 346,
+   "h": 520,
+   "from": "Rapid Antigen Self-test_bleed_Final.png"
+  },
+  {
+   "file": "p11.jpg",
+   "w": 319,
+   "h": 520,
+   "from": "Stroke_teachback_infographic poster.png"
+  },
+  {
+   "file": "p12.jpg",
+   "w": 346,
+   "h": 520,
+   "from": "pt values one page_update 11x17.pdf"
+  }
+ ],
+ "hero": {
+  "file": "hero.jpg",
+  "w": 553,
+  "h": 900,
+  "from": "Stroke_teachback_infographic poster.png"
+ }
+}

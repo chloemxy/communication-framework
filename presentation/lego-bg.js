@@ -6,7 +6,7 @@
  * Assets in media/bg/lego/ come from scripts/lego-pieces.py. */
 (function(){
   'use strict';
-  var scene = document.getElementById('why'), cv = scene && scene.querySelector('.lego-bg');
+  var scene = document.getElementById('why-lego'), cv = scene && scene.querySelector('.lego-bg');
   if (!cv) return;
   var ctx = cv.getContext('2d'), DIR = 'media/bg/lego/', V = '?v=20261116g';
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;

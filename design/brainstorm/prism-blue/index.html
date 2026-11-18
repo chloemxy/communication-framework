@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meet PRISM on blue</title>
+<style>
+html,body{margin:0;height:100%;background:#121417;overflow:hidden}
+.door{position:absolute;left:0;top:0;width:calc(100% / 1.35);height:calc(100% / 1.35);border:0;transform:scale(1.35);transform-origin:0 0;background:transparent}
+#play{position:fixed;right:16px;bottom:16px;z-index:9;font:500 14px system-ui;padding:8px 14px;border-radius:8px;border:1px solid #fff6;background:#0008;color:#fff;cursor:pointer}
+</style></head><body>
+<iframe class="door" id="f" src="../../../index.html?intro&deck"></iframe>
+<button id="play">Play: blue dims to black</button>
+<script>
+// ?t=0 blue, ?t=0.5 halfway, ?t=1 dark; Play runs the drain over 1.4 s
+var BLUE=[34,115,150], DARK=[0,0,0];
+function mix(t){return 'rgb('+BLUE.map(function(b,i){return Math.round(b+(DARK[i]-b)*t)}).join(' ')+')'}
+var f=document.getElementById('f'), t0=+(new URLSearchParams(location.search).get('t')||0);
+function set(t){try{var d=f.contentDocument, b=d.querySelector('.intro'); if(b) b.style.setProperty('--cover', mix(t)); d.body.style.background=mix(t)}catch(e){}}
+f.onload=function(){ var n=0, k=setInterval(function(){ set(t0); if(++n>40) clearInterval(k); },100); };
+document.getElementById('play').onclick=function(){ var s=performance.now(); set(0);
+  setTimeout(function(){ s=performance.now(); (function step(now){ var v=Math.min((now-s)/1400,1); set(v*v*(3-2*v)); if(v<1) requestAnimationFrame(step); })(s); },500); };
+</script></body></html>

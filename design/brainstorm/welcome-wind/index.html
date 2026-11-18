@@ -1,0 +1,39 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Wind video on slide 1</title>
+<style>
+body{margin:0;background:#16181D;color:#E9EBEE;font:15px/1.4 system-ui,sans-serif;padding:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(560px,100%),1fr));gap:20px}
+h3{margin:0 0 4px;font-weight:500;font-size:15px}
+p{margin:0 0 8px;color:#B4BAC2;font-size:13px}
+.box{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px}
+.box iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none}
+button{margin:0 0 8px;font:inherit;font-size:13px;background:#2A2E36;color:#E9EBEE;border:1px solid #444;border-radius:4px;padding:3px 10px;cursor:pointer}
+</style></head><body>
+<div class="row">
+ <div><h3>D · Forward, then reverse, on repeat</h3><p>The 10 s plays forward, then backward back to the start, and repeats: petals blow out, then drift back in. No jump anywhere (20 s round trip).</p><div class="box"><iframe data-v="d" data-src="wind-pingpong.mp4"></iframe></div></div>
+ <div><h3>E · Same, with a pause at each end</h3><p>Like D, but rests 2 s with the petals fully out and 2 s back at the start before turning round, so the change of direction feels calmer (24 s round trip).</p><div class="box"><iframe data-v="e" data-src="wind-pingpong-hold.mp4"></iframe></div></div>
+</div>
+<script>
+const SRC='/presentation/media/bg/welcome-wind.mp4';
+document.querySelectorAll('iframe').forEach(f=>{
+  const box=f.parentElement, fit=()=>f.style.transform='scale('+box.clientWidth/1920+')';
+  fit(); addEventListener('resize',fit);
+  f.addEventListener('load',()=>{
+    const d=f.contentDocument, v=f.dataset.v, img=d.querySelector('.welcome-bg');
+    const mk=()=>{const x=d.createElement('video');x.className='welcome-bg';x.src=f.dataset.src?'/design/brainstorm/welcome-wind/'+f.dataset.src:SRC;x.muted=true;x.playsInline=true;x.style.objectFit='cover';return x;};
+    const a=mk(); img.replaceWith(a);
+    if(v==='a'||v==='d'||v==='e'){a.loop=true;a.play();}
+    if(v==='b'){a.play(); f._replay=()=>{a.currentTime=0;a.play();};}
+    if(v==='c'){
+      const b=mk(); b.style.opacity=0; a.after(b); let cur=a,nxt=b;
+      const tick=()=>{ if(cur.duration&&cur.currentTime>cur.duration-1&&nxt.paused){nxt.currentTime=0;nxt.style.zIndex=1;cur.style.zIndex=0;nxt.play();}
+        if(!nxt.paused){const k=Math.min(1,nxt.currentTime/1);nxt.style.opacity=k; if(k>=1){cur.pause();cur.style.opacity=0;[cur,nxt]=[nxt,cur];}}
+        requestAnimationFrame(tick);};
+      a.play(); tick();
+    }
+  });
+  f.src='/presentation/?mock=wind'+f.dataset.v+'#top';
+});
+document.querySelectorAll('button[data-r]').forEach(btn=>btn.onclick=()=>document.querySelector('iframe[data-v="'+btn.dataset.r+'"]')._replay());
+</script>
+</body></html>

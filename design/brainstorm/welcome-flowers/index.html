@@ -1,0 +1,22 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Flower sway on slide 1</title>
+<style>
+body{margin:0;background:#16181D;color:#E9EBEE;font:15px/1.4 system-ui,sans-serif;padding:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(560px,100%),1fr));gap:20px}
+h3{margin:0 0 4px;font-weight:500;font-size:15px}
+p{margin:0 0 8px;color:#B4BAC2;font-size:13px}
+.box{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px}
+.box iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none}
+</style></head><body>
+<div class="row">
+ <div><h3>A &middot; Gentle</h3><p>The bouquet bends a few pixels and back, tips more than stems, every 6 s. Glass, tablet, napkin and coffee stay still.</p><div class="box"><iframe data-v="A-gentle.mp4"></iframe></div></div>
+ <div><h3>B &middot; Light breeze</h3><p>Twice the bend, plus a small flutter in the petals and leaves.</p><div class="box"><iframe data-v="B-breeze.mp4"></iframe></div></div>
+</div>
+<script>
+document.querySelectorAll('iframe').forEach(f=>{
+  const box=f.parentElement, fit=()=>f.style.transform='scale('+box.clientWidth/1920+')';
+  fit(); addEventListener('resize',fit);
+  f.addEventListener('load',()=>{const v=f.contentDocument.querySelector('#top .welcome-bg');v.removeAttribute('poster');v.src='/design/brainstorm/welcome-flowers/'+f.dataset.v;v.loop=true;v.muted=true;v.play().catch(()=>{});});
+  f.src='/presentation/?mock=fl'+f.dataset.v+'#top';
+});
+</script></body></html>

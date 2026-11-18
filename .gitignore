@@ -4,3 +4,6 @@
 .code-review-graph/
 # Local archive (has its own .git and env copies)
 Archive/
+# Remotion slide animations: dependencies and renders stay local
+video/node_modules/
+video/out/
