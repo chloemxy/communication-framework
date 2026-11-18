@@ -3102,7 +3102,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-16 — Verification: the spreadsheet and the decision list are one slide
 
-Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #59) · GitHub Pages: updated from `master`
 
 - **"AI drafted it. We reviewed it." is now a single slide** (`presentation/index.html`). Scrolling
   inside the spreadsheet scrolls it; a fresh scroll past its last row (WHO ERC, row 24) fades the
