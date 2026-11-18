@@ -4,6 +4,23 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-17 — Slide 1: the PRISM Studio on the tablet, drawn in the picture's ink style
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New title slide background (`#top`):** the new `media/bg/welcome.png` (a table from above in
+  the empty desk's blue: a tablet, a glass on a napkin with the prototype sketched on it,
+  forget-me-nots, coffee), with the PRISM Studio ("Evaluate a draft") put on the tablet's blank
+  screen. The screen is read in landscape, warped to the tablet's angle and redrawn in the
+  picture's own style: paper white and pale blue fills, dark-green ink panel lines, text as ink
+  bars, the picture's yellow and red, and its grain. Saved as `media/bg/welcome-tablet.jpg`.
+  Options compared in `design/brainstorm/welcome-tablet/`.
+- Ships the earlier slide 1 changes with it: the napkin-to-screen crossfade (`n2s-*`) is retired
+  (its images stay in `media/bg/`), only the soft fade along the foot stays (no wash from the
+  left), and the small grey lines brighten in dark mode (`--ink-2` is `#EEF1F4` on `#top`).
+- **Credit line** reads "Background: generated with Midjourney, PRISM screen drawn in".
+- Checked at 1280×720 in dark and light mode: the title stays clear of the tablet.
+
 ## 2026-11-17 — Every slide change is a morph, forward and back
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #51) · GitHub Pages: updated from `master`
