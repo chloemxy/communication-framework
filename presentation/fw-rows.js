@@ -1,0 +1,49 @@
+/* The framework background (Why AI?, and slide 4 where two screenshots fly into it): PRISM's 14 frameworks as browser cards in tilted rows.
+ * Each row holds all 14 cards twice (so it loops without a jump), starts at a different card,
+ * and slides one card every 9 s; rows alternate direction. CSS (#why .fw-*) does the motion;
+ * this only builds the cards. Card text follows frameworks.js (labels, names, sources). */
+(function(){
+  'use strict';
+  var boxes = document.querySelectorAll('.fw-bg');
+  if (!boxes.length) return;
+  var SECS_PER_CARD = 9, ROWS = 7;
+  var Z = { c:'Clarity & content', d:'Decisions & conversations', b:'Behaviour change' };
+  var F = [
+    ['cdc.gov/ccindex', 'c', 'CCI', 'CDC Clear Communication Index', 'Centers for Disease Control and Prevention'],
+    ['ahrq.gov/health-literacy/patient-education/pemat-p.html', 'c', 'PEMAT-P', 'Patient Education Materials Assessment Tool, printable', 'AHRQ'],
+    ['ahrq.gov/health-literacy/patient-education/pemat-av.html', 'c', 'PEMAT-A/V', 'PEMAT for audiovisual materials', 'AHRQ'],
+    ['stacks.cdc.gov/view/cdc/129950', 'c', 'CDC IDD/ELL', 'Tool for adults with intellectual disability or extreme low literacy', 'Centers for Disease Control and Prevention'],
+    ['prism.kpwashingtonresearch.org/background_to_plain_language', 'c', 'SAM', 'Suitability Assessment of Materials', 'Doak, Doak & Root (1996)'],
+    ['ndph.ox.ac.uk/research/research-groups/applied-health-research-unit-ahru/discern', 'c', 'DISCERN', 'Judging the quality of written consumer health information', 'University of Oxford'],
+    ['doi.org/10.1037/h0057532', 'c', 'Readability', 'Flesch Reading Ease and Flesch-Kincaid Grade', 'Flesch (1948)'],
+    ['cdc.gov/pcd/issues/2023/23_0061.htm', 'c', 'CDC Inclusive', 'Health Equity Guiding Principles for Inclusive Communication', 'Calanan et al. (2023)'],
+    ['upl.org/resources/upl-guidance-document', 'c', 'UPL', 'Universal Patient Language Best Practices', 'Bristol Myers Squibb'],
+    ['decisionaid.ohri.ca/ipdas.html', 'd', 'IPDAS', 'International Patient Decision Aid Standards', 'Ottawa Hospital Research Institute'],
+    ['doi.org/10.1177/109019817400200403', 'b', 'HBM', 'Health Belief Model', 'Rosenstock (1974)'],
+    ['doi.org/10.4278/0890-1171-12.1.38', 'b', 'TTM', 'Transtheoretical Model (Stages of Change)', 'Prochaska & Velicer (1997)'],
+    ['doi.org/10.1080/03637759209376276', 'b', 'EPPM', 'Extended Parallel Process Model', 'Witte (1992)'],
+    ['who.int/publications/i/item/9789241550208', 'b', 'WHO ERC', 'Emergency Risk Communication guideline', 'World Health Organization (2017)']
+  ];
+  function esc(t){ return t.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function card(f){
+    return '<div class="fw-card"><div class="fw-bar"><i></i><i></i><i></i><span>' + esc(f[0]) + '</span></div>' +
+      '<div class="fw-body"><div class="fw-zone">' + esc(Z[f[1]]) + '</div><div class="fw-title">' + esc(f[2]) + '</div>' +
+      '<div class="fw-sub">' + esc(f[3]) + '</div><div class="fw-src">' + esc(f[4]) + '</div></div></div>';
+  }
+  // slide 4 (data-shots): the middle row holds Nati's post and the CDC Clear Communication Index as
+  // two cards, which standards.js flies the big screenshots into
+  var SHOTS = { 2:['lnkd.in/p/gsauNRxE', 'post', 'img/post-nati-chen.png?v=20261112b'], 4:['cdc.gov/ccindex', 'cdc', 'img/cdc-cci-site.png?v=20261117a'] };
+  function shot(s){
+    return '<div class="fw-card shot" data-shot="' + s[1] + '"><div class="fw-bar"><i></i><i></i><i></i><span>' + esc(s[0]) + '</span></div>' +
+      '<img src="' + s[2] + '" alt=""></div>';
+  }
+  [].forEach.call(boxes, function(box){
+    var shots = box.hasAttribute('data-shots'), html = '';
+    for (var r = 0; r < ROWS; r++) {
+      var set = '';
+      for (var k = 0; k < F.length; k++) set += shots && r === 3 && SHOTS[k] ? shot(SHOTS[k]) : card(F[(r * 5 + k) % F.length]);
+      html += '<div class="fw-row' + (r % 2 ? ' rev' : '') + '" style="--dur:' + (F.length * SECS_PER_CARD) + 's;--off:calc(' + (-(r % 3) * 7) + ' * var(--cu))">' + set + set + '</div>';
+    }
+    box.innerHTML = html;
+  });
+})();

@@ -1,0 +1,26 @@
+<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>White titles</title>
+<style>
+body{margin:0;background:#101318;color:#E9EBEE;font:15px/1.5 system-ui,sans-serif;padding:24px}
+h1{font-weight:500;font-size:20px;margin:0 0 4px}
+p.k{margin:0 0 20px;color:#B4BAC2}
+.row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+figure{margin:0}
+img{width:100%;display:block;border-radius:6px;cursor:zoom-in}
+figcaption{font-size:13px;color:#B4BAC2;margin-top:6px}
+h2{font-weight:500;font-size:15px;margin:0 0 8px}
+.big img{cursor:zoom-out}
+.big{position:fixed;inset:0;background:#000d;display:flex;align-items:center;justify-content:center;padding:20px}
+.big img{max-width:100%;max-height:100%;width:auto}
+</style>
+<h1>White titles: today, A soft glow, B crisp edge + glow</h1>
+<p class="k">Screenshots of the deck at 1920×1080, dark mode. Click any shot to see it full size.</p>
+<div id="g"></div>
+<script>
+var S=[['top','Welcome'],['question','Slide 2'],['why','Why AI?'],['intro','Meet PRISM'],['intent','Intent first']];
+var V=[['today','Today: off-white, no shadow'],['a','A: white, soft glow'],['b','B: white, crisp edge + glow']];
+var g=document.getElementById('g');
+S.forEach(function(s){var h='<h2>'+s[1]+'</h2><div class="row">';V.forEach(function(v){h+='<figure><img src="'+s[0]+'-'+v[0]+'.jpg" alt="'+s[1]+', '+v[1]+'"><figcaption>'+v[1]+'</figcaption></figure>';});g.insertAdjacentHTML('beforeend',h+'</div>');});
+document.addEventListener('click',function(e){var b=document.querySelector('.big');if(b){b.remove();return;}if(e.target.tagName==='IMG'){var d=document.createElement('div');d.className='big';d.innerHTML='<img src="'+e.target.src+'">';document.body.appendChild(d);}});
+</script>

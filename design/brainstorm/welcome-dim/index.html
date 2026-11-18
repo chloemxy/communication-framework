@@ -1,0 +1,32 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Slides 1-2 blue and contrast</title>
+<style>
+body{margin:0;background:#16181D;color:#E9EBEE;font:15px/1.4 system-ui,sans-serif;padding:16px}
+h2{font-weight:500;font-size:17px;margin:18px 0 2px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(520px,100%),1fr));gap:20px}
+h3{margin:0 0 4px;font-weight:500;font-size:14px;color:#B4BAC2}
+p{margin:0 0 8px;color:#B4BAC2;font-size:13px;max-width:900px}
+.box{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px}
+.box iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none}
+</style></head><body>
+<h2>Now</h2><p>Slide 1 is dimmed to 82%: white 4.46 : 1, small grey lines 4.33 : 1 &mdash; just under AA. Slide 2 is not dimmed: white 2.7 : 1, fails.</p>
+<div class="row"><div><h3>Slide 1</h3><div class="box"><iframe data-v="now" data-s="top"></iframe></div></div><div><h3>Slide 2</h3><div class="box"><iframe data-v="now" data-s="question"></iframe></div></div></div>
+<h2>A &middot; One deeper blue, white text</h2><p>Both slides settle on the same blue, rgb(34 115 150): slide 1&rsquo;s art at 78%, slide 2&rsquo;s desk and backdrop at 72%. White text 4.8 : 1, small lines 4.7 : 1 &mdash; every line passes AA. The art reads a little deeper than slide 2 does today.</p>
+<div class="row"><div><h3>Slide 1</h3><div class="box"><iframe data-v="a" data-s="top"></iframe></div></div><div><h3>Slide 2</h3><div class="box"><iframe data-v="a" data-s="question"></iframe></div></div></div>
+<h2>C &middot; Only the blue goes deeper</h2><p>No dimming. Only the table&rsquo;s blue is recoloured to rgb(34 115 150), in the video and in slide 2&rsquo;s desk picture; the tablet, napkin, flowers, coffee, desk and chair keep their full colour. White text about 4.8 : 1 on both slides &mdash; every line passes AA.</p>
+<div class="row"><div><h3>Slide 1</h3><div class="box"><iframe data-v="c" data-s="top"></iframe></div></div><div><h3>Slide 2</h3><div class="box"><iframe data-v="c" data-s="question"></iframe></div></div></div>
+<h2>B &middot; Bright blue, dark ink text</h2><p>Neither slide is dimmed; the art stays as bright as slide 2 is now. Text turns the illustration&rsquo;s dark-green ink: 5.3 : 1 on slide 1, 6.1 : 1 on slide 2. &ldquo;Dropped&rdquo; and &ldquo;understood it.&rdquo; get the picture&rsquo;s yellow highlight.</p>
+<div class="row"><div><h3>Slide 1</h3><div class="box"><iframe data-v="b" data-s="top"></iframe></div></div><div><h3>Slide 2</h3><div class="box"><iframe data-v="b" data-s="question"></iframe></div></div></div>
+<script>
+const CSS={now:'',
+ c:'.welcome-bg{filter:none!important}#question{background:rgb(34 115 150)!important;--ink-2:#EEF1F4!important}',
+ a:'.welcome-bg{filter:brightness(.78)!important}#question{background:rgb(34 115 150)!important;--ink-2:#EEF1F4!important}#question .desk-bg{filter:brightness(.72)}',
+ b:'.welcome-bg{filter:none!important}.napkin-wash{display:none}#top,#question{color:#0A2410!important;--ink:#0A2410!important;--ink-2:#0A2410!important;--hl:#E0C05C!important}#top .stage,#question .stage{text-shadow:none!important}#top .fine a,#question a{color:#0A2410}'};
+document.querySelectorAll('iframe').forEach(f=>{
+  const box=f.parentElement, fit=()=>f.style.transform='scale('+box.clientWidth/1920+')';
+  fit(); addEventListener('resize',fit);
+  f.addEventListener('load',()=>{const s=f.contentDocument.createElement('style');s.textContent=CSS[f.dataset.v];f.contentDocument.head.appendChild(s);
+    if(f.dataset.v==='c'){const d=f.contentDocument;const v=d.querySelector('#top .welcome-bg');v.src='/design/brainstorm/welcome-dim/wind-deep.mp4';v.removeAttribute('poster');v.play&&v.play().catch(()=>{});const k=d.querySelector('#question .desk-bg');k.src='/design/brainstorm/welcome-dim/desk-deep.jpg';}});
+  f.src='/presentation/?mock=c'+f.dataset.v+f.dataset.s+'#'+f.dataset.s;
+});
+</script></body></html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Tablet on slide 1</title>
+<style>
+body{margin:0;background:#16181D;color:#E9EBEE;font:15px/1.4 system-ui,sans-serif;padding:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(560px,100%),1fr));gap:20px}
+h3{margin:0 0 4px;font-weight:500;font-size:15px}
+p{margin:0 0 8px;color:#B4BAC2;font-size:13px}
+.box{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px}
+.box iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none}
+</style></head><body>
+<div class="row">
+ <div><h3>C · As before</h3><p>The real screenshot, untouched colours.</p><div class="box"><iframe data-v="C-landscape"></iframe></div></div>
+ <div><h3>C1 · Illustration colours</h3><p>Same screen, recoloured to the picture's own palette: paper white, pale blue panels, dark-green ink text, the picture's yellow and red. Plus its grain.</p><div class="box"><iframe data-v="C1-palette"></iframe></div></div>
+ <div><h3>C2 · Drawn like the napkin</h3><p>Redrawn in the illustration's ink style: flat fills, ink panel lines, text as ink bars. Matches the art best; no longer readable.</p><div class="box"><iframe data-v="C2-drawn"></iframe></div></div>
+ <div><h3>C3 · Illustration colours, lit</h3><p>C1 with a soft reflection across the glass and slight shading toward the far edge, so it sits in the scene's light.</p><div class="box"><iframe data-v="C3-glare"></iframe></div></div>
+</div>
+<script>
+document.querySelectorAll('iframe').forEach(f=>{
+  const box=f.parentElement, fit=()=>f.style.transform='scale('+box.clientWidth/1920+')';
+  fit(); addEventListener('resize',fit);
+  f.addEventListener('load',()=>{ f.contentDocument.querySelector('.welcome-bg').src='/design/brainstorm/welcome-tablet/'+f.dataset.v+'.png'; });
+  f.src='/presentation/?mock='+f.dataset.v+'#top';
+});
+</script>
+</body></html>

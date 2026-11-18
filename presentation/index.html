@@ -65,13 +65,15 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* scenes */
 /* slide changes: the old slide drifts away and fades, the new one fades in from the other side */
 .scene{position:fixed;inset:0;z-index:5}
-/* welcome background: a table seen from above in the empty desk's blue (forget-me-nots, a glass on a
-   napkin with the prototype sketched on it, coffee) with a tablet whose screen shows PRISM's Studio,
-   redrawn in the picture's own ink style. It moves: a breeze blows petals off the flowers and steam off
-   the coffee, then plays back in reverse, on repeat (media/bg/welcome-wind-loop.mp4, 20 s, silent), so
-   the loop never jumps. It plays only while the slide is up; with reduced motion it rests on its first
-   frame (welcome-wind-poster.jpg). It covers the slide, anchored right so the table stays clear of the text */
-.welcome-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;display:block;filter:brightness(.82)}
+/* welcome background: a table seen from above (forget-me-nots, a glass on a napkin with the prototype
+   sketched on it, coffee) with a tablet whose screen shows PRISM's Studio, redrawn in the picture's own
+   ink style. It moves: steam curls off the coffee and light glides across the tablet, forward only; the
+   last 1.5 s crossfade into the start, so the 8.5 s loop never jumps (media/bg/welcome-wind-loop.mp4,
+   silent). Only the table's blue is recoloured to rgb(15 108 157), the blue the "Why AI?" video shows, so white
+   text passes AA (5.2 : 1) without dimming the picture. It plays only while the slide is up; with reduced
+   motion it rests on its first frame (welcome-wind-poster.jpg). It covers the slide, anchored right so
+   the table stays clear of the text */
+.welcome-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:right center;display:block}
 /* only a soft fade along the foot, behind the intros and fine print; the blue itself is dark enough
    for the title, so the rest of the picture shows in full */
 .napkin-wash{position:absolute;inset:0;pointer-events:none;
@@ -79,6 +81,9 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* the grey small lines (label, job titles, fine print) brighten on the bare blue in dark mode */
 :root:not([data-theme="light"]) #top{--ink-2:#EEF1F4}
 #top .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .5)}
+/* slides on a blue background (the title and slide 2) highlight in a solid olive: the see-through
+   yellow turns green over the blue */
+#top,#question{--hl:#6B5F14}
 /* slide 3 background: a muted phone commercial (analogy-bg.js), cropped to cover the slide and faded
    in once it plays; a dark wash keeps the lines readable */
 .yt-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;opacity:0;transition:opacity 1s ease}
@@ -90,32 +95,139 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 /* a quiet setup line, then the payoff bigger than any other headline; on a phone it wraps freely */
 #analogy .setup{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
 #why .setup{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2)}
-/* Why AI?: a blueprint Lego figure builds itself behind the line (lego-bg.js); the blue sheet is
-   the slide, so the small line above the title goes lighter to stay readable on it */
-#why{background:#025A9E}
-#why .lego-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
-#why .stage{z-index:1;text-shadow:0 1px 14px rgb(0 30 70 / .55)}
-#why .setup{color:#DCE8F6}
-#why mark{background-color:#5A5114}
+/* Why AI?: PRISM's 14 frameworks as browser cards in tilted rows; each row is a carousel and the
+   rows pan in alternating directions, one card passing every 9 s (fw-rows.js builds the cards).
+   A wash in the slide's own colour sits over them, heaviest behind the line, so it follows the theme. */
+#why{--cu:min(1vw,1.78vh);background:var(--desk);overflow:hidden}
+.fw-bg{position:absolute;inset:-25% -15%;transform:rotate(-4deg);display:flex;flex-direction:column;justify-content:center;gap:calc(2.2 * var(--cu));pointer-events:none}
+.fw-row{display:flex;gap:calc(2 * var(--cu));width:max-content;animation:fw-left var(--dur,126s) linear infinite}
+.fw-row.rev{animation-name:fw-right}
+@keyframes fw-left{from{transform:translateX(var(--off,0))}to{transform:translateX(calc(var(--off,0px) - 50%))}}
+@keyframes fw-right{from{transform:translateX(calc(var(--off,0px) - 50%))}to{transform:translateX(var(--off,0))}}
+#why:not(.on) .fw-row{animation-play-state:paused}
+@media (prefers-reduced-motion:reduce){.fw-row{animation:none}}
+.fw-card{flex:none;width:calc(18.5 * var(--cu));height:calc(10.8 * var(--cu));background:#fff;color:#16181D;border-radius:calc(.7 * var(--cu));
+  box-shadow:0 calc(.3 * var(--cu)) calc(1.4 * var(--cu)) rgb(0 0 0 / .18);display:flex;flex-direction:column;overflow:hidden;font-family:var(--f-ui)}
+.fw-bar{display:flex;align-items:center;gap:calc(.35 * var(--cu));padding:calc(.6 * var(--cu)) calc(.8 * var(--cu));border-bottom:1px solid #ECECEF}
+.fw-bar i{width:calc(.45 * var(--cu));height:calc(.45 * var(--cu));border-radius:50%;background:#D4D5DA;flex:none}
+.fw-bar span{margin-left:calc(.5 * var(--cu));flex:1;min-width:0;border:1px solid #E4E5E8;border-radius:calc(.3 * var(--cu));padding:calc(.12 * var(--cu)) calc(.5 * var(--cu));
+  font-size:calc(.62 * var(--cu));color:#6B7079;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fw-body{flex:1;display:flex;flex-direction:column;padding:calc(.8 * var(--cu)) calc(1 * var(--cu)) calc(.7 * var(--cu))}
+.fw-zone{font-size:calc(.56 * var(--cu));letter-spacing:.12em;text-transform:uppercase;color:#6B7079;display:flex;align-items:center;gap:calc(.4 * var(--cu))}
+.fw-zone::before{content:"";width:calc(.9 * var(--cu));height:calc(.25 * var(--cu));background:#F5CF4A;flex:none}
+.fw-title{font:600 calc(1.9 * var(--cu))/1.1 var(--f-display);margin-top:calc(.35 * var(--cu));letter-spacing:-.01em;white-space:nowrap}
+.fw-sub{font-size:calc(.72 * var(--cu));line-height:1.35;color:#5A5F68;margin-top:calc(.3 * var(--cu))}
+.fw-src{margin-top:auto;padding-top:calc(.45 * var(--cu));border-top:1px solid #ECECEF;font-size:calc(.58 * var(--cu));color:#6B7079;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fw-wash{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgb(var(--scrim) / .94) 0%,rgb(var(--scrim) / .86) 45%,rgb(var(--scrim) / .55) 72%,rgb(var(--scrim) / .4) 100%)}
+#why .stage{z-index:1}
+#why .clip-bg{object-position:100% 100%}   /* the slices sit lower right; keep them in view when the screen isn't 16:9 */
 @media (min-width:721px){#why .big-line{max-width:none;white-space:nowrap;line-height:1.08;margin-top:calc(.8 * var(--u))}}
 @media (max-width:720px){#why .big-line br{display:none}}
 @media (min-width:721px){#analogy .big-line{max-width:none;white-space:nowrap;line-height:1.08;margin-top:calc(.8 * var(--u))}}
 @media (max-width:720px){#analogy .big-line br{display:none}}
+/* Slide 4, Standards exist: Nati's post and the CDC Clear Communication Index arrive side by side; on
+   the click they shrink and tilt into two cards in the framework rows (fw-rows.js puts those cards in
+   the middle row, standards.js lines them up), the other cards fade in around them and the rows start
+   drifting. A fly's --k runs 0 (big) to 1 (sitting in its card); while it flies the rows hold still. */
+#standards{--cu:min(1vw,1.78vh);background:var(--desk);overflow:hidden}
+/* Standards and Why AI? share the welcome slide's and slide 2's deeper blue in both themes: light text,
+   the olive highlight, and the framework rows' wash in the same blue */
+/* the blue "Why AI?"'s explanation video shows on screen, so the two slides read as one colour */
+#standards,#why{background:rgb(15 108 157);--ink:#F6F4EC;--ink-2:#EEF1F4;--hl:#6B5F14;--scrim:15 108 157}
+/* after the click the rows come in at full strength under a left-to-right wash: deep blue behind the
+   title, clear from about two-thirds across, so the right side stays vivid */
+#standards .fw-card:not(.shot){opacity:var(--k,0)}
+#standards .fw-card.shot{opacity:0}
+#standards.go .fw-card.shot{opacity:1}
+#standards:not(.go) .fw-row,#standards:not(.on) .fw-row{animation-play-state:paused}
+#standards .fw-wash{opacity:var(--k,0);background:linear-gradient(180deg,rgb(15 108 157 / 0) 84%,rgb(15 108 157 / .92) 97%),linear-gradient(90deg,rgb(15 108 157 / .95) 0%,rgb(15 108 157 / .9) 30%,rgb(15 108 157 / .5) 50%,rgb(15 108 157 / 0) 68%)}
+.fw-card.shot img{flex:1;min-height:0;width:100%;object-fit:cover;object-position:50% 0}
+#standards .shots{position:absolute;inset:0;z-index:1;pointer-events:none}
+#standards .fly{position:absolute;overflow:hidden;background:#fff;border-radius:calc(.7 * var(--cu) * var(--k,0) + 6px * (1 - var(--k,0)));
+  box-shadow:0 calc(.3 * var(--cu)) calc(1.4 * var(--cu)) rgb(0 0 0 / .25);
+  width:calc(var(--w0,0px) + (var(--w1,0px) - var(--w0,0px)) * var(--k,0));height:calc(var(--h0,0px) + (var(--h1,0px) - var(--h0,0px)) * var(--k,0));
+  left:calc(var(--x0,0px) + (var(--x1,0px) - var(--x0,0px)) * var(--k,0));top:calc(var(--y0,0px) + (var(--y1,0px) - var(--y0,0px)) * var(--k,0));
+  transform:translate(-50%,-50%) rotate(calc(var(--r0,0deg) + (-4deg - var(--r0,0deg)) * var(--k,0)));translate:0 -130vh}
+/* the pile: Nati's post lies on top of the CDC site. Each drops in (standards.js adds .down) and
+   settles with a small bounce; back above the slide when the slide rewinds past it */
+#standards .fly[data-fly="post"]{z-index:1}
+/* in the pile each screenshot hangs in the wooden picture frame from the blue cabinets drawing; the
+   frame thins to nothing as it flies into its card */
+#standards .fly{box-sizing:content-box;background-clip:padding-box;border:solid transparent;border-width:calc(var(--h0,0px) * .13 * (1 - var(--k,0)));
+  border-image:url("media/bg/cabinet-frame.png?v=20261118a") 96 108 123 99 stretch}
+#standards .fly.down{translate:0 0;animation:st-drop .9s cubic-bezier(.33,.7,.45,1)}
+@keyframes st-drop{0%{translate:0 -130vh}60%{translate:0 calc(1.6 * var(--cu))}76%{translate:0 calc(-.7 * var(--cu))}89%{translate:0 calc(.25 * var(--cu))}100%{translate:0 0}}
+@media (prefers-reduced-motion:reduce){#standards .fly.down{animation:none}}
+#standards .fly img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+#standards.go .fly{visibility:hidden}
+/* the wash sits over the flying screenshots too, so they darken with the rows as they land and the
+   hand-off to the real cards does not show; the text stays on top */
+#standards .fw-wash{z-index:2}
+#standards .stage{z-index:3}   /* the title sits in the middle of the slide on both beats */
+#standards .st-stack{display:grid}
+#standards .st-stack>*{grid-area:1/1}
+@media (min-width:721px){#standards .big-line{max-width:none;white-space:nowrap;line-height:1.08}}
+#standards .setup{font:400 var(--fs-body)/1.45 var(--f-ui);color:var(--ink-2);margin-top:calc(.8 * var(--u))}
 /* slide 2 background: a still of a busy clinic front desk, cropped so the desk sits right of the text */
 .clip-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 50%}
 .clip-wash{position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(90deg,rgb(var(--scrim) / .85) 0%,rgb(var(--scrim) / .7) 45%,rgb(var(--scrim) / .4) 66%,rgb(var(--scrim) / .05) 88%,rgb(var(--scrim) / 0) 100%)}
-#question .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
+/* Slide 2: the empty desk; desk-pile.js drops the posters onto it (see there) */
+#question{background:rgb(15 108 157);overflow:hidden}
+#question{--ink:#F6F4EC;--ink-2:#EEF1F4}
+#question .desk-art{position:absolute;left:0;top:0;width:1456px;height:816px;transform-origin:0 0;pointer-events:none}
+#question .desk-bg{position:absolute;inset:0;width:100%;height:100%;display:block;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%),linear-gradient(180deg,transparent,#000 9%);-webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,#000 7%),linear-gradient(180deg,transparent,#000 9%);mask-composite:intersect}
+#question .desk-sheets{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+/* the reactions sit on their own layer above the sheets, in the drawing's pixels like .desk-art */
+/* after the click: a gust of wind with a few leaves, then the cricket (desk-pile.js moves them) */
+#question .desk-fx{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+#question .desk-fx path{opacity:0}
+#question .desk-cricket{position:absolute;left:0;top:0;width:70px;height:auto;transform-origin:50% 100%;opacity:0;pointer-events:none}
+#question .desk-pops{position:absolute;left:0;top:0;width:1456px;height:816px;transform-origin:0 0;pointer-events:none}
+#question .lead{max-width:30ch;margin-top:calc(2.2 * var(--u))}
+/* reactions burst out from behind the lifted poster: each starts at the poster's centre, small, and
+   springs out to its spot with a little overshoot (--e, eased in desk-pile.js), then keeps playing */
+#question .pop-r{position:absolute;line-height:1;opacity:min(1,calc(var(--p,0) * 4));
+  transform:translate(calc(-50% - var(--dx,0px) * (1 - var(--e,0))),calc(-50% - var(--dy,0px) * (1 - var(--e,0)))) scale(calc(.25 + .75 * var(--e,0))) rotate(calc((1 - var(--e,0)) * -25deg))}
+#question .stage{z-index:1;align-items:center;text-shadow:0 1px 10px rgb(0 40 80 / .35)}
+/* the titles sit in the middle of the slide, top to bottom */
+#question .inner{justify-content:center}
+#question .st-stack{display:grid}
+#question .st-stack>*{grid-area:1/1}
+@media (min-width:721px){#question .big-line{max-width:none;white-space:nowrap;line-height:1.08}}
+[data-theme="light"] #question .stage{text-shadow:0 1px 10px rgb(0 40 80 / .35)}
 /* the push-in toward the desk pile, 3 s after the slide arrives (question-bg.js adds .push) */
-#question .clip-bg{transform-origin:64% 40%;transition:transform 8s cubic-bezier(.25,.6,.35,1)}
-#question .clip-bg.push{transform:scale(1.15)}
 /* After slide 2: the designer waits in her chair, outlined, the room dimmed around her (baked into
    the image). The text sits on the right over the dark room so it never covers her; the art is dark
    in both themes, so the slide keeps light text. */
+/* Why AI? with the Lego figure, restored in the appendix: a blueprint Lego figure builds itself behind
+   the line (lego-bg.js) on a blue sheet */
+#why-lego{background:#025A9E}
+#why-lego .lego-bg{position:absolute;inset:0;width:100%;height:100%;display:block}
+#why-lego .stage{z-index:1;text-shadow:0 1px 14px rgb(0 30 70 / .55)}
+#why-lego .setup{font:400 var(--fs-body)/1.45 var(--f-ui);color:#DCE8F6}
+#why-lego mark{background-color:#5A5114}
+@media (min-width:721px){#why-lego .big-line{max-width:none;white-space:nowrap;line-height:1.08;margin-top:calc(.8 * var(--u))}}
+@media (max-width:720px){#why-lego .big-line br{display:none}}
+/* the clinic question, restored in the appendix: text over the clinic desk clip */
+#question-clinic .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
+/* its opening quote mark hangs outside the text edge, so "Did" lines up with "make" */
+#question-clinic q{text-indent:-.4em}
 #waiting{--ink:#E9EBEE;--ink-2:#C9CED5}
 #waiting .clip-bg{object-position:30% 50%}
 #waiting .clip-wash{background:linear-gradient(270deg,rgb(8 10 14 / .55) 0%,rgb(8 10 14 / .3) 45%,rgb(8 10 14 / 0) 60%)}
 #waiting .stage{z-index:1;text-shadow:0 1px 16px rgb(0 0 0 / .6)}
+@media (min-width:721px){#waiting .big-line{max-width:none;white-space:nowrap;line-height:1.08}}
+#waiting .lead{max-width:30ch;margin-top:calc(2.2 * var(--u))}
+/* an opening quote mark hangs outside the text edge, so the letters line up, not the quote marks */
+.hang{margin-left:-.4em}
+mark.hang{margin-left:calc(-.4em - .08em)}
+/* a credit line always sits at the bottom left of the slide, even when the text is on the right */
+.scene>.credit.bl{position:absolute;z-index:3;left:var(--gut);bottom:calc(8px + env(safe-area-inset-bottom,0px));margin:0;max-width:none;font:400 var(--fs-fine)/1.4 var(--f-ui);color:var(--ink-2)}
+.scene>.credit.bl a{color:inherit}
 @media (min-width:721px){
   #waiting .stage{padding-left:calc(52vw + 2 * var(--u));padding-right:calc(2.5 * var(--u))}
   #waiting .inner{max-width:none}}
@@ -281,7 +393,13 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 .inner .credit{margin:16px 0 0;max-width:none;font:400 var(--fs-fine)/1.4 var(--f-ui);color:var(--ink-2)}
 .credit a{color:inherit}
 /* footers share one spot: the foot of the slide, left-aligned, the source note on The proof included */
-@media (min-width:721px){.inner .credit,.inner .note,.inner .fine{position:absolute;left:0;right:0;bottom:calc(-2 * var(--u));margin:0}}
+@media (min-width:721px){.inner .credit,.inner .note,.inner .fine{position:absolute;left:0;right:0;bottom:calc(-2 * var(--u));margin:0}
+  /* every footer (credit line) sits in the same spot on every slide, on one row: lined up with the
+     slide's text edge, 1.5 units above the bottom */
+  .inner .credit,.inner .fine,.scene>.credit.bl,.ft-col .credit{white-space:nowrap}
+  .scene>.credit.bl,.scene .ft-col .credit{position:absolute;left:calc(2.5 * var(--u));right:auto;bottom:calc(1.5 * var(--u));margin:0;font:400 var(--fs-fine)/1.4 var(--f-ui)}
+  /* the Appendix feature slides keep theirs in a side column, so it is placed against the screen */
+  .scene .ft-col .credit{position:fixed;z-index:3}}
 .scene,.walk{opacity:0;visibility:hidden;transition:opacity .55s ease,transform .7s cubic-bezier(.2,.7,.2,1),visibility 0s linear .7s}
 .scene.on,.walk.on{opacity:1;visibility:visible;transform:none;transition:opacity .6s ease .12s,transform .8s cubic-bezier(.2,.7,.2,1) .05s,visibility 0s}
 .scene[data-dir="fwd"]:not(.on){transform:translateY(-4vh) scale(.985)}
@@ -301,35 +419,14 @@ mark{background:var(--hl);color:var(--ink);padding:0 .12em;border-radius:1px}
 @media (max-width:900px){.stage{padding-right:var(--gut)}}
 .inner{width:100%;max-width:1080px;position:relative}
 /* .pin slides start their title at one height, so titles sit in the same place from slide to slide */
-.scene.pin .stage{align-items:flex-start;padding-top:8dvh}
+.scene.pin .stage{align-items:flex-start;padding-top:max(8dvh,5 * var(--u,1vw))}
 .scene.pin .inner{justify-content:flex-start}
-/* Morph, the default slide change (View Transitions): the page crossfades while shared parts, the title
-   and anything marked data-morph, glide from their old place and size to the new one. The slides' own
-   CSS fade is off while it runs. */
-::view-transition-group(*){animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.25,1)}
-::view-transition-old(root),::view-transition-new(root){animation-duration:.6s}
+/* Morph, the one slide change, the same forward and back (View Transitions): the page crossfades while
+   shared parts, the title and anything marked data-morph, glide from their old place and size to the new
+   one, on one clock. The slides' own CSS fade is off while it runs. */
+::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation-duration:.75s;animation-timing-function:cubic-bezier(.65,0,.25,1)}
 .vt .scene{transition:none!important}
 .vt-held{opacity:1!important;transform:none!important}
-/* Prism wipe (data-wipe="prism"): the next slide is revealed behind a slanted highlighter swipe, the
-   logo's own shape, trailed by three thin lines of split light. The edge leans 20deg (36.4vh over the
-   full height), and the band is skewed by the same angle so it rides the seam. */
-html.vt-prism::view-transition-old(root){animation:none}
-html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezier(.65,0,.25,1) both}
-@keyframes prism-reveal{
-  from{clip-path:polygon(-60vh 0,-3.6vh 0,-40vh 100%,-60vh 100%)}
-  to{clip-path:polygon(-60vh 0,calc(100vw + 36.4vh) 0,100vw 100%,-60vh 100%)}}
-.prism-edge{position:fixed;left:0;top:0;height:100vh;width:12vh;display:flex;gap:1.1vh;align-items:stretch;
-  transform:translateX(-200vh);pointer-events:none;z-index:50;view-transition-name:vt-prism}
-.prism-edge i{width:.7vh;flex:none}
-.prism-edge i:nth-child(1){background:#E5484D}
-.prism-edge i:nth-child(2){background:#30A46C}
-.prism-edge i:nth-child(3){background:#3E63DD}
-.prism-edge b{flex:1;background:var(--brand)}
-::view-transition-group(vt-prism){animation:prism-edge 1.2s cubic-bezier(.65,0,.25,1) both;transform-origin:0 0}
-::view-transition-new(vt-prism){animation:none}
-@keyframes prism-edge{
-  from{transform:translateX(-14.6vh) skewX(-20deg)}
-  to{transform:translateX(calc(100vw + 25.4vh)) skewX(-20deg)}}
 .scene.pin .h2,.scene.pin .thanks h2{margin-top:0}
 
 /* .drive elements use --k for something of their own instead of fading in */
@@ -471,8 +568,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
    plays its clip once (a click on an open tile replays it). The clip fills the tile. */
 /* each tile is as large as fits both ways (1040:880); the text column starts 1.5u after the tiles,
    so the gap stays the same at any window shape */
-.scene.feat .inner{--tw:min((63.3 * var(--u) - 1.04 * var(--u)) / 2,(100dvh - 6.04 * var(--u)) / 2 * 1040 / 880)}
-.ft-grid{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 5 * var(--u));display:grid;grid-template-columns:repeat(2,var(--tw));grid-template-rows:repeat(2,calc(var(--tw) * 880 / 1040));justify-content:start;align-content:start;gap:calc(1.04 * var(--u))}
+/* the tiles stop 1.6 units higher than before, so the footer credit line fits under them */
+.scene.feat .inner{--tw:min((63.3 * var(--u) - 1.04 * var(--u)) / 2,(100dvh - 7.64 * var(--u)) / 2 * 1040 / 880)}
+.ft-grid{position:absolute;left:calc(2.5 * var(--u));top:calc(2.5 * var(--u));width:calc(63.3 * var(--u));height:calc(100dvh - 6.6 * var(--u));display:grid;grid-template-columns:repeat(2,var(--tw));grid-template-rows:repeat(2,calc(var(--tw) * 880 / 1040));justify-content:start;align-content:start;gap:calc(1.04 * var(--u))}
 .scene.feat:has(.ft-grid) .ft-col{left:calc(2.5 * var(--u) + 2 * var(--tw) + 2.54 * var(--u))}
 /* slide 3: the poster down one column, its two clip tiles stacked beside it */
 .ft-grid-poster .ft-poster{grid-column:1;grid-row:1 / 3;position:relative;border-radius:calc(.83 * var(--u));overflow:hidden;background:#fff}
@@ -509,7 +607,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .ft-col{position:absolute;left:calc(68.3 * var(--u));top:calc(2.5 * var(--u));right:calc(2.5 * var(--u));height:calc(100dvh - 5 * var(--u));display:flex;flex-direction:column}
 .ft-col > :not(.ft-does){padding-left:calc(1.56 * var(--u))}
 .ft-step{font:400 calc(1.25 * var(--u))/1.3 var(--f-ui);color:var(--ink-2)}
-.ft-title{font:500 calc(2.9 * var(--u))/1.08 var(--f-display);color:var(--ink);margin:calc(.6 * var(--u)) 0 0;max-width:none}
+.ft-title{font:500 calc(2.9 * var(--u))/1.08 var(--f-display);color:var(--ink);margin:calc(.76 * var(--u)) 0 0;max-width:none}
 /* the title is a button back to the whole view */
 .feat .ft-title{cursor:pointer;width:fit-content;border-radius:calc(.4 * var(--u));text-decoration:underline;text-decoration-color:transparent;text-underline-offset:.14em;text-decoration-thickness:2px;transition:text-decoration-color .2s}
 .feat .ft-title:hover{text-decoration-color:var(--brand)}
@@ -593,9 +691,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 @media (min-width:721px){
   .ft-clip,.ft-grid,.ft-live{left:auto;right:calc(2.5 * var(--u))}
   .ft-grid{justify-content:start}
-  .ft-col{left:calc(2.5 * var(--u));right:calc(68.3 * var(--u))}
+  .ft-col{left:calc(3.44 * var(--u));right:calc(68.3 * var(--u))}   /* its text, inset 1.56u, starts at 5u */
   /* one column width on every demo slide: it ends where the live panels begin, tiles or not */
-  .scene.feat:has(.ft-grid) .ft-col{left:calc(2.5 * var(--u));right:calc(68.3 * var(--u))}
+  .scene.feat:has(.ft-grid) .ft-col{left:calc(3.44 * var(--u));right:calc(68.3 * var(--u))}
 }
 @media (max-width:720px){.scene.feat .inner{height:auto}.ft-clip,.ft-col,.ft-grid{position:static;width:auto;height:auto}.ft-grid{grid-template-columns:1fr;grid-template-rows:auto}.ft-vid{aspect-ratio:580/500}.ft-clip{aspect-ratio:860/696}.ft-col{margin-top:24px}}
 .fp-row.fp-tall{--shut:calc(3 * var(--u,1vw));--open:calc(100cqw - 12.6 * var(--u,1vw));--vh:min(var(--open) / 1.765, 100dvh - 7.5 * var(--u,1vw))}
@@ -785,8 +883,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 @media (min-width:721px){
   :root{--u:min(1vw,1.78vh);--fs-hero:calc(15 * var(--u));--fs-display:calc(6.6 * var(--u));--fs-title:calc(6 * var(--u));--fs-head:calc(3 * var(--u));
     --fs-body:calc(2.1 * var(--u));--fs-tag:max(12px,22 / 19.2 * var(--u));--fs-fine:max(12px,22 / 19.2 * var(--u))}
-  /* one side margin for every slide: 2.5u left and right, as on the feature slides */
-  .stage{padding:calc(3.5 * var(--u)) calc(2.5 * var(--u)) calc(3.5 * var(--u)) calc(2.5 * var(--u))}
+  /* side margins: 5u on the left, so every title starts at least as far in as Take-home's (96 px at
+     1920x1080); 2.5u on the right, so wide content such as the homepage slider still runs far */
+  .stage{padding:calc(3.5 * var(--u)) calc(2.5 * var(--u)) calc(3.5 * var(--u)) calc(5 * var(--u))}
   .inner{max-width:none;height:100%;display:flex;flex-direction:column;justify-content:center}
   .inner > .cmp{margin:auto}
   .h2{margin-top:var(--u)}
@@ -872,6 +971,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 /* every slide title shares one size: 115px on a 1920x1080 projector */
 .title h1,.question q,.big-line,.h2,.thanks h2{font-size:var(--fs-title)}
+/* every slide title shares one treatment: the same face, size, weight, letter spacing and line spacing,
+   and no glow or shadow behind it, whatever the slide's background */
+.title h1,.question q,.big-line,.h2,.thanks h2{line-height:1.08;text-shadow:none}
 /* closing columns: each step title holds one line in a third of the slide */
 .steps b{font-size:calc(3.6 * var(--u));white-space:nowrap}
 @media (max-width:720px){.steps b{white-space:normal}}
@@ -920,6 +1022,17 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 .pager span{min-width:4.2em;text-align:center}
 .ui-idle .pager:not(:hover):not(:focus-within){opacity:0;pointer-events:none}
 .de-on .pager{display:none}
+/* every footer line (credits, notes, the feedback line) is pure white at 80%; light mode keeps its dark
+   secondary ink, since white would vanish on the light desk */
+:root{--fine:rgb(255 255 255 / .8)}
+:root[data-theme="light"]{--fine:var(--ink-2)}
+.scene :is(.credit,.note,.fine){color:var(--fine)!important}
+.scene :is(.credit,.note,.fine) a{color:inherit!important}
+/* every slide title is pure white with a thin dark edge and a soft glow, so it holds over busy art; the
+   highlighted words in it are white too. Light mode keeps its dark titles. */
+:root:not([data-theme="light"]) .scene :is(.title h1,.question q,.big-line,.h2,.thanks h2){color:#fff!important;
+  text-shadow:0 1px 2px rgb(0 0 0 / .45),0 2px 14px rgb(0 0 0 / .3)!important}
+:root:not([data-theme="light"]) .scene :is(.title h1,.question q,.big-line,.h2,.thanks h2) mark{color:#fff!important}
 </style>
 </head>
 <body>
@@ -933,7 +1046,7 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 <main>
   <section class="scene title" id="top" data-chap="The Barrier Just Dropped" data-tone="warm">
-    <video class="welcome-bg" src="media/bg/welcome-wind-loop.mp4?v=20261117c" poster="media/bg/welcome-wind-poster.jpg?v=20261117c" muted loop playsinline preload="auto" aria-hidden="true"></video><script>(function(){var s=document.getElementById('top'),v=s&&s.querySelector('.welcome-bg');if(!v||matchMedia('(prefers-reduced-motion:reduce)').matches)return;v.muted=true;function u(){if(s.classList.contains('on'))v.play().catch(function(){});else v.pause();}new MutationObserver(u).observe(s,{attributes:true,attributeFilter:['class']});u();})();</script><div class="napkin-wash" aria-hidden="true"></div>
+    <video class="welcome-bg" src="media/bg/welcome-wind-loop.mp4?v=20261118b" poster="media/bg/welcome-wind-poster.jpg?v=20261118b" muted loop playsinline preload="auto" aria-hidden="true"></video><script>(function(){var s=document.getElementById('top'),v=s&&s.querySelector('.welcome-bg');if(!v||matchMedia('(prefers-reduced-motion:reduce)').matches)return;v.muted=true;function u(){if(s.classList.contains('on'))v.play().catch(function(){});else v.pause();}new MutationObserver(u).observe(s,{attributes:true,attributeFilter:['class']});u();})();</script><div class="napkin-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <div class="t-head">
         <svg class="goinvo" viewBox="0 0 59 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GoInvo"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.20963 13.2915C4.90652 13.2915 3.79058 13.7184 2.8618 14.5721C1.93252 15.4263 1.46713 16.442 1.46713 17.6202C1.46713 19.3353 2.28572 20.4807 3.92039 21.0582V21.1055C2.35163 21.3832 1.56725 21.9294 1.56725 22.7425C1.56725 23.5411 2.35163 24.0904 3.92039 24.3913V24.4401C1.30663 25.0562 0 26.003 0 27.2851C0 28.0668 0.401497 28.7164 1.20701 29.2291C2.01101 29.7434 3.14355 30 4.60464 30C6.2217 30 7.47651 29.695 8.36906 29.0877C9.2606 28.4777 9.70688 27.7382 9.70688 26.8696C9.70688 26.1974 9.42311 25.626 8.85458 25.1555C8.28554 24.6865 7.24959 24.2755 5.74322 23.9258C4.23836 23.5771 3.3443 23.3411 3.06154 23.2187C2.77929 23.0968 2.63841 22.9014 2.63841 22.634C2.63841 22.3814 2.78533 22.1624 3.08066 21.9782C3.3755 21.7916 4.04516 21.6296 5.08765 21.4912C6.13114 21.3534 6.9613 21.1626 7.58116 20.9224C8.1995 20.6812 8.75798 20.2081 9.25658 19.5051C9.75518 18.8015 10.0052 18.0039 10.0052 17.11C10.0052 15.7745 9.44475 14.785 8.32529 14.1452V14.0979H11.5363L11.6731 13.2915H6.20963ZM8.00138 14.9756C8.59155 15.4981 8.88538 16.158 8.88538 16.9556C8.88538 17.8021 8.57847 18.6111 7.96364 19.3866C7.35083 20.1606 6.47891 20.5489 5.35039 20.5489C4.50513 20.5489 3.8244 20.264 3.3107 19.6952C2.7955 19.1264 2.5389 18.4491 2.5389 17.6663C2.5389 16.7268 2.88053 15.9116 3.56478 15.2245C4.24904 14.5375 5.04751 14.1924 5.96018 14.1924C6.73198 14.1924 7.41272 14.4536 8.00138 14.9756ZM7.55992 28.5723C6.84146 28.9868 5.80652 29.1946 4.45461 29.1946C3.40911 29.1946 2.58347 29.0362 1.97871 28.7204C1.37294 28.4041 1.06955 27.9808 1.06955 27.4522C1.06955 26.6689 1.58627 26.0405 2.61869 25.5663C3.65161 25.0921 4.46618 24.8555 5.0634 24.8555C5.27169 24.8555 5.91922 25.0273 7.00447 25.3734C8.09073 25.717 8.63562 26.241 8.63562 26.9441C8.63562 27.6147 8.27638 28.1578 7.55992 28.5723ZM13.559 15.1774C12.5502 16.4343 12.0466 18.0548 12.0466 20.0389C12.0466 21.4614 12.4179 22.583 13.1595 23.4007C13.9032 24.2195 14.8465 24.6289 15.9911 24.6289C17.4678 24.6289 18.7458 24.0055 19.8245 22.7594C20.9027 21.5149 21.4415 19.8805 21.4415 17.8568C21.4415 16.4579 21.0788 15.3476 20.3528 14.5247C19.6273 13.7034 18.6502 13.2915 17.423 13.2915C15.8543 13.2915 14.5668 13.92 13.559 15.1774ZM13.9687 22.6777C13.4837 22.0415 13.2406 21.1688 13.2406 20.0636C13.2406 18.4343 13.6185 17.0643 14.3727 15.9539C15.1284 14.8426 16.1286 14.2887 17.3728 14.2887C18.2428 14.2887 18.9401 14.6096 19.4623 15.2545C19.9861 15.8979 20.2467 16.7665 20.2467 17.8568C20.2467 19.4685 19.8251 20.8355 18.9839 21.9546C18.1416 23.0721 17.1268 23.6322 15.9409 23.6322C15.1113 23.6322 14.4537 23.3133 13.9687 22.6777ZM25.3426 10.9268C25.5877 11.1593 25.8805 11.275 26.2206 11.275C26.5607 11.275 26.853 11.1593 27.0976 10.9268C27.3426 10.6928 27.4648 10.4141 27.4648 10.0901C27.4648 9.75783 27.3426 9.47549 27.0976 9.24252C26.853 9.00853 26.5607 8.89178 26.2206 8.89178C25.8805 8.89178 25.5877 9.00853 25.3426 9.24252C25.0986 9.47549 24.9764 9.75783 24.9764 10.0901C24.9764 10.4141 25.0986 10.6928 25.3426 10.9268ZM24.7394 13.5043L23.1344 24.4148H25.2958L26.9013 13.5043H24.7394ZM29.7046 13.5043L28.1006 24.4148H30.2369L31.2839 17.4659C31.301 17.3455 31.5375 17.0688 31.9903 16.6348C32.4446 16.2002 32.8245 15.8767 33.1324 15.6638C33.4403 15.4499 33.7291 15.2915 33.9993 15.1896C34.27 15.0863 34.5135 15.0354 34.7298 15.0354C35.1037 15.0354 35.4156 15.186 35.6652 15.4843C35.9137 15.7857 36.04 16.2203 36.04 16.7901C36.04 16.9958 36.0184 17.2205 35.9781 17.4659L34.9321 24.4148H37.0694L38.1677 17.5368C38.2175 17.236 38.2417 16.9485 38.2417 16.6718C38.2417 15.6911 37.9972 14.8908 37.5086 14.2711C37.0181 13.6499 36.3298 13.3387 35.4413 13.3387C34.1311 13.3387 32.8658 14.0495 31.6472 15.4735L31.5883 15.435L31.8796 13.5043H29.7046ZM47.072 13.5043L43.4132 20.4306L41.853 13.5043H39.7112L42.3184 24.6287H43.3926L49.2687 13.5043H47.072ZM50.8477 15.094C49.7947 16.3745 49.2684 17.9678 49.2684 19.8732C49.2684 21.4068 49.6498 22.604 50.413 23.4665C51.1753 24.3279 52.2298 24.7584 53.5742 24.7584C55.0997 24.7584 56.3872 24.1186 57.4317 22.838C58.4777 21.5575 59 19.9205 59 17.9277C59 16.4887 58.6131 15.3377 57.8363 14.4712C57.0594 13.6062 56.03 13.1731 54.743 13.1731C53.2019 13.1731 51.9013 13.8129 50.8477 15.094ZM56.224 15.6167C56.5993 16.1618 56.7845 16.8926 56.7845 17.8096C56.7845 19.2958 56.463 20.5291 55.821 21.5103C55.177 22.4895 54.4052 22.9802 53.4991 22.9802C52.927 22.9802 52.448 22.7112 52.0621 22.1738C51.6762 21.6358 51.4825 20.94 51.4825 20.0863C51.4825 18.6561 51.804 17.4167 52.448 16.3685C53.0925 15.3215 53.8558 14.7979 54.7433 14.7979C55.3586 14.7979 55.8517 15.0715 56.224 15.6167Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.0326 11.1681C22.0693 10.9145 22.1548 10.6769 22.2635 10.4495L13.8156 9.59985C13.7644 9.82819 13.7108 10.0557 13.6784 10.2888C13.6364 10.5787 13.6161 10.866 13.6055 11.1502L22.0524 11.9998C22.0099 11.7322 21.9916 11.4589 22.0326 11.1681Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.6444 7.73795C22.9135 7.5668 23.2014 7.43411 23.5013 7.3293L17.6968 1.20001C17.4174 1.36155 17.1381 1.52357 16.8631 1.70626C16.5864 1.88895 16.3335 2.07981 16.0801 2.26924L21.884 8.39997C22.0987 8.16391 22.3408 7.93699 22.6444 7.73795Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.2567 7.00936C27.6495 7.04148 28.0166 7.11001 28.3673 7.19996L29.6852 0.18546C29.244 0.129351 28.799 0.0788098 28.3402 0.0454013C27.9889 0.0184175 27.6414 0.0102795 27.2938 0L25.9746 7.02777C26.3856 6.9918 26.8092 6.97509 27.2567 7.00936Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30.4688 11.1808C30.6717 11.4363 30.8286 11.715 30.9521 11.9999L38.3436 6.3408C38.1395 6.0543 37.9318 5.77058 37.6997 5.49183C37.4983 5.24681 37.2853 5.02503 37.0723 4.79993L29.6855 10.4551C29.9675 10.6614 30.2335 10.8904 30.4688 11.1808Z" fill="currentColor"/></svg>
@@ -948,27 +1061,37 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
           <div class="s"><img src="img/sonia-seto.jpg" alt=""><b>Sonia Seto (1T6)</b><span>Biomedical communicator and UX designer</span></div>
           <div class="c"><img src="img/chloe-ma.jpg" alt=""><b>Chloe Ma (2T1)</b><span>Senior product designer, GoInvo</span></div>
         </div>
-        <p class="fine">Feedback: <a href="mailto:prism@goinvo.com">prism@goinvo.com</a><br>This project is licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a> (code) and <a href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a> (designs).<br>Background: generated with <a href="https://www.midjourney.com">Midjourney</a>, PRISM screen drawn in.</p>
+        <p class="fine">Feedback: <a href="mailto:prism@goinvo.com">prism@goinvo.com</a> · Code licensed <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>, designs <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> · Background: generated with <a href="https://www.midjourney.com">Midjourney</a>, PRISM screen drawn in</p>
       </div>
     </div></div>
   </section>
 
-  <section class="scene question" id="question" data-chap="A confession" data-wait data-dur="500">
-    <video disablepictureinpicture class="clip-bg" data-morph="clinic" src="media/bg/clinic-room.mp4?v=20261116a" poster="media/bg/clinic-room-first.jpg?v=20261116a" muted playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" data-morph="clinic-wash" aria-hidden="true"></div>
-    <div class="stage" data-morph="clinic-text"><div class="inner">
+  <section class="scene" id="question" data-chap="A confession" data-beats="2" data-dur="1800">
+    <div class="desk-art" aria-hidden="true"><img class="desk-bg" src="media/bg/empty-desk-deep.jpg?v=20261118d" alt="" width="1456" height="816"></div>
+    <canvas class="desk-sheets" aria-hidden="true"></canvas>
+    <div class="desk-pops" aria-hidden="true"><img class="pop-r" src="media/bg/emoji/2764_fe0f.webp?v=20261117b" alt="" style="left:672px;top:150px;width:74px;--dx:-143px;--dy:-115px"><img class="pop-r" src="media/bg/emoji/1f929.webp?v=20261117b" alt="" style="left:962px;top:120px;width:88px;--dx:147px;--dy:-145px"><img class="pop-r" src="media/bg/emoji/1f44f.webp?v=20261117b" alt="" style="left:880px;top:42px;width:56px;--dx:65px;--dy:-223px"><img class="pop-r" src="media/bg/emoji/1f970.webp?v=20261117b" alt="" style="left:1000px;top:300px;width:100px;--dx:185px;--dy:35px"><img class="pop-r" src="media/bg/emoji/1f4af.webp?v=20261117b" alt="" style="left:678px;top:300px;width:62px;--dx:-137px;--dy:35px"><img class="pop-r" src="media/bg/emoji/1f389.webp?v=20261117b" alt="" style="left:960px;top:425px;width:70px;--dx:145px;--dy:160px"><img class="pop-r" src="media/bg/emoji/1f496.webp?v=20261117b" alt="" style="left:684px;top:420px;width:54px;--dx:-131px;--dy:155px"><img class="pop-r" src="media/bg/emoji/2728.webp?v=20261117b" alt="" style="left:765px;top:58px;width:46px;--dx:-50px;--dy:-207px"><img class="pop-r" src="media/bg/emoji/1f44d.webp?v=20261117b" alt="" style="left:1040px;top:200px;width:52px;--dx:225px;--dy:-65px"><svg class="desk-fx" viewBox="0 0 1456 816" width="1456" height="816"><g class="leaves"></g></svg><img class="desk-cricket" src="media/bg/cricket-cut.png?v=20261118c" alt="" width="354" height="262"></div>
+    <div class="stage"><div class="inner">
       <h2 class="visually-hidden">The question that started it</h2>
-      <q class="pop" data-in="0 1">Did my visual actually <mark class="wipe drive" data-in="0 0">make a difference?</mark></q>
-      <p data-in="0 1">My work left at handoff. I never learned if it helped.</p>
-      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a>, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a> and in code</p>
+      <div class="st-stack">
+        <p class="big-line" data-in="0 0.12" data-out="0.5 0.56">50+ posters,<br> infographics and<br> illustrations.</p>
+        <div data-in="0.56 0.72"><p class="big-line"><span class="hang">“Loved it”</span> isn’t<br> the same as<br> <mark class="wipe drive hang" data-in="0.72 0.92">“understood it.”</mark></p><p class="lead">Nobody was checking whether patients could actually follow what we made.</p></div>
+      </div>
     </div></div>
+    <p class="credit bl">Cricket: generated with <a href="https://www.midjourney.com">Midjourney</a>. Posters: Sonia Seto for UHN. Emoji: <a href="https://googlefonts.github.io/noto-emoji-animation/">Noto animated emoji</a> (CC BY 4.0)</p>
   </section>
 
-  <section class="scene" id="waiting" data-chap="Waiting">
-    <img class="clip-bg" data-morph="clinic" src="media/bg/clinic-designer-outlined.jpg?v=20261116g" alt="" aria-hidden="true"><div class="clip-wash" data-morph="clinic-wash" aria-hidden="true"></div>
-    <div class="stage" data-morph="clinic-text"><div class="inner">
-      <p class="big-line" data-in="0 0.5">Placeholder title</p>
-      <p class="lead" data-in="0.2 0.6">Placeholder line about the designer, waiting to hear back.</p>
-      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a>, outlined in code</p>
+  <section class="scene" id="standards" data-chap="Standards exist" data-beats="2" data-dur="1400">
+    <div class="fw-bg drive" data-in="0.6 0.9" data-shots aria-hidden="true"></div><div class="fw-wash drive" data-in="0.6 0.9" aria-hidden="true"></div>
+    <div class="shots" aria-hidden="true">
+      <div class="fly drive" data-in="0.55 0.85" data-fly="post"><img data-in="0.1 0.12" class="drive" src="img/post-nati-chen.png?v=20261112b" alt=""></div>
+      <div class="fly drive" data-in="0.55 0.85" data-fly="cdc"><img data-in="0.01 0.03" class="drive" src="img/cdc-cci-site.png?v=20261117a" alt=""></div>
+    </div>
+    <div class="stage"><div class="inner">
+      <h2 class="visually-hidden">Standards already exist</h2>
+      <div class="st-stack">
+        <div data-in="0 0.2"><p class="big-line">Standards<br> already exist.</p><p class="setup">What if they were all in one place?</p></div>
+      </div>
+      <p class="credit">Post: <a href="https://lnkd.in/p/gsauNRxE">Nati Chen</a> on LinkedIn. Screenshot: <a href="https://www.cdc.gov/ccindex/">CDC Clear Communication Index</a>. Frames: from a drawing generated with <a href="https://www.midjourney.com">Midjourney</a>. Background: PRISM’s 14 frameworks</p>
     </div></div>
   </section>
 
@@ -993,11 +1116,11 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
   </section>
 
   <section class="scene" id="why" data-chap="Why AI?">
-    <canvas class="lego-bg" aria-hidden="true"></canvas>
+    <video disablepictureinpicture class="clip-bg" src="media/bg/ai-slices.mp4?v=20261118d" poster="media/bg/ai-slices.jpg?v=20261118d" muted playsinline preload="auto" role="img" aria-label="A usual project laid out as glass slices: three developers, a budget, six months of work and three designers. An AI slice drops into the middle and the other slices slide into it, leaving one month, AI and one designer."></video>
     <div class="stage"><div class="inner">
       <p class="setup" data-in="0 0.25">Normally: developers, a budget, months of work. I had none of those.</p>
       <p class="big-line" data-in="0.2 0.5">If you understand<br> the problem, you can<br> <mark>build the tool yourself.</mark></p>
-      <p class="credit">Drawings: generated with <a href="https://www.midjourney.com">Midjourney</a>, assembled in code</p>
+      <p class="credit">Animation: made in code with <a href="https://www.remotion.dev">Remotion</a> and <a href="https://threejs.org">three.js</a></p>
     </div></div>
   </section>
 
@@ -1037,107 +1160,9 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
 
 
 
-  <section class="scene" id="intro" data-chap="Meet PRISM">
-    <iframe class="pm-door" src="../index.html?intro" title="The PRISM front door: Make health handouts, posters and web pages easy to read" loading="eager"></iframe>
-  </section>
-
-  <section class="scene feat" id="feat-drop" data-chap="Demo" hidden>
-    <div class="stage"><div class="inner">
-      <div class="ft-grid">
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Text from the Light Collective guide is pasted into the Material panel."><source src="media/loops/f1-paste.webm?v=20261117z" type="video/webm"><source src="media/loops/f1-paste.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Paste it in</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="A Word file is dragged over the Material panel and opens as an editable draft of 791 words."><source src="media/loops/f2-drop.webm?v=20261117z" type="video/webm"><source src="media/loops/f2-drop.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Drag and drop a file</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The sample poster, Know Your Numbers, is clicked and opens in the Material panel as an image."><source src="media/loops/f3-sample.webm?v=20261117z" type="video/webm"><source src="media/loops/f3-sample.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Start from an example</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The Brief, already open: Patients and Handout are picked, and the targets appear: grade 6 or lower, 150 to 700 words."><source src="media/loops/f4-brief.webm?v=20261117z" type="video/webm"><source src="media/loops/f4-brief.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Set the Brief</span></button>
-      </div>
-      <div class="ft-col">
-        <p class="ft-step">1 of 4</p>
-        <h2 class="ft-title">Bring it in, start checking</h2>
-        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
-        <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li data-show="tile:0">Paste text from anywhere</li><li data-show="tile:1">Drop in a Word file, PDF, text or image</li><li data-show="tile:2">Start from an example to learn how it works</li><li data-show="tile:3">Set the Brief, and the checks begin</li></ul></div>
-        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="scene feat" id="feat-drop-zoom" data-chap="Demo" data-wait data-beats="4" data-dur="700" data-fz="0">
-    <div class="stage"><div class="inner">
-      <span hidden data-in="0 0.0001"></span><!-- gives the slide its click steps -->
-      <div class="fz" aria-hidden="true">
-        <div class="fz-cam"><img src="media/zoom/ws-empty.webp?v=20261117a" alt=""><img class="fz-brief" src="media/zoom/ws-brief.webp?v=20261117a" alt=""></div>
-      </div>
-      <div class="ft-col">
-        <p class="ft-step">1 of 4</p>
-        <h2 class="ft-title">Bring it in, start checking</h2>
-        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
-        <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li data-show="step:1">Paste in or drop a file</li><li data-show="step:2">Start from an example to learn how it works</li><li data-show="step:3">Set the Brief, and the checks begin</li></ul></div>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="scene feat" id="feat-frameworks" data-chap="Demo" hidden>
-    <div class="stage"><div class="inner">
-      <div class="ft-live"><iframe data-src="../index.html?demo=frameworks" title="The PRISM Studio, live: the Frameworks list and the score cards for the Take Action section" tabindex="0"></iframe><div class="ft-slot ft-slot-l"><button type="button" class="ft-cover">Pick, sort and filter</button></div><div class="ft-slot ft-slot-r"><button type="button" class="ft-cover">Each one, its own card</button></div></div>
-      <div class="ft-col">
-        <p class="ft-step">2 of 4</p>
-        <h2 class="ft-title">Pick the right checks</h2>
-        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
-        <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li data-show="slot:0">Picks the frameworks that fit your readers</li><li data-show="slot:1">Shows what every framework asks for, in one place</li><li data-show="slot:1">Tells you which items need your judgement, and why</li><li data-show="slot:1">Suggests fixes you can apply in one click</li><li data-show="slot:1">Saves every change, so you can go back</li></ul></div>
-        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="scene feat" id="feat-frameworks-zoom" data-chap="Demo" data-wait data-beats="6" data-dur="700" data-fz="0">
-    <div class="stage"><div class="inner">
-      <span hidden data-in="0 0.0001"></span><!-- gives the slide its click steps -->
-      <div class="fz" data-live data-press='{"5":{"still":0,"cam":[1.8,330,330],"at":[132.8,149,116.8,32]}}' data-hl-names='{"1":"Frameworks list","2":"CCI checklist","3":"Items with notes","4":"Plain language fix","5":"History button"}' data-hl='{"1":[498,72,697,700,6],"2":[500,141.6,695,691,6],"3":[509,341.2,677,245.3,4],"4":[509,261.6,677,216.3,4],"5":[132.8,149,116.8,32,4,0]}' data-stops="[[1,607.5,492],[1.45,846,380],[1.64,847,420],[1.75,847,640],[1.75,847,400],[2.1,1015,290],[1,607.5,492]]">
-        <div class="fz-cam"><img src="media/zoom/ws2-cards.webp?v=20261117c" alt=""><img data-on="1" src="media/zoom/ws2-list.webp?v=20261117c" alt=""><img data-on="2,3" src="media/zoom/ws2-sheets.webp?v=20261117c" alt=""><img data-on="5" src="media/zoom/ws2-history.webp?v=20261117c" alt=""></div>
-        <iframe class="fz-live" data-src="../index.html?studio&demo=checks" title="The PRISM Studio, live: the TLC guide with the Brief set to Patients and Manual" tabindex="-1"></iframe><span class="fz-try">Click to use it live</span>
-      </div>
-      <div class="ft-col">
-        <p class="ft-step">2 of 4</p>
-        <h2 class="ft-title">Pick the right checks</h2>
-        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
-        <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li data-show="step:1">Picks the frameworks that fit your readers</li><li data-show="step:2">Shows what every framework asks for, in one place</li><li data-show="step:3">Tells you which items need your judgement, and why</li><li data-show="step:4">Suggests fixes you can apply in one click</li><li data-show="step:5">Saves every change, so you can go back</li></ul></div>
-        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="scene feat" id="feat-poster" data-chap="Demo">
-    <div class="stage"><div class="inner">
-      <div class="ft-grid ft-grid-poster">
-        <div class="ft-poster"><video id="ft-poster-vid" muted playsinline disablepictureinpicture preload="auto" poster="media/loops/s3-poster.png?v=20261117z" aria-label="The UHN poster. While the colour tile plays, it shows the band darkened by the suggested fix, then each colour-blind view."><source src="media/loops/s3-poster.mp4?v=20261117z" type="video/mp4"></video></div>
-        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Alt text is typed for the UHN poster and checked against WCAG 1.1.1 and the reading level."><source src="media/loops/s3-alt.webm?v=20261117z" type="video/webm"><source src="media/loops/s3-alt.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Alt text, checked</span></button>
-        <button type="button" class="ft-tile" aria-pressed="false" data-sync="#ft-poster-vid"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="White on the poster blue passes at 5.13 to 1. White on the light-blue band fails at 2.03 to 1; Preview darkens the band to #217f95 on the poster. Then the poster shows deuteranopia, protanopia, tritanopia and greyscale."><source src="media/loops/s3-colour.mp4?v=20261117z" type="video/mp4"></video></span><span class="ft-cover">Colour contrast and colour blindness</span></button>
-      </div>
-      <div class="ft-col">
-        <p class="ft-step">3 of 4</p>
-        <h2 class="ft-title">Check a poster</h2>
-        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Contrast checkers, colour-blind simulators and alt text guides are scattered across separate, clunky sites. No one place does it all.</p></div>
-        <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li data-show="tile:0">Tests alt text against WCAG 1.1.1 and your reading level</li><li data-show="tile:1">Checks colour pairs, and suggests a fix</li><li data-show="tile:1">Shows it as colour-blind readers see it</li></ul></div>
-        <p class="credit">Poster: COVID welcome poster for UHN (June 2022), designed by Sonia Seto</p>
-      </div>
-    </div></div>
-  </section>
-
-  <section class="scene feat" id="feat-edit" data-chap="Demo">
-    <div class="stage"><div class="inner">
-      <div class="ft-live ft-live-4"><iframe data-src="../index.html?demo=edit" title="The PRISM Studio, live: the Take Action draft, its Plain language card and History" tabindex="0"></iframe><div class="ft-slot ft-q ft-q-tr"><button type="button" class="ft-cover">Apply a suggestion, or write your own</button></div><div class="ft-slot ft-q ft-q-br"><button type="button" class="ft-cover">Go back in History</button></div></div>
-      <div class="ft-col">
-        <p class="ft-step">4 of 4</p>
-        <h2 class="ft-title">Fix it your way</h2>
-        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Checkers list the problems, then leave the rewriting, and keeping track of it, to you.</p></div>
-        <p class="ft-kick ft-does-kick">What PRISM does</p>
-        <div class="ft-does"><ul class="ft-list"><li data-show="slot:0">Edit right in the text</li><li data-show="slot:0">Apply a suggested rewrite, or all of them</li><li data-show="slot:0">Write your own in New, then apply it</li><li data-show="slot:1">Every change is a version you can go back to</li></ul></div>
-        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
-      </div>
-    </div></div>
+  <section class="scene" id="intro" data-chap="Meet PRISM" data-beats="7">
+    <i class="pm-beat" data-in="0 1" hidden></i><!-- gives the slide its seven clicks; the frame reads --t -->
+    <iframe class="pm-door" src="../index.html?intro&deck" title="The PRISM front door: Make health handouts, posters and web pages easy to read" loading="eager"></iframe>
   </section>
 
   <section class="scene pin demo" id="features" data-chap="Demo" data-beats="4" hidden>
@@ -1214,6 +1239,66 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     </div></div>
   </section>
 
+  <section class="scene" id="proof" data-chap="The proof" hidden>
+    <video disablepictureinpicture class="clip-bg" src="media/bg/office-days.mp4?v=20261105b" poster="media/bg/office-days.jpg?v=20261105b" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="proof-wash" aria-hidden="true"></div>
+    <div class="stage"><div class="inner">
+      <div class="proof-split">
+        <div>
+          <p class="num pop" data-in="0 0.3"><span class="big drive" data-in="0 0.9" data-count="29">29</span> <span class="unit">hours</span></p>
+          <p class="lead" data-in="0.25 0.45">of building, over 16 days.</p>
+        </div>
+        <ul class="ledger">
+          <li data-in="0.4 0.55"><b class="drive" data-in="0.4 0.95" data-count="131">131</b><span>commits</span></li>
+          <li data-in="0.48 0.63"><b class="drive" data-in="0.45 0.95" data-count="23">23</b><span>sittings</span></li>
+          <li data-in="0.56 0.71"><b class="drive" data-in="0.5 0.95" data-count="23" data-suffix="M">23M</b><span>tokens</span></li>
+          <li data-in="0.64 0.79"><b>0</b><span>developers</span></li>
+        </ul>
+      </div>
+      <p class="note">/ Hours from commit times. Tokens: Chloe’s Claude Code, Aug 17 to Nov 4. Video: room by <a href="https://gemini.google.com" style="color:inherit">Nano Banana (Google Gemini)</a>, animated in code.</p>
+    </div></div>
+  </section>
+
+
+
+
+  <section class="scene" id="thesis" data-chap="The thesis" hidden>
+    <div class="stage"><div class="inner">
+      <ol class="thesis-l">
+        <li data-in="0 0.25"><b>Intent first.</b><span>Know what you’re here for.</span></li>
+        <li data-in="0 0.25"><b>Build fast.</b><span>AI is quick, and great for brainstorming.</span></li>
+        <li data-in="0 0.25"><b><mark>Iterate.</mark></b><span>Show it, change it, cut it back.</span></li>
+      </ol>
+      <p class="real-q" data-in="0.45 0.7">AI gives you the average. <b>You’re the designer.</b></p>
+    </div></div>
+  </section>
+
+  <section class="scene" id="three" data-chap="Take-home" data-zoom>
+    <svg class="three-cover" aria-hidden="true"><defs><mask id="three-hole" maskUnits="userSpaceOnUse"><rect class="three-m" fill="#fff"/><text class="three-t" fill="#000" text-anchor="middle"><tspan>From napkin</tspan><tspan>to prototype</tspan></text></mask></defs><rect class="dark three-m" mask="url(#three-hole)"/></svg>
+    <div class="stage"><div class="inner">
+      <h2 class="h2 visually-hidden">From napkin to prototype</h2>
+    </div></div>
+  </section>
+
+  <section class="scene pin point" id="intent" data-chap="Intent first">
+    <div class="pt-art"><img class="pt-drift" src="media/bg/point-1-sprout.jpg?v=20261112e" alt="" aria-hidden="true"></div><div class="pt-wash" aria-hidden="true"></div>
+    <div class="stage"><div class="inner">
+      <p class="pt-n" data-in="0 0.25" aria-label="1 of 3">1</p>
+      <h2 class="h2" data-in="0 0.25">Intent first.</h2>
+      <p class="lead" data-in="0 0.25">Name the goal before you prompt.</p>
+      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
+    </div></div>
+  </section>
+
+  <section class="scene pin point" id="build" data-chap="Build fast">
+    <div class="pt-art"><img class="pt-img" src="media/bg/point-2-messy.jpg?v=20261112d" alt="" aria-hidden="true"></div><div class="pt-wash" aria-hidden="true"></div>
+    <div class="stage"><div class="inner">
+      <p class="pt-n" data-in="0 0.25" aria-label="2 of 3">2</p>
+      <h2 class="h2" data-in="0 0.25">Build fast.</h2>
+      <p class="lead" data-in="0 0.25">Let AI draft the options.</p>
+      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
+    </div></div>
+  </section>
+
   <section class="scene pin" id="then" data-chap="The updates" data-beats="3" data-dur="450">
     <div class="stage"><div class="inner">
       <div class="hs-wrap">
@@ -1240,27 +1325,15 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     </div></div>
   </section>
 
-  <section class="scene" id="proof" data-chap="The proof" hidden>
-    <video disablepictureinpicture class="clip-bg" src="media/bg/office-days.mp4?v=20261105b" poster="media/bg/office-days.jpg?v=20261105b" muted loop playsinline preload="auto" aria-hidden="true"></video><div class="proof-wash" aria-hidden="true"></div>
+  <section class="scene pin point" id="iterate" data-chap="Iterate">
+    <div class="pt-art"><img class="pt-img" src="media/bg/point-3-neat.jpg?v=20261112e" alt="" aria-hidden="true"></div><div class="pt-wash" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
-      <div class="proof-split">
-        <div>
-          <p class="num pop" data-in="0 0.3"><span class="big drive" data-in="0 0.9" data-count="29">29</span> <span class="unit">hours</span></p>
-          <p class="lead" data-in="0.25 0.45">of building, over 16 days.</p>
-        </div>
-        <ul class="ledger">
-          <li data-in="0.4 0.55"><b class="drive" data-in="0.4 0.95" data-count="131">131</b><span>commits</span></li>
-          <li data-in="0.48 0.63"><b class="drive" data-in="0.45 0.95" data-count="23">23</b><span>sittings</span></li>
-          <li data-in="0.56 0.71"><b class="drive" data-in="0.5 0.95" data-count="23" data-suffix="M">23M</b><span>tokens</span></li>
-          <li data-in="0.64 0.79"><b>0</b><span>developers</span></li>
-        </ul>
-      </div>
-      <p class="note">/ Hours from commit times. Tokens: Chloe’s Claude Code, Aug 17 to Nov 4. Video: room by <a href="https://gemini.google.com" style="color:inherit">Nano Banana (Google Gemini)</a>, animated in code.</p>
+      <p class="pt-n" data-in="0 0.25" aria-label="3 of 3">3</p>
+      <h2 class="h2" data-in="0 0.25">Iterate.</h2>
+      <p class="lead" data-in="0 0.25">Keep what works. Cut the rest.</p>
+      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
     </div></div>
   </section>
-
-
-
 
   <section class="scene pin" id="review" data-chap="Verification" data-beats="2">
     <div class="stage"><div class="inner">
@@ -1322,54 +1395,6 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
     </div></div>
   </section>
 
-  <section class="scene" id="thesis" data-chap="The thesis" hidden>
-    <div class="stage"><div class="inner">
-      <ol class="thesis-l">
-        <li data-in="0 0.25"><b>Intent first.</b><span>Know what you’re here for.</span></li>
-        <li data-in="0 0.25"><b>Build fast.</b><span>AI is quick, and great for brainstorming.</span></li>
-        <li data-in="0 0.25"><b><mark>Iterate.</mark></b><span>Show it, change it, cut it back.</span></li>
-      </ol>
-      <p class="real-q" data-in="0.45 0.7">AI gives you the average. <b>You’re the designer.</b></p>
-    </div></div>
-  </section>
-
-  <section class="scene" id="three" data-chap="Take-home" data-zoom>
-    <svg class="three-cover" aria-hidden="true"><defs><mask id="three-hole" maskUnits="userSpaceOnUse"><rect class="three-m" fill="#fff"/><text class="three-t" fill="#000" text-anchor="middle"><tspan>From napkin</tspan><tspan>to prototype</tspan></text></mask></defs><rect class="dark three-m" mask="url(#three-hole)"/></svg>
-    <div class="stage"><div class="inner">
-      <h2 class="h2 visually-hidden">From napkin to prototype</h2>
-    </div></div>
-  </section>
-
-  <section class="scene pin point" id="intent" data-chap="Intent first">
-    <div class="pt-art"><img class="pt-drift" src="media/bg/point-1-sprout.jpg?v=20261112e" alt="" aria-hidden="true"></div><div class="pt-wash" aria-hidden="true"></div>
-    <div class="stage"><div class="inner">
-      <p class="pt-n" data-in="0 0.25" aria-label="1 of 3">1</p>
-      <h2 class="h2" data-in="0 0.25">Intent first.</h2>
-      <p class="lead" data-in="0 0.25">Name the goal before you prompt.</p>
-      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
-    </div></div>
-  </section>
-
-  <section class="scene pin point" id="build" data-chap="Build fast">
-    <div class="pt-art"><img class="pt-img" src="media/bg/point-2-messy.jpg?v=20261112d" alt="" aria-hidden="true"></div><div class="pt-wash" aria-hidden="true"></div>
-    <div class="stage"><div class="inner">
-      <p class="pt-n" data-in="0 0.25" aria-label="2 of 3">2</p>
-      <h2 class="h2" data-in="0 0.25">Build fast.</h2>
-      <p class="lead" data-in="0 0.25">Let AI draft the options.</p>
-      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
-    </div></div>
-  </section>
-
-  <section class="scene pin point" id="iterate" data-chap="Iterate">
-    <div class="pt-art"><img class="pt-img" src="media/bg/point-3-neat.jpg?v=20261112e" alt="" aria-hidden="true"></div><div class="pt-wash" aria-hidden="true"></div>
-    <div class="stage"><div class="inner">
-      <p class="pt-n" data-in="0 0.25" aria-label="3 of 3">3</p>
-      <h2 class="h2" data-in="0 0.25">Iterate.</h2>
-      <p class="lead" data-in="0 0.25">Keep what works. Cut the rest.</p>
-      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
-    </div></div>
-  </section>
-
   <section class="scene pin dots" id="next" data-chap="Your turn">
     <canvas class="dot-bg" aria-hidden="true"></canvas>
     <div class="stage"><div class="inner thanks">
@@ -1392,6 +1417,141 @@ html.vt-prism::view-transition-new(root){animation:prism-reveal 1.2s cubic-bezie
       <p class="fine">Code on <a href="https://github.com/chloemxy/communication-framework">GitHub</a>, licensed <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Designs licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Drawing the Line · UofT Biomedical Communications · November 2026</p>
     </div></div>
   </section>
+
+  <section class="scene pin" id="appendix" data-chap="Appendix">
+    <div class="stage"><div class="inner">
+      <h2 class="h2">Appendix</h2>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-drop-zoom" data-chap="Appendix" data-wait data-beats="4" data-dur="700" data-fz="0">
+    <div class="stage"><div class="inner">
+      <span hidden data-in="0 0.0001"></span><!-- gives the slide its click steps -->
+      <div class="fz" aria-hidden="true">
+        <div class="fz-cam"><img src="media/zoom/ws-empty.webp?v=20261117a" alt=""><img class="fz-brief" src="media/zoom/ws-brief.webp?v=20261117a" alt=""></div>
+      </div>
+      <div class="ft-col">
+        <p class="ft-step">Appendix · 1</p>
+        <h2 class="ft-title">Bring it in, start checking</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="step:1">Paste in or drop a file</li><li data-show="step:2">Start from an example to learn how it works</li><li data-show="step:3">Set the Brief, and the checks begin</li></ul></div>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-frameworks-zoom" data-chap="Appendix" data-wait data-beats="6" data-dur="700" data-fz="0">
+    <div class="stage"><div class="inner">
+      <span hidden data-in="0 0.0001"></span><!-- gives the slide its click steps -->
+      <div class="fz" data-live data-press='{"5":{"still":0,"cam":[1.8,330,330],"at":[132.8,149,116.8,32]}}' data-hl-names='{"1":"Frameworks list","2":"CCI checklist","3":"Items with notes","4":"Plain language fix","5":"History button"}' data-hl='{"1":[498,72,697,700,6],"2":[500,141.6,695,691,6],"3":[509,341.2,677,245.3,4],"4":[509,261.6,677,216.3,4],"5":[132.8,149,116.8,32,4,0]}' data-stops="[[1,607.5,492],[1.45,846,380],[1.64,847,420],[1.75,847,640],[1.75,847,400],[2.1,1015,290],[1,607.5,492]]">
+        <div class="fz-cam"><img src="media/zoom/ws2-cards.webp?v=20261117c" alt=""><img data-on="1" src="media/zoom/ws2-list.webp?v=20261117c" alt=""><img data-on="2,3" src="media/zoom/ws2-sheets.webp?v=20261117c" alt=""><img data-on="5" src="media/zoom/ws2-history.webp?v=20261117c" alt=""></div>
+        <iframe class="fz-live" data-src="../index.html?studio&demo=checks" title="The PRISM Studio, live: the TLC guide with the Brief set to Patients and Manual" tabindex="-1"></iframe><span class="fz-try">Click to use it live</span>
+      </div>
+      <div class="ft-col">
+        <p class="ft-step">Appendix · 2</p>
+        <h2 class="ft-title">Pick the right checks</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="step:1">Picks the frameworks that fit your readers</li><li data-show="step:2">Shows what every framework asks for, in one place</li><li data-show="step:3">Tells you which items need your judgement, and why</li><li data-show="step:4">Suggests fixes you can apply in one click</li><li data-show="step:5">Saves every change, so you can go back</li></ul></div>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-poster" data-chap="Appendix">
+    <div class="stage"><div class="inner">
+      <div class="ft-grid ft-grid-poster">
+        <div class="ft-poster"><video id="ft-poster-vid" muted playsinline disablepictureinpicture preload="auto" poster="media/loops/s3-poster.png?v=20261117n" aria-label="The UHN poster. While the colour tile plays, it shows the band darkened by the suggested fix, then each colour-blind view."><source src="media/loops/s3-poster.mp4?v=20261117n" type="video/mp4"></video></div>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Alt text is typed for the UHN poster and checked against WCAG 1.1.1 and the reading level."><source src="media/loops/s3-alt.webm?v=20261118u" type="video/webm"><source src="media/loops/s3-alt.mp4?v=20261118u" type="video/mp4"></video></span><span class="ft-cover">Alt text, checked</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false" data-sync="#ft-poster-vid"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="White on the poster blue passes at 5.13 to 1. White on the light-blue band fails at 2.03 to 1; Preview darkens the band to #217f95 on the poster. Then the poster shows deuteranopia, protanopia, tritanopia and greyscale."><source src="media/loops/s3-colour.mp4?v=20261118u" type="video/mp4"></video></span><span class="ft-cover">Colour contrast and colour blindness</span></button>
+      </div>
+      <div class="ft-col">
+        <p class="ft-step">Appendix · 3</p>
+        <h2 class="ft-title">Check a poster</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Contrast checkers, colour-blind simulators and alt text guides are scattered across separate, clunky sites. No one place does it all.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="tile:0">Tests alt text against WCAG 1.1.1 and your reading level</li><li data-show="tile:1">Checks colour pairs, and suggests a fix</li><li data-show="tile:1">Shows it as colour-blind readers see it</li></ul></div>
+        <p class="credit">Poster: COVID welcome poster for UHN (June 2022), designed by Sonia Seto</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-edit" data-chap="Appendix">
+    <div class="stage"><div class="inner">
+      <div class="ft-live ft-live-4"><iframe data-src="../index.html?demo=edit" title="The PRISM Studio, live: the Take Action draft, its Plain language card and History" tabindex="0"></iframe><div class="ft-slot ft-q ft-q-tr"><button type="button" class="ft-cover">Apply a suggestion, or write your own</button></div><div class="ft-slot ft-q ft-q-br"><button type="button" class="ft-cover">Go back in History</button></div></div>
+      <div class="ft-col">
+        <p class="ft-step">Appendix · 4</p>
+        <h2 class="ft-title">Fix it your way</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">Checkers list the problems, then leave the rewriting, and keeping track of it, to you.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="slot:0">Edit right in the text</li><li data-show="slot:0">Apply a suggested rewrite, or all of them</li><li data-show="slot:0">Write your own in New, then apply it</li><li data-show="slot:1">Every change is a version you can go back to</li></ul></div>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene feat" id="feat-drop" data-chap="Appendix">
+    <div class="stage"><div class="inner">
+      <div class="ft-grid">
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="Text from the Light Collective guide is pasted into the Material panel."><source src="media/loops/f1-paste.webm?v=20261118u" type="video/webm"><source src="media/loops/f1-paste.mp4?v=20261118u" type="video/mp4"></video></span><span class="ft-cover">Paste it in</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="A Word file is dragged over the Material panel and opens as an editable draft of 791 words."><source src="media/loops/f2-drop.webm?v=20261118u" type="video/webm"><source src="media/loops/f2-drop.mp4?v=20261118u" type="video/mp4"></video></span><span class="ft-cover">Drag and drop a file</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The sample poster, Know Your Numbers, is clicked and opens in the Material panel as an image."><source src="media/loops/f3-sample.webm?v=20261118u" type="video/webm"><source src="media/loops/f3-sample.mp4?v=20261118u" type="video/mp4"></video></span><span class="ft-cover">Start from an example</span></button>
+        <button type="button" class="ft-tile" aria-pressed="false"><span class="ft-vid"><video muted playsinline disablepictureinpicture preload="auto"  aria-label="The Brief, already open: Patients and Handout are picked, and the targets appear: grade 6 or lower, 150 to 700 words."><source src="media/loops/f4-brief.webm?v=20261118u" type="video/webm"><source src="media/loops/f4-brief.mp4?v=20261118u" type="video/mp4"></video></span><span class="ft-cover">Set the Brief</span></button>
+      </div>
+      <div class="ft-col">
+        <p class="ft-step">Appendix · 5</p>
+        <h2 class="ft-title">Bring it in, start checking</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">The checks live in scattered tools, and each wants your draft in a different form.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="tile:0">Paste text from anywhere</li><li data-show="tile:1">Drop in a Word file, PDF, text or image</li><li data-show="tile:2">Start from an example to learn how it works</li><li data-show="tile:3">Set the Brief, and the checks begin</li></ul></div>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
+      </div>
+    </div></div>
+  </section>
+
+
+  <section class="scene feat" id="feat-frameworks" data-chap="Appendix">
+    <div class="stage"><div class="inner">
+      <div class="ft-live"><iframe data-src="../index.html?demo=frameworks" title="The PRISM Studio, live: the Frameworks list and the score cards for the Take Action section" tabindex="0"></iframe><div class="ft-slot ft-slot-l"><button type="button" class="ft-cover">Pick, sort and filter</button></div><div class="ft-slot ft-slot-r"><button type="button" class="ft-cover">Each one, its own card</button></div></div>
+      <div class="ft-col">
+        <p class="ft-step">Appendix · 6</p>
+        <h2 class="ft-title">Pick the right checks</h2>
+        <div class="ft-prob"><p class="ft-kick">The problem</p><p class="ft-body">There are many published checklists for health writing. Knowing which fit your material, and tracking each one, is a job in itself.</p></div>
+        <p class="ft-kick ft-does-kick">What PRISM does</p>
+        <div class="ft-does"><ul class="ft-list"><li data-show="slot:0">Picks the frameworks that fit your readers</li><li data-show="slot:1">Shows what every framework asks for, in one place</li><li data-show="slot:1">Tells you which items need your judgement, and why</li><li data-show="slot:1">Suggests fixes you can apply in one click</li><li data-show="slot:1">Saves every change, so you can go back</li></ul></div>
+        <p class="credit">Material: <a href="https://lightcollective.org/wp-content/uploads/2024/12/Collective-Digital-Rights-For-Patients_v2.0.pdf">A Guide to Negotiating Patient Digital Rights</a>, The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo</p>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="scene question" id="question-clinic" data-chap="Appendix" data-wait data-dur="500">
+    <video disablepictureinpicture class="clip-bg" data-morph="clinic" src="media/bg/clinic-room.mp4?v=20261116a" poster="media/bg/clinic-room-first.jpg?v=20261116a" muted playsinline preload="auto" aria-hidden="true"></video><div class="clip-wash" data-morph="clinic-wash" aria-hidden="true"></div>
+    <div class="stage" data-morph="clinic-text"><div class="inner">
+      <h2 class="visually-hidden">The question that started it</h2>
+      <q class="pop" data-in="0 1">Did my visual actually <mark class="wipe drive" data-in="0 0">make a difference?</mark></q>
+      <p data-in="0 1">My work left at handoff. I never learned if it helped.</p>
+      <p class="credit">Image: generated with <a href="https://www.midjourney.com">Midjourney</a>, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a> and in code</p>
+    </div></div>
+  </section>
+
+  <section class="scene" id="waiting" data-chap="Appendix" data-beats="2" hidden>
+    <img class="clip-bg" data-morph="clinic" src="media/bg/clinic-designer-outlined.jpg?v=20261116g" alt="" aria-hidden="true"><div class="clip-wash" data-morph="clinic-wash" aria-hidden="true"></div>
+    <div class="stage" data-morph="clinic-text"><div class="inner">
+      <p class="big-line" data-in="0 0.4"><span class="hang">“Loved it”</span> isn’t<br> the same as<br> <mark class="wipe drive hang" data-in="0.55 0.8">“understood it.”</mark></p>
+      <p class="lead" data-in="0.62 0.9">Nobody was checking whether patients could actually follow what we made.</p>
+    </div></div>
+    <p class="credit bl">Image: generated with <a href="https://www.midjourney.com">Midjourney</a>, outlined in code</p>
+  </section>
+
+  <section class="scene" id="why-lego" data-chap="Appendix">
+    <canvas class="lego-bg" aria-hidden="true"></canvas>
+    <div class="stage"><div class="inner">
+      <p class="setup" data-in="0 0.25">Normally: developers, a budget, months of work. I had none of those.</p>
+      <p class="big-line" data-in="0.2 0.5">If you understand<br> the problem, you can<br> <mark>build the tool yourself.</mark></p>
+      <p class="credit">Drawings: generated with <a href="https://www.midjourney.com">Midjourney</a>, assembled in code</p>
+    </div></div>
+  </section>
+
 </main>
 <script src="deck-edit.js?v=20261116b"></script>
 
@@ -1475,6 +1635,12 @@ window.deckStart = function(){
     s.el.style.setProperty('--t', t.toFixed(4));
     s.items.forEach(function(it){
       var k = seg(t, it.a); if (it.o) k *= 1 - seg(t, it.o);
+      // a part that arrived through the morph is held at full strength; once its own fade-out starts,
+      // let it go, or it would stay on screen under whatever replaces it
+      if (it.o && seg(t, it.o) > 0 && it.el.classList.contains('vt-held')) it.el.classList.remove('vt-held');
+      // a title held in place by the slide-change morph lets go once its own fade-out starts, or it
+      // stays on top of the lines that replace it (Standards exist)
+      if (it.o && seg(t, it.o) > 0) it.el.classList.remove('vt-held');
       if (Math.abs(k - it.k) > 1e-4) {
         it.k = k; it.el.style.setProperty('--k', k.toFixed(4));
         // data-count: the number counts up to its value as the slide plays
@@ -1555,8 +1721,6 @@ window.deckStart = function(){
   var cur = 0, keepSettle = null, vtSeq = 0;
   function show(i, dir){
     finish();
-    // a click during the zoom only hurries it to its end
-    if (zooming) return;
     var a = slides[cur], b = slides[i];
     // every slide change, forward and back, is a morph: browsers with View Transitions glide shared parts
     // (the title, anything marked data-morph) to their new place while the rest crossfades. Only reduced
@@ -1617,63 +1781,33 @@ window.deckStart = function(){
   }
   addEventListener('resize', function(){ var s = slides[cur]; if (s && s.el.hasAttribute && s.el.hasAttribute('data-zoom')) zoomLayout(s.el); });
   if (document.fonts) document.fonts.load('800 100px Newsreader').then(function(){ var s = slides[cur]; if (s && s.el.hasAttribute && s.el.hasAttribute('data-zoom')) zoomLayout(s.el); }, function(){});
-  var zooming = false;
-  function zoomThrough(a, b, i){
-    zooming = true;
-    var z = a.el._zoom, t = a.el.querySelector('.three-t'), cover = a.el.querySelector('.three-cover'), done = false;
-    var wash = b.el.querySelector('.pt-wash'), last = b.beats.length ? b.beats[b.beats.length - 1] : 1;
-    // the letters grow only so far (x14): beyond that the browser redraws the huge mask badly and the page
-    // flickers. Over the last 45% the dark cover fades out instead, while Intent first's wash and text fade
-    // in under it, so the slide is complete when the divider goes and nothing moves after the cut.
-    var top = Math.min(z.s, 14);
-    if (wash) wash.style.transition = 'none';
-    tween(function(v){
-      var s = Math.exp(Math.log(top) * (1 - Math.cos(v * Math.PI / 2))), f = clamp((v - .55) / .45);
-      t.setAttribute('transform', 'translate(' + z.x + ' ' + z.y + ') scale(' + s + ') translate(' + -z.x + ' ' + -z.y + ')');
-      cover.style.opacity = 1 - f;
-      if (wash) wash.style.opacity = f;
-      paintSlide(b, last * f);
-      if (v >= 1 && !done) {
-        done = true;
-        // runs once the zoom's own frame has ended; the next slide is shown already finished, with no cascade
-        Promise.resolve().then(function(){
-          a.el.style.transition = 'none';
-          swap(a, b, i, 1);
-          finish();
-          void a.el.offsetWidth; a.el.style.transition = '';
-          t.removeAttribute('transform'); cover.style.opacity = '';
-          if (wash) { wash.style.opacity = ''; void wash.offsetWidth; wash.style.transition = ''; }
-          zooming = false;
-        });
-      }
-    }, 0, 1, 1200, 0, function(k){ return k; });
-  }
   function shown(el){
     if (!el || el.classList.contains('visually-hidden')) return false;
     var r = el.getBoundingClientRect();
     return r.width > 0 && +getComputedStyle(el).opacity > .5;
   }
+  // a part whose fade-in (its own data-in, or its block's) starts on the slide's first beat
+  function opensAtStart(el){
+    if (!el || el.classList.contains('visually-hidden')) return false;
+    var w = el.closest('[data-in]');
+    return !w || parseFloat(w.getAttribute('data-in')) === 0;
+  }
   function morph(a, b, i, dir){
     var root = document.documentElement, my = ++vtSeq;
-    // a slide marked data-wipe="prism" is entered (going forward) by the highlighter wipe instead
-    var prism = dir > 0 && b.el.dataset.wipe === 'prism';
     // leftovers from a transition that was cut short
     [].forEach.call(document.querySelectorAll('.vt-named'), function(e){ e.style.viewTransitionName = ''; e.classList.remove('vt-named'); });
     [].forEach.call(document.querySelectorAll('.vt-held'), function(e){ if (!a.el.contains(e)) e.classList.remove('vt-held'); });
-    var edge = document.querySelector('.prism-edge'); if (edge) edge.remove();
     // pairs: [old element, new element, name]
     var pairs = [];
-    if (!prism) {
-      var ta = titleOf(a), tb = titleOf(b);
-      if (shown(ta) && tb && !tb.classList.contains('visually-hidden')) pairs.push([ta, tb, 'vt-title']);
-      [].forEach.call(b.el.querySelectorAll('[data-morph]'), function(e){
-        var o = a.el.querySelector('[data-morph="' + e.dataset.morph + '"]');
-        if (shown(o)) pairs.push([o, e, 'vt-m-' + e.dataset.morph]);
-      });
-    }
+    var ta = titleOf(a), tb = titleOf(b);
+    if (shown(ta) && tb && !tb.classList.contains('visually-hidden')) pairs.push([ta, tb, 'vt-title']);
+    [].forEach.call(b.el.querySelectorAll('[data-morph]'), function(e){
+      var o = a.el.querySelector('[data-morph="' + e.dataset.morph + '"]');
+      if (shown(o)) pairs.push([o, e, 'vt-m-' + e.dataset.morph]);
+    });
     function tag(el, n){ el.style.viewTransitionName = n; el.classList.add('vt-named'); }
     pairs.forEach(function(p){ tag(p[0], p[2]); });
-    root.classList.add('vt'); root.classList.toggle('vt-prism', prism);
+    root.classList.add('vt');
     cur = i;
     var done = false;
     function apply(){
@@ -1681,25 +1815,23 @@ window.deckStart = function(){
       pairs.forEach(function(p){ p[0].style.viewTransitionName = ''; p[0].classList.remove('vt-named'); });
       swap(a, b, i, dir);
       // the morphed part arrives already in place, so it skips its own fade-in on this slide
-      pairs.forEach(function(p){ p[1].classList.add('vt-held'); tag(p[1], p[2]); });
-      if (prism) {
-        edge = document.createElement('div'); edge.className = 'prism-edge'; edge.setAttribute('aria-hidden', 'true');
-        edge.innerHTML = '<i></i><i></i><i></i><b></b>';
-        document.body.appendChild(edge);
-      }
+      // (only if it shows on the beat the slide arrives at: coming back to a slide lands on its last
+      // beat, where its title may already have faded out)
+      // going forward the slide arrives on its first beat, before its title has faded in: a title that
+      // starts showing on that first beat is held too, so the glide is the same going forward and back
+      pairs.forEach(function(p){ if (shown(p[1]) || (dir > 0 && opensAtStart(p[1]))) { p[1].classList.add('vt-held'); tag(p[1], p[2]); } });
     }
     var t = document.startViewTransition(apply);
     // a transition the browser skips or aborts still changes the slide; the rejections are expected
     t.ready.catch(function(){}); t.updateCallbackDone.catch(function(){});
     t.finished.catch(function(){}).then(function(){
       apply();
-      if (edge) edge.remove();
       if (my !== vtSeq) return;
       // a morphed backdrop or text layer (no data-in of its own) is let go, so its own motion (slide 2's
       // push-in) still runs; only parts that would replay a fade-in stay held
       [].forEach.call(document.querySelectorAll('.vt-held:not([data-in])'), function(e){ e.classList.remove('vt-held'); });
       [].forEach.call(document.querySelectorAll('.vt-named'), function(e){ e.style.viewTransitionName = ''; e.classList.remove('vt-named'); });
-      root.classList.remove('vt', 'vt-prism');
+      root.classList.remove('vt');
     });
   }
   function swap(a, b, i, dir){
@@ -1711,7 +1843,8 @@ window.deckStart = function(){
       [].forEach.call(a.el.querySelectorAll('video'), function(v){ if (v.closest('.fp')) v.pause(); });
       a.el.setAttribute('aria-hidden', 'true');
       b.el.dataset.dir = dir > 0 ? 'back' : 'fwd';
-      var same = a.el.dataset.title && a.el.dataset.title === b.el.dataset.title;
+      // (the morph holds a shared title still on its own; this fade is only for the plain fallback)
+      var same = !document.documentElement.classList.contains('vt') && a.el.dataset.title && a.el.dataset.title === b.el.dataset.title;
       if (same) {
         var under = slides.indexOf(a) < slides.indexOf(b) ? a : b;
         a.el.classList.add('keep'); b.el.classList.add('keep'); under.el.classList.add('keep-under');
@@ -1779,9 +1912,11 @@ window.deckStart = function(){
     else if (cur > 0) show(cur - 1, -1);
   }
 
-  // rail: one dot per slide, a small gap where a new chapter starts
+  // rail: one dot per slide, a small gap where a new chapter starts. The Appendix gets a single dot
+  // (its first slide, the divider); every appendix slide lights that one dot.
   var dots = slides.map(function(s, i){
     var chap = s.el.dataset.chap.split(' · ')[0], t = titleOf(s);
+    if (chap === 'Appendix' && i && slides[i - 1].el.dataset.chap.split(' · ')[0] === 'Appendix') return null;
     var name = t ? plain(t).replace(/\s+/g, ' ').trim() : s.el.dataset.chap;
     var b = document.createElement('button'); b.type = 'button';
     b.innerHTML = '<span></span>'; b.firstChild.textContent = name;
@@ -1791,8 +1926,10 @@ window.deckStart = function(){
     rail.appendChild(b);
     return b;
   });
+  dots.forEach(function(b, i){ if (!b) dots[i] = dots[i - 1]; });
   function markRail(){
-    dots.forEach(function(b, i){ b.classList.toggle('on', i === cur); });
+    dots.forEach(function(b){ b.classList.remove('on'); });
+    if (dots[cur]) dots[cur].classList.add('on');
     markPager();
   }
 
@@ -1900,8 +2037,8 @@ window.deckStart = function(){
   });
 
   // Meet PRISM: the app's own front door in a frame. Its top bar and countdown are hidden and
-  // paused (so it never hands off to the Studio); its fixes step through by themselves while the
-  // slide is up, until someone drags the slider. Wheel and arrow keys inside it still turn slides.
+  // paused (so it never hands off to the Studio); the slider waits at As written for the speaker
+  // to drag it. Wheel and arrow keys inside it still turn slides.
   (function(){
     var fr = document.querySelector('.pm-door'); if (!fr) return;
     var sec = fr.closest('.scene'), loop = 0, touched = false, ready = false, runs = 0;
@@ -1915,7 +2052,7 @@ window.deckStart = function(){
         if (p.getAttribute('aria-pressed') !== 'true') p.click();
         var st = d.createElement('style');
         st.textContent = '.intro-bar{display:none!important}' +
-          '.pm-logo{display:block;width:max-content;font-size:34px;font-weight:600;line-height:1.35;margin:0 0 14px;color:var(--on-cover);--logo-ink:var(--on-cover)}' +
+          '.pm-logo{display:block;width:max-content;font-size:34px;font-weight:600;line-height:1.35;margin:0 0 clamp(20px,3.4vh,32px);color:var(--on-cover);--logo-ink:var(--on-cover)}' +
           '.pm-hold-page .intro-hero{opacity:0}.pm-hold-logo .pm-logo{visibility:hidden}';
         d.head.appendChild(st);
         // a small PRISM logo above the kicker; the opening shrinks the big logo into it
@@ -1972,10 +2109,17 @@ window.deckStart = function(){
       var d = doc(), r = d && d.getElementById('intro-s-range'); if (!r) return;
       r.value = n; r.dispatchEvent(new Event('input', { bubbles:true }));
     }
-    function play(){
-      clearInterval(loop); touched = false; step(0); var n = 0;
-      loop = setInterval(function(){ if (touched) { clearInterval(loop); return; } n = n >= 4 ? 0 : n + 1; step(Math.min(n, 3)); }, 1800);
+    // no autoplay: the slider starts at As written each time the slide opens and waits for the speaker
+    function play(){ clearInterval(loop); touched = false; step(0); reveal(); }
+    // seven steps: the slide arrives with six problem tiles; each later click flips the next one to
+    // what PRISM does, like a Jeopardy board (li.on in the frame; .pm-solved once all six are turned)
+    function reveal(){
+      var d = doc(), b = d && d.getElementById('intro'); if (!b) return;
+      var n = Math.round((parseFloat(sec.style.getPropertyValue('--t')) || 0) * 7) - 1;
+      [].forEach.call(b.querySelectorAll('.pm-rows li'), function(li, i){ li.classList.toggle('on', i < n); });
+      b.classList.toggle('pm-solved', n >= 6);
     }
+    new MutationObserver(reveal).observe(sec, { attributes:true, attributeFilter:['style'] });
     fr.addEventListener('load', setup);
     if (doc() && doc().readyState === 'complete') setup();
     var wasOn = sec.classList.contains('on');
@@ -2347,8 +2491,11 @@ window.deckStart = function(){
 (window.deckEdits ? deckEdits.ready : function(f){ f(); })(window.deckStart);
 </script>
 <script src="analogy-bg.js?v=20261104b"></script>
+<script src="lego-bg.js?v=20261118a"></script>
 <script src="question-bg.js?v=20261116h"></script>
-<script src="lego-bg.js?v=20261116g"></script>
+<script src="desk-pile.js?v=20261118l"></script>
+<script src="fw-rows.js?v=20261117b"></script>
+<script src="standards.js?v=20261118b"></script>
 <script src="dot-bg.js?v=20261110a"></script>
 <script>
 /* Verification: the spreadsheet pans across its columns by itself while the slide is up;

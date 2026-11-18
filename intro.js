@@ -1,7 +1,7 @@
 /* Front door: an intro layer over the Studio at "/" (styles in intro.css).
  * One dark screen, no scrolling: the headline and actions on the left; on the right, a patient
  * handout with yellow flags and a slider that applies PRISM's fixes to it one at a time.
- * While the countdown runs, the fixes apply by themselves; then the intro slides away into
+ * While the countdown runs, the fixes apply by themselves (not in the deck, ?deck); then the intro slides away into
  * the Studio. Any interaction (click, key, scroll, the slider) pauses it, and Pause / Skip are
  * always there (WCAG 2.2.1: timing can be stopped).
  * Shown once per browser tab session, so reloading while working goes straight to the Studio.
@@ -14,6 +14,9 @@
   var SECONDS = 9;
   var STEP_AT = [2, 4, 6];          // seconds into the countdown when each fix is applied
   var KEY = 'pea.introSeen';
+  // ?deck: the talk deck shows this page on its "Meet PRISM" slide. There it has one headline, no
+  // buttons or privacy line, and the slider waits for the speaker. The site itself is unchanged.
+  var DECK = /[?&]deck\b/.test(location.search);
 
   function seen(){ try { return sessionStorage.getItem(KEY) === '1'; } catch(e){ return false; } }
   function markSeen(){ try { sessionStorage.setItem(KEY, '1'); } catch(e){} }
@@ -32,6 +35,19 @@
       w:'“25%” becomes “1 in 4”. <span class="src">Gigerenzer &amp; Hoffrage, 1995</span>', g:'5', f:'0' }
   ];
 
+  // ?deck: a longer, harder version of the water-pill handout, so the before and after are far apart.
+  // Grades are PRISM's own Flesch-Kincaid on each step (computeFK): 15.9, 8.9, 3.8, 2.7.
+  if (DECK) STEPS = [
+    { t:'Your <mark class="f">physician</mark> has prescribed furosemide, a <mark class="f">diuretic</mark>, to reduce <mark class="f">edema</mark> by increasing your <mark class="f">urinary output</mark>. <mark class="f">Administer one tablet </mark><mark class="f">orally</mark><mark class="f"> each morning with food, </mark><mark class="f">monitor</mark><mark class="f"> your weight daily, and contact the clinic immediately if you experience a weight gain exceeding 2 pounds within a 24-hour period, as this may indicate fluid retention.</mark> Approximately <mark class="f">25%</mark> of patients experience <mark class="f">orthostatic hypotension</mark> during the initial weeks of treatment.',
+      w:'As written: medical words, a 42-word sentence and a percentage.', g:'15.9', f:'10' },
+    { t:'Your <ins class="fix">doctor gave you</ins> furosemide, a <ins class="fix">water pill</ins>, to <ins class="fix">bring down swelling</ins> by <ins class="fix">making you pee more</ins>. <mark class="f">Take one pill by mouth each morning with food, check your weight every day, and call the clinic right away if you gain more than 2 pounds in one day, as this may mean your body is holding fluid.</mark> Approximately <mark class="f">25%</mark> of patients <ins class="fix">feel dizzy when they stand up</ins> during the first weeks.',
+      w:'Eight medical words become everyday ones. <span class="src">PEMAT-P items 3–4, AHRQ; CDC Everyday Words</span>', g:'8.9', f:'2' },
+    { t:'Your doctor gave you furosemide, a water pill. <ins class="fix">It brings down swelling by making you pee more. Take one pill by mouth each morning with food. Check your weight every day. Call the clinic right away if you gain more than 2 pounds in one day. This may mean your body is holding fluid.</ins> Approximately <mark class="f">25%</mark> of patients feel dizzy when they stand up during the first weeks.',
+      w:'One 42-word sentence becomes five short ones. <span class="src"><cite>Federal Plain Language Guidelines</cite></span>', g:'3.8', f:'1' },
+    { t:'Your doctor gave you furosemide, a water pill. It brings down swelling by making you pee more. Take one pill by mouth each morning with food. Check your weight every day. Call the clinic right away if you gain more than 2 pounds in one day. This may mean your body is holding fluid. <ins class="fix">About 1 in 4 people</ins> feel dizzy when they stand up in the first weeks. <ins class="fix">Stand up slowly.</ins>',
+      w:'“25%” becomes “1 in 4”, with what to do about it. <span class="src">Gigerenzer &amp; Hoffrage, 1995</span>', g:'2.7', f:'0' }
+  ];
+
   var html =
     '<div class="intro-bar">' +
       '<span class="site-name"><span><span class="sr-only">PRISM</span><span aria-hidden="true">PR<span class="hl-i">I</span>SM</span></span></span>' +   // same nesting as the Studio's logo link, so it renders identically
@@ -42,23 +58,41 @@
     '</div>' +
     '<div class="intro-hero">' +
       '<div class="intro-copy">' +
-        '<h1 class="intro-display" id="intro-title">Make health handouts, posters and web pages easy to read.</h1>' +
-        '<p class="intro-lede">PRISM finds the hard parts and shows a simpler way to say them, based on trusted health guides.</p>' +
+        (DECK
+          ? // the talk's Meet PRISM: six problems on glass tiles; each click on the slide flips the next
+            // tile to what PRISM does (the deck sets .on on it), like a Jeopardy board
+            '<h1 class="intro-display pm-swap" id="intro-title"><span class="pm-p">Checking a handout today</span><span class="pm-s">One place, in your browser</span></h1>' +
+            '<ul class="pm-rows">' +
+              '<li><span class="pm-tile"><span class="pm-p">Checks live in scattered tools, each wanting a different format</span><span class="pm-s">Paste or drop any file; the Brief starts the checks</span></span></li>' +
+              '<li><span class="pm-tile"><span class="pm-p">Dozens of checklists; knowing which fit is a job in itself</span><span class="pm-s">Picks the frameworks that fit your readers</span></span></li>' +
+              '<li><span class="pm-tile"><span class="pm-p">Poster checks sit on separate, clunky sites</span><span class="pm-s">Contrast, colour blindness and alt text, together</span></span></li>' +
+              '<li><span class="pm-tile"><span class="pm-p">Checkers list the problems, then leave the rewrite to you</span><span class="pm-s">Fix in one click or your own words; every change saved</span></span></li>' +
+              '<li><span class="pm-tile"><span class="pm-p">Patient material can’t go to cloud tools</span><span class="pm-s">Nothing is uploaded; it all stays in your browser</span></span></li>' +
+              '<li><span class="pm-tile"><span class="pm-p">Hard to trust where a rule comes from</span><span class="pm-s">Every check cites its framework and source</span></span></li>' +
+            '</ul>'
+          : '<p class="intro-kicker">For health handouts, posters and web pages</p>' +
+            '<h1 class="intro-display" id="intro-title">Make your health handout easy to read.</h1>' +
+            '<p class="intro-lede">PRISM finds the hard parts and shows a simpler way to say them, based on trusted health guides.</p>' +
+            '<div class="intro-ctas">' +
+              '<button type="button" class="btn intro-cta-main" data-go="evaluate">Check a draft</button>' +
+              '<button type="button" class="btn intro-cta-alt" data-go="plan">Plan from an idea</button>' +
+            '</div>' +
+            '<p class="intro-fine">Your file never leaves your computer.</p>') +
       '</div>' +
       '<figure class="intro-plate" aria-labelledby="intro-try-h">' +
         '<div class="intro-handout">' +
           '<div class="intro-plate-head">' +
-            '<h2 id="intro-try-h">Taking your water pill</h2>' +
+            '<h2 id="intro-try-h">' + 'Taking your water pill' + '</h2>' +
             '<dl class="intro-figs">' +
               '<div><dt>Reading grade</dt><dd id="intro-s-grade"></dd></div>' +
-              '<div><dt>Flags</dt><dd id="intro-s-flags"></dd></div>' +
+              '<div><dt>' + 'Flags' + '</dt><dd id="intro-s-flags"></dd></div>' +
             '</dl>' +
           '</div>' +
           '<p class="intro-reading" id="intro-s-text"></p>' +
-          '<div class="intro-slide"><span>As written</span><input type="range" id="intro-s-range" min="0" max="3" step="1" value="0" aria-label="Fixes applied" aria-describedby="intro-s-why"><span>Plain language</span></div>' +
+          '<div class="intro-slide"><span>As written</span><input type="range" id="intro-s-range" min="0" max="' + (STEPS.length - 1) + '" step="1" value="0" aria-label="Fixes applied" aria-describedby="intro-s-why"><span>' + 'Plain language' + '</span></div>' +
           '<p class="intro-why" id="intro-s-why" aria-live="polite"></p>' +
         '</div>' +
-        '<figcaption class="intro-caption">Drag the slider to see each fix.</figcaption>' +
+        (DECK ? '' : '<figcaption class="intro-caption">' + 'Drag the slider to see each fix.' + '</figcaption>') +   // the deck has no hint: the speaker drags it
       '</figure>' +
     '</div>';
 
@@ -80,9 +114,11 @@
     var now = performance.now();
     left -= (now - start) / 1000; start = now;
     if (left <= 0) { leave(); return; }
-    var elapsed = SECONDS - left, n = 0;
-    STEP_AT.forEach(function(t){ if (elapsed >= t) n++; });
-    if (n > +$('intro-s-range').value) setStep(n);   // the fixes apply by themselves
+    if (!DECK) {                                     // in the deck the slider waits for the speaker
+      var elapsed = SECONDS - left, n = 0;
+      STEP_AT.forEach(function(t){ if (elapsed >= t) n++; });
+      if (n > +$('intro-s-range').value) setStep(n);   // the fixes apply by themselves
+    }
     drawCount();
     timer = requestAnimationFrame(tick);
   }
@@ -188,7 +224,7 @@
     }
     if (!done) return;   // already showing
     box = document.createElement('section');
-    box.className = 'intro';
+    box.className = DECK ? 'intro intro-deck' : 'intro';
     box.id = 'intro';
     box.setAttribute('aria-labelledby', 'intro-title');
     box.innerHTML = html;
@@ -229,7 +265,9 @@
 
     $('intro-skip').focus({ preventScroll:true });
     drawCount();
-    var countdown = function(){ start = performance.now(); timer = requestAnimationFrame(tick); };
+    // in the deck there is no countdown: the bar stays empty and the page waits for the speaker
+    if (DECK) ['intro-count', 'intro-pause', 'intro-progress'].forEach(function(id){ $(id).hidden = true; });
+    var countdown = DECK ? function(){} : function(){ start = performance.now(); timer = requestAnimationFrame(tick); };
     if (reduced() || !box.animate) countdown(); else opening(countdown);
   }
 

@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Right side colouring</title>
+<style>
+body{margin:0;background:#16181D;color:#E9EBEE;font:15px/1.4 system-ui,sans-serif;padding:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(560px,100%),1fr));gap:20px}
+h3{margin:0 0 4px;font-weight:500;font-size:15px}
+p{margin:0 0 8px;color:#B4BAC2;font-size:13px}
+.box{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px}
+.box iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none}
+</style></head><body>
+<div class="row">
+ <div><h3>Base · B, dim left, full right</h3><p>The right side as it is, at full brightness.</p><div class="box"><iframe data-v="b"></iframe></div></div>
+ <div><h3>1 · Warm afternoon</h3><p>A little sepia and saturation: the blue leans teal, the cream and strawberries go golden.</p><div class="box"><iframe data-v="warm"></iframe></div></div>
+ <div><h3>2 · Vivid</h3><p>More saturation and contrast: deeper blue, redder strawberries, crisper greens.</p><div class="box"><iframe data-v="vivid"></iframe></div></div>
+ <div><h3>3 · Soft pastel</h3><p>Less saturation, lifted shadows: chalky and calm, like printed paper.</p><div class="box"><iframe data-v="pastel"></iframe></div></div>
+ <div><h3>4 · Blue monotone</h3><p>The table drawn in shades of the desk blue only, like a cyanotype.</p><div class="box"><iframe data-v="mono"></iframe></div></div>
+ <div><h3>5 · Dusk</h3><p>Cooler and darker: the blue goes navy and the cream turns moonlit.</p><div class="box"><iframe data-v="night"></iframe></div></div>
+</div>
+<script>
+const CSS={
+ b:'.welcome-bg.lift{filter:none!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}',
+ warm:'.welcome-bg.lift{filter:sepia(.28) saturate(1.25) brightness(1.06)!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}',
+ vivid:'.welcome-bg.lift{filter:saturate(1.55) contrast(1.12) brightness(1.04)!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}',
+ pastel:'.welcome-bg.lift{filter:saturate(.65) contrast(.88) brightness(1.18)!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}',
+ mono:'.welcome-bg.lift{filter:grayscale(1) sepia(1) hue-rotate(160deg) saturate(2.4) brightness(1.05)!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}',
+ night:'.welcome-bg.lift{filter:hue-rotate(12deg) saturate(.9) brightness(.92) contrast(1.08)!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}'
+};
+document.querySelectorAll('iframe').forEach(f=>{
+  const box=f.parentElement, fit=()=>f.style.transform='scale('+box.clientWidth/1920+')';
+  fit(); addEventListener('resize',fit);
+  f.addEventListener('load',()=>{
+    const d=f.contentDocument, s=d.createElement('style'); s.textContent=CSS[f.dataset.v]; d.head.appendChild(s);
+    const bg=d.querySelector('.welcome-bg'), c=bg.cloneNode(); c.classList.add('lift'); bg.after(c);
+  });
+  f.src='/presentation/?mock='+f.dataset.v+'#top';
+});
+</script>
+</body></html>

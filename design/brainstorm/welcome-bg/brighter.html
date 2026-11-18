@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Brighter right side</title>
+<style>
+body{margin:0;background:#16181D;color:#E9EBEE;font:15px/1.4 system-ui,sans-serif;padding:16px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(560px,100%),1fr));gap:20px}
+h3{margin:0 0 4px;font-weight:500;font-size:15px}
+p{margin:0 0 8px;color:#B4BAC2;font-size:13px}
+.box{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:6px}
+.box iframe{position:absolute;top:0;left:0;width:1920px;height:1080px;border:0;transform-origin:0 0;pointer-events:none}
+</style></head><body>
+<div class="row">
+ <div><h3>Now · dimmed evenly</h3><p>The whole picture at 82% brightness (dark mode).</p><div class="box"><iframe data-v="now"></iframe></div></div>
+ <div><h3>A · No dimming</h3><p>The whole picture at full brightness.</p><div class="box"><iframe data-v="a"></iframe></div></div>
+ <div><h3>B · Dim left, full right</h3><p>Behind the text stays at 82%; from the middle rightward it ramps to full brightness.</p><div class="box"><iframe data-v="b"></iframe></div></div>
+ <div><h3>C · Dim left, lifted right</h3><p>Like B, but the right side goes past the original: 115% brightness, a touch more colour.</p><div class="box"><iframe data-v="c"></iframe></div></div>
+ <div><h3>D · Light falling on the table</h3><p>Evenly dimmed, plus a soft pool of light over the flowers and napkin from the right.</p><div class="box"><iframe data-v="d"></iframe></div></div>
+</div>
+<script>
+const CSS={
+ now:'',
+ a:'.welcome-bg{filter:none!important}',
+ b:'.welcome-bg.lift{filter:none!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}',
+ c:'.welcome-bg.lift{filter:brightness(1.15) saturate(1.12)!important;-webkit-mask:linear-gradient(90deg,transparent 42%,#000 68%);mask:linear-gradient(90deg,transparent 42%,#000 68%)}',
+ d:'.glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 75% at 82% 45%,rgb(255 250 230 / .38),rgb(255 250 230 / 0) 70%);mix-blend-mode:soft-light}'
+};
+document.querySelectorAll('iframe').forEach(f=>{
+  const box=f.parentElement, fit=()=>f.style.transform='scale('+box.clientWidth/1920+')';
+  fit(); addEventListener('resize',fit);
+  f.addEventListener('load',()=>{
+    const d=f.contentDocument, v=f.dataset.v, s=d.createElement('style'); s.textContent=CSS[v]; d.head.appendChild(s);
+    const bg=d.querySelector('.welcome-bg');
+    if(v==='b'||v==='c'){const c=bg.cloneNode();c.classList.add('lift');bg.after(c);}
+    if(v==='d'){const g=d.createElement('div');g.className='glow';bg.after(g);}
+  });
+  f.src='/presentation/?mock='+f.dataset.v+'#top';
+});
+</script>
+</body></html>

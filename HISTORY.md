@@ -4,6 +4,370 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-18 — Meet PRISM: tiles turn blue; tile text lines up with the headline
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Turned tiles are the deck's blue**, rgb(15 108 157), the background of the question, Why AI? and
+  Standards slides, as a glass pill with bold white text (about 5.2 : 1). The panel's glow is blue too.
+- **The tile text starts on the headline's left edge:** the panel hangs left by its padding plus the
+  tiles' inner padding.
+- `intro.css` `?v=20261118b`. Deck only. Checked at 1920×1080 after two flips.
+
+## 2026-11-18 — Slide 2: titles in the middle
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 2's titles ("50+ posters…" and "Loved it…") sit in the vertical middle of the slide**
+  instead of at the top (`presentation/index.html`). The cricket after the click is a little smaller
+  (16.5% of the slide's width, was 21%) and stands right against the poster, so it clears the
+  centred text. Not checked in a browser.
+
+## 2026-11-18 — Every blue slide uses the Why AI? blue
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Welcome slide and slide 2 now use rgb(15 108 157)**, like "Standards exist" and "Why AI?".
+  Only the blue was recoloured, so the ink lines, the tablet and the rest of each picture are
+  unchanged: `welcome-wind-loop.mp4` (every frame, re-encoded with the same codec and colour tags),
+  `welcome-wind-poster.jpg`, `empty-desk-deep.jpg`, and slide 2's page colour. Pixels near the old
+  blue move to the new one, blending out at the edges so the paper texture stays.
+- Checked in headless Chrome: all three slides sample at about (15, 108, 157). Light text on it
+  passes at 5.2:1. The originals are kept outside the repo as a backup.
+
+## 2026-11-18 — Standards exist: same blue as the Why AI? video
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"Standards exist" now uses rgb(15 108 157)**, the blue the "Why AI?" explanation video shows
+  on screen (the video file is coded rgb(34 115 150), but Chrome plays it brighter because it is
+  full-range with different colour tags than the other clips). The slide and its gradient wash
+  switch to it, so the two slides read as one colour. Light text on it: 5.2:1 (title), 5.1:1 (line).
+
+## 2026-11-18 — Meet PRISM: no slider hint in the deck
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"Drag the slider to see each fix." is gone from the deck's Meet PRISM slide** (`intro.js`, `?deck`
+  only); the speaker drags it. The live site's intro keeps the hint.
+- Mockup only, not in the deck yet: `design/brainstorm/prism-blue/` shows Meet PRISM arriving in slide
+  4's blue and dimming to black.
+
+## 2026-11-18 — Titles: pure white with a crisp shadow
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Every slide title is pure white** (the welcome title, slide headings, big lines and quotes), with a
+  thin dark edge and a soft glow (`0 1px 2px rgb(0 0 0 / .45), 0 2px 14px rgb(0 0 0 / .3)`), so it
+  holds over busy art like the moving framework cards. Highlighted words in titles are white too.
+  Before, titles were off-white (`#E9EBEE`, or `#F6F4EC` on the blue slides) with no shadow.
+- Light mode keeps its dark titles. Option B of the mockups in `design/brainstorm/title-white/`.
+
+## 2026-11-18 — Why AI?: no head counts on the row
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- Slices show cost, not people, so the row labels drop their counts: "Developers", "Budget",
+  "Designers". Time keeps its count ("6 months"), and the end still reads 1 designer, AI, 1 month.
+
+## 2026-11-18 — Why AI?: AI lands between the two designers
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New row:** 3 developers, 3 budget slices, 2 designers, 6 months. AI drops in between the two
+  designers, which is also the middle of the row (7 slices in front, 7 behind), so both sides
+  slide into it evenly. The back designer goes into AI too; it ends 1 designer, AI, 1 month.
+  Labels follow: "2 designers" under the pair, "6 months" above the back end.
+
+## 2026-11-18 — Why AI?: even absorb, deck colours
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Even absorb:** AI now lands dead centre, 7 slices in front and 7 behind, so both sides slide
+  into it together. The last three end evenly spaced with no overlap (1 month, AI, 1 designer);
+  "1 designer" moved above its slice to stay on screen.
+- **Colours from the deck:** developers coral `#F28B82`, budget green `#7FD19B` (PRISM's
+  status colours), months pale ink `#EEF1F4`, designers form blue `#8DB4EC`, AI brand yellow
+  `#F5CF4A`.
+
+## 2026-11-18 — Why AI?: slices animation behind the slide
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 4 (`#why`)** gets the explanation video, playing once each time the slide comes up
+  (10 s, then it holds): a usual project fans out as glass slices in the lower right, labelled
+  3 developers, Budget, 6 months and 3 designers. A yellow AI slice drops into the middle of
+  the months, the other slices slide into it, and one month, AI and one designer are left.
+  Labels are part of the video. It sits clear of the title on a 16:9 screen
+  (`media/bg/ai-slices.mp4`, poster `ai-slices.jpg`).
+- **Credit:** "Animation: made in code with Remotion and three.js".
+- **Source:** new `video/` folder (Remotion + three.js). `npm run render` there rebuilds the clip;
+  `node_modules` and renders stay out of git.
+
+## 2026-11-18 — Why AI?: framework background off, waiting for the explanation video
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 4 (`#why`)** loses its scrolling framework cards and their wash; the slide is the plain
+  blue until the explanation video is ready. Its credit line ("Background: PRISM's 14 frameworks")
+  goes with it. The rows still play on "Standards exist" (`fw-rows.js` builds both).
+
+## 2026-11-18 — Standards exist: gradient wash, right side vivid
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Second beat:** the rows come in at full strength under a left-to-right wash in the slide's blue,
+  deep behind the title and clear from about two-thirds across, so the cards on the right are
+  vivid (replaces the even quarter fade). A thin fade along the bottom keeps the credit line
+  readable. The screenshots land in their cards at full strength.
+- Checked in headless Chrome at the slide's end state.
+
+## 2026-11-18 — Standards exist: title in the middle of the slide
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- "Standards / already exist." and "What if they were all in one place?" now sit centred top to
+  bottom on the left, on both beats (the framed pile, and the faded rows), instead of at the top.
+  Checked both beats in headless Chrome.
+
+## 2026-11-18 — Standards exist: the title stays over faded rows
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Second beat:** "Standards / already exist." and "What if they were all in one place?" stay on
+  screen, and the framework rows come in faded to a quarter behind them, as in the faded mockup.
+  The two screenshots fade to the same strength as they fly into their cards, so they land
+  without a jump. The first beat (title and framed pile on plain blue) is unchanged.
+- Checked in headless Chrome at the slide's end state (coming back from "Why AI?").
+
+## 2026-11-18 — Standards exist: no cards behind the title
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- Undoes the faded rows on the first beat: the title, its line and the framed pile sit on plain
+  blue again, and the framework rows come in on the click as the screenshots fly into them.
+
+## 2026-11-18 — Standards exist: faded rows behind the title from the start
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The framework rows now appear with the title** on the first beat, faded to a quarter so
+  "Standards / already exist." and its line read over them on the blue (no gradient). The rows hold
+  still while the framed pile drops in.
+- On the next click the screenshots fly into their cards; when they land the rows come up to full
+  strength (0.7 s) and start drifting.
+
+## 2026-11-18 — Standards exist: framed pile, one line under the title, clean rows
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Frames:** in the pile, Nati's post and the CDC screenshot each hang in the hand-drawn wooden
+  picture frame from the blue cabinets drawing (`presentation/media/bg/cabinet-frame.png`, cut from
+  `blue cabinets.png` and stretched along its edges so the corners keep their hatching). The frame
+  thins to nothing as each screenshot flies into its card. The pile is a little smaller so the
+  frames clear the title and the credit line.
+- **Under the title:** "What if they were all in one place?" now sits under "Standards / already
+  exist." on the first beat.
+- **Second beat is clean:** "Frameworks everywhere, scattered across different documents." and the
+  wash over the rows are gone, and so is the third beat (its big "What if they were all in one
+  place?" now lives under the title). The slide is two clicks: the pile drops in, then the
+  screenshots fly into the rows.
+- Credit line adds "Frames: from a drawing generated with Midjourney".
+- Not watched in the browser (the pane keeps timing out); the frame image was checked by slicing
+  it around the real screenshots, and the script is syntax-checked.
+
+## 2026-11-18 — Standards exist: the two screenshots drop onto a pile
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 3 (`#standards`), first beat, laid out like slide 2:** the title "Standards / already exist."
+  on the left (now on two lines, so it stays clear of the pile) and the screenshots on the right as a
+  pile, option B: the CDC Clear Communication Index behind, tilted 3°, and Nati's post in front,
+  lower and tilted −4°.
+- **They drop in:** the CDC site first, then the post, each falling from above the slide and settling
+  with a small bounce (`standards.js` adds `.down`; reduced motion skips the bounce). The labels under
+  the screenshots are gone; the credit line names both.
+- On the next click they still shrink into their two cards in the framework rows, now turning from
+  their own tilt to the rows' −4°.
+- Not watched in the browser: the pane was hidden and timed out. The script was syntax-checked and
+  localhost:5173 serves the new version.
+
+## 2026-11-18 — One title treatment; slide 2's footer trimmed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Every slide title now shares one treatment**: the same face, size and weight (as before), 1.08
+  line spacing everywhere (some were 1.04), and no glow or shadow behind it (slide 2, the welcome
+  slide and the photo slides each had their own).
+- **Slide 2's footer** now reads "Cricket: generated with Midjourney. Posters: Sonia Seto for UHN"
+  then the Noto animated emoji credit (CC BY 4.0) added back: "Cricket: generated with Midjourney.
+  Posters: Sonia Seto for UHN. Emoji: Noto animated emoji (CC BY 4.0)".
+- Not checked in a browser (Chrome disconnected).
+
+## 2026-11-18 — Footers: pure white at 80%
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Every footer line** (media credits, notes, the feedback and licence line, and their links) is now
+  pure white at 80% opacity, `rgb(255 255 255 / .8)`, on every slide. Before, they used the secondary
+  grey, which was `#EEF1F4` on the blue slides and `#B4BAC2` on the dark ones.
+- Light mode keeps its dark secondary ink for footers, since white would not show on the light desk.
+
+## 2026-11-18 — Standards and Why AI? in the deeper blue
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The Standards slide and Why AI? now use the same deeper blue as the welcome slide and slide 2**
+  (rgb 34,115,150) in both themes, with light text, the olive highlight, and the wash over the
+  framework rows in that blue instead of the dark grey (`presentation/index.html`).
+
+## 2026-11-18 — One slide change: morph, forward and back
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Every slide change is the morph**, going forward and going back: the page crossfades while the
+  title (and anything marked `data-morph`) glides to its new place. The crossfade and the glide now
+  run on one clock (0.75 s, same easing), so nothing finishes ahead of the rest.
+- **Removed the one-off changes** that were left in the code but no longer used: the prism highlighter
+  wipe and the Take-home zoom-through. The Take-home slide still shows Intent first through its letters.
+- The same-title fade now only runs in the plain fallback (reduced motion, or browsers without View
+  Transitions), so it can't mix with the morph.
+
+## 2026-11-18 — Slide 2: no wind
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The three wind strokes are removed** from the click; the leaves still tumble down before the
+  cricket hops in.
+
+## 2026-11-18 — Slide 2: sharper cricket
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Chloe's higher-resolution cricket** (`presentation/media/bg/cricket.png`, 2912 x 1632) is cut out
+  again by `scripts/cricket-cutout.py`: `cricket-cut.png` is now 354 x 262 (was 181 x 136), so at its
+  size on the slide it is barely enlarged and stays crisp.
+
+## 2026-11-18 — Slide 2: fix the poster drawn small in the top-left after the click
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Fix**: on Chloe's screen the lifted poster was drawn at about half size, tucked top-left behind the
+  title, after the click: the sheets canvas had lost its scaling. `desk-pile.js` now re-applies the
+  canvas scaling every frame and lays the slide out again whenever its size or the screen's pixel
+  density changes without a resize event (browser zoom, another monitor).
+- Not yet re-checked in a browser (Chrome disconnected).
+
+## 2026-11-18 — Slide 2: on the click, the poster alone on the blue with the cricket beside it
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Replaces the zoom.** On the "Loved it" click the reactions fade, and the desk, chair and pile fade
+  into the blue while the teach-back poster glides to the right half, larger (74% of the slide's
+  height, its middle at 69% across). The wind and leaves still blow past.
+- **The cricket hops in from the left** in two hops and stands on the blue just left of the poster's
+  lower corner, facing it, feet level with the poster's bottom edge, no shadow. It leans 3.6deg
+  nose-down so its hind, middle and front feet all stand on one line, and breathes (a slow, slight
+  swell) once it lands. It is drawn about 21% of the slide's width, enlarged from the 181 px cutout,
+  so it is a little soft; an upscaled cricket image would sharpen it.
+- The zoom's left/bottom veil is removed (`presentation/desk-pile.js`, `presentation/index.html`).
+
+## 2026-11-18 — Slide 2: updated desk drawing
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The new `empty desk.png` is on slide 2** (re-exported to `presentation/media/bg/empty-desk.jpg`,
+  cache key `20261118b`): the chair no longer has an armrest. The desk itself is unchanged, so the
+  pile, the lifted poster and the cricket still sit exactly on it.
+
+## 2026-11-18 — Slide 2: the scene zooms in to the desktop on the click
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **On the click, the whole scene eases in about 2× over 1.6 s** to just the desktop: the lifted
+  teach-back poster big beside the text, the pile, cup and cricket along the bottom. The drawing,
+  the sheets canvas and the reactions/wind/cricket layer all zoom together; the text stays put.
+- **The chair and the desk's legs fade into the blue** as it zooms (`.desk-veil`), so the footer
+  sits on clean blue under the tabletop.
+- **The cricket now springs up from below the desk's front edge** onto the tabletop, then takes one
+  small hop left to its spot by the cup (the floor is out of view when zoomed).
+- **Sharper desk drawing**: `empty-desk.jpg` re-exported at higher quality from the PNG. It is still
+  1456 px wide, so it softens a little at 2×; an upscaled desk image would make it crisp.
+
+## 2026-11-18 — Slide 2: on the click, wind, leaves and a cricket
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **On the click** (as the title changes to "Loved it…"), the reactions fade, a gust of wind
+  (three cream strokes) sweeps across to the right of the title, and five ink-outlined leaves
+  tumble across and down with it.
+- **Then a cricket** (Sonia's Midjourney cricket, cut out to `presentation/media/bg/cricket-cut.png`
+  by `scripts/cricket-cutout.py`) appears under the desk, hops out head-first past the desk's right
+  leg, then jumps low up and over onto the desk, landing with every leg on the tabletop just left
+  of the cup, facing left. It only appears after the click; going back hides it, coming back to the
+  slide shows it sitting there.
+- Credit now reads "Desk and cricket: generated with Midjourney" (`presentation/desk-pile.js`).
+
+## 2026-11-18 — Slides 1 and 2: one deeper blue, text passes AA; breeze loops forward only
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **No more dimming on slide 1 (`#top`).** Instead of darkening the whole picture to 82% (white text
+  was 4.46 : 1, just under AA), only the table's blue is recoloured to rgb(34 115 150); the tablet,
+  napkin, flowers and coffee keep their full colour. White text 4.9 : 1, small lines 4.8 : 1.
+- **New breeze clip, forward only, seamless:** the updated 10 s clip (steam curls off the coffee,
+  light glides across the tablet; kept as `media/bg/welcome-wind-v2.mp4`) loops as 8.5 s: its last
+  1.5 s crossfade into the start, so there is no jump and no reverse. `media/bg/welcome-wind-loop.mp4`
+  and its first-frame poster `welcome-wind-poster.jpg`, cache key `?v=20261118a`.
+- **Slide 2 (`#question`) in the same blue:** the desk picture's blue recoloured the same way
+  (`media/bg/empty-desk-deep.jpg`; the desk, chair and rug untouched) and the backdrop set to
+  rgb(33 113 147) to meet its edges. Small lines go from #E4EEF6 to #EEF1F4. White text 4.8 : 1,
+  small lines 4.6 : 1 (were 2.7 and 2.5 : 1).
+- Recolour: a colour lookup table that moves only colours near the table blue (`design/brainstorm/welcome-dim/*.cube`). Options compared in `design/brainstorm/welcome-dim/`.
+- Checked at 1920×1080 (headless Edge; the browser pane was not responding): both slides render,
+  title clear of the art.
+## 2026-11-17 — Titles at least 5u from the edge
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Every slide title now starts at least 5u (96 px at 1920×1080) from the slide edge**, as far in as
+  the Take-home title. The slide's left margin goes back from 2.5u to 5u, so the titles and the text
+  under them stay lined up; the right margin stays 2.5u, so wide content (the homepage slider, the
+  review spreadsheet) still runs far right.
+- **Pinned slides** start their title at least 5u from the top (was 8% of the height, 87 px).
+- **Feature slides:** the text column moves in to 3.44u so its text, inset 1.56u, starts at 5u, and
+  each title sits 5u from the top.
+- Checked at 1920×1080: every visible slide's title is 96 px or more from all four edges. The one
+  exception is the opening quote mark of "Loved it" isn't the same as "understood it.", which hangs
+  into the margin on purpose so the letters line up; the letters start at 96 px.
+
+## 2026-11-18 — Slide 2: reactions around the poster, not on it
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The reactions sit just outside the lifted poster's edges** (left, right and above), overlapping
+  it by a few pixels at most, so the poster stays readable. They still burst out from its centre.
+
+## 2026-11-18 — Slide 2: the leaflets fall a few at a time
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Still the 12 UHN materials, but several fall at once**: each sets off 0.05 to 0.35 s after the
+  one before (was 0.3 to 1.15 s), in a shuffled order, so the whole fall finishes in about 8 s
+  (was about 13). The teach-back poster still lands last on top and lifts as before.
+- Landed sheets are drawn once onto a cached pile, in the order they land, so the animation stays
+  smooth (`presentation/desk-pile.js`).
+
+## 2026-11-18 — Slide 2: fall, lift and reactions play on their own; the click changes the title
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **On arrival everything plays without a click**: the leaflets fall, and half a second after the
+  last one lands the teach-back poster lifts off the pile and the reactions pop around it, while
+  the title stays "50+ posters, infographics and illustrations."
+- **The one click** changes the title to "“Loved it” isn’t the same as “understood it.”" with
+  "Nobody was checking…"; the lifted poster and reactions stay (`presentation/desk-pile.js`).
+
 ## 2026-11-17 — Slide 1: the breeze plays forward, then back, on repeat
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #55) · GitHub Pages: updated from `master`
@@ -34,6 +398,409 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #53) �
   left), and the small grey lines brighten in dark mode (`--ink-2` is `#EEF1F4` on `#top`).
 - **Credit line** reads "Background: generated with Midjourney, PRISM screen drawn in".
 - Checked at 1280×720 in dark and light mode: the title stays clear of the tablet.
+
+## 2026-11-17 — Title slide fine print on one row
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The title slide's fine print is one row**, in the shared footer spot: "Feedback: prism@goinvo.com ·
+  Code licensed Apache 2.0, designs CC BY 4.0 · Background: generated with Midjourney, recoloured"
+  (was three lines; the licence line is shortened, links kept).
+
+## 2026-11-17 — One footer spot for every slide
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Every credit line sits in the same place on one row**: lined up with the slide's text edge
+  (2.5 units in) and 1.5 units above the bottom, never wrapping. Slide 2's credit (was indented and
+  wrapped to four lines) and the Appendix feature slides' credits (were higher, in their side
+  column, wrapped) now follow it.
+- **The Appendix feature slides' tile grid stops 1.6 units higher**, so the footer fits under it.
+
+## 2026-11-17 — Meet PRISM: back to the water pill, longer and harder
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The card is the water-pill handout again**, replacing The Light Collective passages, but a
+  longer, harder version so the before and after are far apart. As written (65 words): eight medical
+  words (physician, diuretic, edema, urinary output, administer, orally, monitor, orthostatic
+  hypotension), a 42-word sentence and "25%". The slider then applies three fixes: everyday words
+  (PEMAT-P items 3–4, AHRQ; CDC Everyday Words), the long sentence split into five (Federal Plain
+  Language Guidelines), and "25%" → "About 1 in 4 people", plus "Stand up slowly." (Gigerenzer &
+  Hoffrage, 1995).
+- **Reading grade 15.9 → 8.9 → 3.8 → 2.7, flags 10 → 2 → 1 → 0.** The grades are PRISM's own
+  Flesch-Kincaid (`computeFK`) on each step's text.
+- Deck only (`?deck`); the PRISM site keeps its short water-pill card. `intro.js` `?v=20261117j`.
+- The local server on 5173 had stopped; restarted it for the checks.
+- Checked at 1920×1080: slider at 0, 1 and 3.
+
+## 2026-11-17 — Standards exist: no stacked headlines; screenshots darken as they land
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Stacked headlines (`#standards`):** coming back from "Why AI?" landed on the slide's last beat,
+  and the slide-change morph held its title ("Standards already exist.") at full strength, so it sat
+  on top of "What if they were all in one place?". The morph now holds a title only if it shows on
+  the beat the slide arrives at, and a held line lets go once its own fade-out starts.
+- **Post to dark background:** the dark wash now sits over the flying screenshots (text still on
+  top), so Nati's post and the CDC screenshot darken with the rows as they land, instead of staying
+  bright and dimming in one step when they swap into their cards.
+
+## 2026-11-17 — Solid olive highlight on the blue slides
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The title slide ("Dropped") and slide 2 ("understood it.") highlight in a solid olive
+  (#6B5F14)**, in both themes, instead of the see-through yellow that turns green over the blue.
+
+## 2026-11-17 — Slide 2: varied fall, poster higher, title fix, title-slide highlight
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Leaflets fall from across the desk's whole width, at random intervals.** About a third fall
+  nearly flat, rocking, barely curled; the rest fall more upright and curl. Each faces its own way
+  (some turned to the side, a few with their back to the room, which shows the plain paper back).
+- **The lifted poster sits higher above the desk**, the reactions with it.
+- **Fix: the first title no longer stays on screen under "Loved it"** when the slide is reached
+  through the morph. The deck now lets go of a morphed part once its own fade-out starts
+  (`paintSlide` in `presentation/index.html`).
+- **The highlight on "understood it." matches the title slide's** (the deck's see-through yellow,
+  green over the blue) instead of a solid olive.
+
+## 2026-11-17 — Slide 2: lifted poster centred, slower and more varied fall
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The lifted teach-back poster sits straight above the middle of the desk**, with the reactions
+  moved along with it.
+- **The leaflets fall more slowly and each in its own way**: 4.4 to 6 s each (was 3.1), starting
+  about 0.6 s apart with a little jitter, and each with its own sway width and speed, curl, lean
+  and turn (`presentation/desk-pile.js`).
+
+## 2026-11-17 — Slide 1: bottom fade only
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #53) · GitHub Pages: updated from `master`
+
+- **The dark wash from the left is gone on slide 1 (`#top`)**; only the soft fade along the foot
+  stays, behind the intros and fine print. The desk blue now shows across the whole slide.
+- **Small grey lines brighten in dark mode** (`--ink-2` is `#EEF1F4` on `#top`): the label, the
+  two job titles and the fine print, so they hold up on the bare blue.
+
+## 2026-11-17 — Slide 2: leaflets slow down as they land
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **No more rush at the end**: each leaflet picks up a gentle speed over the first 15% of its fall,
+  drifts down at that pace, then slows over the last 35% (to about 15% of its speed at touch-down).
+  It tips flat over that slower last stretch instead of the last fifth (`presentation/desk-pile.js`).
+
+## 2026-11-17 — Slide 2: leaflets fall straight down over the desk
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Each leaflet now drops from straight above the desk**, a little either side of where it lands,
+  instead of coming in from the top right (`presentation/desk-pile.js`). The title stays clear.
+
+## 2026-11-17 — Slide 2: animated reactions above the poster
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The reactions are now Google's animated Noto emoji** (`presentation/media/bg/emoji/`, CC BY 4.0,
+  credited on the slide): heart, star-struck, clap, smiling with hearts, 100, party popper,
+  sparkling heart, sparkles and thumbs up, in different sizes.
+- **They sit on their own layer above the poster** and burst out from behind it one after another,
+  springing to their spots with a little overshoot.
+
+## 2026-11-17 — Slide 1: table from above, in the empty desk's blue
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #53) · GitHub Pages: updated from `master`
+
+- **New title slide background (`#top`):** `media/bg/welcome.png` (a table seen from above:
+  forget-me-nots, strawberries, a glass on a napkin with the prototype sketched on it), recoloured
+  so its pale sky blue becomes the empty desk's blue (63, 160, 209), with the same fine grain.
+  Only the background changes; the flowers, glass, napkin and plates keep their colours. Saved as
+  `media/bg/welcome-blue.jpg`; it covers the slide, anchored right. The existing wash keeps the
+  text readable in dark and light mode. Options compared in `design/brainstorm/welcome-bg/`.
+- **Retired:** the napkin-to-screen crossfade (`n2s-*`). Its images stay in `media/bg/`.
+- **Credit line** now reads "Background: generated with Midjourney, recoloured."
+
+## 2026-11-17 — Slide 2: the pile has volume
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Each landed sheet now has thickness**: the edges facing the room show as a pale paper band with
+  a dark line under it, each sheet sits a little higher (2.2 px), and a thin ink outline matches
+  the drawing's own lines.
+- **Shadows**: a stronger cast shadow onto the sheet below, and a soft contact shadow on the desk
+  under the pile that darkens as the pile grows (`presentation/desk-pile.js`).
+
+## 2026-11-17 — Slide 3 (the outlined designer) hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#waiting` is hidden** (it had already been moved to the Appendix): its "Loved it" lines now
+  play on slide 2's click. The markup and the outlined designer image stay, so it can come back by
+  removing `hidden`.
+
+## 2026-11-17 — Slide 2: posters drift down on arrival; the click brings "Loved it" with the lifted poster
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 2 plays on arrival** (no wait for a click): "50+ posters, infographics and
+  illustrations." and the 12 UHN posters drift down onto the desk one after another (option B,
+  "drift and curl"). Each is soft paper drawn as a bendable mesh on a canvas: it speeds up as it
+  falls, sways side to side facing the room, curls, and tips flat just before it lands on the pile.
+- **The click** brings "“Loved it” isn’t the same as “understood it.”" (quote marks hung, "understood
+  it." highlighted in a solid olive) and "Nobody was checking whether patients could actually follow
+  what we made.", while the Stroke teach-back poster lifts off the pile with reactions around it.
+- **The desk drawing is a little smaller, anchored bottom right**, its top and left edges fading
+  into the slide's blue, so the text stays clear of the chair; the credit wraps before the chair.
+- `presentation/desk-pile.js` rewritten (canvas mesh instead of flat image tilts).
+
+## 2026-11-17 — Clinic question and "Loved it" moved to the Appendix
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"'Loved it' isn't the same as 'understood it.'"** (`#waiting`, the designer outlined in the waiting
+  room) left the main deck and is now the last appendix slide.
+- **The old slide 2, "Did my visual actually make a difference?"** over the clinic front-desk clip, is
+  restored in the appendix just before it (`#question-clinic`; the main deck's slide 2, `#question`,
+  is the new version). The two share the clinic room, so the morph carries the room across between
+  them. Its clip plays when the slide is on; the slow push-in toward the desk is not restored (that
+  script still belongs to the new slide 2). Its opening quote mark now hangs in the margin, so "Did"
+  lines up with "make".
+- Both sit under the single Appendix dot. Checked at 1920×1080: both slides, the dot, no errors.
+
+## 2026-11-17 — Slides 2 and 3 rebuilt from the script
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 2 (`#question`) is now the empty desk** (`presentation/media/bg/empty-desk.jpg`,
+  Midjourney) in place of the clinic clip and the "Did my visual actually make a difference?"
+  quote. It arrives empty. Click 1: "50+ posters, infographics and illustrations." while Sonia's
+  12 UHN posters and handouts fall in from the top right and lie flat on the desk top in a growing
+  pile. Click 2: "Everyone loved it." as the Stroke teach-back poster lifts off the pile to face the
+  room and reactions pop around it. `presentation/desk-pile.js` (new) bends each sheet onto the
+  desk's perspective with a CSS matrix3d, driven by the slide's --t, so going back plays it in
+  reverse. Images: `presentation/media/bg/uhn/` from `scripts/uhn-posters.py` (new).
+- **Slide 3 (`#waiting`)** now says "“Loved it” isn’t the same as “understood it.”" with the
+  opening quote marks hung outside the text edge so the letters line up; the click highlights
+  "understood it." and adds "Nobody was checking whether patients could actually follow what we
+  made."
+- **Credit lines on slides 2 and 3 sit at the bottom left** (`.credit.bl`), even where the text is
+  on the right.
+- Slide 2 and slide 3 no longer share a room, so only the title morphs between them.
+
+## 2026-11-17 — One dot for the whole Appendix
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The slide dots on the right show the Appendix as a single dot** (named "Appendix"), instead of one
+  per appendix slide. It lights on the divider and on every slide after it; clicking it goes to the
+  divider. The main deck keeps one dot per slide (15 dots in all now).
+- Checked at 1920×1080: the dot on "Your turn", the divider, and two appendix slides; no errors.
+
+## 2026-11-17 — Studio: a multi-word fix no longer eats the next space
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Bug fixed:** applying a fix whose new words contain a space ("ensuring" → "making sure") lost
+  the space after it: "directly ensuring that" became "directly making surethat". Chrome's
+  `insertText` drops the space that follows such a replacement. `applyFixToDoc` now takes that
+  space in with the new words (one edit, so Ctrl/⌘+Z still undoes it in one step).
+- Checked: the sample sentence now reads "making sure that"; Apply all on the whole TLC guide gives
+  "making sure that" twice and no joined words.
+
+## 2026-11-17 — Meet PRISM: real before and after from our own work
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The card on the right is now The Light Collective's guide**, "A Guide to Negotiating Patient
+  Digital Rights", instead of the made-up water-pill handout. Two short passages, as written (flags
+  marked) and after PRISM's Apply all (fixes underlined): a long sentence split in two, "outcome" →
+  "result", "maintain" → "keep". The text is exactly what PRISM produced (Brief: Patients, Manual).
+- **Whole-guide numbers from the same run:** reading grade 12.3 → 11.8, issues to fix 120 → 101,
+  67 fixes in one click. The slider runs As written → After PRISM. Credit under the card: "Our work:
+  The Light Collective and Digital Public, CC BY 4.0, designed by Chloe Ma, GoInvo".
+- Deck only (`?deck`); the PRISM site keeps the water-pill card. `intro.js` `?v=20261117i`,
+  `intro.css` `?v=20261117e`.
+- Found while capturing it, not fixed: one of Apply all's rewrites drops a space ("ensuring that" →
+  "making surethat"). That passage isn't on the slide.
+- Checked at 1920×1080: both slider positions.
+
+## 2026-11-17 — Meet PRISM: a Jeopardy board of six problems on glass tiles
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Six problems now, on glass tiles** in one frosted panel (the same iOS-glass look as the demo
+  slides' menu, no arrows). Added two to the four from the appendix: "Patient material can’t go to
+  cloud tools" → "Nothing is uploaded; it all stays in your browser", and "Hard to trust where a rule
+  comes from" → "Every check cites its framework and source".
+- **Each click flips one tile** (a 0.7 s turn on its horizontal axis, like a Jeopardy board) to PRISM's
+  answer on a yellow glass face. After the sixth, the headline turns from "Checking a handout today" to
+  "One place, in your browser". All tiles are one height, and text starts at the same left edge on both
+  faces.
+- The slide (`#intro`) has seven steps (`data-beats="7"`, with a hidden `.pm-beat` so the deck counts
+  them); the frame reads the slide's `--t` and sets `li.on` / `.pm-solved`. The right side (the
+  water-pill card) is unchanged for now. Deck only (`?deck`); the PRISM site is unchanged.
+  `intro.js` `?v=20261117h`, `intro.css` `?v=20261117d`.
+- Checked at 1920×1080 (headless Chrome): arrival, three flips, all six.
+
+## 2026-11-17 — New slide 4: Standards exist (post and CDC site shrink into the framework rows)
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide `#standards` after the designer slide**, three steps. Arrives: "Standards already
+  exist." over Nati Chen's post and the CDC Clear Communication Index side by side
+  (`presentation/img/cdc-cci-site.png`, new). Click: both shrink and tilt into two cards in the
+  middle row of the framework background while the other cards fade in, then the rows start
+  drifting; the title becomes "Frameworks everywhere, scattered across different documents."
+  Click: "What if they were all in one place?"
+- `presentation/standards.js` (new) works out where each screenshot starts and the card it lands in;
+  `fw-rows.js` now builds every `.fw-bg`, and on slide 4 puts the two screenshot cards in the
+  middle row.
+- No framework count is said on the slide yet (the script says 26, the deck says 14).
+
+## 2026-11-17 — Meet PRISM: four problems that turn into what PRISM does
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The slide now tells problem → answer → before and after**, using the problems from the appendix
+  demos. Click 1: "Checking a handout today" over four problems (scattered tools, each wanting a
+  different format; dozens of checklists; poster checks on separate, clunky sites; checkers that
+  leave the rewrite to you). Click 2: each line turns, in place, into what PRISM does, under "One
+  place, in your browser"; the bullets fill yellow. The water-pill card stays beside them, at As
+  written, for the before and after you drag live.
+- Built into the deck version of the front door (`?deck`): `intro.js` and `intro.css`
+  (`.pm-swap`, `.pm-rows`, `.pm-solved`). The slide (`#intro`) has `data-beats="2"` and a hidden
+  `.pm-beat` marker the frame watches. Every row is one line, all in one type treatment.
+- `intro.js` `?v=20261117g`, `intro.css` `?v=20261117c`. The PRISM site's front door is unchanged.
+- Checked at 1920×1080 (headless Chrome): both clicks, rows on one line each, slider at As written.
+
+## 2026-11-17 — Why AI?: the 14 frameworks scroll behind the line
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide 4 (`#why`) background** is now PRISM's 14 frameworks as browser cards, after Chloe's
+  `prism-frameworks-background.png`: the URL bar, the yellow category tag, the serif name, the
+  subtitle and the source. The cards sit in seven tilted rows; each row is a carousel and the
+  rows pan in alternating directions, one card passing every 9 s. Only the 14 frameworks the deck
+  names, so the slide matches "14 frameworks".
+- Built in code (`presentation/fw-rows.js` makes the cards; CSS `.fw-*` moves them), so the rows
+  loop with no jump, stay sharp on the projector, and pause when the slide is off screen.
+- A wash in the slide's own colour sits over the cards, heaviest behind the headline, so the slide
+  follows light and dark mode. The Lego figure is off this slide (`lego-bg.js` and its pieces stay
+  in the repo, unused); the credit line now reads "Background: PRISM's 14 frameworks".
+
+## 2026-11-17 — All demo slides moved to the Appendix; empty scroll under the score cards fixed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The four demo slides left the main deck** ("Bring it in, start checking", "Pick the right checks",
+  "Check a poster", "Fix it your way", the versions with zoom and live panels) and now follow the
+  Appendix divider, ahead of the two tile versions. The main deck now goes from Meet PRISM straight
+  on. All six appendix slides are numbered the same way, Appendix · 1 to 6 (they read "1 of 4" … and
+  "Appendix · A/B"), and sit under the chapter "Appendix".
+- **Appendix · 5 (four clip tiles) plays its clips without the zoom camera**, re-recorded plain;
+  these clips are used nowhere else.
+- **No magnifier anywhere:** the lens was removed from the Studio at your request (another session), so
+  the appendix live panel has none either.
+- **No more long, empty, scrollable black area under the score cards** in the live Frameworks panel
+  (`?demo=frameworks`): positioned parts of the Plain language suggestion list escaped the card's
+  scroll box and stretched the column to about 6,800 px. The cards are now their containing block
+  and clip their content, so the column ends with its last card (2,701 px).
+- Checked at 1920×1080: the appendix slides, and the whole deck back from the end (19 changes, all
+  morphs, no errors).
+
+## 2026-11-17 — Meet PRISM slide: wider headline, even gaps, slider waits
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The headline fills three lines** ("Make health handouts, / posters and web / pages easy to
+  read.") instead of five: in the deck version (`?deck`, class `intro-deck`) its 13-character limit
+  is off and the copy column is wider (1.2 : 1 against the handout card).
+- **Even gaps:** the logo above the headline now has 20–32 px below it (was 14 px), and the lede
+  below has 16–28 px above it, so logo, headline and lede are spaced alike.
+- **The slider no longer steps by itself on the slide.** The deck had its own loop that moved it
+  every 1.8 s; now each time the slide opens the slider is set to As written and waits.
+- `intro.js` `?v=20261117f`, `intro.css` `?v=20261117a`. Only the `?deck` page changes; the PRISM
+  site's front door is as before.
+- Checked at 1920×1080 (headless Chrome, 9 s after the slide opened): three-line headline, slider
+  still at As written with 11 / 3.
+
+## 2026-11-17 — Deck's front door: no countdown
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **On the "Meet PRISM" slide (`?deck`) the progress bar no longer fills**, and the page no longer
+  moves on to the Studio by itself. The countdown text and Pause are hidden there too, since there's
+  nothing to pause; Skip to the Studio stays. The PRISM site keeps its 9-second countdown.
+  `intro.js` is loaded as `?v=20261117e`.
+- Checked: the deck page is still on the front door after 12 s with the bar hidden; the site page
+  still shows "Opening the Studio in 9 s".
+
+## 2026-11-17 — Demo clips: zoom-in removed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The pre-recorded demo clips no longer zoom in on the cursor.** f1-paste, f2-drop, f3-sample,
+  f4-brief, s3-alt and s3-colour were re-encoded from their original full-view frames (same
+  recording, same timing and cursor, the whole panel in view the whole time).
+- The deck loads them as `?v=20261118u` so browsers fetch the new files. s3-poster was never zoomed.
+
+## 2026-11-17 — Front-door changes apply to the deck only; the PRISM site is back as it was
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The PRISM site's front door is unchanged again:** "For health handouts, posters and web pages"
+  over "Make your health handout easy to read.", Check a draft and Plan from an idea, "Your file
+  never leaves your computer.", and the slider's fixes applying by themselves during the countdown.
+- **The deck's "Meet PRISM" slide keeps today's changes.** Its frame now loads
+  `../index.html?intro&deck`, and `?deck` gives one headline ("Make health handouts, posters and web
+  pages easy to read."), no buttons, no privacy line, and a slider that waits for the speaker.
+  `intro.js` is loaded as `?v=20261117d`.
+- Checked both: the site page has the kicker, both buttons and the privacy line; the `?deck` page has
+  none of them and the slider stays at As written. No console errors.
+
+## 2026-11-17 — Live demo slides: magnifier removed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The round 2× magnifier that followed the mouse on the live Studio panels (every `?demo=` page,
+  so slides 2–4) is gone.** The panels show at their normal size; pointing and clicking work as before.
+
+## 2026-11-17 — Front door: the slider no longer moves by itself
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The water-pill card's slider stays at "As written"** until someone drags it. Before, the three
+  fixes applied on their own at 2, 4 and 6 seconds into the countdown. The countdown to the Studio,
+  Pause and Skip to the Studio are unchanged. `intro.js` is loaded as `?v=20261117b`.
+- Checked: the slider stays at 0 over 8 seconds, no console errors.
+
+## 2026-11-17 — Slides reordered: timeline and review now sit inside the three points
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New order after the demo:** take-home divider → Intent first → Build fast → **timeline** (`#then`,
+  "The updates") → Iterate → **Excel review** (`#review`, "AI drafted it. We reviewed it.") →
+  **AI certification** (`#certify`) → Your turn → Appendix.
+- The timeline used to come straight after the demo, and the review and certification came before
+  the take-home divider. Now the timeline illustrates "Build fast", and the review and
+  certification follow "Iterate" ("Keep what works. Cut the rest."). Markup moved only, with no
+  changes to the slides themselves.
+
+## 2026-11-17 — Appendix for Q&A: the two tile demo slides, behind a divider
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New divider at the end, after "What's your view on our approach?"** (`#appendix`, chapter
+  "Appendix"): just the title "Appendix", so it can hold more than the demo slides later.
+- **The two hidden tile versions of the demo now follow it**, shown again: "Bring it in, start
+  checking" (`#feat-drop`, four clip tiles) as Appendix · A, and "Pick the right checks"
+  (`#feat-frameworks`, the two live panels with the magnifier) as Appendix · B. Their step label was
+  "1 of 4" / "2 of 4". The main demo keeps its zoom versions.
+- Checked at 1920×1080: the divider and both appendix slides.
 
 ## 2026-11-17 — Every slide change is a morph, forward and back
 
