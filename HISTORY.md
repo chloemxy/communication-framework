@@ -4,6 +4,469 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-18 — Standards exist: Sonia's simpler pile
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Applied Sonia's patch `standards-slide-simpler-pile`.** The first beat drops the wooden frames:
+  Nati's post lies flat and large at the back, with the CDC Clear Communication Index screenshot
+  over its bottom-right corner. A round Out the Door Dinosaur badge pops in on the post's top-right
+  corner and fades as the screenshots fly into their cards. New, sharper screenshots
+  (`img/post-nati-chen-v2.jpg`, `img/cdc-cci-site-v2.jpg`, `img/out-the-door-dino.jpg`); the credit
+  line no longer mentions the Midjourney frames. Touches `index.html`, `standards.js`, `fw-rows.js`.
+- Bumped the `fw-rows.js` and `standards.js` versions so browsers fetch the new code.
+- Checked both beats in headless Chrome at 1600x900.
+
+## 2026-11-18 — Scattered tools: a smooth merge into the PRISM button, and its reverse
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Merge (step two, about 2.2 s):** the pills flow into the centre farthest first, each on one soft
+  ease-in-out curve of 1.2 s, starting 0.09 s apart so many move at once. Each swings out a little on its
+  way, shrinks, straightens and softens, and fades only near the end.
+- **The button grows with them:** the yellow "Check it in PRISM" button starts as soon as the pile moves
+  and grows, and its glow builds, with how much has gone in; it is full size as the last pills arrive. The
+  script now drives the button; its CSS transition is gone.
+- **Reverse (stepping back):** the same curve backwards: the button gives the pills back, nearest first,
+  and shrinks and fades as they return to the pile. Arriving on the merged step (coming back from the next
+  slide) shows the button at once. Reduced motion jumps straight to each end.
+- Checked in headless Chrome at 1920×1080: mid-merge, merged, mid-reverse and back to the pile; no errors.
+
+## 2026-11-18 — Scattered tools: the pile builds itself, overlaps, and lights with a PRISM sheen
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The pile builds when the slide arrives:** pills ease in one at a time, in random order, at random moments
+  (quick bursts and short pauses) and at their own speeds, out of a soft blur with a gentle overshoot. The
+  pills already there spring aside, and rows ease up or down, to make room. The "…" pill comes last, on top.
+- **Overlap:** pills tuck about 0.75 units over their neighbours and rows a sixth of a pill over each other,
+  each pill a little off the grid with a mixed stacking order; every name stays readable.
+- **Hover:** a faint band of PRISM's blue, green and yellow sweeps across the pill and stays, while it lifts
+  to 104% with a soft spring, a brighter rim and a pale halo (replaces the blue lit tile). The pill under the
+  pointer still drifts a few pixels.
+- **Step two** still glides every pill into the yellow "Check it in PRISM" pill; stepping back lays the pile
+  out at once. Reduced motion shows the finished pile with no build or drift.
+- Checked in headless Chrome at 1920×1080: the pile builds, a hover shows the sheen, the step merges, no errors.
+
+## 2026-11-18 — Scattered tools: a settled pile with gentle physics, and a "…" pill on top
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#tools` pills now sit in one pile** in the middle of the slide: rows touching end to end, each row
+  shifted a little and each pill tilted a hair, with a small **"…" pill on top** for every tool not named
+  (read out as "and more").
+- **Gentle physics** (a script at the end of the page): each pill is tied softly to its place; the pill under
+  the pointer drifts at most about 4 px sideways and 2.5 px up or down, at most 0.6 px a frame, and floats
+  back. Nothing is thrown or burst apart. Hover still lights a pill in the deck's blue. Reduced motion keeps
+  the pile still.
+- **Step two** glides every pill into the centre, shrinking as it goes, and the yellow "Check it in PRISM"
+  pill appears; going back lays the pile out again.
+- Checked in headless Chrome at 1920×1080: the pile lays out, a hover lights a pill, the step merges, no errors.
+
+## 2026-11-18 — Why AI? → reveal: no flash of the finished handout at the cut
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Fix:** after the reveal had been left going forward (to the Brief slide), its Studio clip stayed on
+  its last frame. On the next pass the slices' exit clip cut to the slab showing the finished handout
+  for a moment, then the clip jumped back to its start (the glitch and "refresh"). Now the clip returns to
+  its first frame whenever the slide is left, in either direction. Coming back from the Brief slide is
+  still covered by the last-frame still.
+- Checked in headless Chrome (dark mode, with the exit clip): Why AI? → reveal → Brief → back → back →
+  forward again; every forward arrival starts on frame 0, with no overlay or still showing.
+
+## 2026-11-18 — Slide 1: breeze clip upscaled to 1080p, in the deck blue
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Sharper:** the 1280×720 `media/bg/welcome-wind-v2.mp4` is scaled to 1920×1080 with a
+  high-quality (Lanczos) scaler and a light sharpen, and encoded at much higher quality (about 10 MB,
+  was 1.7 MB), so the loop step no longer adds blur. Loops forward only, 8.5 s, the last 1.5 s
+  crossfading into the start.
+- **Deck blue:** the clip plays at about rgb(45 145 191), lighter than the other blue slides, so only
+  its table blue is shifted to rgb(15 108 157); everything else keeps its colour. Measured in headless
+  Edge: (15, 107, 156). White text 5.8 : 1, small lines 5.1 : 1, both pass AA.
+- `media/bg/welcome-wind-loop.mp4` and poster `welcome-wind-poster.jpg`, cache key `?v=20261118f`.
+
+## 2026-11-18 — Slide 1: new breeze clip (flowers sway), in the slide blue
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New clip on the title slide:** the updated `media/bg/welcome-wind-v2.mp4` (10 s; the bouquet
+  sways) replaces the steam clip. As before, only its table blue is recoloured, to the deck blue
+  rgb(15 108 157); the tablet, napkin, flowers and coffee keep their colours. It loops forward only:
+  the last 1.5 s crossfade into the start, 8.5 s, silent, same colour tags as before.
+  `media/bg/welcome-wind-loop.mp4` and its first-frame poster `welcome-wind-poster.jpg`, cache key
+  `?v=20261118c`.
+- Checked in headless Edge at 1920×1080: slide 1 samples (15, 108, 157), slide 2 (12, 106, 156).
+
+## 2026-11-18 — Frameworks slide ("14 frameworks, one dropdown.") removed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#fw-pick` is removed** from the deck with its styles and hover script; "Who it's for" leads straight
+  into the scattered-tools slide again.
+
+## 2026-11-18 — "Checking a handout today" hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#pain` is hidden** (one `hidden` attribute); the scattered-tools pill slide now opens the problem
+  set on its own. The six-tile slide stays in the file to bring back.
+
+## 2026-11-18 — New slide before "Checking a handout today": the scattered tools as glass pills
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#tools`**, black, no title: eleven glass pills bunched in the middle, touching end to end, each
+  drifting a few pixels: Grade school reading level, Universal Patient Language, Contrast checker,
+  CDC Clear Communication Index, Colour-blind simulator, Section 508 checklist, PEMAT, Plain language
+  checker, Alt text guide, CDC Everyday Words and Grammarly. The pills use the pain chips' glass (a little
+  darker so overlaps stay readable), Public Sans at 2.2 units, and three back pills a 0.5 px blur.
+- **Hover a pill** and it lights like Meet PRISM's lit tiles: brighter glass, a stronger rim, bold white
+  text and a glow in the deck's blue, rgb(15 108 157), and it comes to the front.
+- **Next step** (arrow key or click): every pill flies into the centre and one yellow pill, "Check it in
+  PRISM", in the brand yellow with dark text, takes their place. Going back brings the pills back.
+- Checked in headless Chrome at 1920×1080: all eleven names readable, a hover lights a pill, the step
+  merges them, no errors.
+
+## 2026-11-18 — New slide after "Who it's for": Frameworks, the Studio list with a deck of cards behind
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#fw-pick`**, right after the Brief slide, on the same black: "14 frameworks, *one dropdown.*" at the
+  top, and the Studio's Frameworks dropdown rebuilt at the Brief panel's size below it (header
+  "Frameworks · 4 of 14 · Fit your Brief · Close"). Rows read like the Studio: tick box, short name,
+  full name, zone tag, and the output on the right (Score, Partial score, Checklist). The four that fit
+  the Brief (Patients, Handout: CCI, PEMAT-P, Readability, UPL, PRISM's "Handout, poster or web page"
+  set) come first, ticked in yellow; the other ten follow, and the list runs past the bottom of the slide.
+  Text and links come from `frameworks.js`.
+- **Deck behind:** the 14 framework cards (the Why AI? background's browser cards: source address, zone
+  colour, short and full name) wait stacked behind the panel's right edge. Hovering or clicking the panel,
+  or the slide's second step (arrow key), deals them into three fanned rows on the right; leaving the
+  panel stacks them again.
+- The panel shares the Brief's `data-morph`, so it glides from the Brief panel into place.
+- Checked in headless Chrome at 1920×1080, stacked and dealt, no errors.
+
+## 2026-11-18 — "Health writing anyone can read." slide removed
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- The Promise slide (`#promise`) is hidden with `hidden`, so the deck goes from Who it's for straight to
+  Checking a handout today. Removing the attribute brings it back.
+
+## 2026-11-18 — Studio: the steps stay until there's material
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"How to check your material" shows until material is in**, even with a Brief and frameworks set.
+  Before, picking frameworks swapped the steps for cards that had nothing to score yet (Framework
+  checklists: "need text to score", UPL 0 of 59; the 508 card). `syncGuide()` in `index.html` now keeps
+  the steps and hides the cards (`.rail-scroll.steps-only .mod`) until `hasContent()`; the cards come back
+  as soon as text or a file is in. Picked frameworks still tick step 3.
+- Checked in headless Chrome at 1920×1080, light mode: 5 frameworks picked shows the steps; loading the
+  Handout sample brings back the cards (Framework checklists, CCI).
+- The reveal recording (`prism-reveal-light.mp4`) still shows the old empty state; re-recording was asked
+  of the session that made it.
+
+## 2026-11-18 — Reveal re-recorded: the Studio opens on "How to check your material"
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- Asked for by the Intro session: the Studio now keeps its "How to check your material" steps until
+  material is in, so the reveal no longer opens on the Framework checklists card ("0 of 59 rated").
+- **Re-made:** `prism-reveal-light.mp4` (2880×1620, 5.9 s, same drag-and-drop of `water-pill.html`),
+  `prism-reveal-light-first.png`, `prism-reveal-light-last.jpg`, `video/public/prism-reveal-light.png`,
+  and the slab clip `ai-to-reveal-light.mp4` (`npm run render:reveal-light`), which now lands on the
+  steps. `rv-brief.png` is re-cut from the new last frame. Deck versions bumped
+  (`?v=20261118e`, slab clip `?v=20261118z`, `rv-brief.png?v=20261118b`).
+- Checked in headless Chrome at 1920×1080: the clip ends on the analysed handout, the Brief overlay
+  matches the clip, and reveal → Who it's for → back works.
+
+## 2026-11-18 — New slide after the reveal: "Who it's for" (the Brief)
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide `#brief`** right after the PRISM reveal. On the click, the Studio, its yellow frame and the
+  blue fall away to black while the Brief bar grows out of the Studio into the Brief panel, already open
+  (no unfolding, to save time): Audience (Patients selected), Format
+  (Handout selected), and the reading and length targets. Then "Built for healthcare teams, *written for every reader.*" fades in under it at the
+  deck's standard title size, on two full lines. The open panel and the title are centred together on
+  the slide.
+- **Readable from the back row:** the Brief panel is rebuilt in the slide (HTML, Public Sans) at about
+  2.5x the Studio's size: options ~38px at 1920×1080, the Studio's chevron on Close, and both target lines
+  (Reading, Length). Sizes are in the deck's `--u`, so it scales with the screen.
+- **Hover:** pointing at an option in the Brief panel lights it up: a deeper grey than the Studio's
+  own hover (`#D3DAE3`) with a grey outline (`#8E99A6`), 120 ms, so it shows on a projector; the picked
+  ones (Patients, Handout) stay yellow.
+- **Smooth hand-off:** the whole panel morphs out of the Brief bar in the reveal clip (`rv-brief.png`, cut
+  from the clip's last frame and laid exactly over it), so it grows from the bar as one piece and
+  shrinks back into it going back. The bar's picture hands over to the panel in 0.22–0.3 s, so the two
+  sets of words don't overlap. Frames checked every ~80 ms in headless Chrome.
+- **Reveal slide:** coming back from the Brief slide, it now shows the clip's last frame (a still laid over
+  the clip) instead of replaying. Leaving it backwards still returns the clip to its first frame for the
+  Why AI? hand-off. Its class watcher now acts only when the slide is entered or left, which stops it
+  from restarting the clip in a loop.
+- Earlier today, also in this session: the title glides going forward as well as back
+  (`opensAtStart()`), and every footer line is pure white at 80% (logged above).
+
+## 2026-11-18 — One blue on every blue slide: rgb(15 108 157)
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The most used blue, rgb(15 108 157), is now the only slide blue.** It was already on the welcome
+  video, slide 2's desk, Standards exist (background and its card wash) and Why AI?'s CSS.
+- **Brought in line:**
+  - Why AI?'s slices clip and its exit into the Studio were rendered on rgb(34 115 150). `AiSlices.tsx`
+    `BG` is now the shared blue, and `ai-slices.mp4` (plus its poster), `ai-to-reveal-light.mp4` and
+    `ai-to-reveal.mp4` are re-rendered. The render scripts now pass `--color-space=bt709`, so the clips
+    come out standard-range BT.709 and match the CSS blue within 2 levels, with no separate re-encode.
+  - `#reveal` (the Studio push-in after the clip) was rgb(34 115 150).
+  - The appendix Lego slide was #025A9E: its CSS, the blueprint grid and the nine pieces
+    (`media/bg/lego/`) are shifted to the shared blue; the white lines are unchanged.
+
+## 2026-11-18 — Studio: long sentences underlined, more medical words; reveal at 2×
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Long sentences are marked in the text:** a sentence over 25 words gets a blue dotted underline under
+  the whole sentence (`::highlight(pea-long)` in `design-system.css`); the yellow word marks stay on top.
+  "Longish" sentences (19–25 words) are still listed but not underlined, so paragraphs don't fill up.
+- **More words flagged:** PRISM's medical-word list (cited to PEMAT-P item 4) gains physician → doctor,
+  administer → take, orally → by mouth, urinary output → how much you pee, orthostatic hypotension →
+  feeling dizzy when you stand up, syncope → fainting, electrolyte imbalance → salt and mineral levels
+  being off. The plain-word swaps gain approximately → about, immediately → right away, notify → tell.
+  "Monitor" stays off, as the list notes it's too common to flag.
+- **Sharper screens:** the reveal recording is now 2880×1620 (`prism-reveal-light.mp4`, re-recorded with
+  the new marks: 9 suggested changes) and the slab transition is rendered at 2880×1620 too
+  (`--scale=1.5`). The closing slide's background is a 2× frame of the analysed light Studio
+  (`prism-reveal-light-last.jpg`). The real-guide clip is 2496 wide; Meet PRISM is the live page.
+- Checked at 1920×1080 and 2000×1032: the slab holds the same pixels across the cut, and the final
+  frame is sharp.
+
+## 2026-11-18 — Studio: Readability heads the second column, above CCI
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The reading grade is in view as soon as material is in.** The default layouts ("Everything" and
+  "Auditing existing material") now order the panels Plain language, PEMAT, Readability, CCI, Framework
+  checklists, so on a wide Studio Plain language and PEMAT fill the first column and Readability tops the
+  second, above CCI (the columns balance by height). One-column layouts keep the same order.
+- The reveal recording (`prism-reveal-light.mp4`, `?v=20261118b`) and the slab clip were re-made with it:
+  the analysed water-pill handout now shows Readability at grade 16.4 above CCI.
+
+## 2026-11-18 — Reveal: centred on any screen; light Studio that drops in the water pill
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Pinned to the centre:** Why AI?'s slices video and its exit clip now cover the screen from the
+  centre (were bottom-right), and the reveal slide places the slab with the clip's own cover scaling
+  (`--rv`), so on a screen wider or taller than 16:9 the slab is centred and lands exactly where the
+  clip leaves it. Checked at 2000×1032 (66 px above, 67 below, same pixels across the cut) and 1920×1080.
+- **Light Studio, animated:** new recording `media/bg/prism-reveal-light.mp4` (5.8 s, 1920×1080): the
+  light Studio with the Brief set to Patients + Handout, a `water-pill.html` file is dragged in and
+  dropped, and the analysis fills in (flags, Plain language suggesting "water pill" and "swelling", CCI).
+  New clip `ai-to-reveal-light.mp4` (Remotion `AiToRevealLight`, `npm run render:reveal-light`): the slab
+  turns into its first frame. On the reveal slide the recording plays inside the slab each time the
+  slide opens, once, and stops on the analysed handout.
+- The dark version stays in the folder (`ai-to-reveal.mp4`, `prism-reveal-2x.jpg`); switching back is
+  the exit clip's `src` and the slab's contents.
+
+## 2026-11-18 — Reveal: the screen no longer shifts at the cut
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Two causes, both fixed.** (1) The reveal slide's slow push-in started growing the slab right after
+  the cut; it's gone, so the slab holds where the clip leaves it. (2) After a slide's exit clip, the
+  deck switched transitions back on before the next slide had settled, so it still glided up from its
+  waiting place (4vh lower, 98.5% size). `exitThrough` now settles both slides first.
+- Checked by screenshotting every ~170 ms through the click on Why AI?: from the clip's last frame
+  onward the slab's yellow rim stays at exactly 192–1727 × 108–971 px in every frame.
+
+## 2026-11-18 — Reveal: water-pill Studio, sharp, on the Why AI? blue
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The Studio in the slab now shows the water-pill handout** (`presentation/demo-files/water-pill.html`,
+  the long "as written" version plus a "When to call us" paragraph), Brief Patients + Handout: flags on
+  diuretic, edema, 25% and more, a "Medical word" card suggesting "water pill" and "swelling", and the CCI.
+- **Sharper:** captured at 2× (2880×1620, `media/bg/prism-reveal-2x.jpg`, `video/public/prism-reveal.png`);
+  the clip is rendered at CRF 12 and re-encoded standard-range BT.709 at CRF 12.
+- **The stage stays the Why AI? blue** (rgb 34 115 150) behind the slab; it no longer darkens.
+- **The reveal slide is built in the page** (`.rv-slab`): the 2× picture in the slab's yellow rim at the
+  clip's exact size and place (10% in, 80% wide, same corners), so the cut from the clip matches its last
+  frame (compared frame to slide) and the text is sharp. The closing slide's background uses the same picture.
+- `ai-to-reveal.mp4` `?v=20261118c`.
+
+## 2026-11-18 — Reveal: the Studio stays inside the slab, square at 80%
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The slab no longer grows to fill the screen.** `ai-to-reveal.mp4` now ends with the slab square to the
+  room at 80% of the screen (192–1728 × 108–972), rounded, keeping its yellow rim, with the Studio inside
+  it; the blue stage behind darkens to #111316 as it grows. `AiToPrism` takes `contained` for this
+  (`AiToReveal` sets it); the old full-screen version is unchanged.
+- **The reveal slide is that clip's last frame** (`media/bg/prism-reveal-framed.jpg`), so the cut from
+  Why AI? doesn't show; its push-in is now a gentle 3.5% from the centre.
+- Checked at 1920×1080: landing on the reveal from Why AI?.
+
+## 2026-11-18 — "14 frameworks, one list" slide hidden
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **`#one-list` is hidden** (a single `hidden` attribute), so the deck goes from Meet PRISM straight to
+  the Demo slides again. The slide, its flow-tree clip and the source stay in place to bring back.
+
+## 2026-11-18 — PRISM intro storyboard: reveal, promise, problems, real guide, one more thing
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Why AI? now exits into the Studio itself.** New clip `media/bg/ai-to-reveal.mp4` (Remotion
+  composition `AiToReveal`, `npm run render:reveal`; the same slab turn as `AiToPrism`, which now takes a
+  `face` picture). The slab becomes `video/public/prism-reveal.png`: the real Studio, dark, at 1920×1080,
+  with The Light Collective's guide loaded (Patients + Manual, four frameworks, 67 suggested changes, CCI
+  scoring). Re-encoded to standard-range BT.709 like the other clips. `ai-to-prism.mp4` is kept, unused.
+- **New slides after Why AI?:**
+  - `#reveal` "PRISM": that same Studio picture, full screen (the clip's last frame), with a slow 12 s
+    push-in.
+  - `#promise`: one line, "Health writing anyone can read."
+  - `#pain` "Checking a handout today": the six real problems as glass chips that settle in, then
+    "Six problems, six places. No answer you can show."
+- Then the existing Meet PRISM (Upload → Measure → Improve), Before and after, and One list.
+- **New slides after One list:**
+  - `#real-file` "A real guide, 67 fixes in one click.": the recorded Apply all on The Light Collective's
+    guide (`d4-fixes.mp4`), as large as the slide allows, with its credit.
+  - `#trust` "One more thing": "Nothing leaves your browser. Every fix cites its standard." then "Better,
+    and you can show why.", over the Studio picture, blurred and dark.
+- Checked at 1920×1080 (headless Chrome): the Why AI? exit landing on the reveal, the promise, problems
+  before and after their click, the real guide, and the closing slide. Deck scripts parse.
+
+## 2026-11-18 — Why AI? → Meet PRISM: the slices become PRISM
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New clip** `presentation/media/bg/ai-to-prism.mp4` (3 s, Remotion: `video/src/AiToPrism.tsx`,
+  `npm run render:prism`). It starts on the slices' last frame: the labels fade, 1 designer and 1 month
+  slide into the AI slab, the slab turns to face the room, its yellow becomes the Meet PRISM slide
+  (`video/public/meet-prism-face.png`, captured from the deck at 1920×1080, dark) and grows to full screen.
+- **On the Why AI? slide** (`data-exit`), the click forward fades the text and plays the clip, then cuts to
+  the live Meet PRISM slide with no fade. The clip's last frame is that slide, so the cut doesn't show.
+  Meet PRISM skips its logo opening when arrived at this way (the page is already whole). A click during
+  the clip jumps to the end. Going back, light mode and reduced motion keep the plain morph.
+- **Colour range:** both `ai-to-prism.mp4` and `ai-slices.mp4` re-encoded to standard-range BT.709
+  (they were full-range, which the browser showed darker), so the seams match within 1–2 levels.
+- Checked in headless Chrome at 1920×1080: frames through the clip and across both seams.
+
+## 2026-11-18 — Meet PRISM: Upload, Measure, Improve in clear glass
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **All three steps are clear glass** now, not a solid blue fill: a thin white wash, frosted behind,
+  with a bright top edge and a hairline rim. Unlit steps are dimmed; a lit step is brighter glass with
+  a stronger rim and a faint glow in the deck's blue, and its arrow lights too.
+- `intro.css` `?v=20261118d`. Deck only. Checked at 1920×1080 after two clicks.
+
+## 2026-11-18 — Empty Studio shows the steps again
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local only)
+
+- **Fix:** with no material, the "How to check your material" steps were missing when the
+  Section 508 / WCAG card was showing (it stays on before there's text, e.g. after opening a poster),
+  because any visible card hid the steps. That card no longer counts (`syncGuide`), so the steps show
+  until a card has something to score, with the Section 508 card under them.
+
+## 2026-11-18 — Why AI?: setup line ends at "months of work."
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide `#why`:** "I had none of those." is gone; the line now reads "Normally: developers, a
+  budget, months of work." The video's screen-reader description now matches the current
+  animation (developers, budget, two designers, six months → one designer, AI, one month).
+  The appendix copy of the slide (`#why-lego`) is unchanged.
+
+## 2026-11-18 — New slide: "Same handout, before and after." (after Meet PRISM)
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide `#ba`** right after Meet PRISM (option A, split card with a fix key). The water-pill
+  handout as written (grade 15.9, 10 flags, yellow flags) sits beside the version after PRISM (grade
+  2.7, 0 flags, green underlines), with numbered green markers in the after text.
+- **The key underneath** names each fix, the standard behind it and how far it moved the grade:
+  1 · 8 medical words made everyday (PEMAT-P, CDC Everyday Words, 15.9 → 8.9);
+  2 · a 42-word sentence split in five (Federal Plain Language, 8.9 → 3.8);
+  3 · "25%" to "1 in 4", plus what to do (Gigerenzer & Hoffrage, 3.8 → 2.7).
+  Numbers come from the deck's own steps in `intro.js`.
+- Type: serif title, the handout in the reading serif, everything else sans at one size (white/grey).
+  Checked in a screenshot at 1920×1080. The Meet PRISM slider card is unchanged.
+- Also in this round: forward slide changes now hold the incoming title in the morph too (it only
+  glided going back before). Not yet re-checked in a browser.
+
+## 2026-11-18 — Meet PRISM follows the script: Upload → Measure → Improve
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The six problem tiles are replaced** by what the script says: the headline "An all-in-one
+  readability check for science and medicine", then a row of three glass pills, Upload ("your
+  material") → Measure ("against 14 patient-education standards") → Improve ("with fixes you can trust
+  and check").
+- **Each click lights the next pill** in the deck's blue, rgb(15 108 157), with the arrow before it;
+  the slide arrives with all three dimmed (`data-beats="4"`). The pills' text starts on the
+  headline's left edge. The water-pill card on the right is unchanged.
+- Deck only (`?deck`). `intro.js` `?v=20261118a`, `intro.css` `?v=20261118c`.
+- Checked at 1920×1080: arrival, and after two clicks.
+
+## 2026-11-18 — 14 frameworks, one list: flow-tree video replaces the dropdown
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New clip on `#one-list`** (10 s, plays once, then holds), in the style of a flow tree: the 14
+  frameworks are listed down the left, each with a circle in its zone colour. One by one each draws a
+  translucent ribbon that sweeps right, and all 14 braid into one yellow circle that grows as they land
+  and reads "1 list" (`media/bg/frameworks-flow.mp4`, poster `frameworks-flow.jpg`).
+- Plain 2D, so the credit now reads "Animation: made in code with Remotion" (no three.js).
+- **Source:** `video/src/FrameworksFlow.tsx`; `npm run render:flow` in `video/` rebuilds it. The
+  dropdown clip (`frameworks-list.mp4`, `FrameworksList.tsx`) stays in the repo but is no longer used.
+- Frames checked from the render. Not checked on the slide in a browser: drive C: is full, so headless
+  Chrome would not start.
+
+## 2026-11-18 — 14 frameworks, one list: the dropdown video
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **The placeholder slide after Meet PRISM (`#one-list`) now plays its video** once each time it comes
+  up (11 s, then it holds): PRISM's 14 frameworks fan out as glass slices in the Why AI? clip's style,
+  coloured by zone (clarity and content blue, decisions green, behaviour coral) and labelled. A yellow
+  "Frameworks" dropdown drops into the middle, opens, and the slices slide into it, nearest first;
+  each lands as a row, and the count climbs to 14. It ends on the open list with a zone legend
+  (`media/bg/frameworks-list.mp4`, poster `frameworks-list.jpg`).
+- **Drawn on the deck's dark desk** (#121417); the slide keeps that dark background and light text in
+  light mode too, so the clip never shows an edge.
+- **Credit:** "Animation: made in code with Remotion and three.js".
+- **Source:** `video/src/FrameworksList.tsx`; `npm run render:list` in `video/` rebuilds the clip.
+- Checked in headless Chrome at 1920×1080: the clip plays to its end frame, no errors.
+
+## 2026-11-18 — Placeholder slide after Meet PRISM: "14 frameworks, one list"
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **New slide `#one-list`** right after Meet PRISM, with its own rail dot ("One list"). It holds the
+  title "14 frameworks, one list" and a placeholder line until the video is made: a dropdown takes in
+  the 14 framework tools (glass slices, as in the Why AI? video) and becomes one master list.
+- Checked in headless Chrome at 1920×1080: it sits between Meet PRISM and the Demo slides, no errors.
+
+## 2026-11-18 — Morph: same title glide forward and back
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Forward now glides the title too.** Going forward, the next slide arrives on its first beat, before
+  its title has faded in, so its title was left out of the morph and only the crossfade ran; coming back
+  it glided. A title that shows from the slide's first beat is now held in the glide going forward as well.
+- **Each pair of slides gets the same change both ways.** The title glides only when the later slide's
+  title shows from its first beat (Welcome ↔ A confession, Intent first ↔ Build fast, Iterate ↔
+  Verification); every other change is the morph's crossfade, forward and back.
+- Checked in headless Chrome at 1920×1080 by stepping through the whole deck forward and back: every
+  slide change, the welcome slide included, runs the morph.
+
 ## 2026-11-18 — Meet PRISM: tiles turn blue; tile text lines up with the headline
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #57)

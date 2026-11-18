@@ -358,6 +358,8 @@ details.disclose > summary:hover{color:var(--ink)}
    The issue list stays the accessible record. The mark just clicked (focus) gets a thick ink
    underline for a moment. Offset: set on #editor (highlight pseudos inherit it). ── */
 ::highlight(pea-flag){background-color:var(--highlighter);color:var(--ink)}
+/* a long sentence: a quiet blue dotted underline under the whole sentence, so it reads with the yellow word marks */
+::highlight(pea-long){text-decoration-line:underline;text-decoration-style:dotted;text-decoration-thickness:2px;text-decoration-color:#2f6fa8;color:var(--ink)}
 /* Just applied: the new words, in the pass colour, for a few seconds */
 ::highlight(pea-applied){background-color:color-mix(in srgb, var(--pass) 35%, transparent);color:var(--ink);text-decoration-line:underline;text-decoration-thickness:2px;text-decoration-color:var(--pass)}
 ::highlight(pea-flag-focus){background-color:var(--highlighter);color:var(--ink);text-decoration-line:underline;text-decoration-thickness:4px;text-decoration-color:var(--ink)}

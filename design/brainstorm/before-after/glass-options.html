@@ -1,0 +1,52 @@
+<!doctype html><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Public+Sans:wght@400;600&display=swap"><style>
+*{box-sizing:border-box}body{margin:0;width:1920px;height:1080px;background:#121417;color:#E9EBEE;font-family:"Public Sans";padding:28px 96px;overflow:hidden;
+ background-image:radial-gradient(40% 30% at 20% 20%,rgb(62 99 221/.18),transparent),radial-gradient(40% 30% at 80% 55%,rgb(48 164 108/.14),transparent),radial-gradient(40% 30% at 45% 90%,rgb(245 207 74/.12),transparent)}
+.opt{font:600 22px "Public Sans";color:#F5CF4A;margin:0 0 10px;letter-spacing:.04em}
+.row{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-bottom:30px}
+.g{position:relative;border-radius:28px;padding:20px 24px;height:250px;background:linear-gradient(180deg,rgb(255 255 255/.12),rgb(255 255 255/.03));backdrop-filter:blur(20px) saturate(1.6);
+ box-shadow:inset 0 1px 0 rgb(255 255 255/.4),inset 0 0 0 1px rgb(255 255 255/.12),0 20px 50px rgb(0 0 0/.5)}
+.g h4{margin:0;font:600 22px "Public Sans"}.g p{margin:4px 0 0;font-size:17px;color:#B4BAC2}
+.yl{background:linear-gradient(180deg,#ffe066,#f2c200);color:#1b1c1e;box-shadow:inset 0 1.5px 0 rgb(255 255 255/.85),inset 0 -2px 4px rgb(140 100 0/.35),0 6px 18px rgb(245 196 0/.35)}
+.ghost{background:linear-gradient(180deg,rgb(40 43 48/.96),rgb(22 24 28/.96));color:#8a9099;box-shadow:inset 0 1px 0 rgb(255 255 255/.28),inset 0 0 0 1px rgb(255 255 255/.12)}
+/* A dials */
+.dial{position:absolute;right:22px;bottom:18px;width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--c) calc(var(--v)*1%),rgb(255 255 255/.08) 0);
+ -webkit-mask:radial-gradient(circle,transparent 56%,#000 57%);mask:radial-gradient(circle,transparent 56%,#000 57%)}
+.dial.old{width:150px;height:150px;opacity:.45;--c:#F28B82}
+.num{position:absolute;left:24px;bottom:22px;font:500 70px/1 Newsreader,serif;color:#F5CF4A}.num s{text-decoration:none;font-size:32px;color:#F28B82;display:block;margin-bottom:6px}
+/* B pills */
+.pp{display:flex;align-items:center;gap:14px;margin-top:26px}
+.pill{border-radius:999px;padding:12px 26px;font:500 48px/1 Newsreader,serif}
+.pill.ghost{text-decoration:line-through;text-decoration-thickness:2px;font-size:34px}
+.sheen{flex:1;height:6px;border-radius:3px;background:linear-gradient(90deg,#3E63DD,#30A46C,#F5CF4A)}
+.beads{display:flex;gap:7px;margin-top:18px}.beads i{width:18px;height:18px;border-radius:50%;background:linear-gradient(180deg,rgb(255 255 255/.25),rgb(255 255 255/.05));box-shadow:inset 0 0 0 1px rgb(255 255 255/.2)}
+/* C tracks */
+.panel{border-radius:28px;padding:18px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px;background:radial-gradient(120% 90% at 20% 0%,rgb(245 196 0/.14),transparent 60%),linear-gradient(180deg,rgb(255 255 255/.13),rgb(255 255 255/.04));
+ box-shadow:inset 0 1px 0 rgb(255 255 255/.4),inset 0 0 0 1px rgb(255 255 255/.12),0 20px 50px rgb(0 0 0/.5),0 0 70px rgb(245 196 0/.12)}
+.tr{padding:14px 10px}.tr h4{margin:0 0 4px;font:600 22px "Public Sans"}
+.trk{position:relative;height:30px;border-radius:999px;margin:12px 0 6px;background:rgb(255 255 255/.06);box-shadow:inset 0 0 0 1px rgb(255 255 255/.1)}
+.trk .was{position:absolute;inset:0 auto 0 0;border-radius:999px;border:2px dashed rgb(242 139 130/.7)}
+.trk .now{position:absolute;inset:3px auto 3px 3px;border-radius:999px}
+.vals{display:flex;justify-content:space-between;font:500 34px/1 Newsreader,serif}.vals s{text-decoration:none;color:#F28B82;font-size:24px;align-self:end}.vals b{color:#F5CF4A;font-weight:500}
+.tr p{margin:6px 0 0;font-size:17px;color:#B4BAC2}
+</style>
+<p class="opt">A · GLASS DIALS</p>
+<div class="row">
+<div class="g"><h4>Reading grade</h4><p>Goal: grade 6 or lower</p><div class="num"><s>15.9</s>2.7</div><div class="dial" style="--c:#F5CF4A;--v:17"></div></div>
+<div class="g"><h4>Flags</h4><p>Jargon, long sentences, a bare %</p><div class="num"><s>10</s>0</div><div class="dial" style="--c:#F5CF4A;--v:0"></div></div>
+<div class="g"><h4>Medical words</h4><p>Swapped for everyday ones</p><div class="num"><s>8</s>0</div><div class="dial" style="--c:#F5CF4A;--v:0"></div></div>
+<div class="g"><h4>Words per sentence</h4><p>Plain language: under 20</p><div class="num"><s>21</s>9</div><div class="dial" style="--c:#F5CF4A;--v:43"></div></div>
+</div>
+<p class="opt">B · GLASS PILLS, OLD → NEW</p>
+<div class="row">
+<div class="g"><h4>Reading grade</h4><p>Goal: grade 6 or lower</p><div class="pp"><span class="pill ghost">15.9</span><span class="sheen"></span><span class="pill yl">2.7</span></div></div>
+<div class="g"><h4>Flags</h4><p>Jargon, long sentences, a bare %</p><div class="pp"><span class="pill ghost">10</span><span class="sheen"></span><span class="pill yl">0</span></div><div class="beads"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+<div class="g"><h4>Medical words</h4><p>diuretic → water pill</p><div class="pp"><span class="pill ghost">8</span><span class="sheen"></span><span class="pill yl">0</span></div></div>
+<div class="g"><h4>Words per sentence</h4><p>Plain language: under 20</p><div class="pp"><span class="pill ghost">21</span><span class="sheen"></span><span class="pill yl">9</span></div></div>
+</div>
+<p class="opt">C · ONE GLASS PANEL, TRACKS SHRINK TO THE GOAL</p>
+<div class="panel">
+<div class="tr"><h4>Reading grade</h4><div class="vals"><s>15.9</s><b>2.7</b></div><div class="trk"><div class="was" style="width:99%"></div><div class="now yl" style="width:17%"></div></div><p>Goal: grade 6 or lower</p></div>
+<div class="tr"><h4>Flags</h4><div class="vals"><s>10</s><b>0</b></div><div class="trk"><div class="was" style="width:100%"></div><div class="now yl" style="width:4%"></div></div><p>Jargon, long sentences, a bare %</p></div>
+<div class="tr"><h4>Medical words</h4><div class="vals"><s>8</s><b>0</b></div><div class="trk"><div class="was" style="width:80%"></div><div class="now yl" style="width:4%"></div></div><p>diuretic → water pill</p></div>
+<div class="tr"><h4>Words per sentence</h4><div class="vals"><s>21</s><b>9</b></div><div class="trk"><div class="was" style="width:100%"></div><div class="now yl" style="width:43%"></div></div><p>Plain language: under 20</p></div>
+</div>

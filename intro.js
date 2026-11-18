@@ -59,17 +59,14 @@
     '<div class="intro-hero">' +
       '<div class="intro-copy">' +
         (DECK
-          ? // the talk's Meet PRISM: six problems on glass tiles; each click on the slide flips the next
-            // tile to what PRISM does (the deck sets .on on it), like a Jeopardy board
-            '<h1 class="intro-display pm-swap" id="intro-title"><span class="pm-p">Checking a handout today</span><span class="pm-s">One place, in your browser</span></h1>' +
-            '<ul class="pm-rows">' +
-              '<li><span class="pm-tile"><span class="pm-p">Checks live in scattered tools, each wanting a different format</span><span class="pm-s">Paste or drop any file; the Brief starts the checks</span></span></li>' +
-              '<li><span class="pm-tile"><span class="pm-p">Dozens of checklists; knowing which fit is a job in itself</span><span class="pm-s">Picks the frameworks that fit your readers</span></span></li>' +
-              '<li><span class="pm-tile"><span class="pm-p">Poster checks sit on separate, clunky sites</span><span class="pm-s">Contrast, colour blindness and alt text, together</span></span></li>' +
-              '<li><span class="pm-tile"><span class="pm-p">Checkers list the problems, then leave the rewrite to you</span><span class="pm-s">Fix in one click or your own words; every change saved</span></span></li>' +
-              '<li><span class="pm-tile"><span class="pm-p">Patient material can’t go to cloud tools</span><span class="pm-s">Nothing is uploaded; it all stays in your browser</span></span></li>' +
-              '<li><span class="pm-tile"><span class="pm-p">Hard to trust where a rule comes from</span><span class="pm-s">Every check cites its framework and source</span></span></li>' +
-            '</ul>'
+          ? // the talk's Meet PRISM, following the script: what PRISM is, then Upload, Measure, Improve as a
+            // flow row; each click on the slide lights the next step (the deck sets .on on it)
+            '<h1 class="intro-display" id="intro-title">An all-in-one readability check for science and medicine</h1>' +
+            '<ol class="pm-flow">' +
+              '<li><b>Upload</b><span>your material</span></li>' +
+              '<li><b>Measure</b><span>against 14 patient-education standards</span></li>' +
+              '<li><b>Improve</b><span>with fixes you can trust and check</span></li>' +
+            '</ol>'
           : '<p class="intro-kicker">For health handouts, posters and web pages</p>' +
             '<h1 class="intro-display" id="intro-title">Make your health handout easy to read.</h1>' +
             '<p class="intro-lede">PRISM finds the hard parts and shows a simpler way to say them, based on trusted health guides.</p>' +

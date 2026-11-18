@@ -32,7 +32,7 @@
   }
   // slide 4 (data-shots): the middle row holds Nati's post and the CDC Clear Communication Index as
   // two cards, which standards.js flies the big screenshots into
-  var SHOTS = { 2:['lnkd.in/p/gsauNRxE', 'post', 'img/post-nati-chen.png?v=20261112b'], 4:['cdc.gov/ccindex', 'cdc', 'img/cdc-cci-site.png?v=20261117a'] };
+  var SHOTS = { 2:['lnkd.in/p/gsauNRxE', 'post', 'img/post-nati-chen-v2.jpg?v=20261118a'], 4:['cdc.gov/ccindex', 'cdc', 'img/cdc-cci-site-v2.jpg?v=20261118a'] };
   function shot(s){
     return '<div class="fw-card shot" data-shot="' + s[1] + '"><div class="fw-bar"><i></i><i></i><i></i><span>' + esc(s[0]) + '</span></div>' +
       '<img src="' + s[2] + '" alt=""></div>';

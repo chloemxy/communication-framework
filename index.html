@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="design-system.css?v=20261116a">
 <script src="theme-switch.js?v=20261019e" defer></script>
 <script src="motion.js?v=20261019f" defer></script>
-<link rel="stylesheet" href="intro.css?v=20261118b">
-<script src="intro.js?v=20261117j" defer></script>
+<link rel="stylesheet" href="intro.css?v=20261118d">
+<script src="intro.js?v=20261118a" defer></script>
 <script src="drag-scroll.js?v=20261116b" defer></script>
 <script src="plan.js?v=20261027a" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
@@ -867,6 +867,7 @@ h2.canvas-title{flex-shrink:0;margin:0;font-size:var(--fs-sm);font-weight:600;li
 /* ── Getting started: on the desk, steps numbered in the margin column like a score sheet ── */
 .guide{max-width:560px;margin:0;padding:var(--sp-2) var(--sp-2) var(--sp-6)}
 .guide[hidden]{display:none}
+.rail-scroll.steps-only .mod{display:none}
 .guide-title{margin-bottom:var(--sp-3);font-size:var(--fs-lg);font-weight:600;color:var(--ink)}
 .guide-steps{list-style:none;border-top:1px solid var(--rule)}
 .guide-step{display:grid;grid-template-columns:4ch minmax(0,1fr);column-gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid var(--rule)}
@@ -1829,6 +1830,9 @@ const JARGON = {
   necrosis:'tissue death',fibrosis:'scarring',sepsis:'severe infection',
   anemia:'low blood count',hypertrophy:'enlargement',atrophy:'wasting away',
   oncology:'cancer care',pharmaceutical:'medicine',
+  physician:'doctor',administer:'take',orally:'by mouth','urinary output':'how much you pee',
+  'orthostatic hypotension':'feeling dizzy when you stand up',syncope:'fainting',
+  'electrolyte imbalance':'salt and mineral levels being off',
 };
 const JARGON_KEYS = Object.keys(JARGON);
 // CDC Everyday Words for Public Health Communication (May 2016), the terms PRISM checks for.
@@ -1935,6 +1939,7 @@ const PLAIN_SWAPS = {
   'in an appropriate manner':'properly', 'a significant period of time':'a long time',
   'adequately':'well', 'adequate':'enough', 'sufficient':'enough', 'substantial':'large',
   'various':'',
+  'approximately':'about', 'immediately':'right away', 'notify':'tell',
 };
 const fixWordCount = t => (t.match(/\b\w+\b/g) || []).length;
 function fixEsc(t){ return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
@@ -2889,15 +2894,21 @@ function updateApplicability(){
 // Getting-started steps fill the card area while no cards are showing; done steps get a tick
 function syncGuide(){
   const g = $('guide'); if(!g) return;
-  const anyCard = MODS.some(id => { const m = $(id); return m && !m.classList.contains('hidden') && !m.classList.contains('na-hidden'); });
+  // the Section 508 / WCAG card shows even before there's material (its guidance helps you write),
+  // so it doesn't count: the steps stay until a card has something to score
+  const anyCard = MODS.some(id => { const m = $(id); return id !== 'mod-a11y' && m && !m.classList.contains('hidden') && !m.classList.contains('na-hidden'); });
   const done = {
     'gs-brief': !!(brief.audience || brief.format),
     'gs-text':  hasContent(),
     'gs-fw':    Object.keys(fwManual).some(k => fwManual[k] === true) || briefFrameworks().length > 0,
   };
   renderSteps(done, anyCard && hasContent());
-  g.hidden = anyCard;
-  if(anyCard) return;
+  // until there's material, the steps show in place of the cards, even with a Brief and frameworks set:
+  // cards with nothing to score (checklists waiting for text, the 508 card) would only say so
+  const steps = !anyCard || !hasContent();
+  g.hidden = !steps;
+  const rail = $('rail-scroll'); if(rail) rail.classList.toggle('steps-only', steps);
+  if(!steps) return;
   Object.keys(done).forEach(id => {
     const el = $(id); el.classList.toggle('done', done[id]);
     const n = el.querySelector('.guide-n'); n.textContent = done[id] ? '✓' : n.dataset.n;
@@ -5070,6 +5081,18 @@ function markFlags(issues){
   }
   if(ranges.length) CSS.highlights.set('pea-flag', new Highlight(...ranges));
   else CSS.highlights.delete('pea-flag');
+  // long sentences (over 25 words) get a dotted underline under the whole sentence; "longish" ones don't,
+  // so a paragraph never turns into one long underline
+  const longs = [];
+  if(issues.length){
+    const idx = hlIndex();
+    issues.filter(i => i.basis === 'long' && i.sev === 'error').forEach(issue => {
+      let at = idx.text.indexOf(issue.src);
+      while(at !== -1){ const r = hlRange(idx, at, at + issue.src.length, true); if(r) longs.push(r); at = idx.text.indexOf(issue.src, at + issue.src.length); }
+    });
+  }
+  if(longs.length) CSS.highlights.set('pea-long', new Highlight(...longs));
+  else CSS.highlights.delete('pea-long');
 }
 // The issue just clicked: its words get a second, underlined mark that clears after a moment
 // (no fade in either motion setting), or on the next edit or click in the document
@@ -6779,14 +6802,16 @@ renderFwTopBar();
 // WORKSPACE PRESETS — a starting set of modules per scenario
 // ════════════════════════════════════════
 const LAYOUTS = {
+  // order: Plain language and PEMAT fill the first column; Readability (the reading grade) heads the second,
+  // above CCI, so the grade is in view as soon as material is in (the columns balance by height)
   'everything': { name:'Everything', note:'Every module except Accessibility and Accuracy, which are off by default.',
-    right:['mod-scan','mod-read','mod-fwout','mod-cci','mod-pemat'] },
+    right:['mod-scan','mod-pemat','mod-read','mod-cci','mod-fwout'] },
 
   'drafting': { name:'Drafting a new piece', note:'Readability and the plain-language scan — what you need while writing.',
     right:['mod-scan','mod-read','mod-fwout'] },
 
   'audit': { name:'Auditing existing material', note:'The scored audit stack: CCI, PEMAT and readability, with the plain-language scan.',
-    right:['mod-scan','mod-read','mod-fwout','mod-cci','mod-pemat'] },
+    right:['mod-scan','mod-pemat','mod-read','mod-cci','mod-fwout'] },
 
   'accessibility': { name:'Accessibility pass', note:'WCAG checks, contrast and read-aloud clarity, with readability alongside.',
     right:['mod-fwout','mod-read','mod-a11y','mod-scan'] },

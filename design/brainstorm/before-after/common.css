@@ -1,0 +1,10 @@
+*{box-sizing:border-box}body{margin:0;width:1920px;height:1080px;background:#121417;color:#E9EBEE;font-family:"Public Sans",sans-serif;position:relative;overflow:hidden}
+h2{font:500 120px/1.02 Newsreader,serif;margin:0;letter-spacing:-.015em;position:absolute;left:96px;top:86px}mark{background:#55480F;color:inherit;padding:0 .08em}
+.lab{font-size:32px;margin:0 0 14px}.lab span{color:#B4BAC2}
+.card{background:#fff;color:#16181D;border-radius:12px;padding:24px 32px;font:400 29px/1.6 Newsreader,serif}
+.card m{background:#FFE066;text-decoration:underline 2px #4A5059;text-underline-offset:3px}.card i{font-style:normal;text-decoration:underline 2px #1E6B3A;text-underline-offset:4px}
+.met{display:grid;gap:28px}.met div{border-top:1px solid #343A41;padding-top:14px}
+.met b{display:block;font:500 56px/1 Newsreader,serif}.met b s{text-decoration:none;color:#8a9099;font-size:36px}
+.met span{display:block;font-size:26px;margin-top:8px}.met p{font-size:22px;line-height:1.35;color:#B4BAC2;margin:6px 0 0}
+.chk{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:22px;color:#B4BAC2}.chk i{font-style:normal;color:#4CC38A;margin-right:8px}
+.credit{position:absolute;left:96px;bottom:30px;font-size:22px;color:rgb(255 255 255/.8)}

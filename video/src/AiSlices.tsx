@@ -8,20 +8,20 @@ import { useLayoutEffect, useMemo } from "react";
 import * as THREE from "three";
 import { AbsoluteFill, Easing, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 
-const { fontFamily } = loadFont("normal", { weights: ["600"], subsets: ["latin"] });
+export const { fontFamily } = loadFont("normal", { weights: ["600"], subsets: ["latin"] });
 
 // ---- look -------------------------------------------------------------------------------
-const BG = "rgb(34,115,150)"; // #why slide background
-const INK = "#F6F4EC"; // slide text colour
+export const BG = "rgb(15,108,157)"; // #why slide background
+export const INK = "#F6F4EC"; // slide text colour
 // deck colours: PRISM dark-theme fail/pass status, pale ink, form blue, brand yellow
-const COL = { dev: "#F28B82", bud: "#7FD19B", mon: "#EEF1F4", des: "#8DB4EC", ai: "#F5CF4A" } as const;
+export const COL = { dev: "#F28B82", bud: "#7FD19B", mon: "#EEF1F4", des: "#8DB4EC", ai: "#F5CF4A" } as const;
 // whole picture moved into the slide's free lower-right area (text sits top-left)
-const SHIFT = { x: 585, y: 165 };
+export const SHIFT = { x: 585, y: 165 };
 type Kind = keyof typeof COL;
 
 // ---- layout (world units) ---------------------------------------------------------------
 const STEP = 0.46; // gap between slices along the row
-const T = 0.07, H = 1.45, D = 1.05; // slice thickness, height, depth
+export const T = 0.07, H = 1.45, D = 1.05; // slice thickness, height, depth
 // 7 slices in front of AI and 7 behind, with AI between the two designers
 const KINDS: Kind[] = [
   "dev", "dev", "dev", "bud", "bud", "bud", "des",
@@ -32,15 +32,15 @@ const KEEP_FRONT = 6, KEEP_BACK = 8; // the front designer and the first month s
 const N = KINDS.length + 1; // with the AI slot
 const X0 = -((N - 1) * STEP) / 2;
 const xAt = (slot: number) => X0 + slot * STEP;
-const AI_X = xAt(SPLIT);
-const FINAL_GAP = 2.1; // wide enough that the three faces don't overlap, so both gaps read the same
+export const AI_X = xAt(SPLIT);
+export const FINAL_GAP = 2.1; // wide enough that the three faces don't overlap, so both gaps read the same
 
 // ---- camera: orthographic, row rises to the right like the reference ---------------------
 const CAM_DIR = new THREE.Vector3(-9, 7, 6.2).normalize();
-const ZOOM = 132; // px per world unit
+export const ZOOM = 132; // px per world unit
 const TARGET = new THREE.Vector3(-0.15, 0.15, 0); // shifts the row into the slide's free right column
 
-const makeCam = (w: number, h: number) => {
+export const makeCam = (w: number, h: number) => {
   const c = new THREE.OrthographicCamera(-w / 2, w / 2, h / 2, -h / 2, 0.1, 100);
   c.zoom = ZOOM;
   c.position.copy(TARGET).addScaledVector(CAM_DIR, 30);
@@ -50,7 +50,7 @@ const makeCam = (w: number, h: number) => {
   return c;
 };
 
-const CameraRig: React.FC<{ cam: THREE.OrthographicCamera }> = ({ cam }) => {
+export const CameraRig: React.FC<{ cam: THREE.OrthographicCamera }> = ({ cam }) => {
   const { camera, size } = useThree();
   useLayoutEffect(() => {
     const o = camera as THREE.OrthographicCamera;
@@ -63,9 +63,9 @@ const CameraRig: React.FC<{ cam: THREE.OrthographicCamera }> = ({ cam }) => {
 };
 
 // ---- timing (frames @30fps) --------------------------------------------------------------
-const ease = Easing.bezier(0.22, 1, 0.36, 1);
-const inOut = Easing.bezier(0.65, 0, 0.35, 1);
-const r = (f: number, a: number, b: number, from = 0, to = 1, e = ease) =>
+export const ease = Easing.bezier(0.22, 1, 0.36, 1);
+export const inOut = Easing.bezier(0.65, 0, 0.35, 1);
+export const r = (f: number, a: number, b: number, from = 0, to = 1, e = ease) =>
   interpolate(f, [a, b], [from, to], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: e });
 
 const EXPAND = [6, 66]; // the stack fans out into the full project
@@ -118,7 +118,7 @@ const aiState = (f: number) => {
 };
 
 // ---- meshes --------------------------------------------------------------------------------
-const Slice: React.FC<{ x: number; y: number; op: number; sx: number; sy: number; color: string; order: number; glow?: number }> = ({ x, y, op, sx, sy, color, order, glow = 0 }) => {
+export const Slice: React.FC<{ x: number; y: number; op: number; sx: number; sy: number; color: string; order: number; glow?: number }> = ({ x, y, op, sx, sy, color, order, glow = 0 }) => {
   const geo = useMemo(() => new THREE.BoxGeometry(T, H, D), []);
   const edges = useMemo(() => new THREE.EdgesGeometry(geo), [geo]);
   if (op <= 0.001) return null;
@@ -135,7 +135,7 @@ const Slice: React.FC<{ x: number; y: number; op: number; sx: number; sy: number
 };
 
 // ---- labels (HTML on top, placed by projecting 3D anchors) -------------------------------
-const Label: React.FC<{ cam: THREE.Camera; w: number; h: number; at: [number, number, number]; dx?: number; dy?: number; op: number; text: string; color?: string; align?: "left" | "right" }> = ({ cam, w, h, at, dx = 0, dy = 0, op, text, color = INK, align = "left" }) => {
+export const Label: React.FC<{ cam: THREE.Camera; w: number; h: number; at: [number, number, number]; dx?: number; dy?: number; op: number; text: string; color?: string; align?: "left" | "right" }> = ({ cam, w, h, at, dx = 0, dy = 0, op, text, color = INK, align = "left" }) => {
   if (op <= 0.001) return null;
   const p = new THREE.Vector3(...at).project(cam);
   const px = (p.x * 0.5 + 0.5) * w + dx;

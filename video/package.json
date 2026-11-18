@@ -3,7 +3,12 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "render": "remotion render src/index.ts AiSlices ../presentation/media/bg/ai-slices.mp4 --gl=angle --crf=20"
+    "render": "remotion render src/index.ts AiSlices ../presentation/media/bg/ai-slices.mp4 --gl=angle --crf=20 --color-space=bt709",
+    "render:prism": "remotion render src/index.ts AiToPrism ../presentation/media/bg/ai-to-prism.mp4 --gl=angle --crf=18 --color-space=bt709",
+    "render:reveal": "remotion render src/index.ts AiToReveal ../presentation/media/bg/ai-to-reveal.mp4 --gl=angle --crf=12 --color-space=bt709",
+    "render:reveal-light": "remotion render src/index.ts AiToRevealLight ../presentation/media/bg/ai-to-reveal-light.mp4 --gl=angle --crf=12 --scale=1.5 --color-space=bt709",
+    "render:list": "remotion render src/index.ts FrameworksList ../presentation/media/bg/frameworks-list.mp4 --gl=angle --crf=20 --color-space=bt709",
+    "render:flow": "remotion render src/index.ts FrameworksFlow ../presentation/media/bg/frameworks-flow.mp4 --crf=20"
   },
   "dependencies": {
     "@react-three/fiber": "^9.8.2",
