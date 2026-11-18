@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-17 — Slide 1: the breeze plays forward, then back, on repeat
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #55) · GitHub Pages: updated from `master`
 
 - **The title slide background moves (`#top`):** `media/bg/welcome-wind.mp4` (10 s: a breeze blows
   forget-me-not petals across the table, steam rises off the coffee, the glass ripples) is played
