@@ -24,6 +24,18 @@
     ['doi.org/10.1080/03637759209376276', 'b', 'EPPM', 'Extended Parallel Process Model', 'Witte (1992)'],
     ['who.int/publications/i/item/9789241550208', 'b', 'WHO ERC', 'Emergency Risk Communication guideline', 'World Health Organization (2017)']
   ];
+  // the 9 more the library review kept (with F, the 23 on the Verification list); only a data-cut wall shows them
+  var MORE = [
+    ['doi.org/10.1186/1748-5908-6-42', 'b', 'COM-B', 'Capability, Opportunity, Motivation – Behaviour model', 'Michie, van Stralen & West (2011)'],
+    ['decisionaid.ohri.ca/odsf.html', 'd', 'Ottawa DSF', 'Ottawa Decision Support Framework', 'Ottawa Hospital Research Institute'],
+    ['ahrq.gov/health-literacy/improve/precautions/tool5.html', 'd', 'Teach-Back', 'Teach-Back Method', 'AHRQ Toolkit, Tool 5'],
+    ['doi.org/10.1111/j.1475-6773.2004.00269.x', 'e', 'PAM', 'Patient Activation Measure', 'Hibbard et al. (2004)'],
+    ['cancer.gov/publications/health-communication/pink-book.pdf', 'c', 'NCI Pink Book', 'Making Health Communication Programs Work', 'National Cancer Institute'],
+    ['pointofcarefoundation.org.uk/resource/experience-based-co-design-ebcd-toolkit', 'e', 'EBCD', 'Experience-Based Co-Design', 'Point of Care Foundation'],
+    ['ahrq.gov/health-literacy/professional-training/shared-decision', 'd', 'SHARE', 'The SHARE Approach to shared decision-making', 'AHRQ'],
+    ['ahrq.gov/health-literacy/improve/precautions', 'd', 'AHRQ Toolkit', 'Health Literacy Universal Precautions Toolkit', 'AHRQ'],
+    ['picker.org/who-we-are/the-picker-principles-of-person-centred-care', 'e', 'Picker', 'Picker Principles of Person Centred Care', 'Picker']
+  ];
   // the 9 frameworks the library review cut; a wall marked data-cut (Verification) mixes them in,
   // and index.html greys them out one by one
   var CUT = [
@@ -52,10 +64,9 @@
   }
   [].forEach.call(boxes, function(box){
     var shots = box.hasAttribute('data-shots'), cuts = box.hasAttribute('data-cut'), html = '';
-    // with data-cut, a cut card follows every second framework card
+    // with data-cut: all 23 kept frameworks, and a cut card after every second one (32 cards)
     var all = [];
-    F.forEach(function(f, i){ all.push(card(f)); if (cuts && i % 2 && CUT[(i - 1) / 2]) all.push(card(CUT[(i - 1) / 2], true)); });
-    if (cuts) CUT.slice(7).forEach(function(f){ all.push(card(f, true)); });
+    (cuts ? F.concat(MORE) : F).forEach(function(f, i){ all.push(card(f)); if (cuts && i % 2 && CUT[(i - 1) / 2]) all.push(card(CUT[(i - 1) / 2], true)); });
     for (var r = 0; r < ROWS; r++) {
       var set = '';
       for (var k = 0; k < all.length; k++) set += shots && r === 3 && SHOTS[k] ? shot(SHOTS[k]) : all[(r * 5 + k) % all.length];
