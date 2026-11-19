@@ -4,9 +4,20 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-18 — Slide 2: the whole arrival in under 3 seconds
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **A quick flurry**: the 11 other leaflets set off about 0.08 s apart and each falls in 1.1 to 1.45 s
+  (was 4 to 6 s), still swaying, curling and easing onto the pile; all have landed by about 2.1 s.
+- **The teach-back poster never lands**: it drifts down from 0.85 s to 2.1 s straight to its showing
+  spot above the desk, turning to face the room and growing as it comes (no land-then-lift).
+- **The reactions pop as it arrives**, one after another, done by about 2.9 s
+  (`presentation/desk-pile.js`). Not checked in a browser.
+
 ## 2026-11-18 — Verification: new title "Review builds trust"; the card wall shows all 23 vetted frameworks and the 9 cut
 
-Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · live on Vercel Production (PR #63)
 
 - **The card wall behind "AI drafted it. We reviewed it." (`#review`) now holds all 32 frameworks in the review**:
   the 23 the review kept (the 14 PRISM cards plus COM-B, Ottawa DSF, Teach-Back, PAM, NCI Pink Book, EBCD,
@@ -20,7 +31,7 @@ Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Review and certification slides moved after the poster before/after
 
-Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · live on Vercel Production (PR #63)
 
 - **"AI drafted it. We reviewed it." (`#review`) and "Certify the work, not the AI." (`#certify`) now come
   right after the COVID poster before/after (`#ba-poster`)**, ahead of the feature demos. This puts the
@@ -41,7 +52,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-18 — Verification: the review spreadsheet moves to the Appendix
 
-Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
+Branch: `refresh-and-fixes` · Vercel: live on Production (PR #63)
 
 - **"AI drafted it. We reviewed it." now shows only the decisions** (`presentation/index.html`): the
   title, the five-column decision list and the black framework card wall arrive together in one step,
