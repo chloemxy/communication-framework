@@ -4,6 +4,26 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-18 — Verification: the review spreadsheet moves to the Appendix
+
+Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
+
+- **"AI drafted it. We reviewed it." now shows only the decisions** (`presentation/index.html`): the
+  title, the five-column decision list and the black framework card wall arrive together in one step,
+  and the 9 cut frameworks grey out one by one as before.
+- **The scrolling spreadsheet is its own slide at the end of the Appendix** (`#review-sheet`), under the
+  same title. It scrolls both ways and pans its columns as before; a key press glides it to the last row.
+
+## 2026-11-18 — Slide counter stops before the Appendix; napkin zoom from the k again
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Slide counter:** the pill's total now runs only to the slide before the Appendix divider (e.g.
+  "13 / 16"); from the Appendix on, the pill shows just the arrows (option A).
+- **"From napkin to prototype" zoom:** it grows out of the k again. It aims at a spot in Intent
+  first's art, and moving the art 14% right had carried that spot off the k; it now measures where the
+  art sat before the move.
+
 ## 2026-11-18 — Take-home slides: black fade, art moved right
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
