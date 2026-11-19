@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-19 — Take-home slides: titles only; "Iterate" is now "Verify"
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #65) · GitHub Pages: updated from `master`
 
 - **Intent first, Build fast, Verify:** the line under each title is gone ("Name the goal before you
   prompt.", "Let AI draft the options.", "Keep what works. Cut the rest."), so each slide is the ghost
