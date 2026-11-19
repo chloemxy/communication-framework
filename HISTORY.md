@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-19 — Napkin divider zooms through the k again
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #68) · GitHub Pages: updated from `master`
 
 - **"From napkin to prototype" → Intent first:** the zoom through the cut-out letters plays again,
   growing out of the k's stem (with the gardener showing inside it) until Intent first fills the screen.
