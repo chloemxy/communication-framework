@@ -4,6 +4,15 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-19 — Take-home slides: titles only; "Iterate" is now "Verify"
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Intent first, Build fast, Verify:** the line under each title is gone ("Name the goal before you
+  prompt.", "Let AI draft the options.", "Keep what works. Cut the rest."), so each slide is the ghost
+  numeral, the title and the art. The third slide's title and chapter name are now "Verify" (its id
+  stays `#iterate`). The hidden thesis slide still says "Iterate".
+
 ## 2026-11-18 — Slide 2: the whole arrival in under 3 seconds
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #64)
