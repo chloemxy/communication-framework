@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-18 — Verification: new title "Review builds trust"; the card wall shows all 23 vetted frameworks and the 9 cut
 
-Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · live on Vercel Production (PR #63)
 
 - **The card wall behind "AI drafted it. We reviewed it." (`#review`) now holds all 32 frameworks in the review**:
   the 23 the review kept (the 14 PRISM cards plus COM-B, Ottawa DSF, Teach-Back, PAM, NCI Pink Book, EBCD,
@@ -20,7 +20,7 @@ Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
 
 ## 2026-11-18 — Review and certification slides moved after the poster before/after
 
-Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · live on Vercel Production (PR #63)
 
 - **"AI drafted it. We reviewed it." (`#review`) and "Certify the work, not the AI." (`#certify`) now come
   right after the COVID poster before/after (`#ba-poster`)**, ahead of the feature demos. This puts the
@@ -41,7 +41,7 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
 
 ## 2026-11-18 — Verification: the review spreadsheet moves to the Appendix
 
-Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
+Branch: `refresh-and-fixes` · Vercel: live on Production (PR #63)
 
 - **"AI drafted it. We reviewed it." now shows only the decisions** (`presentation/index.html`): the
   title, the five-column decision list and the black framework card wall arrive together in one step,
