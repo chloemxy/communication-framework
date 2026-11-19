@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-19 — Take-home slides: numeral and title centred on the slide height
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #66) · GitHub Pages: updated from `master`
 
 - **Intent first, Build fast, Verify:** the ghost numeral and the title now sit as one block at the
   middle of the slide's height (left side, over the dark fade) instead of on the pinned title line at
