@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-18 — Slide 2: the whole arrival in under 3 seconds
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #64)
 
 - **A quick flurry**: the 11 other leaflets set off about 0.08 s apart and each falls in 1.1 to 1.45 s
   (was 4 to 6 s), still swaying, curling and easing onto the pile; all have landed by about 2.1 s.
