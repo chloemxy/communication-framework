@@ -853,6 +853,9 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 #intent{background:#F9F5E3}
 #iterate{background:#F5F3DE}
 .scene.point .stage{z-index:1}
+/* the numeral and title sit as one block at the middle of the slide height, not at the pinned title line */
+.scene.point .stage{align-items:center;padding-top:0}
+.scene.point .inner{justify-content:center}
 .pt-art{position:absolute;z-index:0;right:0;bottom:0;width:min(72vw,calc(72dvh * 16 / 9));aspect-ratio:16/9;max-height:100%;overflow:hidden;transform:translateX(14%)} /* pushed right so the fade clears the gardeners */
 .scene.point{overflow:hidden}
 .pt-art::before{content:"";position:absolute;inset:0 auto 0 0;width:12%;z-index:1;background:linear-gradient(90deg,#F5F2DF,rgb(245 242 223 / 0))}

@@ -4,6 +4,14 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-19 — Take-home slides: numeral and title centred on the slide height
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Intent first, Build fast, Verify:** the ghost numeral and the title now sit as one block at the
+  middle of the slide's height (left side, over the dark fade) instead of on the pinned title line at
+  the top. The credit stays at the foot. Checked at 16:9: the block's centre is at mid-height on all three.
+
 ## 2026-11-19 — Take-home slides: titles only; "Iterate" is now "Verify"
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #65) · GitHub Pages: updated from `master`
