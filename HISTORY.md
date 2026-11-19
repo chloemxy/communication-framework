@@ -4,6 +4,13 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-19 — Third take-home point is "Cut & Verify"
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Third take-home slide (`#iterate`):** the title and chapter name change from "Verify" to "Cut &
+  Verify". It stays on one line and clears the gardener at 16:9.
+
 ## 2026-11-19 — Take-home slides: numeral and title centred on the slide height
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #66) · GitHub Pages: updated from `master`
