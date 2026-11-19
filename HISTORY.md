@@ -16,7 +16,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
 
 ## 2026-11-18 — Slide counter stops before the Appendix; napkin zoom from the k again
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #61) · GitHub Pages: updated from `master`
 
 - **Slide counter:** the pill's total now runs only to the slide before the Appendix divider (e.g.
   "13 / 16"); from the Appendix on, the pill shows just the arrows (option A).
