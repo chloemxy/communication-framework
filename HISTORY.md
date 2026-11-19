@@ -4,6 +4,29 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-18 — Verification: new title "Review builds trust"; the card wall shows all 23 vetted frameworks and the 9 cut
+
+Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
+
+- **The card wall behind "AI drafted it. We reviewed it." (`#review`) now holds all 32 frameworks in the review**:
+  the 23 the review kept (the 14 PRISM cards plus COM-B, Ottawa DSF, Teach-Back, PAM, NCI Pink Book, EBCD,
+  SHARE, AHRQ Toolkit, Picker) and the 9 it cut, which still go hollow one by one. The 9 new cards take their
+  name, zone and source from the review spreadsheet; their URLs are the bodies' official pages and need a check.
+  Only the `data-cut` wall shows them; the other slides keep the 14 (`fw-rows.js`, `MORE`).
+- **Title** of `#review` and the Appendix spreadsheet (`#review-sheet`) is now "Review <mark>builds trust</mark>"
+  (was "AI drafted it. We reviewed it."): review is what makes the platform credible and safe.
+- **Caption** now reads "Background: the 23 frameworks the review vetted through, and 9 are cut" (the one caption that
+  does not say 14, since this wall shows the review, not PRISM).
+
+## 2026-11-18 — Review and certification slides moved after the poster before/after
+
+Branch: `refresh-and-fixes` · not deployed yet (local, localhost:5173)
+
+- **"AI drafted it. We reviewed it." (`#review`) and "Certify the work, not the AI." (`#certify`) now come
+  right after the COVID poster before/after (`#ba-poster`)**, ahead of the feature demos. This puts the
+  verification story next to the results it backs up. The talk now ends on the three take-home points,
+  then "What's your view". The slides themselves are unchanged.
+
 ## 2026-11-18 — Last slide on the deck blue, AAA
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
