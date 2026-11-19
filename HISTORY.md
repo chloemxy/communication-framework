@@ -4,6 +4,18 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-18 — Last slide on the deck blue, AAA
+
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub Pages: updated from `master`
+
+- **"What's your view on our approach?" (`presentation/index.html`, `#next`) is now blue**, so the talk
+  ends where it opened and follows Certify's blue band. Light ink, the same light dots, the highlight
+  in the darker gold the other blue slides use.
+- **It passes AAA.** The blue is one step deeper than the title slide (#0C557C instead of rgb 15 108
+  157), because on the title slide's blue the fine print measured 5.1:1 (AAA needs 7:1 for small
+  text). The GoInvo card is a dark, see-through panel (black at 25%); as a light panel its text
+  measured 4.2:1. Now: title 7.3:1, highlight 5.8:1, list and fine print 7.1:1, card 9.8:1.
+
 ## 2026-11-18 — Verification: the review spreadsheet moves to the Appendix
 
 Branch: `refresh-and-fixes` · Vercel: not deployed (local only)
