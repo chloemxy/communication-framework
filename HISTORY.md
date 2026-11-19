@@ -4,6 +4,16 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-19 — Napkin divider zooms through the k again
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **"From napkin to prototype" → Intent first:** the zoom through the cut-out letters plays again,
+  growing out of the k's stem (with the gardener showing inside it) until Intent first fills the screen.
+  The 11-17 change that made every slide change a morph had dropped the line that starts the zoom, so the
+  divider only crossfaded; `zoomThrough` and its call in `show()` are restored as they were. Checked at
+  16:9: the zoom centre falls in the k's stem.
+
 ## 2026-11-19 — Third take-home point is "Cut & Verify"
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #67) · GitHub Pages: updated from `master`
