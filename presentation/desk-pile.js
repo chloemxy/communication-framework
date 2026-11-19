@@ -143,10 +143,10 @@
       var s = { img: img(p.file), w: p.w, h: p.h, k: k, iw: portrait ? 11 : 15, id: portrait ? 15 : 11,
         X: 30 + (rnd() - .5) * 9, Y: 15 + (rnd() - .5) * 4.5, rot: (rnd() - .5) * 60 * Math.PI / 180,
         // they set off close together, a few at a time, so the whole fall is short
-        ph: rnd() * 6.28, a: (start += k ? .05 + rnd() * .3 : 0),
+        ph: rnd() * 6.28, a: (start += k ? .04 + rnd() * .08 : 0),   // a quick flurry: about one every 0.08 s
         // every sheet falls in its own way: how long it takes, how wide and fast it sways, how much it
         // curls, how far it leans back and turns
-        dur: 4.2 + rnd() * 1.8, amp: 35 + rnd() * 70, freq: 1.2 + rnd() * 1.3, spin: (rnd() - .5) * .9 };
+        dur: 1.1 + rnd() * .35, amp: 20 + rnd() * 40, freq: 3 + rnd() * 2, spin: (rnd() - .5) * .9 };
       // about a third fall nearly flat, the way paper really falls, rocking and barely curled; the rest
       // fall more upright and curl. Each faces its own way: some turned to the side, a few their back
       // to the room (the plain back then shows).
@@ -157,8 +157,9 @@
       if (p.hero) hero = s;
     });
     // the teach-back poster lands just after all the others
-    var last = sheets.reduce(function(m, s){ return s === hero ? m : Math.max(m, s.a + s.dur); }, 0);
-    hero.a = last + .25 - hero.dur;
+    // the teach-back poster never lands: it drifts down partway through the flurry, straight to its
+    // showing spot above the desk, turning to face the room and growing as it comes
+    hero.a = .85; hero.dur = 1.25;
     // the pile stacks in the order the sheets land, each a sheet's thickness higher than the last
     landOrder = sheets.filter(function(s){ return s !== hero; }).sort(function(p, q){ return (p.a + p.dur) - (q.a + q.dur); });
     landOrder.forEach(function(s, i){ s.lift = i * EDGE; });
@@ -166,7 +167,7 @@
     sheets.forEach(function(s){
       s.land = landMesh(s);
       // each drops from straight above the desk, anywhere across its width
-      s.x0 = s.land[(NY / 2) * (NX + 1) + NX / 2][0] + (rnd() - .5) * 480;
+      s.x0 = s === hero ? HX + (rnd() - .5) * 140 : s.land[(NY / 2) * (NX + 1) + NX / 2][0] + (rnd() - .5) * 480;
     });
   }
   // a sheet in the air ft seconds after it set off (k: 0 at the top, 1 landed)
@@ -197,8 +198,8 @@
   function resetPile(){ cached = 0; pctx.save(); pctx.setTransform(1, 0, 0, 1, 0, 0); pctx.clearRect(0, 0, pc.width, pc.height); pctx.restore(); }
   function draw(ft, t){
     ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, cv.width, cv.height); ctx.restore();
-    // once the last sheet has landed, the poster lifts off the pile on its own, then the reactions pop
-    var after = landedAt() + .5, lifting = smooth(seg(ft, after, after + 1.3));
+    // the poster floats in to its showing spot; the reactions pop as it arrives (all done by about 2.9 s)
+    var heroK = hero ? (reduce ? 1 : seg(ft, hero.a, hero.a + hero.dur)) : 0, heroDone = hero ? hero.a + hero.dur : 0;
     // after the click the desk scene fades into the blue and the poster glides to the right, larger
     var gone = since <= 0 ? 0 : smooth(seg(since, .1, 1.2)), move = since <= 0 ? 0 : smooth(seg(since, .2, 1.7));
     art.style.opacity = (1 - gone).toFixed(3);
@@ -218,24 +219,25 @@
     sheets.forEach(function(s){
       var k = reduce ? 1 : seg(ft, s.a, s.a + s.dur);
       if (k <= 0) return;
-      if (s === hero) { if (lifting > 0) return; if (k >= 1) { drawMesh(s, s.land, true); return; } }
-      else if (k >= 1) return;   // already on the cached pile
+      if (s === hero || k >= 1) return;   // the poster is drawn below; landed sheets are on the cached pile
       // as it slows down near the desk, the sheet gently tips flat onto its spot on the pile
       var m = smooth(seg(k, .62, 1));
       drawMesh(s, m > 0 ? mix(airPose(s, k), s.land, m) : airPose(s, k), false);
     });
     ctx.globalAlpha = 1;
-    if (hero && lifting > 0) {
-      var e = smooth(lifting), up = airMesh(hero, HX, HY, 220, 0, 0, 0, .3 * Math.sin(Math.PI * e), 0);
+    if (hero && heroK > 0) {
+      var e = smooth(heroK), sw = Math.sin(heroK * hero.dur * 4 + hero.ph) * (1 - e);
+      var hy = (-200 - top) + (HY + 200 + top) * (1 - Math.pow(1 - heroK, 2)), hx = hero.x0 + (HX - hero.x0) * e + sw * 30;
+      var up = airMesh(hero, hx, hy, 120 + 100 * e, sw * .4, .35 * (1 - e), sw * .2, .3 * (1 - e), 0);
       if (move > 0) {
         var L = layout();
         up = mix(up, airMesh(hero, L.hx, L.hy, L.hw, 0, 0, 0, .22 * Math.sin(Math.PI * move), 0), move);
       }
-      drawMesh(hero, mix(hero.land, up, e), false);
+      drawMesh(hero, up, false);
     }
     // each reaction springs out in turn (an ease with a little overshoot)
     pops.forEach(function(el, i){
-      var p = seg(ft, after + 1 + i * .14, after + 1.45 + i * .14), c = 1.70158, e = p ? 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2) : 0;
+      var p = seg(ft, heroDone - .1 + i * .07, heroDone + .2 + i * .07), c = 1.70158, e = p ? 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2) : 0;
       // on the click they fade away
       el.style.setProperty('--p', (p * (1 - seg(t, .5, .58))).toFixed(3)); el.style.setProperty('--e', e.toFixed(3));
     });
