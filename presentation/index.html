@@ -887,6 +887,11 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   #next .next li:last-child{padding-bottom:0}}
 /* closing slide: the three principles as numbered columns over the dotted paper, a small ask and links below */
 .scene.dots .stage{z-index:1}
+/* Your turn ends on the deck blue, so the talk closes where it opened. It is one step deeper than the
+   title slide (#0C557C) so even the fine print passes AAA (7.1:1); the GoInvo card is a dark,
+   see-through panel (black at 25%, 7.6:1 or better) */
+#next{background:#0C557C;--ink:#F6F4EC;--ink-2:#EEF1F4;--hl:#6B5F14;--rule:rgb(255 255 255 / .3)}
+#next .sheet{background:rgb(0 0 0 / .25);border-color:rgb(255 255 255 / .25)}
 .steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
 .steps .n{display:block;font:500 var(--fs-display)/1 var(--f-display);color:var(--rule);font-variant-numeric:lining-nums}
 .steps b{display:block;margin-top:10px}
