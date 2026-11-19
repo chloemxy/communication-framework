@@ -2065,8 +2065,12 @@ window.deckStart = function(){
     // every slide change, forward and back, is a morph: browsers with View Transitions glide shared parts
     // (the title, anything marked data-morph) to their new place while the rest crossfades. Only reduced
     // motion, browsers without View Transitions and the walkthrough keep the plain fade.
+    // a click during the zoom only hurries it to its end
+    if (zooming) return;
     // a click while a slide's exit clip plays cuts straight to its end
     if (exiting) return exiting();
+    if (dir > 0 && i === cur + 1 && a.el.hasAttribute('data-zoom') && b.el.classList.contains('peek') && !reduce &&
+        window.innerWidth > 720 && a.el._zoom) return zoomThrough(a, b, i);
     // a slide marked data-exit leaves forward through its own clip (dark mode only: the clip ends on the dark slide)
     if (dir > 0 && i === cur + 1 && a.el.hasAttribute('data-exit') && !reduce && document.documentElement.getAttribute('data-theme') !== 'light' && a.el.querySelector('.exit-clip'))
       return exitThrough(a, b, i);
@@ -2151,6 +2155,39 @@ window.deckStart = function(){
     el._zoom = { x:best.x, y:best.y, s:far / rr * 1.15 };
   }
   addEventListener('resize', function(){ var s = slides[cur]; if (s && s.el.hasAttribute && s.el.hasAttribute('data-zoom')) zoomLayout(s.el); });
+  // the napkin divider zooms through its cut-out letters into Intent first (restored: the morph change on
+  // 11-17 dropped the call that starts it)
+  var zooming = false;
+  function zoomThrough(a, b, i){
+    zooming = true;
+    var z = a.el._zoom, t = a.el.querySelector('.three-t'), cover = a.el.querySelector('.three-cover'), done = false;
+    var wash = b.el.querySelector('.pt-wash'), last = b.beats.length ? b.beats[b.beats.length - 1] : 1;
+    // the letters grow only so far (x14): beyond that the browser redraws the huge mask badly and the page
+    // flickers. Over the last 45% the dark cover fades out instead, while Intent first's wash and text fade
+    // in under it, so the slide is complete when the divider goes and nothing moves after the cut.
+    var top = Math.min(z.s, 14);
+    if (wash) wash.style.transition = 'none';
+    tween(function(v){
+      var s = Math.exp(Math.log(top) * (1 - Math.cos(v * Math.PI / 2))), f = clamp((v - .55) / .45);
+      t.setAttribute('transform', 'translate(' + z.x + ' ' + z.y + ') scale(' + s + ') translate(' + -z.x + ' ' + -z.y + ')');
+      cover.style.opacity = 1 - f;
+      if (wash) wash.style.opacity = f;
+      paintSlide(b, last * f);
+      if (v >= 1 && !done) {
+        done = true;
+        // runs once the zoom's own frame has ended; the next slide is shown already finished, with no cascade
+        Promise.resolve().then(function(){
+          a.el.style.transition = 'none';
+          swap(a, b, i, 1);
+          finish();
+          void a.el.offsetWidth; a.el.style.transition = '';
+          t.removeAttribute('transform'); cover.style.opacity = '';
+          if (wash) { wash.style.opacity = ''; void wash.offsetWidth; wash.style.transition = ''; }
+          zooming = false;
+        });
+      }
+    }, 0, 1, 1200, 0, function(k){ return k; });
+  }
   if (document.fonts) document.fonts.load('800 100px Newsreader').then(function(){ var s = slides[cur]; if (s && s.el.hasAttribute && s.el.hasAttribute('data-zoom')) zoomLayout(s.el); }, function(){});
   function shown(el){
     if (!el || el.classList.contains('visually-hidden')) return false;
