@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-19 — Third take-home point is "Cut & Verify"
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #67) · GitHub Pages: updated from `master`
 
 - **Third take-home slide (`#iterate`):** the title and chapter name change from "Verify" to "Cut &
   Verify". It stays on one line and clears the gardener at 16:9.
