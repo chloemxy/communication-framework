@@ -22,6 +22,7 @@ const GH = 'https://api.github.com/repos/' + REPO;
 
 const ORIGINS = [
   /^https:\/\/communication-framework[a-z0-9-]*\.vercel\.app$/,
+  /^https:\/\/(www\.)?prismcheck\.org$/,
   /^https:\/\/chloemxy\.github\.io$/,
   /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/,
 ];
