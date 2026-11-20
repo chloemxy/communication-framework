@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-20 — Verification: cards muted a little
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #72 (Production)
 
 - **Verification slide:** the framework cards behind the title are muted with a 35% veil of the slide's dark
   grey, so the wall is easier on the eye; the framework names stay clear. The title band is unchanged.
