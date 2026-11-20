@@ -4,6 +4,28 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-19 — Site moves to PrismCheck.org
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Domain:** prismcheck.org bought at Porkbun; DNS now points at Vercel (A record to 76.76.21.21, `www`
+  CNAME to cname.vercel-dns.com). Checked: https://prismcheck.org returns 200 over HTTPS.
+- **Presentation:** the closing-slide link now reads and opens prismcheck.org instead of
+  communication-framework.vercel.app.
+- **Deck-save API:** `api/deck-edits.js` now also accepts requests from prismcheck.org and
+  www.prismcheck.org, so saving works if the presentation is opened there. The old vercel.app URL
+  keeps working.
+
+## 2026-11-19 — Reveal: Material spotlight after the drop
+
+Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+
+- **Reveal slide (option A, light dim):** once the water-pill file drops into the Studio, the rest of
+  the screen dims (55% dark veil) and the Material panel stays bright with a thin blue outline, so the
+  room looks at the analysed text. It holds from 2.1 s to 4.4 s of the clip, then lifts, and it resets
+  when you leave the slide. Checked at 16:9: no dim before the drop or after it lifts, and the bright
+  window sits on the Material panel.
+
 ## 2026-11-19 — Napkin divider zooms through the k again
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #68) · GitHub Pages: updated from `master`
@@ -230,6 +252,11 @@ Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`) · GitHub
   now sits at the bottom of its card, the card's content starting from the top. The tick is a yellow
   pill the size of the new-value pills, right-aligned under them; numbers sit optically centred in every
   pill (trimmed to cap height).
+- **Three columns on both slides:** Before | "PRISM diagnoses" | After PRISM. The measure cards now sit
+  between the two versions in a 2 x 2 grid (`.bx3-grid`), shown as PRISM's thinking step with a small
+  spinning PRISM ring (blue, green, yellow) by the label. No arrows and no leader lines. Words slide:
+  Medical words, Longest sentence, Risk numbers, Reading grade. Poster slide: Lines too faint, Jargon,
+  Faintest text, Colour-blind check; "After PRISM · AAA" and Sonia's credit kept.
 
 ## 2026-11-18 — Standards exist: Sonia's simpler pile
 
