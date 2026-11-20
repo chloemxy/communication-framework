@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-20 — Review slide: undimmed cards, title on a band at mid height
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Review slide:** the black veil is gone, so the framework cards run at full brightness. The title keeps its
   size and sits at the slide's mid height on one hard band, edge to edge, so it passes AAA over the cards
@@ -19,7 +19,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Before and after slides, bigger for the back row
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Words slide (water-pill handout):** the three columns now run to the deck's own side margins (20px left,
   room for the chapter dots right) and everything is about 1.45x bigger: handout text 1.3 → 1.9 units, labels,
@@ -44,7 +44,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Cover: bigger roles, label and drawn-in clause removed
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Roles:** "Biomedical communicator and UX designer" and "Senior product designer, GoInvo" are 30px on a
   1080p screen (were 22px, too small for the back row). The gap between the two speakers is a little tighter
@@ -54,7 +54,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Your turn: credits line in place of the footer
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Your turn (last slide):** the footer now says who did what: "Sonia Seto — content and patient-education
   expertise · Chloe Ma — design of PRISM and of this presentation". The GitHub, licence and event line it
@@ -66,7 +66,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Title morphs: Verification → Certify → From napkin to prototype
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Verification → Certify:** the title now glides from the band in the middle down to Certify's title, and
   back going the other way. Certify's title now shows from the slide's first moment (it faded in a beat later,
@@ -79,7 +79,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Meet PRISM: the logo visibly lands on the Studio's logo
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Logo morph:** the big PRISM logo was hidden the moment its glide began, so it never seemed to reach the
   Studio. Now it stays visible all the way and lands exactly on the Studio's own logo in the top-left corner:
@@ -89,7 +89,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Dark mode only; one footer style; cover line removed
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Dark mode only:** the light/dark switch (the sun/moon under the chapter dots, and the T key) is gone. The
   deck always shows in dark mode, and a light choice remembered in the browser from before is cleared on load.
@@ -102,7 +102,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Click to advance, as in PowerPoint
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Whole deck:** a left mouse click anywhere on a slide moves on one step (the next beat, or the next slide),
   the same as the right arrow or space. A click on something that has its own job doesn't advance: links,
@@ -112,7 +112,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-20 — Slide titles readable in light mode
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Light mode:** slide titles used to turn dark in light mode, but the slides keep their dark and blue art
   and washes there (the cover, Standards exist, Why AI?, the three take-home points, Your turn), so the titles
@@ -125,7 +125,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-19 — Review slide retitled; "the problem" pill; PRISM logo opening
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Review slide:** title is now "Any tool is only useful if you trust it". The decision lists (Keep, With
   caveats, Brought back, If in scope, Cut) are hidden. The gradient is gone: one flat black veil sits over the
@@ -143,7 +143,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-19 — "Check it in PRISM" opens into a full-screen Studio
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Transition:** on the click after Scattered tools' merged pill, the yellow "Check it in PRISM" pill
   grows into the Meet PRISM Studio (a view-transition morph, `data-morph="prism"`); going back shrinks it
@@ -154,7 +154,7 @@ Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5
 
 ## 2026-11-19 — Slide order: Why AI? → Scattered tools → Meet PRISM → Brief
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
 
 - **Order:** Scattered tools moved up from after Brief to right after Why AI?, so the talk runs problem
   (checking is scattered) → answer (Meet PRISM) → how it fits you (Brief) → proof (before and after).
