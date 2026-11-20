@@ -390,7 +390,8 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 /* Nov 20: no dimming, the cards run at full brightness; the title sits at the slide's mid height on one hard
    black band, edge to edge (box-shadow + clip-path bleed it to the sides), so it passes AAA (21:1) over the
    cards; the credit is white with a drop shadow (the titles' kind, deeper, as it is small and crosses white cards), no backing; the decision lists are hidden */
-#review .rv-wash{display:none}
+/* Nov 20: the cards muted a little (a 35% veil of the slide grey), easier on the eye, names still clear */
+#review .rv-wash{opacity:var(--k,0);background:rgb(18 20 23 / .35)}
 #review .stage{align-items:center;padding-top:calc(env(safe-area-inset-top,0px) + 20px);padding-left:var(--gut);padding-right:var(--gut)}
 #review .inner{position:absolute;inset:0;max-width:none;justify-content:center;align-items:center}
 #review .h2{width:max-content;text-align:center;padding:.3em 0;position:relative;z-index:1}

@@ -4,6 +4,13 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-20 — Verification: cards muted a little
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Verification slide:** the framework cards behind the title are muted with a 35% veil of the slide's dark
+  grey, so the wall is easier on the eye; the framework names stay clear. The title band is unchanged.
+
 ## 2026-11-20 — Review slide: undimmed cards, title on a band at mid height
 
 Branch: `refresh-and-fixes` · Merged to `master` in PR #71 (Production)
