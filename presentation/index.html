@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<script>(function(){var t;try{t=localStorage.getItem('talk.theme')}catch(e){}if(t==='light')document.documentElement.setAttribute('data-theme','light')})()</script>
+<!-- Nov 20: dark mode only; the light/dark switch is gone, and a light choice remembered from before is cleared -->
+<script>try{localStorage.removeItem('talk.theme')}catch(e){}</script>
 <title>The Barrier Just Dropped</title>
 <meta name="description" content="The Barrier Just Dropped, told as a scroll story: one screen that changes as you scroll, from the question that started PRISM to what Claude did and what stayed ours.">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -274,7 +275,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 /* AI certification: full-bleed art with a black gradient low on the slide; the text sits under it.
    Black reaches .64 where the title starts and .7+ behind the body text, so every line passes AAA
    against the brightest art (title 5.5:1 as large text, body 7.6:1, credit 12:1). */
-#certify{background:var(--desk);--ink:#F6F4EC;--ink-2:#EEF1F4;--fine:#FFFFFF}
+#certify{background:var(--desk);--ink:#F6F4EC;--ink-2:#EEF1F4}
 [data-theme="light"] #certify .h2,[data-theme="light"] #certify .h2 mark{color:#fff}
 @media (min-width:721px){.cert-band{inset:0;height:100%;background:var(--desk)}
   .cert-art{height:100%;aspect-ratio:auto}
@@ -382,10 +383,28 @@ mark.hang{margin-left:calc(-.4em - .08em)}
    mixes in the 9 cut ones) on the deck's black, under a gradient that is solid behind the list and lifts
    toward the foot so the cards show there */
 #review{--cu:min(1vw,1.78vh);overflow:hidden}
-#review .rv-blue{position:absolute;inset:0;background:var(--desk);opacity:var(--k,0)}
+#review{background:#121417}
+#review .rv-blue{position:absolute;inset:0;background:#121417;opacity:var(--k,0)}
 #review .fw-bg{opacity:var(--k,0)}
 #review:not(.on) .fw-row{animation-play-state:paused}
-#review .rv-wash{opacity:var(--k,0);background:linear-gradient(180deg,rgb(18 20 23 / .93) 0%,rgb(18 20 23 / .86) 58%,rgb(18 20 23 / .35) 100%),linear-gradient(90deg,rgb(18 20 23 / .25) 0%,rgb(18 20 23 / 0) 60%)}
+/* Nov 20: no dimming, the cards run at full brightness; the title sits at the slide's mid height on one hard
+   black band, edge to edge (box-shadow + clip-path bleed it to the sides), so it passes AAA (21:1) over the
+   cards; the credit is white with a drop shadow (the titles' kind, deeper, as it is small and crosses white cards), no backing; the decision lists are hidden */
+#review .rv-wash{display:none}
+#review .stage{align-items:center;padding-top:calc(env(safe-area-inset-top,0px) + 20px);padding-left:var(--gut);padding-right:var(--gut)}
+#review .inner{position:absolute;inset:0;max-width:none;justify-content:center;align-items:center}
+#review .h2{width:max-content;text-align:center;padding:.3em 0;position:relative;z-index:1}
+/* the band is its own layer behind the title (not part of it), so only the words glide when the title morphs
+   to Certify's and back */
+#review .inner::before{content:"";position:absolute;left:0;right:0;top:50%;height:calc(var(--fs-title) * 1.68);transform:translateY(-50%);background:#121417}
+#review .credit.bl{text-shadow:0 0 2px rgb(0 0 0 / .9),0 1px 3px rgb(0 0 0 / .8),0 0 10px rgb(0 0 0 / .7),0 2px 18px rgb(0 0 0 / .5)}
+/* the review slide stays dark in light mode too (like One list): white title, the same dim-yellow highlight
+   as dark mode, and the light footer ink, so the band keeps passing AAA in both themes */
+#review{--ink:#E9EBEE;--ink-2:#B4BAC2;--fine:rgb(255 255 255 / .8);color:var(--ink)}
+#review .h2,#review .h2 mark{color:#fff!important}
+#review .h2 mark{background-color:rgb(255 214 0 / .28)}
+#review .credit.bl{color:#fff!important}
+#review .wall{display:none}
 #review .stage{z-index:1}
 /* a cut framework, once its turn comes: the card goes hollow (a thin light outline, faint text, its name
    struck, labelled Cut) and a little smaller, a gap among the white cards that still shows on the black */
@@ -496,7 +515,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 /* on the projector the welcome text keeps to the left half, clear of the napkin */
 .t-head,.t-main{position:relative}
 .t-foot{margin-top:28px}
-.intros{display:grid;grid-template-columns:1fr 1fr;gap:24px;border-top:1px solid var(--rule);padding-top:14px}
+.intros{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding-top:14px}
 .intros b{display:block;}
 .intros span{display:block;color:var(--ink-2);margin-top:2px}
 .fine{color:var(--ink-2);margin-top:14px}
@@ -823,6 +842,12 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 .visit p{margin-top:14px;color:var(--ink-2)}
 .visit .goinvo{width:72px;color:var(--ink-2);margin-bottom:18px}
 .visit a.big + b{margin-top:calc(1.4 * var(--u))}
+/* Nov 20: a QR code for prismcheck.org on the right of the card, as tall as the card's content; the SVG carries
+   its own white quiet zone of four modules, so phones at the back can read it */
+#next .visit{position:relative}
+.visit-qr{position:absolute;right:calc(2 * var(--u));top:calc(2 * var(--u));height:calc(100% - 4 * var(--u));width:auto;aspect-ratio:1;
+  border-radius:calc(.6 * var(--u))}
+@media (max-width:860px){.visit-qr{display:none}}
 .dot-bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 /* take-home divider: the title, "From napkin to prototype", is cut out of the dark in heavy type, centred
    and as wide as the slide allows: a window onto the next slide (Intent first), which waits underneath.
@@ -833,6 +858,8 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 .three-cover{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 .three-cover rect.dark{fill:var(--desk)}
 .three-t{font-family:var(--f-display);font-weight:800;font-variant-numeric:lining-nums}
+/* an empty box over the cut-out title: Certify's title glides into it (and out of it, going back) */
+.three-ph{position:absolute;pointer-events:none}
 /* the slide after a zoom divider stays shown underneath it, below it in the stack */
 /* it fades in with the divider, so it never shows on its own before the dark arrives */
 .scene.peek{opacity:1!important;visibility:visible!important;transform:none!important;transition:opacity .6s ease .12s,visibility 0s!important;z-index:4}
@@ -940,7 +967,9 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   .blurb{max-width:none;margin-top:calc(1.8 * var(--u))}
   .intros div{column-gap:calc(1.2 * var(--u))}
   .intros img{width:calc(6.6 * var(--u));height:calc(6.6 * var(--u))}
-  .intros{grid-template-columns:auto auto;justify-content:start;gap:calc(4 * var(--u));padding-top:calc(1.4 * var(--u));max-width:52%}
+  /* Nov 20: the roles at 30px on a 1080p screen (were 22px), so the back row can read them */
+  .title .intros span{font-size:calc(1.5625 * var(--u))}
+  .intros{grid-template-columns:auto auto;justify-content:start;gap:calc(2 * var(--u)) calc(2.5 * var(--u));padding-top:calc(1.4 * var(--u));max-width:52%}
   .fine{margin-top:calc(1.4 * var(--u))}
 
   .question q{max-width:17ch;margin-top:calc(2 * var(--u))}
@@ -1028,13 +1057,17 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   color-scheme:light}
 [data-theme="light"] body{background:var(--desk)}
 [data-theme="light"] .welcome-bg{filter:none}
-[data-theme="light"] #top .stage,[data-theme="light"] #analogy .stage,[data-theme="light"] #question .stage,
-[data-theme="light"] #proof .stage{text-shadow:0 0 18px rgb(var(--scrim) / .9),0 0 4px rgb(var(--scrim) / .8)}
+[data-theme="light"] #analogy .stage,[data-theme="light"] #proof .stage{text-shadow:0 0 18px rgb(var(--scrim) / .9),0 0 4px rgb(var(--scrim) / .8)}
+/* Nov 20: the cover, the blue slides and the three points keep their blue and dark art in light mode, so they
+   keep dark mode's light ink too (label, subtitle, names, roles, credits), with the cover's dark soft shadow */
+[data-theme="light"] :is(#top,#question,#standards,#why,#next,.scene.point){--ink:#F6F4EC;--ink-2:#EEF1F4;--fine:rgb(255 255 255 / .8)}
+[data-theme="light"] #top .stage{text-shadow:0 1px 16px rgb(0 0 0 / .5)}
+[data-theme="light"] :is(#ba,#ba-poster,#why-lego){--fine:rgb(255 255 255 / .8)}
 [data-theme="light"] .ledger li{border-top-color:rgb(22 24 29 / .25)}
 [data-theme="light"] .ledger li:last-child{border-bottom-color:rgb(22 24 29 / .25)}
 [data-theme="light"] .fp-tall .fp-cap b{color:var(--ink)}
 [data-theme="light"] .fp-tall .fp-cap span{color:var(--ink-2)}
-[data-theme="light"] .pt-n{color:rgb(22 24 29 / .12)}
+/* Nov 20: the point slides keep their dark wash in light mode, so the ghost numeral keeps its light ink too */
 /* "From napkin to prototype" is cut out of the cover to show the napkin film; that film is pale, so
    the cover stays dark in light mode or the letters vanish */
 [data-theme="light"] .three-cover rect.dark{fill:#16181D}
@@ -1063,16 +1096,21 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 :root{--fine:rgb(255 255 255 / .8)}
 :root[data-theme="light"]{--fine:var(--ink-2)}
 .scene :is(.credit,.note,.fine){color:var(--fine)!important}
+/* Nov 20: one treatment for every footer line, as on Your turn: white at 80%, underlined links, no glow (the
+   slides' own text shadows no longer reach it). Only the Verification credit keeps a drop shadow, as it
+   crosses the white framework cards */
+.scene :is(.credit,.note,.fine):not(#review .credit){text-shadow:none!important}
 .scene :is(.credit,.note,.fine) a{color:inherit!important}
 /* 14 frameworks, one list: the clip is drawn on the dark desk, so the slide keeps it in light mode too */
 #one-list{background:#121417;--ink:#E9EBEE;--ink-2:#B4BAC2;--fine:rgb(255 255 255 / .8);color:var(--ink)}
 #one-list .one-list-art{position:absolute;inset:0;--k:1}
 #one-list .clip-bg{object-position:100% 50%}
 /* every slide title is pure white with a thin dark edge and a soft glow, so it holds over busy art; the
-   highlighted words in it are white too. Light mode keeps its dark titles. */
-:root:not([data-theme="light"]) .scene :is(.title h1,.question q,.big-line,.h2,.thanks h2){color:#fff!important;
+   highlighted words in it are white too. Nov 20: light mode too, since the slides keep their dark and blue art
+   and washes there (dark titles went dark-on-dark) */
+.scene :is(.title h1,.question q,.big-line,.h2,.thanks h2){color:#fff!important;
   text-shadow:0 1px 2px rgb(0 0 0 / .45),0 2px 14px rgb(0 0 0 / .3)!important}
-:root:not([data-theme="light"]) .scene :is(.title h1,.question q,.big-line,.h2,.thanks h2) mark{color:#fff!important}
+.scene :is(.title h1,.question q,.big-line,.h2,.thanks h2) mark{color:#fff!important}
 /* Before and after (#ba words, #ba-poster pictures): the material in the middle, before and after, with a glass
    card per measure at the sides. Each card says what changed in plain words: the old value in a grey glass pill
    (crossed out), the new one in the yellow glass pill, and one short straight lead to the edge of the material,
@@ -1144,24 +1182,61 @@ mark.hang{margin-left:calc(-.4em - .08em)}
    square to the room at 80% of the screen (10% in from every edge), with the slab's yellow rim and rounded
    corners. Built in the page from a 2x screenshot, so it is sharp. Sizes are the clip's
    (28 px corner, 18 px rim, 14 px inner corner on a 1920-wide card, shown at 80%). */
-#reveal{background:rgb(15 108 157);overflow:hidden}
+#reveal{background:#000;overflow:hidden}
 /* Placed with the exit clip's own scaling: the clip covers the screen pinned to the centre
    (object-fit:cover; object-position:50% 50%), so on a screen wider or taller than 16:9 it is cropped
    evenly. --rv is the clip's scale; the slab is at 192–1728 × 108–972 of its 1920×1080 frame. */
-#reveal{--rv:max(100vw / 1920, 100vh / 1080)}
-.rv-slab{position:absolute;left:calc((100vw - 1920 * var(--rv)) / 2 + 192 * var(--rv));top:calc((100vh - 1080 * var(--rv)) / 2 + 108 * var(--rv));width:calc(1536 * var(--rv));height:calc(864 * var(--rv));
-  box-sizing:border-box;padding:calc(14.4 * var(--rv));border-radius:calc(22.4 * var(--rv));background:rgb(221 211 127)}
-.rv-slab img,.rv-slab video{display:block;width:100%;height:100%;object-fit:fill;border-radius:calc(11.2 * var(--rv))}
+/* Full screen (Nov 19): the Studio always fills the screen edge to edge, with no bars. On a screen that
+   isn't 16:9 it is cropped evenly from the centre (cover). --rv is the scale of a 1920x1080 frame. It arrives
+   after the PRISM logo (below). */
+/* Nov 20: cropping cut off the Studio's header and panels on screens wider than 16:9, so the whole Studio now
+   always shows (contain); once it opens, the slide behind it turns the Studio's own page grey (#D3DADF, the
+   recording's edge colours: the page grey, and the white top bar carried out to the screen edges at its own
+   height, 110 of 1620), so any margin reads as more Studio, not bars. Both fade in with the Studio, and a veil
+   the same as the spotlight's dims them with it */
+#reveal{--rv:min(100vw / 1920, 100vh / 1080)}
+#reveal::before,#reveal::after{content:"";position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .7s ease}
+#reveal::before{background:linear-gradient(#FCFEFE,#FCFEFE) 0 0 / 100% calc((100vh - 1080 * var(--rv)) / 2 + 1080 * var(--rv) * 110 / 1620) no-repeat,#D4DAE0}
+#reveal::after{background:rgb(14 18 24 / .55);transition-duration:.6s}
+#reveal.rv-opened::before{opacity:1}
+#reveal.rv-opened.rv-spot-on::after{opacity:1}
+#reveal .rv-slab{z-index:1}
+.rv-slab{position:absolute;left:calc((100vw - 1920 * var(--rv)) / 2);top:calc((100vh - 1080 * var(--rv)) / 2);width:calc(1920 * var(--rv));height:calc(1080 * var(--rv));
+  box-sizing:border-box;padding:0;border-radius:0;background:#F4F5F7}
+.rv-slab img,.rv-slab video{display:block;width:100%;height:100%;object-fit:fill;border-radius:0}
+/* The logo opening (going forward): Scattered tools' yellow "Check it in PRISM" pill morphs into the PRISM
+   logo, large in the middle on black (data-morph="logo"); the logo plays the site's scan (a yellow line sweeps
+   across, then the I's marker swipes in), then glides and shrinks onto the Studio's own logo in its top-left
+   corner while the Studio fades in under it; the clip starts once it lands. Arriving going forward
+   (data-dir="back") the logo shows and the Studio hides at once, so the morph finds the logo; rv-intro runs the
+   scan, rv-land the glide, rv-opened ends it. Coming back from Brief, or with reduced motion, there is no opening. */
+::view-transition-old(vt-m-logo){animation-duration:.2s;animation-timing-function:linear}
+::view-transition-new(vt-m-logo){animation-duration:.35s;animation-timing-function:ease-out}
+.rv-logo{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.rv-word{position:relative;display:inline-block;font:600 calc(11 * var(--u))/1.35 var(--f-ui);color:#fff;opacity:0;white-space:nowrap}
+#reveal.on[data-dir="back"]:not(.rv-opened) .rv-word{opacity:1}
+/* Nov 20: the logo stays visible while it glides (it was hidden the moment the glide began), so it is seen to
+   land on the Studio's own logo; the clip's first frame holds that logo, so the hand-off is seamless */
+#reveal.rv-land .rv-word{opacity:1}
+.rv-word::after{content:"";position:absolute;top:-10%;bottom:-10%;left:0;width:calc(.35 * var(--u));border-radius:2px;background:var(--brand);opacity:0;pointer-events:none}
+#reveal.rv-intro .rv-word::after{animation:rv-scan 1100ms cubic-bezier(.4,0,.2,1) 150ms both}
+#reveal.rv-intro .rv-word .pi::before{animation:rv-swipe 260ms cubic-bezier(.6,0,.2,1) 480ms both}
+#reveal.rv-intro .rv-word .pi{animation:rv-ink 260ms cubic-bezier(.6,0,.2,1) 480ms both}
+@keyframes rv-scan{0%{left:-4%;opacity:0}8%{opacity:1}85%{opacity:1}100%{left:102%;opacity:0}}
+@keyframes rv-swipe{from{clip-path:polygon(18% 0,18% 0,0 100%,0 100%)}to{clip-path:polygon(18% 0,100% 0,82% 100%,0 100%)}}
+@keyframes rv-ink{0%,35%{color:#fff}70%,100%{color:var(--on-brand)}}
+.rv-slab{transition:opacity .7s ease}
+#reveal.on[data-dir="back"]:not(.rv-opened):not(.rv-land) .rv-slab{opacity:0;transition:none}
 /* no push-in: the slab holds exactly where the clip leaves it, so nothing moves at the cut */
 /* the Brief bar, cut from the clip's last frame and laid exactly over it (frame 2880x1620: 34,138 to
    1148,252), so it can morph out to the next slide. It shows once the clip ends, or at once when the
    slide is reached going back (data-dir="fwd"), when the clip is set to its end. */
 .rv-slab img.rv-brief{position:absolute;opacity:0;pointer-events:none;border-radius:0;object-fit:fill;
-  left:calc(14.4 * var(--rv) + 1507.2 * var(--rv) * 34 / 2880);top:calc(14.4 * var(--rv) + 835.2 * var(--rv) * 138 / 1620);
-  width:calc(1507.2 * var(--rv) * 1114 / 2880);height:calc(835.2 * var(--rv) * 114 / 1620)}
+  left:calc(1920 * var(--rv) * 34 / 2880);top:calc(1080 * var(--rv) * 138 / 1620);
+  width:calc(1920 * var(--rv) * 1114 / 2880);height:calc(1080 * var(--rv) * 114 / 1620)}
 #reveal.rv-done .rv-slab img.rv-brief,#reveal[data-dir="fwd"] .rv-slab img.rv-brief{opacity:1}
 /* coming back from the Brief slide, the clip's last frame (a still laid over it) is shown, not the clip */
-.rv-slab img.rv-last{position:absolute;left:calc(14.4 * var(--rv));top:calc(14.4 * var(--rv));width:calc(1507.2 * var(--rv));height:calc(835.2 * var(--rv));opacity:0;pointer-events:none}
+.rv-slab img.rv-last{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;pointer-events:none}
 #reveal[data-dir="fwd"] .rv-slab img.rv-last{opacity:1}
 /* the spotlight: just after the file drops in, the rest of the Studio dims about halfway and the Material panel
    keeps full brightness with a blue outline; the next click morphs the light onto Plain language and Readability
@@ -1169,9 +1244,9 @@ mark.hang{margin-left:calc(-.4em - .08em)}
    38.438x80.370; Plain language 40.94,17.222 28.33x80.370; Readability 70.32,17.222 28.32x55.2. Each spot is
    one veil with two holes cut by a mask (so they never double up) and rings on the holes; the click crossfades
    the two spots. Above the stills, so it covers them too. */
-.rv-spotwrap{position:absolute;z-index:1;left:calc(14.4 * var(--rv));top:calc(14.4 * var(--rv));width:calc(1507.2 * var(--rv));height:calc(835.2 * var(--rv));
-  overflow:hidden;border-radius:calc(11.2 * var(--rv));pointer-events:none;
-  --W:calc(1507.2 * var(--rv));--H:calc(835.2 * var(--rv));
+.rv-spotwrap{position:absolute;z-index:1;left:0;top:0;width:calc(1920 * var(--rv));height:calc(1080 * var(--rv));
+  overflow:hidden;border-radius:0;pointer-events:none;
+  --W:calc(1920 * var(--rv));--H:calc(1080 * var(--rv));
   --ax:1.354;--ay:17.222;--aw:38.438;--ah:80.370;--bx:1.354;--by:17.222;--bw:38.438;--bh:80.370}
 .rv-spotwrap .two{--ax:40.94;--aw:28.33;--bx:70.32;--bw:28.32;--bh:55.2}
 .rv-dim,.rv-ring{position:absolute;opacity:0;transition:opacity .6s ease}
@@ -1224,6 +1299,11 @@ mark.hang{margin-left:calc(-.4em - .08em)}
    drifts a few pixels; hovering sweeps a faint PRISM sheen (blue, green, yellow) across it and lifts it a touch.
    Step two pulls every pill into the centre and the yellow "Check it in PRISM" pill appears there */
 #tools{background:#000;overflow:hidden;--ink:#fff}
+/* "the problem" (Nov 19): going forward from Why AI?, the words glide out of its line (data-morph="problem")
+   and become a pill in the middle of the black slide, the first of the pile; the tool pills then ease in
+   around it and it settles into the third row like any other pill, and merges with them. It shows at once on a
+   forward arrival (data-dir="back") so the morph finds it, and comes first in the pile on any arrival. */
+#tools.on[data-dir="back"] .tl-prob-w .tl-pill{opacity:1;filter:none;transform:scale(1)}
 .tl-field{position:absolute;inset:0}
 .tl-pw{position:absolute;left:0;top:0;will-change:transform}
 .tl-pw:hover{z-index:60!important}
@@ -1292,6 +1372,47 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 .bx3-mid{position:absolute}
 .bx3-arrow{position:absolute;top:calc(26.4 * var(--u));width:calc(1.1 * var(--u));height:calc(1.1 * var(--u));border-top:2px solid rgb(255 255 255 / .35);border-right:2px solid rgb(255 255 255 / .35);transform:rotate(45deg)}
 .bx3p .bx3-col img{display:block;height:calc(31.25 * var(--u));width:auto;border-radius:calc(.52 * var(--u))}
+/* Nov 20, read from the back row: the words slide fills the frame to the deck's own side margins (20px left,
+   room for the chapter dots right) and runs about 1.45x bigger; the four measure cards stack as rows in the
+   middle column, title and pills on one line, so each keeps its full width */
+#ba .bx3 > div{top:calc(4 * var(--u))}
+#ba .bx-lab{font-size:calc(2.2 * var(--u))}
+#ba .bx3-dot{width:calc(1.6 * var(--u));height:calc(1.6 * var(--u))}
+#ba .bx3-mid::before{left:calc(-1 * var(--u));right:calc(-1 * var(--u))}
+#ba .bx3-col .bx-doc{height:calc(44 * var(--u));font-size:calc(1.9 * var(--u));line-height:1.55;padding:calc(1.6 * var(--u)) calc(1.9 * var(--u))}
+#ba .bx3-grid{height:calc(44 * var(--u));grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);gap:calc(.7 * var(--u))}
+#ba .bx3-grid .bx-card{display:grid;grid-template-columns:1fr auto;column-gap:calc(1 * var(--u));align-content:start;padding:calc(.6 * var(--u)) calc(1.3 * var(--u))}
+#ba .bx-card h3{grid-column:1;align-self:center;font-size:calc(1.75 * var(--u));white-space:nowrap}
+#ba .bx3-grid .bx-pp{grid-column:2;grid-row:1;margin:0}
+#ba .bx3-grid .bx-ln{flex:none;width:calc(2 * var(--u))}
+#ba .bx3-grid .bx-pill{font-size:calc(2.2 * var(--u))}#ba .bx3-grid .bx-pill.old{font-size:calc(1.6 * var(--u))}
+#ba .bx3-grid .bx-card p{grid-column:1 / -1;margin-top:calc(.3 * var(--u));font-size:calc(1.35 * var(--u));line-height:1.35}
+#ba .bx3-grid .bx-card p.bx-src{margin-top:auto;padding-top:calc(.3 * var(--u));font-size:calc(1.1 * var(--u))}
+/* the poster slide uses the words slide's exact columns (same lefts, widths, top and 44-unit height), so
+   nothing shifts between the two; each poster fills its 30 x 44 frame, its blue side margins trimmed about
+   1.5 units each side (object-fit cover); the cards stack as rows in the middle as on the words slide */
+#ba-poster .bx3 > div{top:calc(4 * var(--u))}
+#ba-poster .bx-lab{font-size:calc(2.2 * var(--u))}
+#ba-poster .bx3-dot{width:calc(1.6 * var(--u));height:calc(1.6 * var(--u))}
+#ba-poster .bx3-mid::before{left:calc(-1 * var(--u));right:calc(-1 * var(--u))}
+#ba-poster .bx3p .bx3-col img{width:100%;height:calc(44 * var(--u));object-fit:cover;object-position:50% 50%}
+#ba-poster .bx3-grid{height:calc(44 * var(--u));grid-template-columns:1fr;grid-template-rows:repeat(4,1fr);gap:calc(.6 * var(--u))}
+#ba-poster .bx3-grid .bx-cb figure img{max-height:calc(2.9 * var(--u));object-fit:cover}
+#ba-poster .bx3-grid .bx-card{display:grid;grid-template-columns:1fr auto;column-gap:calc(1 * var(--u));align-content:start;padding:calc(.6 * var(--u)) calc(1.3 * var(--u))}
+#ba-poster .bx-card h3{grid-column:1;align-self:center;font-size:calc(1.75 * var(--u))}
+#ba-poster .bx3-grid .bx-pp{grid-column:2;grid-row:1;margin:0}
+#ba-poster .bx3-grid .bx-ln{flex:none;width:calc(2 * var(--u))}
+#ba-poster .bx3-grid .bx-pill{font-size:calc(2.2 * var(--u))}#ba-poster .bx3-grid .bx-pill.old{font-size:calc(1.6 * var(--u))}
+#ba-poster .bx3-grid .bx-card p{grid-column:1 / -1;margin-top:calc(.3 * var(--u));font-size:calc(1.35 * var(--u));line-height:1.35}
+#ba-poster .bx3-grid .bx-card p.bx-src{margin-top:auto;padding-top:calc(.3 * var(--u));font-size:calc(1.1 * var(--u))}
+/* the colour-blind card's tick spans to the card's right edge and takes the pills' size, so it lines up with
+   the yellow pills above it */
+#ba-poster .bx3-grid .bx-card h3:has(.bx-tick){grid-column:1 / -1}
+#ba-poster .bx-tick{width:calc(3.6 * var(--u));height:calc(3.4 * var(--u));font-size:calc(1.9 * var(--u))}
+#ba-poster .bx3-grid .bx-card h3:has(.bx-tick){line-height:1}
+#ba-poster .bx-cb{grid-column:1 / -1;grid-template-columns:repeat(4,1fr);margin:calc(.2 * var(--u)) 0 0}
+#ba-poster .bx-cb figcaption{font-size:calc(.85 * var(--u));white-space:nowrap}
+#ba-poster .bx > .credit{left:calc(1.56 * var(--u))}
 </style>
 </head>
 <body>
@@ -1301,7 +1422,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   <span data-pg="count" aria-live="off">1 / 1</span>
   <button type="button" data-pg="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
 </div>
-<button type="button" class="theme-btn" data-theme-btn title="Switch to light mode (T)" aria-label="Switch to light mode"></button>
+
 
 <main>
   <section class="scene title" id="top" data-chap="The Barrier Just Dropped" data-tone="warm">
@@ -1311,7 +1432,6 @@ mark.hang{margin-left:calc(-.4em - .08em)}
         <svg class="goinvo" viewBox="0 0 59 30" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GoInvo"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.20963 13.2915C4.90652 13.2915 3.79058 13.7184 2.8618 14.5721C1.93252 15.4263 1.46713 16.442 1.46713 17.6202C1.46713 19.3353 2.28572 20.4807 3.92039 21.0582V21.1055C2.35163 21.3832 1.56725 21.9294 1.56725 22.7425C1.56725 23.5411 2.35163 24.0904 3.92039 24.3913V24.4401C1.30663 25.0562 0 26.003 0 27.2851C0 28.0668 0.401497 28.7164 1.20701 29.2291C2.01101 29.7434 3.14355 30 4.60464 30C6.2217 30 7.47651 29.695 8.36906 29.0877C9.2606 28.4777 9.70688 27.7382 9.70688 26.8696C9.70688 26.1974 9.42311 25.626 8.85458 25.1555C8.28554 24.6865 7.24959 24.2755 5.74322 23.9258C4.23836 23.5771 3.3443 23.3411 3.06154 23.2187C2.77929 23.0968 2.63841 22.9014 2.63841 22.634C2.63841 22.3814 2.78533 22.1624 3.08066 21.9782C3.3755 21.7916 4.04516 21.6296 5.08765 21.4912C6.13114 21.3534 6.9613 21.1626 7.58116 20.9224C8.1995 20.6812 8.75798 20.2081 9.25658 19.5051C9.75518 18.8015 10.0052 18.0039 10.0052 17.11C10.0052 15.7745 9.44475 14.785 8.32529 14.1452V14.0979H11.5363L11.6731 13.2915H6.20963ZM8.00138 14.9756C8.59155 15.4981 8.88538 16.158 8.88538 16.9556C8.88538 17.8021 8.57847 18.6111 7.96364 19.3866C7.35083 20.1606 6.47891 20.5489 5.35039 20.5489C4.50513 20.5489 3.8244 20.264 3.3107 19.6952C2.7955 19.1264 2.5389 18.4491 2.5389 17.6663C2.5389 16.7268 2.88053 15.9116 3.56478 15.2245C4.24904 14.5375 5.04751 14.1924 5.96018 14.1924C6.73198 14.1924 7.41272 14.4536 8.00138 14.9756ZM7.55992 28.5723C6.84146 28.9868 5.80652 29.1946 4.45461 29.1946C3.40911 29.1946 2.58347 29.0362 1.97871 28.7204C1.37294 28.4041 1.06955 27.9808 1.06955 27.4522C1.06955 26.6689 1.58627 26.0405 2.61869 25.5663C3.65161 25.0921 4.46618 24.8555 5.0634 24.8555C5.27169 24.8555 5.91922 25.0273 7.00447 25.3734C8.09073 25.717 8.63562 26.241 8.63562 26.9441C8.63562 27.6147 8.27638 28.1578 7.55992 28.5723ZM13.559 15.1774C12.5502 16.4343 12.0466 18.0548 12.0466 20.0389C12.0466 21.4614 12.4179 22.583 13.1595 23.4007C13.9032 24.2195 14.8465 24.6289 15.9911 24.6289C17.4678 24.6289 18.7458 24.0055 19.8245 22.7594C20.9027 21.5149 21.4415 19.8805 21.4415 17.8568C21.4415 16.4579 21.0788 15.3476 20.3528 14.5247C19.6273 13.7034 18.6502 13.2915 17.423 13.2915C15.8543 13.2915 14.5668 13.92 13.559 15.1774ZM13.9687 22.6777C13.4837 22.0415 13.2406 21.1688 13.2406 20.0636C13.2406 18.4343 13.6185 17.0643 14.3727 15.9539C15.1284 14.8426 16.1286 14.2887 17.3728 14.2887C18.2428 14.2887 18.9401 14.6096 19.4623 15.2545C19.9861 15.8979 20.2467 16.7665 20.2467 17.8568C20.2467 19.4685 19.8251 20.8355 18.9839 21.9546C18.1416 23.0721 17.1268 23.6322 15.9409 23.6322C15.1113 23.6322 14.4537 23.3133 13.9687 22.6777ZM25.3426 10.9268C25.5877 11.1593 25.8805 11.275 26.2206 11.275C26.5607 11.275 26.853 11.1593 27.0976 10.9268C27.3426 10.6928 27.4648 10.4141 27.4648 10.0901C27.4648 9.75783 27.3426 9.47549 27.0976 9.24252C26.853 9.00853 26.5607 8.89178 26.2206 8.89178C25.8805 8.89178 25.5877 9.00853 25.3426 9.24252C25.0986 9.47549 24.9764 9.75783 24.9764 10.0901C24.9764 10.4141 25.0986 10.6928 25.3426 10.9268ZM24.7394 13.5043L23.1344 24.4148H25.2958L26.9013 13.5043H24.7394ZM29.7046 13.5043L28.1006 24.4148H30.2369L31.2839 17.4659C31.301 17.3455 31.5375 17.0688 31.9903 16.6348C32.4446 16.2002 32.8245 15.8767 33.1324 15.6638C33.4403 15.4499 33.7291 15.2915 33.9993 15.1896C34.27 15.0863 34.5135 15.0354 34.7298 15.0354C35.1037 15.0354 35.4156 15.186 35.6652 15.4843C35.9137 15.7857 36.04 16.2203 36.04 16.7901C36.04 16.9958 36.0184 17.2205 35.9781 17.4659L34.9321 24.4148H37.0694L38.1677 17.5368C38.2175 17.236 38.2417 16.9485 38.2417 16.6718C38.2417 15.6911 37.9972 14.8908 37.5086 14.2711C37.0181 13.6499 36.3298 13.3387 35.4413 13.3387C34.1311 13.3387 32.8658 14.0495 31.6472 15.4735L31.5883 15.435L31.8796 13.5043H29.7046ZM47.072 13.5043L43.4132 20.4306L41.853 13.5043H39.7112L42.3184 24.6287H43.3926L49.2687 13.5043H47.072ZM50.8477 15.094C49.7947 16.3745 49.2684 17.9678 49.2684 19.8732C49.2684 21.4068 49.6498 22.604 50.413 23.4665C51.1753 24.3279 52.2298 24.7584 53.5742 24.7584C55.0997 24.7584 56.3872 24.1186 57.4317 22.838C58.4777 21.5575 59 19.9205 59 17.9277C59 16.4887 58.6131 15.3377 57.8363 14.4712C57.0594 13.6062 56.03 13.1731 54.743 13.1731C53.2019 13.1731 51.9013 13.8129 50.8477 15.094ZM56.224 15.6167C56.5993 16.1618 56.7845 16.8926 56.7845 17.8096C56.7845 19.2958 56.463 20.5291 55.821 21.5103C55.177 22.4895 54.4052 22.9802 53.4991 22.9802C52.927 22.9802 52.448 22.7112 52.0621 22.1738C51.6762 21.6358 51.4825 20.94 51.4825 20.0863C51.4825 18.6561 51.804 17.4167 52.448 16.3685C53.0925 15.3215 53.8558 14.7979 54.7433 14.7979C55.3586 14.7979 55.8517 15.0715 56.224 15.6167Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.0326 11.1681C22.0693 10.9145 22.1548 10.6769 22.2635 10.4495L13.8156 9.59985C13.7644 9.82819 13.7108 10.0557 13.6784 10.2888C13.6364 10.5787 13.6161 10.866 13.6055 11.1502L22.0524 11.9998C22.0099 11.7322 21.9916 11.4589 22.0326 11.1681Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M22.6444 7.73795C22.9135 7.5668 23.2014 7.43411 23.5013 7.3293L17.6968 1.20001C17.4174 1.36155 17.1381 1.52357 16.8631 1.70626C16.5864 1.88895 16.3335 2.07981 16.0801 2.26924L21.884 8.39997C22.0987 8.16391 22.3408 7.93699 22.6444 7.73795Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M27.2567 7.00936C27.6495 7.04148 28.0166 7.11001 28.3673 7.19996L29.6852 0.18546C29.244 0.129351 28.799 0.0788098 28.3402 0.0454013C27.9889 0.0184175 27.6414 0.0102795 27.2938 0L25.9746 7.02777C26.3856 6.9918 26.8092 6.97509 27.2567 7.00936Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M30.4688 11.1808C30.6717 11.4363 30.8286 11.715 30.9521 11.9999L38.3436 6.3408C38.1395 6.0543 37.9318 5.77058 37.6997 5.49183C37.4983 5.24681 37.2853 5.02503 37.0723 4.79993L29.6855 10.4551C29.9675 10.6614 30.2335 10.8904 30.4688 11.1808Z" fill="currentColor"/></svg>
       </div>
       <div class="t-main">
-        <div class="label">Lightning talk · November 2026</div>
         <h1>The Barrier<br>Just <span class="dw"><mark>Dropped</mark></span></h1>
         <p class="blurb">From napkin sketch to clickable prototype.</p>
       </div>
@@ -1320,7 +1440,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
           <div class="s"><img src="img/sonia-seto.jpg" alt=""><b>Sonia Seto (1T6)</b><span>Biomedical communicator and UX designer</span></div>
           <div class="c"><img src="img/chloe-ma.jpg" alt=""><b>Chloe Ma (2T1)</b><span>Senior product designer, GoInvo</span></div>
         </div>
-        <p class="fine">Feedback: <a href="mailto:prism@goinvo.com">prism@goinvo.com</a> · Code licensed <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>, designs <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> · Background: generated with <a href="https://www.midjourney.com">Midjourney</a>, PRISM screen drawn in</p>
+        <p class="fine">Feedback: <a href="mailto:prism@goinvo.com">prism@goinvo.com</a> · Code licensed <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>, designs <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> · Background: generated with <a href="https://www.midjourney.com">Midjourney</a></p>
       </div>
     </div></div>
   </section>
@@ -1375,14 +1495,36 @@ mark.hang{margin-left:calc(-.4em - .08em)}
     </div></div>
   </section>
 
-  <section class="scene" id="why" data-chap="Why AI?" data-exit>
+  <section class="scene" id="why" data-chap="Why AI?"><!-- data-exit off: Scattered tools now sits between Why AI? and Meet PRISM, so the slices-to-slab clip has nowhere to land -->
     <video disablepictureinpicture class="clip-bg" src="media/bg/ai-slices.mp4?v=20261118y" poster="media/bg/ai-slices.jpg?v=20261118y" muted playsinline preload="auto" role="img" aria-label="A usual project laid out as glass slices: developers, a budget, two designers and six months of work. An AI slice drops in between the designers and the other slices slide into it, leaving one designer, AI and one month."></video>
     <div class="stage"><div class="inner">
       <p class="setup" data-in="0 0.25">Normally: developers, a budget, months of work.</p>
-      <p class="big-line" data-in="0.2 0.5">If you understand<br> the problem, you can<br> <mark>build the tool yourself.</mark></p>
+      <p class="big-line" data-in="0.2 0.5">If you understand<br> <span class="why-prob" data-morph="problem">the problem</span>, you can<br> <mark>build the tool yourself.</mark></p>
       <p class="credit">Animation: made in code with <a href="https://www.remotion.dev">Remotion</a> and <a href="https://threejs.org">three.js</a></p>
     </div></div>
-    <video disablepictureinpicture class="exit-clip" src="media/bg/ai-to-reveal-light.mp4?v=20261118z" muted playsinline preload="auto" aria-hidden="true"></video>
+    <video disablepictureinpicture class="exit-clip" src="media/bg/ai-to-reveal-light.mp4?v=20261118z" muted playsinline preload="none" aria-hidden="true"></video>
+  </section>
+
+  <!-- Scattered tools: the checks a writer juggles today, as glass pills bunched together on black. Hovering a pill
+       lights it in the deck's blue; the next step pulls them all into one yellow pill -->
+  <section class="scene" id="tools" data-chap="Scattered tools" data-beats="2">
+    <i class="tl-beat" data-in="0 1" hidden></i>
+    <div class="tl-field" role="img" aria-label="Eleven tools a writer checks a handout with today, and more: grade school reading level, Universal Patient Language, contrast checker, CDC Clear Communication Index, colour-blind simulator, Section 508 checklist, PEMAT, plain language checker, alt text guide, CDC Everyday Words and Grammarly. On the next step they merge into one: Check it in PRISM.">
+      <span class="tl-pw"><span class="tl-pill tl-more" aria-label="and more"><span>…</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Grade school reading level</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Universal Patient Language</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Contrast checker</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>CDC Clear Communication Index</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Colour-blind simulator</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Section 508 checklist</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>PEMAT</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Plain language checker</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Alt text guide</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>CDC Everyday Words</span></span></span>
+      <span class="tl-pw"><span class="tl-pill"><span>Grammarly</span></span></span>
+      <span class="tl-pw tl-prob-w" aria-hidden="true"><span class="tl-pill" data-morph="problem"><span>the problem</span></span></span>
+      <span class="tl-one" data-morph="logo">Check it in PRISM</span>
+    </div>
   </section>
 
   <section class="scene" id="reveal" data-chap="PRISM" data-beats="2" data-dur="300">
@@ -1390,7 +1532,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
     <!-- the Studio in light mode: the slab arrives on this clip's first frame (the empty Studio, Brief set), then the
          water-pill file is dragged in and dropped and the analysis fills in; it stops on the last frame.
          The dark version is media/bg/ai-to-reveal.mp4 + prism-reveal-2x.jpg. -->
-    <div class="rv-slab"><video class="rv-play" src="media/bg/prism-reveal-light.mp4?v=20261118e" poster="media/bg/prism-reveal-light-first.png?v=20261118e" muted playsinline preload="auto" aria-label="PRISM's Studio in light mode, the Brief set to Patients and Handout. A file, water-pill.html, is dragged in and dropped: the handout opens with diuretic, edema, 25% and other words flagged, Plain language suggests water pill and swelling, and the CDC Clear Communication Index scores it."></video><span class="rv-spotwrap" aria-hidden="true"><i class="rv-dim one"></i><i class="rv-ring a one"></i><i class="rv-dim two"></i><i class="rv-ring a two"></i><i class="rv-ring b two"></i></span><img class="rv-last" src="media/bg/prism-reveal-light-last.jpg?v=20261118e" alt="" aria-hidden="true"><img class="rv-brief" data-morph="brief" src="media/bg/rv-brief.png?v=20261118b" alt="" aria-hidden="true"></div>
+    <div class="rv-logo" aria-hidden="true"><span class="rv-word" data-morph="logo">PR<span class="pi">I</span>SM</span></div><div class="rv-slab"><video class="rv-play" src="media/bg/prism-reveal-light.mp4?v=20261118e" poster="media/bg/prism-reveal-light-first.png?v=20261118e" muted playsinline preload="auto" aria-label="PRISM's Studio in light mode, the Brief set to Patients and Handout. A file, water-pill.html, is dragged in and dropped: the handout opens with diuretic, edema, 25% and other words flagged, Plain language suggests water pill and swelling, and the CDC Clear Communication Index scores it."></video><span class="rv-spotwrap" aria-hidden="true"><i class="rv-dim one"></i><i class="rv-ring a one"></i><i class="rv-dim two"></i><i class="rv-ring a two"></i><i class="rv-ring b two"></i></span><img class="rv-last" src="media/bg/prism-reveal-light-last.jpg?v=20261118e" alt="" aria-hidden="true"><img class="rv-brief" data-morph="brief" src="media/bg/rv-brief.png?v=20261118b" alt="" aria-hidden="true"></div>
   </section>
 
   <section class="scene" id="brief" data-chap="Who it's for" data-dur="1400">
@@ -1413,27 +1555,6 @@ mark.hang{margin-left:calc(-.4em - .08em)}
     <div class="stage"><div class="inner">
       <p class="big-line">Health writing<br><mark>anyone can read.</mark></p>
     </div></div>
-  </section>
-
-  <!-- Scattered tools: the checks a writer juggles today, as glass pills bunched together on black. Hovering a pill
-       lights it in the deck's blue; the next step pulls them all into one yellow pill -->
-  <section class="scene" id="tools" data-chap="Scattered tools" data-beats="2">
-    <i class="tl-beat" data-in="0 1" hidden></i>
-    <div class="tl-field" role="img" aria-label="Eleven tools a writer checks a handout with today, and more: grade school reading level, Universal Patient Language, contrast checker, CDC Clear Communication Index, colour-blind simulator, Section 508 checklist, PEMAT, plain language checker, alt text guide, CDC Everyday Words and Grammarly. On the next step they merge into one: Check it in PRISM.">
-      <span class="tl-pw"><span class="tl-pill tl-more" aria-label="and more"><span>…</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Grade school reading level</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Universal Patient Language</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Contrast checker</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>CDC Clear Communication Index</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Colour-blind simulator</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Section 508 checklist</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>PEMAT</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Plain language checker</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Alt text guide</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>CDC Everyday Words</span></span></span>
-      <span class="tl-pw"><span class="tl-pill"><span>Grammarly</span></span></span>
-      <span class="tl-one">Check it in PRISM</span>
-    </div>
   </section>
 
   <section class="scene pin" id="pain" data-chap="Checking a handout today" data-beats="2" hidden>
@@ -1495,18 +1616,18 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   <section class="scene" id="ba" data-chap="Before and after">
     <h2 class="h2 visually-hidden">The water-pill handout, before and after PRISM</h2>
     <div class="bx bx3">
-      <div class="bx3-col" style="left:calc(5.00 * var(--u));width:calc(27.08 * var(--u))"><p class="bx-lab">Before</p><p class="bx-doc"><span>Your <span class="flag">physician</span> has prescribed furosemide, a <span class="flag">diuretic</span>, to reduce <span class="flag">edema</span> by increasing your <span class="flag">urinary output</span>. <span class="long">Administer one tablet orally each morning with food, monitor your weight daily, and contact the clinic immediately if you experience a weight gain exceeding 2 pounds within a 24-hour period, as this may indicate fluid retention.</span> Approximately <span class="flag">25%</span> of patients experience <span class="flag">orthostatic hypotension</span> during the initial weeks of treatment.</span></p></div>
-      <div class="bx3-mid" style="left:calc(34.17 * var(--u));width:calc(31.67 * var(--u))"><p class="bx-lab bx3-think"><span class="bx3-dot"></span>PRISM diagnoses</p><div class="bx3-grid"><div class="bx-card"><h3>Medical words</h3><div class="bx-pp"><span class="bx-pill old">8</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>diuretic → water pill<br>edema → swelling<br><span>…and 6 more.</span></p><p class="bx-src">Based on: PEMAT-P · CDC Everyday Words</p></div><div class="bx-card"><h3>Longest sentence</h3><div class="bx-pp"><span class="bx-pill old">36</span><span class="bx-ln"></span><span class="bx-pill new">15</span></div><p>3 sentences became 8.<br><span>Plain language: under 20.</span></p><p class="bx-src">Based on: Federal Plain Language Guidelines</p></div><div class="bx-card"><h3>Risk numbers</h3><div class="bx-pp"><span class="bx-pill old">25%</span><span class="bx-ln"></span><span class="bx-pill new">1 in 4</span></div><p>A bare percentage became a count people can picture.</p><p class="bx-src">Based on: Gigerenzer &amp; Hoffrage, natural frequencies</p></div><div class="bx-card"><h3>Reading grade</h3><div class="bx-pp"><span class="bx-pill old">15.9</span><span class="bx-ln"></span><span class="bx-pill new">2.7</span></div><p>University level → grade 3.<br><span>Handouts aim for grade 6 or lower.</span></p><p class="bx-src">Based on: Flesch-Kincaid grade level</p></div></div></div>
-      <div class="bx3-col" style="left:calc(67.92 * var(--u));width:calc(27.08 * var(--u))"><p class="bx-lab">After PRISM</p><p class="bx-doc"><span>Your <span class="app">doctor gave you</span> furosemide, a <span class="app">water pill</span>. It <span class="app">brings down swelling</span> by <span class="app">making you pee more</span>. Take one pill <span class="app">by mouth</span> each morning with food. <span class="app">Check</span> your weight every day. Call the clinic <span class="app">right away</span> if you gain more than 2 pounds in one day. This may mean your body is holding fluid. <span class="app">About 1 in 4 people</span> <span class="app">feel dizzy when they stand up</span> in the first weeks. <span class="app">Stand up slowly.</span></span></p></div>
+      <div class="bx3-col" style="left:calc(1.56 * var(--u));width:calc(30 * var(--u))"><p class="bx-lab">Before</p><p class="bx-doc"><span>Your <span class="flag">physician</span> has prescribed furosemide, a <span class="flag">diuretic</span>, to reduce <span class="flag">edema</span> by increasing your <span class="flag">urinary output</span>. <span class="long">Administer one tablet orally each morning with food, monitor your weight daily, and contact the clinic immediately if you experience a weight gain exceeding 2 pounds within a 24-hour period, as this may indicate fluid retention.</span> Approximately <span class="flag">25%</span> of patients experience <span class="flag">orthostatic hypotension</span> during the initial weeks of treatment.</span></p></div>
+      <div class="bx3-mid" style="left:calc(33.16 * var(--u));width:calc(30.2 * var(--u))"><p class="bx-lab bx3-think"><span class="bx3-dot"></span>PRISM diagnoses</p><div class="bx3-grid"><div class="bx-card"><h3>Medical words</h3><div class="bx-pp"><span class="bx-pill old">8</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>diuretic → water pill, edema → swelling<br><span>…and 6 more.</span></p><p class="bx-src">Based on: PEMAT-P · CDC Everyday Words</p></div><div class="bx-card"><h3>Longest sentence</h3><div class="bx-pp"><span class="bx-pill old">36</span><span class="bx-ln"></span><span class="bx-pill new">15</span></div><p>3 sentences became 8.<br><span>Plain language: under 20.</span></p><p class="bx-src">Based on: Federal Plain Language Guidelines</p></div><div class="bx-card"><h3>Risk numbers</h3><div class="bx-pp"><span class="bx-pill old">25%</span><span class="bx-ln"></span><span class="bx-pill new">1 in 4</span></div><p>A bare percentage became a count people can picture.</p><p class="bx-src">Based on: Gigerenzer &amp; Hoffrage, natural frequencies</p></div><div class="bx-card"><h3>Reading grade</h3><div class="bx-pp"><span class="bx-pill old">15.9</span><span class="bx-ln"></span><span class="bx-pill new">2.7</span></div><p>University level → grade 3.<br><span>Handouts aim for grade 6 or lower.</span></p><p class="bx-src">Based on: Flesch-Kincaid grade level</p></div></div></div>
+      <div class="bx3-col" style="left:calc(65 * var(--u));width:calc(30 * var(--u))"><p class="bx-lab">After PRISM</p><p class="bx-doc"><span>Your <span class="app">doctor gave you</span> furosemide, a <span class="app">water pill</span>. It <span class="app">brings down swelling</span> by <span class="app">making you pee more</span>. Take one pill <span class="app">by mouth</span> each morning with food. <span class="app">Check</span> your weight every day. Call the clinic <span class="app">right away</span> if you gain more than 2 pounds in one day. This may mean your body is holding fluid. <span class="app">About 1 in 4 people</span> <span class="app">feel dizzy when they stand up</span> in the first weeks. <span class="app">Stand up slowly.</span></span></p></div>
     </div>
   </section>
 
   <section class="scene" id="ba-poster" data-chap="Before and after">
     <h2 class="h2 visually-hidden">Sonia's COVID poster, before and after PRISM</h2>
     <div class="bx bx3 bx3p">
-      <div class="bx3-col" style="left:calc(5.00 * var(--u))"><p class="bx-lab">Before</p><img src="img/ba-poster-before.jpg?v=20261118a" alt="Sonia's COVID welcome poster for UHN as made: white text on a mid blue, small captions, and a light blue band at the foot with white text, Ask us if you need help."></div>
-      <div class="bx3-mid" style="left:calc(30.57 * var(--u));width:calc(38.85 * var(--u))"><p class="bx-lab bx3-think"><span class="bx3-dot"></span>PRISM diagnoses</p><div class="bx3-grid"><div class="bx-card"><h3>Lines too faint to read easily</h3><div class="bx-pp"><span class="bx-pill old">5</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>The help band, 2 captions and “metres” now pass AAA.</p><p class="bx-src">Based on: WCAG 1.4.6</p></div><div class="bx-card"><h3>Jargon</h3><div class="bx-pp"><span class="bx-pill old">1</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>“self-screening poster” → “poster at the door”.</p><p class="bx-src">Based on: CDC Everyday Words</p></div><div class="bx-card"><h3>Faintest text</h3><div class="bx-pp"><span class="bx-pill old">2.0 : 1</span><span class="bx-ln"></span><span class="bx-pill new">7.5 : 1</span></div><p>“Ask us if you need help” is 3.7 times as easy to see.</p><p class="bx-src">Based on: WCAG 1.4.3</p></div><div class="bx-card"><h3>Colour-blind check <span class="bx-tick" aria-label="passed">✓</span></h3><div class="bx-cb"><figure><img src="img/ba-cb-typ.jpg?v=20261118a" alt=""><figcaption>Typical</figcaption></figure><figure><img src="img/ba-cb-deu.jpg?v=20261118a" alt=""><figcaption>Red-green</figcaption></figure><figure><img src="img/ba-cb-pro.jpg?v=20261118a" alt=""><figcaption>Red-weak</figcaption></figure><figure><img src="img/ba-cb-tri.jpg?v=20261118a" alt=""><figcaption>Blue-yellow</figcaption></figure></div><p class="bx-src">Based on: WCAG 1.4.1</p></div></div></div>
-      <div class="bx3-col" style="left:calc(71.51 * var(--u))"><p class="bx-lab">After PRISM <span>· AAA</span></p><img src="img/ba-poster-after.jpg?v=20261118b" alt="The same poster after PRISM: a deeper blue behind the white text, navy text in the light band, and the caption on the poster at the door in place of on the self-screening poster. Layout and art unchanged."></div>
+      <div class="bx3-col" style="left:calc(1.56 * var(--u));width:calc(30 * var(--u))"><p class="bx-lab">Before</p><img src="img/ba-poster-before.jpg?v=20261118a" alt="Sonia's COVID welcome poster for UHN as made: white text on a mid blue, small captions, and a light blue band at the foot with white text, Ask us if you need help."></div>
+      <div class="bx3-mid" style="left:calc(33.16 * var(--u));width:calc(30.2 * var(--u))"><p class="bx-lab bx3-think"><span class="bx3-dot"></span>PRISM diagnoses</p><div class="bx3-grid"><div class="bx-card"><h3>Lines too faint to read easily</h3><div class="bx-pp"><span class="bx-pill old">5</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>The help band, 2 captions and “metres” now pass AAA.</p><p class="bx-src">Based on: WCAG 1.4.6</p></div><div class="bx-card"><h3>Jargon</h3><div class="bx-pp"><span class="bx-pill old">1</span><span class="bx-ln"></span><span class="bx-pill new">0</span></div><p>“self-screening poster” → “poster at the door”.</p><p class="bx-src">Based on: CDC Everyday Words</p></div><div class="bx-card"><h3>Faintest text</h3><div class="bx-pp"><span class="bx-pill old">2.0 : 1</span><span class="bx-ln"></span><span class="bx-pill new">7.5 : 1</span></div><p>“Ask us if you need help” is 3.7 times as easy to see.</p><p class="bx-src">Based on: WCAG 1.4.3</p></div><div class="bx-card"><h3>Colour-blind check <span class="bx-tick" aria-label="passed">✓</span></h3><div class="bx-cb"><figure><img src="img/ba-cb-typ.jpg?v=20261118a" alt=""><figcaption>Typical</figcaption></figure><figure><img src="img/ba-cb-deu.jpg?v=20261118a" alt=""><figcaption>Red-green</figcaption></figure><figure><img src="img/ba-cb-pro.jpg?v=20261118a" alt=""><figcaption>Red-weak</figcaption></figure><figure><img src="img/ba-cb-tri.jpg?v=20261118a" alt=""><figcaption>Blue-yellow</figcaption></figure></div><p class="bx-src">Based on: WCAG 1.4.1</p></div></div></div>
+      <div class="bx3-col" style="left:calc(65 * var(--u));width:calc(30 * var(--u))"><p class="bx-lab">After PRISM <span>· AAA</span></p><img src="img/ba-poster-after.jpg?v=20261118b" alt="The same poster after PRISM: a deeper blue behind the white text, navy text in the light band, and the caption on the poster at the door in place of on the self-screening poster. Layout and art unchanged."></div>
       <p class="credit">Poster: COVID welcome poster for UHN (June 2022), designed by Sonia Seto</p>
     </div>
   </section>
@@ -1514,16 +1635,17 @@ mark.hang{margin-left:calc(-.4em - .08em)}
   <section class="scene pin" id="review" data-chap="Verification">
     <div class="rv-blue drive" data-in="0.12 0.45" aria-hidden="true"></div><div class="fw-bg drive" data-in="0.12 0.45" data-cut aria-hidden="true"></div><div class="fw-wash rv-wash drive" data-in="0.12 0.45" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0 0.15">Review <mark>builds trust</mark></h2>
-      <ol class="wall fade" data-in="0.12 0.45" aria-label="Every framework in the review, grouped by decision">
+      <h2 class="h2" data-in="0 0.15">Any tool is only useful if you <mark>trust it</mark></h2>
+      <!-- the decision lists are hidden (Nov 19): the title and the card wall carry the slide -->
+      <ol class="wall fade" data-in="0.12 0.45" aria-label="Every framework in the review, grouped by decision" hidden>
         <li><h3><b>Keep <span>· 7</span></b></h3><ul><li>CCI</li><li>PEMAT-P</li><li>SAM</li><li>CDC Inclusive</li><li>UPL</li><li>EPPM</li><li>Readability</li></ul></li>
         <li><h3><b>With caveats <span>· 8</span></b></h3><ul><li>IPDAS</li><li>PEMAT-A/V</li><li>CDC IDD/ELL</li><li>DISCERN</li><li>COM-B</li><li>Ottawa DSF</li><li>Teach-Back</li><li>PAM</li></ul></li>
         <li><h3><b>Brought back <span>· 4</span></b></h3><ul><li>HBM</li><li>TTM</li><li>NCI Pink Book</li><li>EBCD</li></ul></li>
         <li><h3><b>If in scope <span>· 4</span></b></h3><ul><li>SHARE</li><li>AHRQ Toolkit</li><li>Picker</li><li>WHO ERC</li></ul></li>
         <li class="cut"><h3><b>Cut <span>· 9</span></b></h3><ul><li>EQIP</li><li>Plain Language</li><li>PCORI</li><li>OPTION</li><li>CAHPS</li><li>NPS</li><li>Beryl PX</li><li>Planetree</li><li>SEIPS</li></ul></li>
       </ol>
-      <p class="credit fade" data-in="0.12 0.45">Background: the 23 frameworks the review vetted through, and 9 are cut</p>
     </div></div>
+    <p class="credit bl fade" data-in="0.12 0.45">Background: the 23 frameworks the review vetted through, and 9 are cut</p>
   </section>
 
 
@@ -1534,7 +1656,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
       </div>
     </div>
     <div class="stage"><div class="inner">
-      <h2 class="h2" data-in="0.08 0.24">Certify the work, <mark>not the AI.</mark></h2>
+      <h2 class="h2" data-in="0 0.24" data-morph="cert-title">Certify the work, <mark>not the AI.</mark></h2>
       <p class="lead" data-in="0.08 0.24">A person signs off each screen as <mark>safe for patients</mark>, against:</p>
       <p class="cert-std" data-in="0.08 0.24">Safety · Data integrity · Regulatory fit · Usability · Language · Bias · Flow</p>
       <p class="credit">Illustration by Chloe Ma, animated with <a href="https://gemini.google.com">Veo (Google Gemini)</a>, from <a href="https://www.goinvo.com/vision/ai-design-certification">Human-Assisted AI Design Certification for Healthcare</a></p>
@@ -1675,6 +1797,7 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 
   <section class="scene" id="three" data-chap="Take-home" data-zoom>
     <svg class="three-cover" aria-hidden="true"><defs><mask id="three-hole" maskUnits="userSpaceOnUse"><rect class="three-m" fill="#fff"/><text class="three-t" fill="#000" text-anchor="middle"><tspan>From napkin</tspan><tspan>to prototype</tspan></text></mask></defs><rect class="dark three-m" mask="url(#three-hole)"/></svg>
+    <div class="three-ph" data-morph="cert-title" aria-hidden="true"></div>
     <div class="stage"><div class="inner">
       <h2 class="h2 visually-hidden">From napkin to prototype</h2>
     </div></div>
@@ -1725,8 +1848,10 @@ mark.hang{margin-left:calc(-.4em - .08em)}
         <a class="big" href="https://prismcheck.org">prismcheck.org</a>
         <b>Feedback</b>
         <a class="big" href="mailto:prism@goinvo.com">prism@goinvo.com</a>
+        <img class="visit-qr" src="img/qr-prismcheck.svg" alt="QR code for prismcheck.org">
       </div>
-      <p class="fine">Code on <a href="https://github.com/chloemxy/communication-framework">GitHub</a>, licensed <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Designs licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Drawing the Line · UofT Biomedical Communications · November 2026</p>
+      <!-- Nov 20: the licence and event line is on the cover already; the last slide credits who did what -->
+      <p class="fine">Sonia Seto — content and patient-education expertise · Chloe Ma — design of PRISM and of this presentation</p>
     </div></div>
   </section>
 
@@ -2155,6 +2280,9 @@ window.deckStart = function(){
     [].forEach.call(el.querySelectorAll('.three-m'), function(r){ r.setAttribute('width', W); r.setAttribute('height', H); });
     t.setAttribute('font-size', fs); t.removeAttribute('transform');
     [].forEach.call(t.querySelectorAll('tspan'), function(sp, k){ sp.setAttribute('x', x); sp.setAttribute('y', y + k * lh); });
+    // the box the cut-out title fills, for Certify's title to glide into (data-morph="cert-title")
+    var ph = el.querySelector('.three-ph'), pw = wide * fs / 100;
+    if (ph) { ph.style.left = (x - pw / 2) + 'px'; ph.style.top = (y - A) + 'px'; ph.style.width = pw + 'px'; ph.style.height = (lh + A + D) + 'px'; }
     var q = 4, c = document.createElement('canvas'), w = Math.ceil(W / q), h = Math.ceil(H / q), g = c.getContext('2d');
     c.width = w; c.height = h;
     g.font = '800 ' + (fs / q) + 'px Newsreader, Georgia, serif'; g.textAlign = 'center'; g.textBaseline = 'alphabetic';
@@ -2465,7 +2593,23 @@ window.deckStart = function(){
     else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || (k === ' ' && e.shiftKey)) { e.preventDefault(); prev(); }
     else if (k === 'Home') { e.preventDefault(); show(0, -1); }
     else if (k === 'End') { e.preventDefault(); show(slides.length - 1, 1); }
-    else if ((k === 't' || k === 'T') && !(e.target.matches && e.target.matches('input,textarea,[contenteditable]'))) { e.preventDefault(); toggleTheme(); }
+  });
+  // a mouse click anywhere on a slide moves on one step, as in PowerPoint (Nov 20). Not on anything that is
+  // itself clickable or editable (links, buttons, the chapter rail, cards with their own click, the
+  // spreadsheet), not after a drag or a text selection, not in the phone walkthrough, and only with a mouse
+  var clickFrom = null;
+  addEventListener('pointerdown', function(e){ clickFrom = e.pointerType === 'mouse' && e.button === 0 ? { x:e.clientX, y:e.clientY } : null; }, true);
+  addEventListener('click', function(e){
+    var from = clickFrom; clickFrom = null;
+    if (!from || e.defaultPrevented || e.button !== 0 || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (Math.abs(e.clientX - from.x) > 6 || Math.abs(e.clientY - from.y) > 6) return;
+    var t = e.target;
+    if (!t.closest || t.closest('a,button,input,textarea,select,label,summary,video[controls],iframe,[contenteditable]:not([contenteditable="false"]),[tabindex],[role="button"],[data-scroll],nav,.rail')) return;
+    // mid slide change (a view transition) the page itself is the target; that click still counts
+    if (!t.closest('section.scene') && t !== document.documentElement && t !== document.body) return;
+    var sel = window.getSelection && String(window.getSelection()); if (sel) return;
+    var s = slides[cur]; if (!s || s.walk) return;
+    next();
   });
   // the walkthrough's chapter buttons move the page; keep the beat in step with where they land
   addEventListener('scroll', function(){
@@ -3015,17 +3159,63 @@ window.deckStart = function(){
   function sync(){
     var on = sec.classList.contains('on'), two = on && sec.getAttribute('data-beat') === '1';
     // classList.add always writes the attribute (a fresh mutation), so only when it is missing
+    // a click to the second spotlight before the clip has reached the drop (during the logo opening, say)
+    // skips the opening and jumps the clip to just after the drop, so the rings land on the real panels
+    if (two && !sec.classList.contains('rv-done') && v.currentTime < 2.15) {
+      stopOpening(); sec.classList.add('rv-opened'); try { v.currentTime = 2.15; } catch (e) {} play(); }
     if (two && !sec.classList.contains('rv-spot-on')) sec.classList.add('rv-spot-on');
     if (sec.classList.contains('rv-spot-2') !== two) sec.classList.toggle('rv-spot-2', two);
     if (on === was) return; was = on;
     if (on) {
-      if (reduce || sec.dataset.dir === 'fwd') { sec.classList.add('rv-spot-on'); return toEnd(); }
+      if (reduce || sec.dataset.dir === 'fwd') { sec.classList.add('rv-spot-on', 'rv-opened'); return toEnd(); }
       sec.classList.remove('rv-done');
-      try { v.currentTime = 0; } catch (e) {} var p = v.play(); if (p) p.catch(function(){}); }
+      try { v.currentTime = 0; } catch (e) {}
+      opening(); }
     // once left (either way) it waits on its first frame, which is where Why AI?'s exit clip lands, so the
     // next arrival never flashes the finished handout before restarting; coming back from the Brief slide
     // is covered by the still of the last frame (.rv-last) instead
-    else { v.pause(); try { v.currentTime = 0; } catch (e) {} sec.classList.remove('rv-done', 'rv-spot-on', 'rv-spot-2'); sec.removeAttribute('data-beat'); }
+    else { stopOpening(); v.pause(); try { v.currentTime = 0; } catch (e) {} sec.classList.remove('rv-done', 'rv-spot-on', 'rv-spot-2'); sec.removeAttribute('data-beat'); }
+  }
+  // the logo opening, all on the one click that arrives here: scan large in the middle, then glide by itself onto
+  // the Studio's logo (top left of the recording: the word PRISM spans 1.4% to 5.5% across and sits centred 3.4%
+  // down), then the clip plays
+  var word = sec.querySelector('.rv-word'), slab = sec.querySelector('.rv-slab'), runs = 0, timers = [];
+  function play(){ var p = v.play(); if (p) p.catch(function(){}); }
+  function stopOpening(){
+    runs++; timers.forEach(clearTimeout); timers = [];
+    if (word.getAnimations) word.getAnimations({ subtree:true }).forEach(function(a){ if (a.id === 'rv-glide') a.cancel(); });
+    sec.classList.remove('rv-intro', 'rv-land', 'rv-opened');
+  }
+  function opening(){
+    stopOpening(); var my = runs;
+    if (!word.animate || sec.dataset.dir !== 'back') { sec.classList.add('rv-opened'); return play(); }
+    sec.classList.add('rv-intro');
+    timers.push(setTimeout(function(){
+      if (my !== runs) return;
+      // land the letters on the Studio's own: in the 2880x1620 recording the word's ink runs 43 to 156 across and
+      // its capitals 41 to 65 down. Our ink is measured (canvas text metrics on the word's own font), scaled so
+      // its width matches, and moved so its left edge and cap line sit on the Studio's. The letters ink to the
+      // Studio's near-black and the I block's slant squares off on the way
+      var w = word.getBoundingClientRect(), s = slab.getBoundingClientRect(), pi = word.querySelector('.pi');
+      var cs = getComputedStyle(word), fs = parseFloat(cs.fontSize), ctx = document.createElement('canvas').getContext('2d');
+      ctx.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
+      var tn = [], walk = document.createTreeWalker(word, NodeFilter.SHOW_TEXT); while (walk.nextNode()) if (walk.currentNode.nodeValue.trim()) tn.push(walk.currentNode);
+      function box(n){ var r = document.createRange(); r.selectNodeContents(n); return r.getBoundingClientRect(); }
+      var f = tn[0], l = tn[tn.length - 1], mf = ctx.measureText(f.nodeValue), ml = ctx.measureText(l.nodeValue), bf = box(f), bl = box(l);
+      var inkL = bf.left - mf.actualBoundingBoxLeft, inkR = bl.left + ml.actualBoundingBoxRight;
+      var base = bf.top + (bf.height - (mf.fontBoundingBoxAscent + mf.fontBoundingBoxDescent)) / 2 + mf.fontBoundingBoxAscent;
+      var capT = base - ctx.measureText('P').actualBoundingBoxAscent;
+      var k = (s.width * 113 / 2880) / (inkR - inkL);
+      var tx = s.left + s.width * 43 / 2880, ty = s.top + s.height * 41 / 1620;
+      var dx = tx - (w.left + (inkL - w.left) * k), dy = ty - (w.top + (capT - w.top) * k);
+      sec.classList.add('rv-land', 'rv-opened'); sec.classList.remove('rv-intro');
+      word.style.transformOrigin = '0 0';
+      var opts = { duration:760, easing:'cubic-bezier(.65,0,.25,1)', fill:'forwards' };
+      var a = word.animate([{ transform:'none', color:'#fff' }, { transform:'translate(' + dx + 'px,' + dy + 'px) scale(' + k + ')', color:'#16181D' }], opts);
+      try { pi.animate([{ clipPath:'polygon(18% 0,100% 0,82% 100%,0 100%)' }, { clipPath:'polygon(0 0,100% 0,100% 100%,0 100%)' }], Object.assign({ pseudoElement:'::before', id:'rv-glide' }, opts)); } catch (e) {}
+      a.id = 'rv-glide';
+      a.finished.then(function(){ if (my !== runs) return; sec.classList.remove('rv-land'); a.cancel(); if (pi.getAnimations) pi.getAnimations({ subtree:true }).forEach(function(x){ if (x.id === 'rv-glide') x.cancel(); }); play(); }, function(){});
+    }, 1400));
   }
   new MutationObserver(sync).observe(sec, { attributes:true, attributeFilter:['class', 'data-beat'] });
   sync();
@@ -3041,10 +3231,10 @@ window.deckStart = function(){
 (function(){
   var sec = document.getElementById('tools'); if (!sec) return;
   var ws = [].slice.call(sec.querySelectorAll('.tl-pw')), one = sec.querySelector('.tl-one');
-  var ROWS = [[0], [1, 2], [3, 4], [5, 6, 7], [8, 9], [10, 11]], SHIFT = [1, -1.5, 2, -.5, 1.5, -1];
-  var TILT = [0, -.03, .04, -.02, .03, -.04, .02, -.03, .03, -.02, .04, -.03];
-  var JX = [0, -.3, .4, .2, -.4, .3, -.2, .5, -.3, .4, -.5, .2], JY = [0, .15, -.1, .2, -.15, .1, -.2, .15, -.1, .2, -.15, .1];
-  var Z = [12, 3, 8, 5, 10, 2, 9, 6, 4, 11, 7, 1];
+  var ROWS = [[0], [1, 2], [3, 12, 4], [5, 6, 7], [8, 9], [10, 11]], SHIFT = [1, -1.5, 2, -.5, 1.5, -1];
+  var TILT = [0, -.03, .04, -.02, .03, -.04, .02, -.03, .03, -.02, .04, -.03, .02];
+  var JX = [0, -.3, .4, .2, -.4, .3, -.2, .5, -.3, .4, -.5, .2, .1], JY = [0, .15, -.1, .2, -.15, .1, -.2, .15, -.1, .2, -.15, .1, -.1];
+  var Z = [13, 3, 8, 5, 10, 2, 9, 6, 4, 11, 7, 1, 12];
   var STAG = .09, DUR = 1.2, TOT = (ws.length - 1) * STAG + DUR;   // the merge: 2.2 s
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var P = ws.map(function(w, i){ w.style.zIndex = Z[i]; return { w:w, e:w.firstElementChild, on:false, x:0, y:0, vx:0, vy:0, a:TILT[i], k:0 }; });
@@ -3087,7 +3277,9 @@ window.deckStart = function(){
     var o = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     for (var i = o.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = o[i]; o[i] = o[j]; o[j] = t; }
     o.push(0);
-    var at = 250;
+    // "the problem" comes first, at once (it arrives by the morph from Why AI?); the tools follow after a beat
+    show(12);
+    var at = sec.dataset.dir === 'back' ? 900 : 450;
     o.forEach(function(i){ timers.push(setTimeout(function(){ show(i); }, at)); at += 110 + Math.random() * Math.random() * 700; });
   }
   /* t: seconds into the merge (dir 1) or the reverse (dir -1); each pill follows one ease-in-out curve */
@@ -3131,7 +3323,12 @@ window.deckStart = function(){
   function wake(){ if (!raf) raf = requestAnimationFrame(tick); }
   sec.addEventListener('pointermove', function(e){ var r = sec.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
   sec.addEventListener('pointerleave', function(){ mouse.x = mouse.y = -1e4; });
-  new MutationObserver(wake).observe(sec, { attributes:true, attributeFilter:['class', 'data-beat'] });
+  new MutationObserver(function(){
+    if (state === 'off' && sec.classList.contains('on') && sec.getAttribute('data-beat') !== '1') {
+      measure(); var q = P[12]; P.forEach(function(p){ p.on = false; }); q.on = true; homes(); q.x = q.hx; q.y = q.hy; q.vx = q.vy = 0; place(q);
+    }
+    wake();
+  }).observe(sec, { attributes:true, attributeFilter:['class', 'data-beat'] });
   addEventListener('resize', function(){ if (state === 'pile') { measure(); homes(); } });
   button(0); wake();
 })();

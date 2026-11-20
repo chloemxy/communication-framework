@@ -4,6 +4,165 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-20 — Review slide: undimmed cards, title on a band at mid height
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Review slide:** the black veil is gone, so the framework cards run at full brightness. The title keeps its
+  size and sits at the slide's mid height on one hard band, edge to edge, so it passes AAA over the cards
+  (white on the band is about 18:1; the "trust it" highlight about 10:1). The slide's background is now the
+  same dark grey as the other dark slides (`#121417`) in place of black, and the band matches it. The credit
+  at the bottom left gets a small backing of the same grey. The title is centred across the whole slide, so on
+  narrower screens it overflows evenly on both sides and stays clear of the chapter dots. In light mode the slide
+  stays dark too (like One list): white title, the same dim-yellow highlight and light credit ink, where before
+  the title went dark-on-dark on the band.
+
+## 2026-11-20 — Before and after slides, bigger for the back row
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Words slide (water-pill handout):** the three columns now run to the deck's own side margins (20px left,
+  room for the chapter dots right) and everything is about 1.45x bigger: handout text 1.3 → 1.9 units, labels,
+  pills and card text in step. The four "PRISM diagnoses" cards stack as full-width rows (title and pills on one
+  line) instead of a 2 x 2 grid. The Medical words card reads "diuretic → water pill, edema → swelling" on one
+  line. The columns stop above the slide counter.
+- **Poster slide:** uses the words slide's exact three columns (same lefts, widths, top, 44-unit height) and
+  the same card sizes, so nothing shifts when you flip between the two. Each poster fills its 30 x 44 frame
+  (object-fit cover), which trims about 1.5 units of plain blue margin off each side. The four colour-blind
+  views sit in one row, and the credit lines up with the left margin. The colour-blind card's tick now ends at
+  the same right edge as the yellow pills above it and is the same height, and its four views are a touch
+  shorter so all four cards still fit.
+- **Meet PRISM fits the screen:** cropping the Studio to fill the screen cut off its top bar and panel edges on
+  screens wider than 16:9. Now the whole Studio always shows (contain). Any margin around it is filled with
+  the Studio's own colours: page grey, with the white top bar carried out to the screen edges. The margins
+  fade in with the Studio and dim with the spotlight, so they read as more Studio, not bars. On a 16:9 screen
+  it still fills edge to edge.
+- **Meet PRISM spotlight:** a click to the second spotlight (Plain language and Readability) before the clip
+  had reached the file drop, for example during the logo opening, put the rings over the empty Studio. Now
+  that click skips the rest of the opening and jumps the clip to just after the drop (2.15 s), so the rings
+  land on the real panels.
+
+## 2026-11-20 — Cover: bigger roles, label and drawn-in clause removed
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Roles:** "Biomedical communicator and UX designer" and "Senior product designer, GoInvo" are 30px on a
+  1080p screen (were 22px, too small for the back row). The gap between the two speakers is a little tighter
+  so Chloe's role stays clear of the coffee cup.
+- **Removed:** the "Lightning talk · November 2026" label above the title, and the unfinished ", PRISM screen
+  drawn in" at the end of the footer line.
+
+## 2026-11-20 — Your turn: credits line in place of the footer
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Your turn (last slide):** the footer now says who did what: "Sonia Seto — content and patient-education
+  expertise · Chloe Ma — design of PRISM and of this presentation". The GitHub, licence and event line it
+  replaces is already on the cover.
+- **QR code:** the Try PRISM card now has a QR code for https://prismcheck.org on its right, as tall as the
+  card's content, on white with its own four-module quiet zone so phones at the back can read it. It is hidden
+  on phone-width screens. The file is `presentation/img/qr-prismcheck.svg` (version 2, error correction M),
+  made with a small encoder since no QR library was available, and scanned and confirmed on a phone.
+
+## 2026-11-20 — Title morphs: Verification → Certify → From napkin to prototype
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Verification → Certify:** the title now glides from the band in the middle down to Certify's title, and
+  back going the other way. Certify's title now shows from the slide's first moment (it faded in a beat later,
+  which is why the deck didn't morph it). The Verification band is its own layer behind the title, so only
+  the words travel.
+- **Certify → From napkin to prototype:** Certify's title glides and grows into the big cut-out title at the
+  foot of the next slide, fading as the cut-out letters appear, and comes back out of it going back. An empty
+  box laid over the cut-out letters (`.three-ph`, placed when the slide lays out its title) is what it morphs
+  into.
+
+## 2026-11-20 — Meet PRISM: the logo visibly lands on the Studio's logo
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Logo morph:** the big PRISM logo was hidden the moment its glide began, so it never seemed to reach the
+  Studio. Now it stays visible all the way and lands exactly on the Studio's own logo in the top-left corner:
+  its letters are measured and matched to the recording's (size, left edge and cap line). On the way the
+  letters ink from white to the app's near-black and the yellow I block squares off, so the hand-off to the
+  clip's first frame, which holds that same logo, is seamless. Still one click from Scattered tools.
+
+## 2026-11-20 — Dark mode only; one footer style; cover line removed
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Dark mode only:** the light/dark switch (the sun/moon under the chapter dots, and the T key) is gone. The
+  deck always shows in dark mode, and a light choice remembered in the browser from before is cleared on load.
+  The light-mode styles are still in the file but nothing turns them on.
+- **Footer lines:** every slide's footer line now has the same treatment as Your turn: white at 80%,
+  underlined links, no glow. The cover, Certify, and the appendix slides had picked up their slide's text
+  shadow, and Certify's footer was pure white. The Verification credit is the one exception: no black backing
+  any more, but a drop shadow, since it crosses the white framework cards.
+- **Cover:** the thin line above Sonia's and Chloe's names is removed.
+
+## 2026-11-20 — Click to advance, as in PowerPoint
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Whole deck:** a left mouse click anywhere on a slide moves on one step (the next beat, or the next slide),
+  the same as the right arrow or space. A click on something that has its own job doesn't advance: links,
+  buttons, the chapter dots, the slide counter, cards or posters with their own click, the scrolling
+  spreadsheet, editable text. Neither does a drag, a text selection, a modified click (Shift, Ctrl, Alt, Cmd),
+  or a tap in the phone walkthrough. A click during a slide change still counts.
+
+## 2026-11-20 — Slide titles readable in light mode
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Light mode:** slide titles used to turn dark in light mode, but the slides keep their dark and blue art
+  and washes there (the cover, Standards exist, Why AI?, the three take-home points, Your turn), so the titles
+  went dark-on-dark. Titles are now white with the same soft edge in both themes, as they already were in dark
+  mode. The ghost numerals (1, 2, 3) on the take-home points keep their light ink in light mode too. The cover,
+  the blue slides (A confession, Standards exist, Why AI?, Your turn) and the three points also keep dark
+  mode's light ink for their other text in light mode: the label, subtitle, names, roles and the footer line,
+  and the cover's dark soft shadow in place of the cream glow. The footer line on the Before and after slides
+  and the appendix Lego slide is light too. Dark mode is unchanged.
+
+## 2026-11-19 — Review slide retitled; "the problem" pill; PRISM logo opening
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Review slide:** title is now "Any tool is only useful if you trust it". The decision lists (Keep, With
+  caveats, Brought back, If in scope, Cut) are hidden. The gradient is gone: one flat black veil sits over the
+  framework-card wall, so the slide reads as black with the cards faint behind. The background credit moved to
+  the bottom left. The appendix copy of the review sheet is unchanged.
+- **Why AI? → Scattered tools:** the words "the problem" glide out of Why AI?'s line (view-transition morph,
+  `data-morph="problem"`) and land as a glass pill in the middle of the black slide; the tool pills then ease
+  in around it as before, it settles into the third row, and it merges into "Check it in PRISM" with the rest.
+  (A "burst" version, where the pills flew out of the words, was tried and dropped.)
+- **Scattered tools → Meet PRISM:** the yellow "Check it in PRISM" pill morphs into the PRISM logo, large on
+  black (`data-morph="logo"`); the site's scan plays, then the logo glides and shrinks onto the Studio's own
+  logo in the top-left corner while the full-screen Studio fades in under it, and the clip starts. Coming back
+  from Brief, or with reduced motion, the Studio shows at once. On a screen that isn't 16:9 the Studio is
+  cropped from the centre, so the logo's landing spot can sit partly off screen.
+
+## 2026-11-19 — "Check it in PRISM" opens into a full-screen Studio
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Transition:** on the click after Scattered tools' merged pill, the yellow "Check it in PRISM" pill
+  grows into the Meet PRISM Studio (a view-transition morph, `data-morph="prism"`); going back shrinks it
+  into the pill again.
+- **Meet PRISM full screen:** the yellow-rimmed slab on blue is gone. The Studio recording always fills
+  the screen edge to edge with no bars; on a screen that isn't 16:9 it is cropped evenly from the centre. Spotlight rings, the last-frame still and the Brief bar that morphs into the Brief
+  slide were re-placed to match; checked at 16:9 and 4:3.
+
+## 2026-11-19 — Slide order: Why AI? → Scattered tools → Meet PRISM → Brief
+
+Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+
+- **Order:** Scattered tools moved up from after Brief to right after Why AI?, so the talk runs problem
+  (checking is scattered) → answer (Meet PRISM) → how it fits you (Brief) → proof (before and after).
+  Meet PRISM still leads straight into Brief, so its morph into the Brief card is unchanged.
+- **Why AI? exit clip off:** the slices-to-slab clip (dark mode) ended on Meet PRISM, which no longer
+  follows Why AI?. `data-exit` is removed and the clip no longer preloads; the markup stays so it can be
+  turned back on if the order changes again.
+
 ## 2026-11-19 — Site moves to PrismCheck.org
 
 Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #69) · GitHub Pages: updated from `master`
