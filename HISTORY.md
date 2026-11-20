@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-19 — Site moves to PrismCheck.org
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #69) · GitHub Pages: updated from `master`
 
 - **Domain:** prismcheck.org bought at Porkbun; DNS now points at Vercel (A record to 76.76.21.21, `www`
   CNAME to cname.vercel-dns.com). Checked: https://prismcheck.org returns 200 over HTTPS.
@@ -18,7 +18,7 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 ## 2026-11-19 — Reveal: Material spotlight after the drop
 
-Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
+Branch: `refresh-and-fixes` · Vercel: Production (merged to `master`, PR #70) · GitHub Pages: updated from `master`
 
 - **Reveal slide (option A, light dim):** once the water-pill file drops into the Studio, the rest of
   the screen dims (55% dark veil) and the Material panel stays bright with a thin blue outline, so the
