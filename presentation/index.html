@@ -1163,14 +1163,28 @@ mark.hang{margin-left:calc(-.4em - .08em)}
 /* coming back from the Brief slide, the clip's last frame (a still laid over it) is shown, not the clip */
 .rv-slab img.rv-last{position:absolute;left:calc(14.4 * var(--rv));top:calc(14.4 * var(--rv));width:calc(1507.2 * var(--rv));height:calc(835.2 * var(--rv));opacity:0;pointer-events:none}
 #reveal[data-dir="fwd"] .rv-slab img.rv-last{opacity:1}
-/* the Material spotlight: just after the file drops in, the rest of the Studio dims about halfway and the
-   Material panel (26–764 × 186–1054 of the 1920×1080 recording) keeps full brightness with a blue outline;
-   the dim lifts again so the results come back. Clipped to the screen inside the slab; timed in the script. */
-.rv-spotwrap{position:absolute;left:calc(14.4 * var(--rv));top:calc(14.4 * var(--rv));width:calc(1507.2 * var(--rv));height:calc(835.2 * var(--rv));
-  overflow:hidden;border-radius:calc(11.2 * var(--rv));pointer-events:none}
-.rv-spot{position:absolute;left:1.354%;top:17.222%;width:38.438%;height:80.370%;border-radius:calc(9 * var(--rv));
-  box-shadow:0 0 0 calc(3 * var(--rv)) #2f6fa8,0 0 0 200vmax rgb(14 18 24 / .55);opacity:0;transition:opacity .6s ease}
-#reveal.rv-spot-on .rv-spot{opacity:1}
+/* the spotlight: just after the file drops in, the rest of the Studio dims about halfway and the Material panel
+   keeps full brightness with a blue outline; the next click morphs the light onto Plain language and Readability
+   (CCI stays dim): a crossfade in place, no glide. Panels as % of the recording: Material 1.354,17.222
+   38.438x80.370; Plain language 40.94,17.222 28.33x80.370; Readability 70.32,17.222 28.32x55.2. Each spot is
+   one veil with two holes cut by a mask (so they never double up) and rings on the holes; the click crossfades
+   the two spots. Above the stills, so it covers them too. */
+.rv-spotwrap{position:absolute;z-index:1;left:calc(14.4 * var(--rv));top:calc(14.4 * var(--rv));width:calc(1507.2 * var(--rv));height:calc(835.2 * var(--rv));
+  overflow:hidden;border-radius:calc(11.2 * var(--rv));pointer-events:none;
+  --W:calc(1507.2 * var(--rv));--H:calc(835.2 * var(--rv));
+  --ax:1.354;--ay:17.222;--aw:38.438;--ah:80.370;--bx:1.354;--by:17.222;--bw:38.438;--bh:80.370}
+.rv-spotwrap .two{--ax:40.94;--aw:28.33;--bx:70.32;--bw:28.32;--bh:55.2}
+.rv-dim,.rv-ring{position:absolute;opacity:0;transition:opacity .6s ease}
+.rv-dim{inset:0;background:rgb(14 18 24 / .55);
+  -webkit-mask-image:linear-gradient(#000 0 0),linear-gradient(#000 0 0),linear-gradient(#000 0 0);
+  mask-image:linear-gradient(#000 0 0),linear-gradient(#000 0 0),linear-gradient(#000 0 0);
+  mask-repeat:no-repeat;mask-composite:subtract,add;
+  mask-size:100% 100%,calc(var(--W) * var(--aw) / 100) calc(var(--H) * var(--ah) / 100),calc(var(--W) * var(--bw) / 100) calc(var(--H) * var(--bh) / 100);
+  mask-position:0 0,calc(var(--W) * var(--ax) / 100) calc(var(--H) * var(--ay) / 100),calc(var(--W) * var(--bx) / 100) calc(var(--H) * var(--by) / 100)}
+.rv-ring{border-radius:calc(4 * var(--rv));box-shadow:0 0 0 calc(3 * var(--rv)) #2f6fa8}
+.rv-ring.a{left:calc(var(--ax) * 1%);top:calc(var(--ay) * 1%);width:calc(var(--aw) * 1%);height:calc(var(--ah) * 1%)}
+.rv-ring.b{left:calc(var(--bx) * 1%);top:calc(var(--by) * 1%);width:calc(var(--bw) * 1%);height:calc(var(--bh) * 1%)}
+#reveal.rv-spot-on:not(.rv-spot-2) .one,#reveal.rv-spot-on.rv-spot-2 .two{opacity:1}
 /* Who it's for: everything but the Brief bar falls away to black and the bar glides out of the Studio;
    it lands as the header of the Brief panel, already open, and the line about who PRISM is for fades in
    under it at the deck's title size. The panel is the Studio's Brief rebuilt in the slide at a size the
@@ -1371,11 +1385,12 @@ mark.hang{margin-left:calc(-.4em - .08em)}
     <video disablepictureinpicture class="exit-clip" src="media/bg/ai-to-reveal-light.mp4?v=20261118z" muted playsinline preload="auto" aria-hidden="true"></video>
   </section>
 
-  <section class="scene" id="reveal" data-chap="PRISM">
+  <section class="scene" id="reveal" data-chap="PRISM" data-beats="2" data-dur="300">
+    <i class="drive" data-in="0 .5" hidden></i><!-- two steps: the clip, then a click morphs the spotlight -->
     <!-- the Studio in light mode: the slab arrives on this clip's first frame (the empty Studio, Brief set), then the
          water-pill file is dragged in and dropped and the analysis fills in; it stops on the last frame.
          The dark version is media/bg/ai-to-reveal.mp4 + prism-reveal-2x.jpg. -->
-    <div class="rv-slab"><video class="rv-play" src="media/bg/prism-reveal-light.mp4?v=20261118e" poster="media/bg/prism-reveal-light-first.png?v=20261118e" muted playsinline preload="auto" aria-label="PRISM's Studio in light mode, the Brief set to Patients and Handout. A file, water-pill.html, is dragged in and dropped: the handout opens with diuretic, edema, 25% and other words flagged, Plain language suggests water pill and swelling, and the CDC Clear Communication Index scores it."></video><span class="rv-spotwrap" aria-hidden="true"><i class="rv-spot"></i></span><img class="rv-last" src="media/bg/prism-reveal-light-last.jpg?v=20261118e" alt="" aria-hidden="true"><img class="rv-brief" data-morph="brief" src="media/bg/rv-brief.png?v=20261118b" alt="" aria-hidden="true"></div>
+    <div class="rv-slab"><video class="rv-play" src="media/bg/prism-reveal-light.mp4?v=20261118e" poster="media/bg/prism-reveal-light-first.png?v=20261118e" muted playsinline preload="auto" aria-label="PRISM's Studio in light mode, the Brief set to Patients and Handout. A file, water-pill.html, is dragged in and dropped: the handout opens with diuretic, edema, 25% and other words flagged, Plain language suggests water pill and swelling, and the CDC Clear Communication Index scores it."></video><span class="rv-spotwrap" aria-hidden="true"><i class="rv-dim one"></i><i class="rv-ring a one"></i><i class="rv-dim two"></i><i class="rv-ring a two"></i><i class="rv-ring b two"></i></span><img class="rv-last" src="media/bg/prism-reveal-light-last.jpg?v=20261118e" alt="" aria-hidden="true"><img class="rv-brief" data-morph="brief" src="media/bg/rv-brief.png?v=20261118b" alt="" aria-hidden="true"></div>
   </section>
 
   <section class="scene" id="brief" data-chap="Who it's for" data-dur="1400">
@@ -2991,23 +3006,28 @@ window.deckStart = function(){
   // reached going back (from the Brief slide) it rests: the still of the clip's last frame covers it.
   // With reduced motion the clip is set to its end.
   function toEnd(){ v.pause(); if (reduce) { try { v.currentTime = Math.max(0, (v.duration || 0) - .04); } catch (e) {} } sec.classList.add('rv-done'); }
-  v.addEventListener('ended', function(){ sec.classList.add('rv-done'); sec.classList.remove('rv-spot-on'); });
-  // the Material spotlight, from just after the drop (2.1 s) to 4.4 s into the clip
-  v.addEventListener('timeupdate', function(){ sec.classList.toggle('rv-spot-on', !v.paused && v.currentTime > 2.1 && v.currentTime < 4.4); });
+  v.addEventListener('ended', function(){ sec.classList.add('rv-done'); });
+  // the spotlight comes on just after the drop (2.1 s into the clip) and stays; the slide's second step
+  // (data-beat 1, the next click) moves it to Plain language and Readability
+  v.addEventListener('timeupdate', function(){ if (v.currentTime > 2.1 && !sec.classList.contains('rv-spot-on')) sec.classList.add('rv-spot-on'); });
   // runs only when the slide is entered or left, not on its own rv-done class changes
   var was = null;
   function sync(){
-    var on = sec.classList.contains('on'); if (on === was) return; was = on;
+    var on = sec.classList.contains('on'), two = on && sec.getAttribute('data-beat') === '1';
+    // classList.add always writes the attribute (a fresh mutation), so only when it is missing
+    if (two && !sec.classList.contains('rv-spot-on')) sec.classList.add('rv-spot-on');
+    if (sec.classList.contains('rv-spot-2') !== two) sec.classList.toggle('rv-spot-2', two);
+    if (on === was) return; was = on;
     if (on) {
-      if (reduce || sec.dataset.dir === 'fwd') return toEnd();
+      if (reduce || sec.dataset.dir === 'fwd') { sec.classList.add('rv-spot-on'); return toEnd(); }
       sec.classList.remove('rv-done');
       try { v.currentTime = 0; } catch (e) {} var p = v.play(); if (p) p.catch(function(){}); }
     // once left (either way) it waits on its first frame, which is where Why AI?'s exit clip lands, so the
     // next arrival never flashes the finished handout before restarting; coming back from the Brief slide
     // is covered by the still of the last frame (.rv-last) instead
-    else { v.pause(); try { v.currentTime = 0; } catch (e) {} sec.classList.remove('rv-done', 'rv-spot-on'); }
+    else { v.pause(); try { v.currentTime = 0; } catch (e) {} sec.classList.remove('rv-done', 'rv-spot-on', 'rv-spot-2'); sec.removeAttribute('data-beat'); }
   }
-  new MutationObserver(sync).observe(sec, { attributes:true, attributeFilter:['class'] });
+  new MutationObserver(sync).observe(sec, { attributes:true, attributeFilter:['class', 'data-beat'] });
   sync();
 })();
 </script>

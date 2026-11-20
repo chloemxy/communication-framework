@@ -22,9 +22,11 @@ Branch: `refresh-and-fixes` · Vercel: not deployed yet (local, localhost:5173)
 
 - **Reveal slide (option A, light dim):** once the water-pill file drops into the Studio, the rest of
   the screen dims (55% dark veil) and the Material panel stays bright with a thin blue outline, so the
-  room looks at the analysed text. It holds from 2.1 s to 4.4 s of the clip, then lifts, and it resets
-  when you leave the slide. Checked at 16:9: no dim before the drop or after it lifts, and the bright
-  window sits on the Material panel.
+  room looks at the analysed text. It comes on 2.1 s into the clip and stays.
+- **Next click:** the light morphs (a 0.6 s crossfade in place, no glide) from Material to the Plain
+  language and Readability panels; CCI and the rest stay dim. The click after that goes on to the Brief
+  slide, and coming back shows the second spot. It resets when you leave the slide. The reveal is now a
+  two-step slide. Checked at 16:9: the bright windows and their outlines land on the two panels.
 
 ## 2026-11-19 — Napkin divider zooms through the k again
 
