@@ -4,9 +4,17 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-25 — Appendix hidden
+
+Branch: `refresh-and-fixes` · Merged to `master` (Production)
+
+- **Talk deck:** the Appendix divider and every slide after it (feature slides, clinic question, Why AI?,
+  "then", review sheet) carry the `hidden` attribute, so the deck now ends at "Your turn". The slides are
+  still in the file; remove `hidden` to bring them back. The slide count and rail adjust by themselves.
+
 ## 2026-11-20 — Verification: cards muted a little
 
-Branch: `refresh-and-fixes` · Not pushed yet (local only, review on localhost:5173)
+Branch: `refresh-and-fixes` · Merged to `master` in PR #72 (Production)
 
 - **Verification slide:** the framework cards behind the title are muted with a 35% veil of the slide's dark
   grey, so the wall is easier on the eye; the framework names stay clear. The title band is unchanged.
