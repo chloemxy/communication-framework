@@ -4,6 +4,17 @@ Every change to the site is recorded here, newest first. Each entry names the br
 what changed, why, and where it is deployed on Vercel (pushes to a branch make a
 Preview deployment; `master` is Production).
 
+## 2026-11-27 — Fonts served from our own site
+
+Branch: `refresh-and-fixes` · Not pushed yet
+
+- **Site and talk deck:** Public Sans, Source Serif 4 and Newsreader now load from a new `/fonts/` folder
+  (`fonts.css` plus variable `.woff2` files, Latin and Latin Extended) in place of Google Fonts, so no
+  visitor's IP address goes to Google (the GDPR issue a German court ruled on in 2022). The change covers
+  `index.html`, `framework-compass.html`, `demos/upload-options.html`, `presentation/index.html`, and the
+  font loader in `intro.js`. The fonts are under the SIL Open Font License; `fonts/OFL.txt` holds the license
+  and copyright lines. Weights and italics are the same as before, so the pages should look unchanged.
+
 ## 2026-11-25 — Appendix hidden
 
 Branch: `refresh-and-fixes` · Merged to `master` (Production)

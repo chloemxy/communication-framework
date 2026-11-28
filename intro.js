@@ -216,7 +216,7 @@
   function mount(){
     if (!document.getElementById('intro-font')) {
       var l = document.createElement('link'); l.id = 'intro-font'; l.rel = 'stylesheet';
-      l.href = 'https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap';
+      l.href = 'fonts/fonts.css';   // self-hosted, no Google request
       document.head.appendChild(l);
     }
     if (!done) return;   // already showing
