@@ -6,7 +6,7 @@ Preview deployment; `master` is Production).
 
 ## 2026-11-27 — Fonts served from our own site
 
-Branch: `refresh-and-fixes` · Not pushed yet
+Branch: `refresh-and-fixes` · Merged to `master` in PR #74 (Production)
 
 - **Site and talk deck:** Public Sans, Source Serif 4 and Newsreader now load from a new `/fonts/` folder
   (`fonts.css` plus variable `.woff2` files, Latin and Latin Extended) in place of Google Fonts, so no
